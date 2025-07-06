@@ -45,11 +45,84 @@ export type Database = {
         }
         Relationships: []
       }
+      refund_requests: {
+        Row: {
+          created_at: string
+          id: string
+          pack_id: string
+          processed_at: string | null
+          processed_by: string | null
+          reason: string | null
+          request_date: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pack_id: string
+          processed_at?: string | null
+          processed_by?: string | null
+          reason?: string | null
+          request_date?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pack_id?: string
+          processed_at?: string | null
+          processed_by?: string | null
+          reason?: string | null
+          request_date?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_pack_access: {
+        Row: {
+          granted_at: string
+          granted_by: string | null
+          id: string
+          is_active: boolean
+          pack_id: string
+          revoked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          is_active?: boolean
+          pack_id: string
+          revoked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          is_active?: boolean
+          pack_id?: string
+          revoked_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      can_request_refund: {
+        Args: { user_id: string; pack_id: string }
+        Returns: boolean
+      }
       update_payment_session_status: {
         Args: { session_id: string; new_status: string }
         Returns: boolean

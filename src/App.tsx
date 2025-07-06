@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -12,6 +13,7 @@ import Packs from "./pages/Packs";
 import PackView from "./pages/PackView";
 import Library from "./pages/Library";
 import Account from "./pages/Account";
+import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -61,18 +63,8 @@ const AppContent = () => {
             user ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />
           } 
         />
-        <Route 
-          path="/packs" 
-          element={
-            user ? <Packs user={user} /> : <Navigate to="/login" replace />
-          } 
-        />
-        <Route 
-          path="/pack/:id" 
-          element={
-            user ? <PackView user={user} /> : <Navigate to="/login" replace />
-          } 
-        />
+        <Route path="/packs" element={<Packs user={user} />} />
+        <Route path="/pack/:id" element={<PackView user={user} />} />
         <Route 
           path="/library" 
           element={
@@ -83,6 +75,14 @@ const AppContent = () => {
           path="/account" 
           element={
             user ? <Account user={user} onLogout={handleLogout} /> : <Navigate to="/login" replace />
+          } 
+        />
+        <Route 
+          path="/admin" 
+          element={
+            user && user.email === 'conectawebapps@outlook.com' ? 
+            <AdminPanel user={user} /> : 
+            <Navigate to="/" replace />
           } 
         />
         <Route path="*" element={<NotFound />} />
