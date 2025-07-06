@@ -16,7 +16,7 @@ const NeonLogo: React.FC<NeonLogoProps> = ({ onClick }) => {
     <a href="#" onClick={handleClick} className="logo-neon text-2xl md:text-3xl">
       <span>C</span>
       <span>A</span>
-      <span className="flicker-fast">S</span>
+      <span>S</span>
       <span>O</span>
       <span className="mx-1 md:mx-2"> </span>
       <span>O</span>
@@ -24,7 +24,7 @@ const NeonLogo: React.FC<NeonLogoProps> = ({ onClick }) => {
       <span className="flicker-slow">U</span>
       <span>L</span>
       <span>T</span>
-      <span>O</span>
+      <span className="flicker-fast">O</span>
     </a>
   );
 };

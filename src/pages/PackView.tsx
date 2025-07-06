@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { ArrowLeft, Lock, Play, RotateCcw } from 'lucide-react';
+import { ArrowLeft, Lock, Play, RotateCcw, Shield } from 'lucide-react';
 import { packs, getUserPacks, Pack, Card } from '../data/packs';
 import { t } from '../data/translations';
 import FloatingFlipCard from '../components/FloatingFlipCard';
@@ -19,6 +19,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [solvedCards, setSolvedCards] = useState<string[]>([]);
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const [showPurchasePopup, setShowPurchasePopup] = useState(false);
 
   useEffect(() => {
     const foundPack = packs.find(p => p.id === id);
@@ -48,6 +49,9 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     if (card.isFree || hasAccess) {
       setSelectedCard(card);
       setIsCardOpen(true);
+    } else {
+      // Show purchase popup for locked cards
+      setShowPurchasePopup(true);
     }
   };
 
@@ -82,42 +86,70 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/packs')}
-            className="text-case-white hover:text-case-red hover:bg-noir-medium mr-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar aos Packs
-          </Button>
-        </div>
+      {/* Pack Banner */}
+      <div 
+        className="relative h-96 bg-cover bg-center"
+        style={{ backgroundImage: `url(${pack.coverUrl})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-noir-black via-noir-black/70 to-transparent"></div>
+        
+        <div className="container mx-auto px-4 relative z-10 h-full flex flex-col justify-between">
+          {/* Header */}
+          <div className="flex items-center pt-8">
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/packs')}
+              className="text-case-white hover:text-case-red hover:bg-noir-medium/50"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Voltar aos Packs
+            </Button>
+          </div>
 
-        {/* Pack Info */}
-        <div className="mb-12 text-center">
-          <h1 className="font-anton text-3xl md:text-4xl lg:text-5xl text-case-white mb-4">
-            {pack.name}
-          </h1>
-          <p className="text-case-white/80 text-lg max-w-2xl mx-auto mb-6">
-            {pack.description}
-          </p>
-          <div className="flex justify-center items-center gap-4">
-            <Badge className="bg-case-red text-white">
-              {pack.category}
-            </Badge>
-            <Badge variant="outline" className="border-case-white text-case-white">
-              {pack.cards.length} Casos
-            </Badge>
-            {user && (
-              <Badge variant="outline" className="border-green-500 text-green-500">
-                {solvedCards.length} Resolvidos
+          {/* Pack Info Overlay */}
+          <div className="pb-8">
+            <h1 className="font-anton text-4xl md:text-5xl lg:text-6xl text-case-white mb-4">
+              {pack.name}
+            </h1>
+            <p className="text-case-white/90 text-xl max-w-3xl mb-6">
+              {pack.description}
+            </p>
+            <div className="flex items-center gap-4 mb-4">
+              <Badge className="bg-case-red text-white text-base px-4 py-2">
+                {pack.category}
               </Badge>
+              <Badge variant="outline" className="border-case-white text-case-white text-base px-4 py-2">
+                {pack.cards.length} Casos
+              </Badge>
+              {user && (
+                <Badge variant="outline" className="border-green-500 text-green-500 text-base px-4 py-2">
+                  {solvedCards.length} Resolvidos
+                </Badge>
+              )}
+            </div>
+            
+            {/* Progress Bar */}
+            {user && hasAccess && (
+              <div className="max-w-md">
+                <div className="flex justify-between text-case-white/80 text-sm mb-2">
+                  <span>Progresso</span>
+                  <span>{Math.round((solvedCards.length / pack.cards.length) * 100)}%</span>
+                </div>
+                <div className="w-full bg-noir-medium rounded-full h-3">
+                  <div 
+                    className="bg-case-red h-3 rounded-full transition-all duration-300"
+                    style={{ 
+                      width: `${(solvedCards.length / pack.cards.length) * 100}%` 
+                    }}
+                  ></div>
+                </div>
+              </div>
             )}
           </div>
         </div>
+      </div>
 
+      <div className="container mx-auto px-4 py-12">
         {/* Accessible Cards */}
         <div className="mb-12">
           <h2 className="text-2xl font-anton text-case-white mb-6">
@@ -184,7 +216,8 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
               {getLockedCards().map((card) => (
                 <div
                   key={card.id}
-                  className="bg-white/50 rounded-xl p-6 relative border-2 border-gray-300"
+                  onClick={() => handleCardClick(card)}
+                  className="bg-white/50 rounded-xl p-6 relative border-2 border-gray-300 cursor-pointer hover:border-case-red/50 transition-all"
                 >
                   <div className="absolute inset-0 bg-black/20 rounded-xl flex items-center justify-center">
                     <div className="text-center">
@@ -214,55 +247,73 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
               ))}
             </div>
             
-            <div className="text-center mt-8">
-              <p className="text-case-white/80 mb-4">
+            {/* Purchase Section */}
+            <div className="text-center mt-12 bg-noir-dark rounded-xl p-8 border border-noir-medium">
+              <h3 className="text-case-white font-bold text-2xl mb-4">
+                Desbloquear Pack Completo
+              </h3>
+              <p className="text-case-white/80 mb-6 text-lg">
                 Desbloqueie todos os {pack.cards.length} casos deste pack
               </p>
-              <Button className="bg-case-red hover:bg-red-600 text-white font-bold px-8 py-3 text-lg rounded-xl">
+              
+              {/* Security Message */}
+              <div className="flex items-center justify-center mb-6 bg-green-900/20 border border-green-500/30 rounded-lg p-4">
+                <Shield className="h-5 w-5 text-green-400 mr-2" />
+                <span className="text-green-400 font-medium">Sua compra está segura com</span>
+                <img 
+                  src="/lovable-uploads/2e7dff68-1480-4f1e-9fff-bb3eacae2f7b.png" 
+                  alt="Mercado Pago" 
+                  className="h-8 ml-2"
+                />
+              </div>
+              
+              <Button 
+                onClick={() => window.open('https://www.mercadopago.com.br/home', '_blank')}
+                className="bg-case-red hover:bg-red-600 text-white font-bold px-8 py-3 text-lg rounded-xl"
+              >
                 Comprar Pack - R$ {pack.price.toFixed(2)}
               </Button>
             </div>
           </div>
         )}
+      </div>
 
-        {/* Progress */}
-        {user && hasAccess && (
-          <div className="text-center">
-            <div className="bg-noir-dark rounded-xl p-6 border border-noir-medium">
-              <h3 className="text-case-white font-bold text-lg mb-4">
-                Seu Progresso
+      {/* Purchase Popup */}
+      {showPurchasePopup && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-8 max-w-md w-full">
+            <div className="text-center mb-6">
+              <Lock className="h-16 w-16 text-case-red mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Conteúdo Premium
               </h3>
-              <div className="flex justify-center items-center gap-8">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-case-red mb-1">
-                    {solvedCards.length}
-                  </div>
-                  <div className="text-case-white/60 text-sm">Resolvidos</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-case-white mb-1">
-                    {pack.cards.length - solvedCards.length}
-                  </div>
-                  <div className="text-case-white/60 text-sm">Restantes</div>
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="w-full bg-noir-medium rounded-full h-2">
-                  <div 
-                    className="bg-case-red h-2 rounded-full transition-all duration-300"
-                    style={{ 
-                      width: `${(solvedCards.length / pack.cards.length) * 100}%` 
-                    }}
-                  ></div>
-                </div>
-                <p className="text-case-white/60 text-sm mt-2">
-                  {Math.round((solvedCards.length / pack.cards.length) * 100)}% Completo
-                </p>
-              </div>
+              <p className="text-gray-600">
+                Este caso faz parte do conteúdo premium. Desbloqueie o pack completo para aceder a todos os mistérios!
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <Button 
+                onClick={() => {
+                  setShowPurchasePopup(false);
+                  window.open('https://www.mercadopago.com.br/home', '_blank');
+                }}
+                className="w-full bg-case-red hover:bg-red-600 text-white font-bold py-3"
+              >
+                Desbloquear Pack - R$ {pack.price.toFixed(2)}
+              </Button>
+              
+              <Button 
+                variant="outline"
+                onClick={() => setShowPurchasePopup(false)}
+                className="w-full"
+              >
+                Fechar
+              </Button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Floating Card Modal */}
       <FloatingFlipCard

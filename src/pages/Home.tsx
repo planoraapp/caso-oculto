@@ -18,7 +18,7 @@ const Home: React.FC = () => {
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-anton text-4xl md:text-6xl lg:text-7xl text-case-white mb-6 leading-tight">
               Prepare-se para horas de
-              <span className="block text-case-red">MISTÉRIO</span>
+              <span className="block text-case-red">diversão e mistérios</span>
             </h1>
             
             <p className="text-case-white/90 text-lg md:text-xl lg:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
@@ -52,7 +52,7 @@ const Home: React.FC = () => {
               <div className="text-center">
                 <div className="flex items-center justify-center mb-3">
                   <Trophy className="h-8 w-8 text-case-red mr-2" />
-                  <span className="text-3xl font-bold text-case-white">140+</span>
+                  <span className="text-3xl font-bold text-case-white">300+</span>
                 </div>
                 <p className="text-case-white/80">Casos Únicos</p>
               </div>
@@ -60,7 +60,7 @@ const Home: React.FC = () => {
               <div className="text-center">
                 <div className="flex items-center justify-center mb-3">
                   <Star className="h-8 w-8 text-case-red mr-2" />
-                  <span className="text-3xl font-bold text-case-white">7</span>
+                  <span className="text-3xl font-bold text-case-white">15</span>
                 </div>
                 <p className="text-case-white/80">Packs Temáticos</p>
               </div>
@@ -68,7 +68,7 @@ const Home: React.FC = () => {
               <div className="text-center">
                 <div className="flex items-center justify-center mb-3">
                   <Users className="h-8 w-8 text-case-red mr-2" />
-                  <span className="text-3xl font-bold text-case-white">1000+</span>
+                  <span className="text-3xl font-bold text-case-white">5000+</span>
                 </div>
                 <p className="text-case-white/80">Jogadores Ativos</p>
               </div>

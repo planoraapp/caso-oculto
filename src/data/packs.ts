@@ -1,12 +1,21 @@
+
 // Pack covers URLs
 export const PACK_COVERS = {
-  'amostra': '/images/covers/amostra.jpg',
   'sombras-da-noite': 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500&h=700&fit=crop',
   'crimes-imperfeitos': 'https://images.unsplash.com/photo-1507690779323-e3476775ee3d?w=500&h=700&fit=crop',
   'paradoxos-mortais': 'https://images.unsplash.com/photo-1551075665-879c94ca0951?w=500&h=700&fit=crop',
   'lendas-urbanas': 'https://images.unsplash.com/photo-1520637836862-4d197d17c0a8?w=500&h=700&fit=crop',
   'absurdamente-real': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=700&fit=crop',
-  'beco-sem-saida': 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=500&h=700&fit=crop'
+  'beco-sem-saida': 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=500&h=700&fit=crop',
+  'dossie-confidencial': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=700&fit=crop',
+  'labirintos-da-mente': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&h=700&fit=crop',
+  'ironias-do-destino': 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=500&h=700&fit=crop',
+  'crimes-de-epoca': 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=500&h=700&fit=crop',
+  'dose-letal': 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&h=700&fit=crop',
+  'fim-de-jogo': 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=500&h=700&fit=crop',
+  'viagem-sem-volta': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=500&h=700&fit=crop',
+  'jogos-corporativos': 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&h=700&fit=crop',
+  'sussurros-do-alem': 'https://images.unsplash.com/photo-1520637836862-4d197d17c0a8?w=500&h=700&fit=crop'
 };
 
 import { t } from './translations';
@@ -31,56 +40,8 @@ export interface Pack {
   cards: Card[];
 }
 
-// Pack data with complete cases
+// Pack data with complete cases - Updated with 15 packs
 export const packs: Pack[] = [
-  {
-    id: 'amostra',
-    name: 'Pack de Amostra',
-    description: 'Uma seleção de casos introdutórios para conhecer o jogo',
-    price: 0,
-    coverUrl: PACK_COVERS['amostra'],
-    isFree: true,
-    category: 'Iniciante',
-    cards: [
-      {
-        id: 'amostra-1',
-        order: 1,
-        mystery: 'Um homem entra num bar e pede um copo d\'água. O garçom aponta-lhe uma arma. O homem agradece e sai. Porquê?',
-        solution: 'O homem tinha soluços. O susto curou-o.',
-        difficulty: 'easy',
-        isFree: true
-      },
-      {
-        id: 'amostra-2',
-        order: 2,
-        mystery: 'Uma mulher é encontrada morta num campo com um palito de fósforo partido na mão. O que aconteceu?',
-        solution: 'Ela estava num balão de ar quente que perdia altitude. Sortearam no palito mais curto quem saltaria para salvar os outros.',
-        difficulty: 'medium',
-        isFree: true
-      },
-      {
-        id: 'amostra-3',
-        order: 3,
-        mystery: 'Um homem morre envenenado num jantar, mas todos comeram o mesmo. Como?',
-        solution: 'O veneno estava no gelo da sua bebida. Ele bebeu devagar, dando tempo para o gelo derreter.',
-        difficulty: 'medium'
-      },
-      {
-        id: 'amostra-4',
-        order: 4,
-        mystery: 'Um homem jaz morto no deserto com uma mochila fechada. Se a tivesse aberto, estaria vivo.',
-        solution: 'A mochila continha um paraquedas que não abriu.',
-        difficulty: 'hard'
-      },
-      {
-        id: 'amostra-5',
-        order: 5,
-        mystery: 'Dois homens estão mortos numa cabana nos Alpes.',
-        solution: 'A "cabana" era a cabine de um avião que se despenhou.',
-        difficulty: 'easy'
-      }
-    ]
-  },
   {
     id: 'sombras-da-noite',
     name: 'Sombras da Noite',
@@ -106,14 +67,6 @@ export const packs: Pack[] = [
         difficulty: 'hard',
         isFree: true
       },
-      // Add remaining 18 cases here with isFree: false for paid content
-      {
-        id: 'sombras-3',
-        order: 3,
-        mystery: 'Um homem é encontrado morto no seu carro à meia-noite. O carro está intacto, mas o chão à volta está cheio de pequenas esferas de metal.',
-        solution: 'Ele era o \'Homem-Bala\' de um circo. O canhão foi mal calculado e ele aterrou no parque de estacionamento, morrendo com o impacto. As esferas eram dos seus adereços.',
-        difficulty: 'hard'
-      }
       // ... more cases would be added here
     ]
   },
@@ -255,6 +208,249 @@ export const packs: Pack[] = [
         isFree: true
       }
       // Add remaining cases
+    ]
+  },
+  {
+    id: 'dossie-confidencial',
+    name: 'Dossiê Confidencial',
+    description: 'Segredos governamentais e conspirações reveladas',
+    price: 14.80,
+    coverUrl: PACK_COVERS['dossie-confidencial'],
+    isFree: false,
+    category: 'Conspiração',
+    cards: [
+      {
+        id: 'dossie-1',
+        order: 1,
+        mystery: 'Um agente secreto é encontrado morto no seu escritório. Todas as gavetas estão abertas, mas nada foi roubado.',
+        solution: 'O agente estava a ser chantageeado. Abriu todas as gavetas para mostrar ao chantagista que não tinha os documentos que ele procurava, mas o chantagista matou-o mesmo assim.',
+        difficulty: 'medium',
+        isFree: true
+      },
+      {
+        id: 'dossie-2',
+        order: 2,
+        mystery: 'Uma cientista desaparece do laboratório ultra-seguro onde trabalhava. As câmaras não mostram ninguém a entrar ou sair.',
+        solution: 'Ela foi morta e o seu corpo foi dissolvido em ácido. O "desaparecimento" foi encenado pelos seus próprios colegas que descobriram que ela era uma espia.',
+        difficulty: 'hard',
+        isFree: true
+      }
+    ]
+  },
+  {
+    id: 'labirintos-da-mente',
+    name: 'Labirintos da Mente',
+    description: 'Casos que desafiam a lógica e a perceção',
+    price: 14.80,
+    coverUrl: PACK_COVERS['labirintos-da-mente'],
+    isFree: false,
+    category: 'Psicológico',
+    cards: [
+      {
+        id: 'labirintos-1',
+        order: 1,
+        mystery: 'Um psiquiatra é encontrado morto no seu consultório. O último paciente do dia era conhecido pela sua violência, mas tem um álibi perfeito.',
+        solution: 'O psiquiatra suicidou-se, mas programou um sistema para apagar as gravações das sessões e fazer parecer um homicídio, para que a sua família recebesse o seguro de vida.',
+        difficulty: 'hard',
+        isFree: true
+      },
+      {
+        id: 'labirintos-2',
+        order: 2,
+        mystery: 'Uma mulher acorda num quarto que não reconhece, sem memórias dos últimos três dias. Há sinais de luta, mas ela não tem ferimentos.',
+        solution: 'Ela é uma atriz que participou num reality show experimental sobre perda de memória. Os "sinais de luta" eram parte do cenário.',
+        difficulty: 'medium',
+        isFree: true
+      }
+    ]
+  },
+  {
+    id: 'ironias-do-destino',
+    name: 'Ironias do Destino',
+    description: 'Quando o destino prega as suas piores partidas',
+    price: 14.80,
+    coverUrl: PACK_COVERS['ironias-do-destino'],
+    isFree: false,
+    category: 'Ironia',
+    cards: [
+      {
+        id: 'ironias-1',
+        order: 1,
+        mystery: 'Um homem sobrevive a um acidente de avião, mas morre no hospital poucas horas depois, sem ferimentos graves.',
+        solution: 'Ele morreu de choque anafilático devido a uma alergia ao látex das luvas médicas. Ironicamente, sobreviveu ao acidente mas morreu devido aos cuidados médicos.',
+        difficulty: 'medium',
+        isFree: true
+      },
+      {
+        id: 'ironias-2',
+        order: 2,
+        mystery: 'Uma mulher ganha no Euromilhões, mas morre no mesmo dia antes de reclamar o prémio.',
+        solution: 'Ela teve um ataque cardíaco de excitação quando viu os números. O bilhete premiado foi encontrado na sua mão.',
+        difficulty: 'easy',
+        isFree: true
+      }
+    ]
+  },
+  {
+    id: 'crimes-de-epoca',
+    name: 'Crimes de Época',
+    description: 'Mistérios ambientados em períodos históricos fascinantes',
+    price: 14.80,
+    coverUrl: PACK_COVERS['crimes-de-epoca'],
+    isFree: false,
+    category: 'Histórico',
+    cards: [
+      {
+        id: 'epoca-1',
+        order: 1,
+        mystery: 'Durante a Era Vitoriana, um nobre é encontrado morto na sua biblioteca. A única pista é um livro aberto numa página específica.',
+        solution: 'O livro estava aberto numa página sobre venenos. O mordomo, que sabia ler (raro na época), envenenou o patrão e deixou o livro como confissão silenciosa.',
+        difficulty: 'hard',
+        isFree: true
+      },
+      {
+        id: 'epoca-2',
+        order: 2,
+        mystery: 'Nos anos 20, um contrabandista é encontrado morto no seu armazém. Todas as garrafas de whiskey estão intactas.',
+        solution: 'Ele foi morto pelo próprio produto que vendia - álcool metílico disfarçado de whiskey. Bebeu do próprio stock por engano.',
+        difficulty: 'medium',
+        isFree: true
+      }
+    ]
+  },
+  {
+    id: 'dose-letal',
+    name: 'Dose Letal',
+    description: 'Casos envolvendo venenos, medicina e ciência forense',
+    price: 14.80,
+    coverUrl: PACK_COVERS['dose-letal'],
+    isFree: false,
+    category: 'Forense',
+    cards: [
+      {
+        id: 'dose-1',
+        order: 1,
+        mystery: 'Um farmacêutico morre envenenado na sua própria farmácia. Todas as substâncias tóxicas estão devidamente guardadas.',
+        solution: 'Ele misturou dois medicamentos comuns que, juntos, criaram uma reação letal. Foi um acidente causado pela sua própria negligência.',
+        difficulty: 'hard',
+        isFree: true
+      },
+      {
+        id: 'dose-2',
+        order: 2,
+        mystery: 'Uma enfermeira é suspeita de envenenar pacientes, mas todos os exames toxicológicos dão negativos.',
+        solution: 'Ela usava insulina, que é natural no corpo e se decompõe rapidamente, sendo quase impossível de detetar post-mortem em pessoas diabéticas.',
+        difficulty: 'hard',
+        isFree: true
+      }
+    ]
+  },
+  {
+    id: 'fim-de-jogo',
+    name: 'Fim de Jogo',
+    description: 'Enigmas no mundo dos desportos: sabotagem, doping e mistérios',
+    price: 14.80,
+    coverUrl: PACK_COVERS['fim-de-jogo'],
+    isFree: false,
+    category: 'Desporto',
+    cards: [
+      {
+        id: 'jogo-1',
+        order: 1,
+        mystery: 'Um ciclista morre durante uma corrida. A autópsia não encontra drogas, mas ele tinha sinais de doping.',
+        solution: 'Ele usou "doping sanguíneo" - retirou o seu próprio sangue semanas antes para reintroduzir antes da corrida, mas o sangue estava contaminado.',
+        difficulty: 'hard',
+        isFree: true
+      },
+      {
+        id: 'jogo-2',
+        order: 2,
+        mystery: 'Um jogador de futebol morre no balneário após um jogo. Não havia sinais de violência.',
+        solution: 'Ele teve uma paragem cardíaca causada por uma condição não diagnosticada, agravada pelo esforço extremo e desidratação.',
+        difficulty: 'medium',
+        isFree: true
+      }
+    ]
+  },
+  {
+    id: 'viagem-sem-volta',
+    name: 'Viagem Sem Volta',
+    description: 'Crimes em locais isolados: comboios, navios e ilhas remotas',
+    price: 14.80,
+    coverUrl: PACK_COVERS['viagem-sem-volta'],
+    isFree: false,
+    category: 'Isolado',
+    cards: [
+      {
+        id: 'viagem-1',
+        order: 1,
+        mystery: 'Num cruzeiro, um passageiro desaparece do seu camarote durante a noite. A porta estava trancada por dentro.',
+        solution: 'Ele saiu pela janela do camarote (que dava para o convés) para fumar, escorregou e caiu ao mar. A janela fechou-se sozinha com o vento.',
+        difficulty: 'medium',
+        isFree: true
+      },
+      {
+        id: 'viagem-2',
+        order: 2,
+        mystery: 'Num comboio noturno, um passageiro é encontrado morto no seu compartimento. O comboio não parou durante a viagem.',
+        solution: 'Ele foi morto por alguém que embarcou clandestinamente no teto do comboio e desceu pelo compartimento através de uma escotilha de manutenção.',
+        difficulty: 'hard',
+        isFree: true
+      }
+    ]
+  },
+  {
+    id: 'jogos-corporativos',
+    name: 'Jogos Corporativos',
+    description: 'Mistérios no mundo empresarial: espionagem, fraudes e traições',
+    price: 14.80,
+    coverUrl: PACK_COVERS['jogos-corporativos'],
+    isFree: false,
+    category: 'Empresarial',
+    cards: [
+      {
+        id: 'corporativo-1',
+        order: 1,
+        mystery: 'Um CEO morre no seu escritório no último andar. O elevador estava avariado e as escadas trancadas.',
+        solution: 'Ele foi morto pelo próprio sistema de ar condicionado, que foi sabotado para libertar monóxido de carbono apenas no seu escritório.',
+        difficulty: 'hard',
+        isFree: true
+      },
+      {
+        id: 'corporativo-2',
+        order: 2,
+        mystery: 'Uma executiva desaparece durante uma reunião importante. As câmaras mostram-na a entrar na sala, mas nunca a sair.',
+        solution: 'Ela fugiu através de um túnel secreto construído durante a guerra, que ligava o edifício ao metro. Estava a fugir com segredos da empresa.',
+        difficulty: 'hard',
+        isFree: true
+      }
+    ]
+  },
+  {
+    id: 'sussurros-do-alem',
+    name: 'Sussurros do Além',
+    description: 'Histórias com um toque sobrenatural que desafiam a realidade',
+    price: 14.80,
+    coverUrl: PACK_COVERS['sussurros-do-alem'],
+    isFree: false,
+    category: 'Sobrenatural',
+    cards: [
+      {
+        id: 'alem-1',
+        order: 1,
+        mystery: 'Uma médium morre durante uma sessão espírita. As outras pessoas presentes juram que ela foi "possuída".',
+        solution: 'Ela teve uma reação alérgica severa ao incenso usado na sessão. Os "sintomas de possessão" eram na verdade convulsões alérgicas.',
+        difficulty: 'medium',
+        isFree: true
+      },
+      {
+        id: 'alem-2',
+        order: 2,
+        mystery: 'Numa casa assombrada, o novo proprietário é encontrado morto. Vizinhos relatam atividade paranormal.',
+        solution: 'A casa tinha um vazamento de gás que causava alucinações e, eventualmente, asfixia. As "atividades paranormais" eram alucinações causadas pelo gás.',
+        difficulty: 'hard',
+        isFree: true
+      }
     ]
   }
 ];
