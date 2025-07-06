@@ -1,4 +1,3 @@
-
 export interface Card {
   id: string;
   mystery: string;
@@ -16,6 +15,15 @@ export interface Pack {
   isFree: boolean;
   category: string;
   cards: Card[];
+}
+
+export interface Purchase {
+  id: string;
+  userId: string;
+  packId: string;
+  purchased_at: string;
+  price_paid: number;
+  packName?: string;
 }
 
 export const packs: Pack[] = [
@@ -69,7 +77,7 @@ export const packs: Pack[] = [
     id: 'sombras-da-noite',
     name: 'Sombras da Noite',
     description: 'Mistérios sombrios que acontecem na escuridão',
-    price: 4.99,
+    price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'horror',
@@ -79,7 +87,7 @@ export const packs: Pack[] = [
     id: 'crimes-imperfeitos',
     name: 'Crimes Imperfeitos',
     description: 'Casos criminais com reviravoltas inesperadas',
-    price: 5.99,
+    price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'crime',
@@ -89,7 +97,7 @@ export const packs: Pack[] = [
     id: 'segredos-urbanos',
     name: 'Segredos Urbanos',
     description: 'Mistérios ocultos nas grandes cidades',
-    price: 4.99,
+    price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'urban',
@@ -99,7 +107,7 @@ export const packs: Pack[] = [
     id: 'historias-macabras',
     name: 'Histórias Macabras',
     description: 'Os casos mais perturbadores já registrados',
-    price: 6.99,
+    price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1520637836862-4d197d17c90a?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'horror',
@@ -109,60 +117,30 @@ export const packs: Pack[] = [
     id: 'enigmas-antigos',
     name: 'Enigmas Antigos',
     description: 'Mistérios perdidos no tempo',
-    price: 5.49,
+    price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'historical',
     cards: []
   },
   {
-    id: 'casos-sem-explicacao',
-    name: 'Casos sem Explicação',
-    description: 'Fenômenos que desafiam a lógica',
-    price: 7.99,
-    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=500&fit=crop&crop=center',
+    id: 'combo-5-packs',
+    name: 'Combo 5 Packs',
+    description: 'Combo especial com 5 packs de mistérios selecionados',
+    price: 61.40,
+    coverUrl: 'https://images.unsplash.com/photo-1518365642431-a2d5fb38af6c?w=400&h=500&fit=crop&crop=center',
     isFree: false,
-    category: 'supernatural',
+    category: 'combo',
     cards: []
   },
   {
-    id: 'morte-suspeitosa',
-    name: 'Morte Suspeitosa',
-    description: 'Investigações de homicídios complexos',
-    price: 6.49,
+    id: 'pack-completo',
+    name: 'Pack Completo',
+    description: 'Coleção completa com todos os casos e mistérios exclusivos',
+    price: 110.90,
     coverUrl: 'https://images.unsplash.com/photo-1565008576475-23f9a8c0c6f0?w=400&h=500&fit=crop&crop=center',
     isFree: false,
-    category: 'crime',
-    cards: []
-  },
-  {
-    id: 'psicopatas',
-    name: 'Psicopatas',
-    description: 'A mente perturbada dos criminosos mais perigosos',
-    price: 8.99,
-    coverUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=500&fit=crop&crop=center',
-    isFree: false,
-    category: 'psychological',
-    cards: []
-  },
-  {
-    id: 'desaparecimentos',
-    name: 'Desaparecimentos',
-    description: 'Pessoas que simplesmente se desvaneceram',
-    price: 5.99,
-    coverUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=center',
-    isFree: false,
-    category: 'mystery',
-    cards: []
-  },
-  {
-    id: 'conspiracao-global',
-    name: 'Conspiração Global',
-    description: 'Segredos que movem o mundo nas sombras',
-    price: 7.49,
-    coverUrl: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&h=500&fit=crop&crop=center',
-    isFree: false,
-    category: 'conspiracy',
+    category: 'complete',
     cards: []
   }
 ];
@@ -172,22 +150,47 @@ export const getPackById = (id: string): Pack | undefined => {
 };
 
 export const getUserPacks = (userId: string): string[] => {
-  // Simulate user purchases - in real app this would come from database
   const purchases = localStorage.getItem(`user_${userId}_packs`);
   return purchases ? JSON.parse(purchases) : ['amostra'];
 };
 
-export const purchasePack = (userId: string, packId: string): boolean => {
+export const purchasePack = (userId: string, packId: string, pricePaid: number): boolean => {
   try {
     const currentPacks = getUserPacks(userId);
     if (!currentPacks.includes(packId)) {
       currentPacks.push(packId);
       localStorage.setItem(`user_${userId}_packs`, JSON.stringify(currentPacks));
     }
+    
+    // Store purchase history
+    const purchases = getUserPurchases(userId);
+    const newPurchase: Purchase = {
+      id: `purchase_${Date.now()}`,
+      userId,
+      packId,
+      purchased_at: new Date().toISOString(),
+      price_paid: pricePaid
+    };
+    purchases.push(newPurchase);
+    localStorage.setItem(`user_${userId}_purchases`, JSON.stringify(purchases));
+    
     return true;
   } catch {
     return false;
   }
+};
+
+export const getUserPurchases = (userId: string): Purchase[] => {
+  const purchases = localStorage.getItem(`user_${userId}_purchases`);
+  const purchaseList = purchases ? JSON.parse(purchases) : [];
+  
+  return purchaseList.map((purchase: Purchase) => {
+    const pack = getPackById(purchase.packId);
+    return {
+      ...purchase,
+      packName: pack?.name || 'Pack Desconhecido'
+    };
+  });
 };
 
 export const getUserProgress = (userId: string, cardId: string): boolean => {

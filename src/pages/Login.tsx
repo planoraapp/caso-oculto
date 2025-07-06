@@ -1,181 +1,151 @@
 
 import React, { useState } from 'react';
-import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { t } from '../data/translations';
-import { useNavigate } from 'react-router-dom';
+import { Card } from '../components/ui/card';
+import { toast } from '../hooks/use-toast';
+import { Lock, Mail, User } from 'lucide-react';
 
 interface LoginProps {
-  onLogin: (user: any) => void;
+  onLogin: (userData: any) => void;
 }
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    name: ''
-  });
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
 
-    // Basic validation
-    if (!formData.email) {
-      setError(t('auth.emailRequired'));
-      setLoading(false);
-      return;
-    }
-    if (!formData.password) {
-      setError(t('auth.passwordRequired'));
-      setLoading(false);
-      return;
-    }
-    if (!isLogin && !formData.name) {
-      setError(t('auth.nameRequired'));
+    if (!email || !password || (!isLogin && !name)) {
+      toast({
+        title: 'Erro',
+        description: 'Por favor, preencha todos os campos.',
+        variant: 'destructive'
+      });
       setLoading(false);
       return;
     }
 
     try {
-      // Simulate authentication - in real app this would be API calls
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
       if (isLogin) {
-        // Check if user exists
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const user = users.find((u: any) => u.email === formData.email);
-        
-        if (!user || user.password !== formData.password) {
-          setError(t('auth.loginError'));
-          setLoading(false);
-          return;
-        }
-
-        onLogin(user);
-      } else {
-        // Create new user
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const existingUser = users.find((u: any) => u.email === formData.email);
-        
-        if (existingUser) {
-          setError('Usuário já existe');
-          setLoading(false);
-          return;
-        }
-
-        const newUser = {
-          id: Date.now().toString(),
-          email: formData.email,
-          password: formData.password,
-          name: formData.name
+        // Mock login
+        const userData = {
+          id: 'user_' + Date.now(),
+          email,
+          name: name || 'Detetive',
+          isAdmin: email.startsWith('admin')
         };
-
-        users.push(newUser);
-        localStorage.setItem('users', JSON.stringify(users));
-        onLogin(newUser);
+        onLogin(userData);
+        toast({
+          title: 'Login realizado com sucesso!',
+          description: `Bem-vindo, ${userData.name}!`,
+        });
+      } else {
+        // Mock signup
+        toast({
+          title: 'Registo realizado com sucesso!',
+          description: 'Por favor, verifique o seu e-mail para ativar a conta. (Funcionalidade simulada)',
+        });
+        setIsLogin(true);
+        setName('');
       }
-
-      navigate('/home');
-    } catch (err) {
-      setError(isLogin ? t('auth.loginError') : t('auth.signupError'));
+    } catch (error) {
+      toast({
+        title: 'Erro',
+        description: 'Falha na autenticação. Tente novamente.',
+        variant: 'destructive'
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const switchMode = () => {
-    setIsLogin(!isLogin);
-    setError('');
-    setFormData({ email: '', password: '', name: '' });
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4">
       <Card className="w-full max-w-md bg-noir-dark border-noir-medium p-8">
         <div className="text-center mb-8">
-          <h1 className="font-anton text-3xl text-case-red mb-2">
-            {isLogin ? t('auth.login') : t('auth.signup')}
-          </h1>
-          <p className="text-case-white/60">
-            {isLogin ? 'Entre na sua conta' : 'Crie uma nova conta'}
+          <h2 className="font-anton text-3xl text-case-white mb-2">
+            {isLogin ? 'Acesse sua conta' : 'Criar conta'}
+          </h2>
+          <p className="text-case-white/80">
+            {isLogin ? 'Entre para acessar seus mistérios' : 'Registre-se para começar a desvendar casos'}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {!isLogin && (
             <div>
-              <Label htmlFor="name" className="text-case-white">
-                {t('auth.name')}
+              <Label htmlFor="name" className="text-case-white flex items-center gap-2">
+                <User className="h-4 w-4" />
+                Nome
               </Label>
               <Input
                 id="name"
                 type="text"
-                value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                className="mt-1 bg-noir-medium border-noir-light text-case-white focus:border-case-red"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Seu nome"
+                className="bg-noir-medium border-noir-light text-case-white mt-1"
+                required={!isLogin}
               />
             </div>
           )}
 
           <div>
-            <Label htmlFor="email" className="text-case-white">
-              {t('auth.email')}
+            <Label htmlFor="email" className="text-case-white flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              Email
             </Label>
             <Input
               id="email"
               type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="mt-1 bg-noir-medium border-noir-light text-case-white focus:border-case-red"
-              placeholder="seu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={isLogin ? "detetive@email.com" : "seu@email.com"}
+              className="bg-noir-medium border-noir-light text-case-white mt-1"
+              required
             />
           </div>
 
           <div>
-            <Label htmlFor="password" className="text-case-white">
-              {t('auth.password')}
+            <Label htmlFor="password" className="text-case-white flex items-center gap-2">
+              <Lock className="h-4 w-4" />
+              Senha
             </Label>
             <Input
               id="password"
               type="password"
-              value={formData.password}
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
-              className="mt-1 bg-noir-medium border-noir-light text-case-white focus:border-case-red"
-              placeholder="Sua senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Digite sua senha"
+              className="bg-noir-medium border-noir-light text-case-white mt-1"
+              required
             />
           </div>
 
-          {error && (
-            <div className="text-case-red text-sm text-center bg-red-900/20 p-3 rounded-lg">
-              {error}
-            </div>
-          )}
-
-          <Button
-            type="submit"
+          <Button 
+            type="submit" 
             disabled={loading}
-            className="w-full bg-case-red hover:bg-red-600 text-white font-bold py-3 rounded-xl"
+            className="w-full bg-case-red hover:bg-red-600 text-white"
           >
-            {loading ? t('common.loading') : (isLogin ? t('auth.loginButton') : t('auth.signupButton'))}
+            {loading ? 'Processando...' : (isLogin ? 'Entrar' : 'Criar Conta')}
           </Button>
         </form>
 
         <div className="mt-6 text-center">
-          <button
-            onClick={switchMode}
-            className="text-case-red hover:underline text-sm"
+          <Button
+            variant="link"
+            onClick={() => setIsLogin(!isLogin)}
+            className="text-case-red hover:text-red-400"
           >
-            {isLogin ? t('auth.switchToSignup') : t('auth.switchToLogin')}
-          </button>
+            {isLogin ? 'Não tem uma conta? Registe-se' : 'Já tem uma conta? Entre'}
+          </Button>
         </div>
       </Card>
     </div>

@@ -3,10 +3,13 @@ import React, { useState } from 'react';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
 import { t } from '../data/translations';
 import { packs, getUserPacks, purchasePack, Pack } from '../data/packs';
 import { Link } from 'react-router-dom';
 import { toast } from '../hooks/use-toast';
+import { Lock, CreditCard } from 'lucide-react';
 
 interface PacksProps {
   user: any;
@@ -15,6 +18,12 @@ interface PacksProps {
 const Packs: React.FC<PacksProps> = ({ user }) => {
   const [selectedPack, setSelectedPack] = useState<Pack | null>(null);
   const [purchasing, setPurchasing] = useState(false);
+  const [checkoutData, setCheckoutData] = useState({
+    cardNumber: '',
+    expiryDate: '',
+    cvv: '',
+    cardName: ''
+  });
   const userPacks = getUserPacks(user.id);
 
   const handlePackClick = (pack: Pack) => {
@@ -27,18 +36,44 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     }
   };
 
+  const handleInputChange = (field: string, value: string) => {
+    setCheckoutData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   const handlePurchase = async () => {
     if (!selectedPack) return;
     
+    // Basic validation
+    if (!checkoutData.cardNumber || !checkoutData.expiryDate || !checkoutData.cvv || !checkoutData.cardName) {
+      toast({
+        title: 'Erro',
+        description: 'Por favor, preencha todos os campos do cartão.',
+        variant: 'destructive'
+      });
+      return;
+    }
+    
     setPurchasing(true);
     try {
-      const success = purchasePack(user.id, selectedPack.id);
+      // Simulate payment processing
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const success = purchasePack(user.id, selectedPack.id, selectedPack.price);
       if (success) {
         toast({
-          title: t('purchase.success'),
-          description: `Você comprou ${selectedPack.name}!`,
+          title: 'Compra realizada com sucesso!',
+          description: `Você comprou ${selectedPack.name} por R$ ${selectedPack.price.toFixed(2)}`,
         });
         setSelectedPack(null);
+        setCheckoutData({
+          cardNumber: '',
+          expiryDate: '',
+          cvv: '',
+          cardName: ''
+        });
         // Force re-render by updating the component
         window.location.reload();
       } else {
@@ -47,7 +82,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     } catch (error) {
       toast({
         title: t('common.error'),
-        description: t('purchase.error'),
+        description: 'Erro no processamento do pagamento. Tente novamente.',
         variant: 'destructive'
       });
     } finally {
@@ -105,7 +140,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                   <div className="flex items-center justify-between">
                     <div className="text-case-white">
                       <span className="text-2xl font-bold text-case-red">
-                        {pack.isFree ? t('packs.free') : `€${pack.price.toFixed(2)}`}
+                        {pack.isFree ? t('packs.free') : `R$ ${pack.price.toFixed(2)}`}
                       </span>
                       <p className="text-sm text-case-white/60">
                         {pack.cards.length} {t('packs.cards')}
@@ -137,12 +172,12 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
         </div>
       </div>
 
-      {/* Purchase Modal */}
+      {/* Enhanced Purchase Modal */}
       <Dialog open={!!selectedPack} onOpenChange={() => setSelectedPack(null)}>
-        <DialogContent className="bg-noir-dark border-noir-medium">
+        <DialogContent className="bg-noir-dark border-noir-medium max-w-md">
           <DialogHeader>
             <DialogTitle className="text-case-white font-anton text-xl">
-              {t('purchase.title')}
+              Finalizar Compra
             </DialogTitle>
           </DialogHeader>
           
@@ -162,11 +197,64 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
               
               <div className="text-case-white/80">
                 <p className="mb-4">{selectedPack.description}</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-lg">{t('purchase.price')}:</span>
+                <div className="flex justify-between items-center mb-6">
+                  <span className="text-lg">Total:</span>
                   <span className="text-2xl font-bold text-case-red">
-                    €{selectedPack.price.toFixed(2)}
+                    R$ {selectedPack.price.toFixed(2)}
                   </span>
+                </div>
+              </div>
+
+              {/* Payment Form */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-case-white mb-4">
+                  <CreditCard className="h-5 w-5" />
+                  <span className="font-medium">Dados do Cartão</span>
+                </div>
+                
+                <div>
+                  <Label htmlFor="cardName" className="text-case-white">Nome no Cartão</Label>
+                  <Input
+                    id="cardName"
+                    placeholder="João Silva"
+                    value={checkoutData.cardName}
+                    onChange={(e) => handleInputChange('cardName', e.target.value)}
+                    className="bg-noir-medium border-noir-light text-case-white"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="cardNumber" className="text-case-white">Número do Cartão</Label>
+                  <Input
+                    id="cardNumber"
+                    placeholder="**** **** **** 1234"
+                    value={checkoutData.cardNumber}
+                    onChange={(e) => handleInputChange('cardNumber', e.target.value)}
+                    className="bg-noir-medium border-noir-light text-case-white"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="expiryDate" className="text-case-white">Validade</Label>
+                    <Input
+                      id="expiryDate"
+                      placeholder="MM/AA"
+                      value={checkoutData.expiryDate}
+                      onChange={(e) => handleInputChange('expiryDate', e.target.value)}
+                      className="bg-noir-medium border-noir-light text-case-white"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="cvv" className="text-case-white">CVV</Label>
+                    <Input
+                      id="cvv"
+                      placeholder="123"
+                      value={checkoutData.cvv}
+                      onChange={(e) => handleInputChange('cvv', e.target.value)}
+                      className="bg-noir-medium border-noir-light text-case-white"
+                    />
+                  </div>
                 </div>
               </div>
               
@@ -176,14 +264,15 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                   onClick={() => setSelectedPack(null)}
                   className="flex-1 border-noir-light text-case-white hover:bg-noir-medium"
                 >
-                  {t('purchase.cancel')}
+                  Cancelar
                 </Button>
                 <Button
                   onClick={handlePurchase}
                   disabled={purchasing}
                   className="flex-1 bg-case-red hover:bg-red-600 text-white"
                 >
-                  {purchasing ? t('common.loading') : t('purchase.confirmPurchase')}
+                  <Lock className="mr-2 h-4 w-4" />
+                  {purchasing ? 'Processando...' : `Pagar R$ ${selectedPack.price.toFixed(2)}`}
                 </Button>
               </div>
             </div>

@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import Logo from './Logo';
-import { t } from '../data/translations';
 import { Button } from './ui/button';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import Logo from './Logo';
+import { Menu, User, ShoppingBag, Library, Home } from 'lucide-react';
 
 interface NavigationProps {
   user: any;
@@ -14,110 +14,142 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  
-  const isActive = (path: string) => location.pathname === path;
-  
-  const navLinkClass = (path: string) => 
-    `px-4 py-2 rounded-lg transition-all duration-200 ${
-      isActive(path) 
-        ? 'bg-case-red text-white font-medium' 
-        : 'text-case-white hover:bg-gray-700/50 hover:text-case-red'
-    }`;
+
+  const navItems = [
+    { name: 'Início', path: '/', icon: Home },
+    { name: 'Packs', path: '/packs', icon: ShoppingBag, requireAuth: true },
+    { name: 'Biblioteca', path: '/library', icon: Library, requireAuth: true },
+  ];
+
+  const filteredNavItems = navItems.filter(item => !item.requireAuth || user);
 
   return (
-    <nav className="bg-gray-900/50 backdrop-blur-sm border-b border-gray-700/50 sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex-shrink-0">
+    <nav className="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+          <Link to="/" className="flex items-center">
             <Logo />
           </Link>
-          
-          <div className="hidden md:flex items-center space-x-1">
-            {user && (
-              <>
-                <Link to="/home" className={navLinkClass('/home')}>
-                  {t('navigation.home')}
-                </Link>
-                <Link to="/packs" className={navLinkClass('/packs')}>
-                  {t('navigation.packs')}
-                </Link>
-                <Link to="/library" className={navLinkClass('/library')}>
-                  {t('navigation.library')}
-                </Link>
-              </>
-            )}
-          </div>
 
-          <div className="flex items-center space-x-3">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            {filteredNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActive 
+                      ? 'text-case-red bg-case-red/10' 
+                      : 'text-case-white/80 hover:text-case-white hover:bg-gray-800'
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
+
             {user ? (
               <div className="flex items-center space-x-3">
-                <span className="text-case-white text-sm">
-                  Olá, {user.name}
-                </span>
+                <Link to="/account">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="text-case-white hover:text-case-red hover:bg-gray-800"
+                  >
+                    <User className="h-4 w-4 mr-2" />
+                    Conta
+                  </Button>
+                </Link>
                 <Button 
                   onClick={onLogout}
                   variant="outline"
                   size="sm"
                   className="border-case-red text-case-red hover:bg-case-red hover:text-white"
                 >
-                  {t('navigation.logout')}
+                  Sair
                 </Button>
               </div>
             ) : (
               <Link to="/login">
                 <Button 
-                  variant="default"
                   size="sm"
                   className="bg-case-red hover:bg-red-600 text-white"
                 >
-                  {t('navigation.login')}
+                  Entrar
                 </Button>
               </Link>
             )}
-            
-            <div className="md:hidden">
-              <button 
-                onClick={() => setIsOpen(!isOpen)}
-                className="text-case-white hover:text-case-red transition-colors"
-              >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
+          </div>
+
+          {/* Mobile Menu */}
+          <div className="md:hidden">
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <Menu className="h-6 w-6 text-case-white" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="bg-noir-dark border-noir-medium">
+                <div className="flex flex-col space-y-4 mt-8">
+                  {filteredNavItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = location.pathname === item.path;
+                    return (
+                      <Link
+                        key={item.name}
+                        to={item.path}
+                        onClick={() => setIsOpen(false)}
+                        className={`flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium transition-colors ${
+                          isActive 
+                            ? 'text-case-red bg-case-red/10' 
+                            : 'text-case-white/80 hover:text-case-white hover:bg-gray-800'
+                        }`}
+                      >
+                        <Icon className="h-5 w-5" />
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+
+                  {user ? (
+                    <>
+                      <Link
+                        to="/account"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium text-case-white/80 hover:text-case-white hover:bg-gray-800"
+                      >
+                        <User className="h-5 w-5" />
+                        <span>Minha Conta</span>
+                      </Link>
+                      <Button 
+                        onClick={() => {
+                          onLogout();
+                          setIsOpen(false);
+                        }}
+                        variant="outline"
+                        className="border-case-red text-case-red hover:bg-case-red hover:text-white mx-3"
+                      >
+                        Sair
+                      </Button>
+                    </>
+                  ) : (
+                    <Link to="/login" onClick={() => setIsOpen(false)}>
+                      <Button 
+                        className="bg-case-red hover:bg-red-600 text-white mx-3 w-full"
+                      >
+                        Entrar
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
-
-        {/* Mobile menu */}
-        {isOpen && (
-          <div className="md:hidden mt-4 pt-4 border-t border-gray-700/50">
-            <div className="flex flex-col space-y-2">
-              {user && (
-                <>
-                  <Link 
-                    to="/home" 
-                    className={navLinkClass('/home')}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {t('navigation.home')}
-                  </Link>
-                  <Link 
-                    to="/packs" 
-                    className={navLinkClass('/packs')}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {t('navigation.packs')}
-                  </Link>
-                  <Link 
-                    to="/library" 
-                    className={navLinkClass('/library')}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {t('navigation.library')}
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </nav>
   );

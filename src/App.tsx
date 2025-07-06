@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Packs from "./pages/Packs";
 import PackView from "./pages/PackView";
 import Library from "./pages/Library";
+import Account from "./pages/Account";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -85,6 +86,12 @@ const App = () => {
                 path="/library" 
                 element={
                   user ? <Library user={user} /> : <Navigate to="/login" replace />
+                } 
+              />
+              <Route 
+                path="/account" 
+                element={
+                  user ? <Account user={user} onLogout={handleLogout} /> : <Navigate to="/login" replace />
                 } 
               />
               <Route path="*" element={<NotFound />} />
