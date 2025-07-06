@@ -26,6 +26,13 @@ export interface Purchase {
   packName?: string;
 }
 
+// Links de checkout da InfinitePay
+export const INFINITEPAY_LINKS = {
+  individual: "https://checkout.infinitepay.io/conectawebapps?items=[{\"name\":\"Pack+individual+-+Caso+Oculto\",\"price\":1480,\"quantity\":1}]&redirect_url=https://caso-oculto-mist.lovable.app/",
+  combo: "https://checkout.infinitepay.io/conectawebapps?items=[{\"name\":\"Combo+5+Packs+-+Caso+Oculto\",\"price\":6140,\"quantity\":1}]&redirect_url=https://caso-oculto-mist.lovable.app/",
+  complete: "https://checkout.infinitepay.io/conectawebapps?items=[{\"name\":\"Pack+completo+-+Caso+Oculto\",\"price\":11090,\"quantity\":1}]&redirect_url=https://caso-oculto-mist.lovable.app/"
+};
+
 export const packs: Pack[] = [
   {
     id: 'amostra',
@@ -76,9 +83,9 @@ export const packs: Pack[] = [
   {
     id: 'sombras-da-noite',
     name: 'Sombras da Noite',
-    description: 'Mistérios sombrios que acontecem na escuridão',
+    description: 'A escuridão esconde mais do que apenas o medo. Desvende 20 mistérios que só poderiam acontecer sob o manto da noite.',
     price: 14.80,
-    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=500&fit=crop&crop=center',
+    coverUrl: 'https://images.unsplash.com/photo-1531656230934-6041139385a3?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'horror',
     cards: []
@@ -86,41 +93,61 @@ export const packs: Pack[] = [
   {
     id: 'crimes-imperfeitos',
     name: 'Crimes Imperfeitos',
-    description: 'Casos criminais com reviravoltas inesperadas',
+    description: 'Todo plano genial tem uma falha. Encontre o detalhe que desmascarou o culpado em 20 casos de crimes que quase deram certo.',
     price: 14.80,
-    coverUrl: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&h=500&fit=crop&crop=center',
+    coverUrl: 'https://images.unsplash.com/photo-1568219659398-01a45afe453a?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'crime',
     cards: []
   },
   {
-    id: 'segredos-urbanos',
-    name: 'Segredos Urbanos',
-    description: 'Mistérios ocultos nas grandes cidades',
+    id: 'lendas-urbanas',
+    name: 'Lendas Urbanas',
+    description: 'Aquelas histórias que todos juram que aconteceram com um "amigo de um amigo". 20 enigmas baseados nos contos mais famosos do folclore moderno.',
     price: 14.80,
-    coverUrl: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&h=500&fit=crop&crop=center',
+    coverUrl: 'https://images.unsplash.com/photo-1597432128929-2ef2a3d01b1b?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'urban',
     cards: []
   },
   {
-    id: 'historias-macabras',
-    name: 'Histórias Macabras',
-    description: 'Os casos mais perturbadores já registrados',
+    id: 'paradoxos-mortais',
+    name: 'Paradoxos Mortais',
+    description: 'Mortes que desafiam a lógica e a física. Prepare-se para 20 quebra-cabeças que vão torcer sua percepção da realidade.',
     price: 14.80,
-    coverUrl: 'https://images.unsplash.com/photo-1520637836862-4d197d17c90a?w=400&h=500&fit=crop&crop=center',
+    coverUrl: 'https://images.unsplash.com/photo-1557989313-06b573584323?w=400&h=500&fit=crop&crop=center',
     isFree: false,
-    category: 'horror',
+    category: 'complex',
     cards: []
   },
   {
-    id: 'enigmas-antigos',
-    name: 'Enigmas Antigos',
-    description: 'Mistérios perdidos no tempo',
+    id: 'absurdamente-real',
+    name: 'Absurdamente Real',
+    description: 'A vida real é mais estranha que a ficção. Investigue 20 casos baseados em acidentes e mortes tão bizarras que foram parar nas notícias.',
     price: 14.80,
-    coverUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=500&fit=crop&crop=center',
+    coverUrl: 'https://images.unsplash.com/photo-1543373014-cfe4f4bc1cdf?w=400&h=500&fit=crop&crop=center',
     isFree: false,
-    category: 'historical',
+    category: 'humor',
+    cards: []
+  },
+  {
+    id: 'beco-sem-saida',
+    name: 'Beco Sem Saída',
+    description: 'Vítimas encontradas em situações impossíveis, sem escapatória aparente. A solução está onde você menos espera.',
+    price: 14.80,
+    coverUrl: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=400&h=500&fit=crop&crop=center',
+    isFree: false,
+    category: 'crime',
+    cards: []
+  },
+  {
+    id: 'sussurros-do-alem',
+    name: 'Sussurros do Além',
+    description: 'Eventos que arrepiam a espinha e sugerem o sobrenatural. Foram fantasmas ou há uma explicação lógica para estes 20 contos de terror?',
+    price: 14.80,
+    coverUrl: 'https://images.unsplash.com/photo-1598335682342-72126a153303?w=400&h=500&fit=crop&crop=center',
+    isFree: false,
+    category: 'supernatural',
     cards: []
   },
   {
