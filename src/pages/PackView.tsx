@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowLeft, Lock, Play, RotateCcw } from 'lucide-react';
-import { packs, getUserPurchases, Pack, Card } from '../data/packs';
+import { packs, getUserPacks, Pack, Card } from '../data/packs';
 import { t } from '../data/translations';
 import FloatingFlipCard from '../components/FloatingFlipCard';
 
@@ -40,8 +40,8 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     );
   }
 
-  const userPurchases = user ? getUserPurchases(user.id) : [];
-  const hasAccess = pack.isFree || userPurchases.includes(pack.id) || (user && user.email === 'conectawebapps@outlook.com');
+  const userPackIds = user ? getUserPacks(user.id) : [];
+  const hasAccess = pack.isFree || userPackIds.includes(pack.id) || (user && user.email === 'conectawebapps@outlook.com');
 
   const handleCardClick = (card: Card) => {
     // Allow access to free cards or if user has purchased the pack
