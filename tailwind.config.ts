@@ -22,6 +22,7 @@ export default {
 			fontFamily: {
 				'anton': ['Anton', 'sans-serif'],
 				'inter': ['Inter', 'sans-serif'],
+				'century-gothic': ['Century Gothic', 'Futura', 'Trebuchet MS', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -67,13 +68,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Caso Oculto brand colors - updated to match reference design
+				// Caso Oculto brand colors - corrigidos
 				'case-red': '#ef4444',
 				'case-white': '#E6E6FA',
-				'noir-black': '#111827', // gray-900
-				'noir-dark': '#1f2937',  // gray-800
-				'noir-medium': '#374151', // gray-700
-				'noir-light': '#4b5563'   // gray-600
+				'noir-black': '#111827',
+				'noir-dark': '#1f2937',
+				'noir-medium': '#374151',
+				'noir-light': '#4b5563'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -120,6 +121,10 @@ export default {
 				'card-hover': {
 					'0%': { transform: 'scale(1)' },
 					'100%': { transform: 'scale(1.02)' }
+				},
+				'pulse-slow': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.5' }
 				}
 			},
 			animation: {
@@ -127,7 +132,8 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'flicker': 'flicker 2s ease-in-out infinite',
 				'flip-card': 'flip-card 0.6s ease-in-out',
-				'card-hover': 'card-hover 0.2s ease-in-out'
+				'card-hover': 'card-hover 0.2s ease-in-out',
+				'pulse-slow': 'pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
 			},
 			backdropBlur: {
 				'sm': '4px',

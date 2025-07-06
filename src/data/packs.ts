@@ -15,7 +15,7 @@ export interface Pack {
   isFree: boolean;
   category: string;
   cards: Card[];
-  mercadoPagoId?: string; // ID único para tracking de pagamentos
+  mercadoPagoId: string;
 }
 
 export interface Purchase {
@@ -28,7 +28,7 @@ export interface Purchase {
   mercadoPagoTransactionId?: string;
 }
 
-// Links de checkout do Mercado Pago (corrigidos)
+// Links de checkout do Mercado Pago
 export const MERCADOPAGO_LINKS = {
   individual: "184163814-ebfc1885-acbb-4a9f-89d9-481e569b15b6",
   combo: "184163814-186d6326-c239-4676-b240-fac644c29f0e",
@@ -92,7 +92,16 @@ export const packs: Pack[] = [
     isFree: false,
     category: 'horror',
     mercadoPagoId: 'sombras-noite-002',
-    cards: []
+    cards: [
+      {
+        id: 'sn_1',
+        mystery: 'Um homem foi encontrado morto em sua casa às 3h da manhã. Todas as luzes estavam apagadas, mas havia velas acesas por toda a sala. A porta estava trancada por dentro e não havia sinais de arrombamento.',
+        solution: 'O homem morreu durante um apagão. Ele acendeu as velas para se locomover, mas sofreu um ataque cardíaco. As luzes voltaram depois que ele morreu.',
+        difficulty: 'medium',
+        order: 1
+      }
+      // Mais cards seriam adicionados aqui
+    ]
   },
   {
     id: 'crimes-imperfeitos-003',

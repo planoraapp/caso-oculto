@@ -1,7 +1,7 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { purchasePack, MERCADOPAGO_LINKS } from '@/data/packs';
 
 export const usePaymentStatus = (userId: string) => {
@@ -16,7 +16,7 @@ export const usePaymentStatus = (userId: string) => {
   
   const { toast } = useToast();
 
-  const createPaymentSession = async (
+  const createPaymentSession = useCallback(async (
     packId: string,
     paymentType: 'individual' | 'combo' | 'complete',
     selectedPackIds?: string[]
@@ -43,7 +43,6 @@ export const usePaymentStatus = (userId: string) => {
 
       if (error) throw error;
       
-      console.log('Payment session created:', data);
       return data;
     } catch (error) {
       console.error('Error creating payment session:', error);
@@ -54,9 +53,9 @@ export const usePaymentStatus = (userId: string) => {
       });
       return null;
     }
-  };
+  }, [userId, toast]);
 
-  const checkPaymentStatus = async (sessionId: string) => {
+  const checkPaymentStatus = useCallback(async (sessionId: string) => {
     try {
       const { data, error } = await supabase
         .from('payment_sessions')
@@ -70,22 +69,25 @@ export const usePaymentStatus = (userId: string) => {
       console.error('Error checking payment status:', error);
       return null;
     }
-  };
+  }, []);
 
-  const showPaymentStatus = (status: 'pending' | 'approved' | 'rejected' | 'cancelled', packName?: string) => {
+  const showPaymentStatus = useCallback((
+    status: 'pending' | 'approved' | 'rejected' | 'cancelled', 
+    packName?: string
+  ) => {
     setPaymentStatus({
       status,
       packName,
       isOpen: true
     });
-  };
+  }, []);
 
-  const closePaymentStatus = () => {
+  const closePaymentStatus = useCallback(() => {
     setPaymentStatus(prev => ({ ...prev, isOpen: false }));
-  };
+  }, []);
 
   // Simular confirmação de pagamento (em produção seria webhook do Mercado Pago)
-  const simulatePaymentConfirmation = async (sessionId: string, approved: boolean = true) => {
+  const simulatePaymentConfirmation = useCallback(async (sessionId: string, approved: boolean = true) => {
     try {
       const session = await checkPaymentStatus(sessionId);
       if (!session) return;
@@ -101,12 +103,12 @@ export const usePaymentStatus = (userId: string) => {
       if (error) throw error;
 
       if (approved) {
-        // Adicionar pack(s) à biblioteca do usuário com ID de transação
+        // Adicionar pack(s) à biblioteca do usuário
         const transactionId = `mp_${sessionId}_${Date.now()}`;
         
         if (session.payment_type === 'combo' && session.selected_pack_ids) {
           session.selected_pack_ids.forEach(packId => {
-            purchasePack(userId, packId, 12.28, transactionId); // Preço dividido
+            purchasePack(userId, packId, 12.28, transactionId);
           });
         } else if (session.pack_id) {
           const price = session.payment_type === 'individual' ? 14.80 : 
@@ -119,18 +121,23 @@ export const usePaymentStatus = (userId: string) => {
           description: "Pack adicionado à sua biblioteca",
         });
         
-        // Recarregar a página para atualizar o estado dos packs
+        // Recarregar dados sem recarregar a página inteira
         setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+          window.dispatchEvent(new Event('storage'));
+        }, 1000);
       }
 
       return newStatus;
     } catch (error) {
       console.error('Error confirming payment:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao confirmar pagamento",
+        variant: "destructive"
+      });
       return null;
     }
-  };
+  }, [checkPaymentStatus, userId, toast]);
 
   return {
     paymentStatus,

@@ -1,5 +1,6 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import LoadingSpinner from './LoadingSpinner';
 
 interface MercadoPagoCheckoutProps {
   preferenceId: string;
@@ -10,38 +11,60 @@ const MercadoPagoCheckout: React.FC<MercadoPagoCheckoutProps> = ({
   preferenceId, 
   onPaymentResult 
 }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    console.log('Initializing MercadoPago checkout with preference ID:', preferenceId);
+    let isMounted = true;
     
-    // Remover script anterior se existir
-    const existingScript = document.querySelector(`script[data-preference-id="${preferenceId}"]`);
-    if (existingScript) {
-      existingScript.remove();
-    }
+    const initializeCheckout = async () => {
+      try {
+        // Remover script anterior se existir
+        const existingScript = document.querySelector(`script[data-preference-id="${preferenceId}"]`);
+        if (existingScript) {
+          existingScript.remove();
+        }
 
-    // Criar novo script do Mercado Pago
-    const script = document.createElement('script');
-    script.src = 'https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js';
-    script.setAttribute('data-preference-id', preferenceId);
-    script.setAttribute('data-source', 'button');
-    
-    // Adicionar listener para resultado do pagamento
-    if (onPaymentResult) {
-      (window as any).mpCallback = onPaymentResult;
-    }
+        // Criar novo script do Mercado Pago
+        const script = document.createElement('script');
+        script.src = 'https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js';
+        script.setAttribute('data-preference-id', preferenceId);
+        script.setAttribute('data-source', 'button');
+        
+        // Adicionar listener para resultado do pagamento
+        if (onPaymentResult) {
+          (window as any).mpCallback = onPaymentResult;
+        }
 
-    // Log quando o script é carregado
-    script.onload = () => {
-      console.log('MercadoPago script loaded successfully');
+        // Handlers para o script
+        script.onload = () => {
+          if (isMounted) {
+            setIsLoading(false);
+            setError(null);
+          }
+        };
+
+        script.onerror = () => {
+          if (isMounted) {
+            setIsLoading(false);
+            setError('Erro ao carregar checkout do Mercado Pago');
+          }
+        };
+
+        document.body.appendChild(script);
+      } catch (err) {
+        if (isMounted) {
+          setIsLoading(false);
+          setError('Erro inesperado ao inicializar pagamento');
+        }
+      }
     };
 
-    script.onerror = () => {
-      console.error('Error loading MercadoPago script');
-    };
-
-    document.body.appendChild(script);
+    initializeCheckout();
 
     return () => {
+      isMounted = false;
+      
       // Cleanup
       const scriptToRemove = document.querySelector(`script[data-preference-id="${preferenceId}"]`);
       if (scriptToRemove) {
@@ -55,6 +78,31 @@ const MercadoPagoCheckout: React.FC<MercadoPagoCheckoutProps> = ({
     };
   }, [preferenceId, onPaymentResult]);
 
+  if (error) {
+    return (
+      <div className="mercadopago-checkout-container p-4 text-center">
+        <p className="text-red-400 mb-4">{error}</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="bg-case-red text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+        >
+          Tentar Novamente
+        </button>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="mercadopago-checkout-container p-4 text-center">
+        <LoadingSpinner size="lg" className="mx-auto mb-4" />
+        <p className="text-case-white">
+          Carregando checkout do Mercado Pago...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="mercadopago-checkout-container">
       <p className="text-case-white text-center mb-4">
@@ -64,4 +112,4 @@ const MercadoPagoCheckout: React.FC<MercadoPagoCheckoutProps> = ({
   );
 };
 
-export default MercadoPagoCheckout;
+export default React.memo(MercadoPagoCheckout);

@@ -1,7 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Star, Users, Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';  
@@ -9,6 +10,7 @@ import PackCard from '../components/PackCard';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
 import MercadoPagoCheckout from '../components/MercadoPagoCheckout';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { packs } from '../data/packs';
 import { getUserPacks } from '../data/packs';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
@@ -20,6 +22,7 @@ interface PacksProps {
 const Packs: React.FC<PacksProps> = ({ user }) => {
   const [isComboModalOpen, setIsComboModalOpen] = useState(false);
   const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   
   const ownedPackIds = getUserPacks(user.id);
   const {
@@ -30,40 +33,51 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     simulatePaymentConfirmation
   } = usePaymentStatus(user.id);
 
-  const regularPacks = packs.filter(p => 
-    !p.isFree && !['combo', 'complete'].includes(p.category)
+  const regularPacks = useMemo(() => 
+    packs.filter(p => !p.isFree && !['combo', 'complete'].includes(p.category)),
+    []
   );
   
-  const specialPacks = packs.filter(p => 
-    ['combo', 'complete'].includes(p.category)
+  const specialPacks = useMemo(() => 
+    packs.filter(p => ['combo', 'complete'].includes(p.category)),
+    []
   );
 
-  const handlePackClick = (pack: any) => {
+  const handlePackClick = useCallback((pack: any) => {
     if (ownedPackIds.includes(pack.id) || pack.isFree) {
-      window.location.href = `/pack/${pack.id}`;
+      // Navigation handled by Link in PackCard
     }
-  };
+  }, [ownedPackIds]);
 
-  const handlePurchaseClick = async (pack: any) => {
-    const paymentType = pack.category === 'complete' ? 'complete' : 'individual';
-    const session = await createPaymentSession(pack.id, paymentType);
+  const handlePurchaseClick = useCallback(async (pack: any) => {
+    if (isLoading) return;
     
-    if (session) {
-      setCheckoutPreferenceId(session.mercadopago_preference_id);
+    setIsLoading(true);
+    try {
+      const paymentType = pack.category === 'complete' ? 'complete' : 'individual';
+      const session = await createPaymentSession(pack.id, paymentType);
       
-      // Simular aprovação (remover em produção)
-      setTimeout(() => {
-        simulatePaymentConfirmation(session.id, true).then(() => {
-          showPaymentStatus('approved', pack.name);
-          setCheckoutPreferenceId(null);
-        });
-      }, 3000);
+      if (session) {
+        setCheckoutPreferenceId(session.mercadopago_preference_id);
+        
+        // Simular aprovação (remover em produção)
+        setTimeout(() => {
+          simulatePaymentConfirmation(session.id, true).then(() => {
+            showPaymentStatus('approved', pack.name);
+            setCheckoutPreferenceId(null);
+          });
+        }, 3000);
+      }
+    } catch (error) {
+      console.error('Erro ao processar pagamento:', error);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [createPaymentSession, simulatePaymentConfirmation, showPaymentStatus, isLoading]);
 
-  const handleComboClick = () => {
+  const handleComboClick = useCallback(() => {
     setIsComboModalOpen(true);
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-900 pt-20 px-4">
@@ -86,6 +100,13 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
             Desvende casos intrigantes e desafie sua mente com nossos packs exclusivos de mistérios.
           </motion.p>
         </div>
+
+        {/* Loading Indicator */}
+        {isLoading && (
+          <div className="flex justify-center mb-8">
+            <LoadingSpinner size="lg" />
+          </div>
+        )}
 
         {/* Packs Especiais */}
         <motion.div 
@@ -128,7 +149,8 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                     </div>
                     <Button 
                       onClick={handleComboClick}
-                      className="w-full bg-case-red hover:bg-red-600 text-white"
+                      disabled={isLoading}
+                      className="w-full bg-case-red hover:bg-red-600 text-white disabled:opacity-50"
                     >
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Montar Combo
@@ -164,7 +186,8 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                     </div>
                     <Button 
                       onClick={() => handlePurchaseClick(specialPacks.find(p => p.category === 'complete')!)}
-                      className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
+                      disabled={isLoading}
+                      className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold disabled:opacity-50"
                     >
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Comprar Acesso Total
@@ -231,4 +254,4 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   );
 };
 
-export default Packs;
+export default React.memo(Packs);

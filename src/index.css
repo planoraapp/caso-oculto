@@ -54,12 +54,13 @@
   }
 
   body {
-    @apply bg-gray-900 text-foreground font-inter;
+    @apply bg-gray-900 text-foreground;
+    font-family: 'Inter', sans-serif;
     background: #111827;
     min-height: 100vh;
   }
 
-  /* Neon logo effect with flickering letters - Century Gothic style */
+  /* Neon logo effect with Century Gothic */
   .logo-neon {
     font-family: 'Century Gothic', 'Futura', 'Trebuchet MS', sans-serif;
     font-weight: 300;
@@ -166,5 +167,13 @@
   .pack-card-hover:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 0 20px 40px rgba(239, 68, 68, 0.3);
+  }
+
+  .carousel-nav-desktop {
+    @apply hidden md:block absolute top-1/2 -translate-y-1/2 z-20;
+  }
+
+  .carousel-nav-mobile {
+    @apply md:hidden flex justify-center space-x-4 mt-4;
   }
 }

@@ -25,14 +25,16 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
 
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.location.href = '/';
+    // Using React Router navigation instead of window.location
   };
 
   return (
     <nav className="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <NeonLogo onClick={handleLogoClick} />
+          <Link to="/">
+            <NeonLogo onClick={handleLogoClick} />
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
@@ -158,4 +160,4 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
   );
 };
 
-export default Navigation;
+export default React.memo(Navigation);
