@@ -30,11 +30,7 @@ const Home: React.FC = () => {
                 </Button>
               </Link>
               
-              <Link to="/library">
-                <Button variant="outline" size="lg" className="border-case-white text-case-white hover:bg-case-white hover:text-noir-dark font-bold px-8 py-4 text-lg rounded-xl transition-all duration-300">
-                  Minha Biblioteca
-                </Button>
-              </Link>
+              
             </div>
 
             {/* Stats Section */}
