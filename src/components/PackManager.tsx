@@ -18,7 +18,7 @@ interface Pack {
   name: string;
   description: string;
   price: number;
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: string;
   image: string | null;
   category: string;
   created_at: string;
@@ -38,7 +38,7 @@ const PackManager: React.FC = () => {
     name: '',
     description: '',
     price: 14.80,
-    difficulty: 'medium' as 'easy' | 'medium' | 'hard',
+    difficulty: 'medium',
     image: '',
     category: 'mystery'
   });
@@ -315,7 +315,7 @@ const PackManager: React.FC = () => {
                 </div>
                 <div>
                   <Label htmlFor="difficulty" className="text-case-white">Dificuldade</Label>
-                  <Select value={formData.difficulty} onValueChange={(value: 'easy' | 'medium' | 'hard') => setFormData({...formData, difficulty: value})}>
+                  <Select value={formData.difficulty} onValueChange={(value) => setFormData({...formData, difficulty: value})}>
                     <SelectTrigger className="bg-noir-medium border-noir-light text-case-white">
                       <SelectValue />
                     </SelectTrigger>
