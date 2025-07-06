@@ -1,9 +1,6 @@
-
 import React from 'react';
-
 const SiteFooter: React.FC = () => {
-  return (
-    <footer className="site-footer">
+  return <footer className="site-footer">
       <style>{`
         .site-footer {
           position: relative;
@@ -77,11 +74,7 @@ const SiteFooter: React.FC = () => {
         }
       `}</style>
       
-      <div className="copyright-text">
-        2025® - CASO OCULTO. Todos os direitos reservados.
-      </div>
-    </footer>
-  );
+      <div className="copyright-text">2025 - CASO OCULTO. Todos os direitos reservados.</div>
+    </footer>;
 };
-
 export default SiteFooter;
