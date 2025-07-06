@@ -1,4 +1,3 @@
-import { StaticImageData } from 'next/image';
 
 // Define the Pack interface
 export interface Pack {
@@ -333,6 +332,17 @@ export const packs: Pack[] = [
   },
 ];
 
+// Function to get pack by ID
+export const getPackById = (packId: string): Pack | undefined => {
+  return packs.find(pack => pack.id === packId);
+};
+
+// Function to get user progress for a card
+export const getUserProgress = (userId: string, cardId: string): boolean => {
+  const progress = JSON.parse(localStorage.getItem('userProgress') || '{}');
+  return progress[userId]?.[cardId] || false;
+};
+
 // Function to purchase a pack
 export const purchasePack = (userId: string, packId: string, price: number, transactionId: string) => {
   const purchases = JSON.parse(localStorage.getItem('userPurchases') || '{}');
@@ -341,15 +351,23 @@ export const purchasePack = (userId: string, packId: string, price: number, tran
   }
   
   const purchase = {
+    id: Date.now().toString(),
     packId,
-    price,
+    packName: getPackById(packId)?.name || 'Pack desconhecido',
+    price_paid: price,
+    purchased_at: new Date().toISOString(),
     transactionId,
-    date: new Date().toISOString(),
     type: 'individual'
   };
   
   purchases[userId].push(purchase);
   localStorage.setItem('userPurchases', JSON.stringify(purchases));
+};
+
+// Function to get user purchases
+export const getUserPurchases = (userId: string) => {
+  const purchases = JSON.parse(localStorage.getItem('userPurchases') || '{}');
+  return purchases[userId] || [];
 };
 
 // Function to purchase combo packs
@@ -360,10 +378,12 @@ export const purchaseCombo = (userId: string, selectedPackIds: string[], transac
   }
   
   const comboPurchase = {
+    id: Date.now().toString(),
     packIds: selectedPackIds,
-    price: 61.40,
+    packName: 'Combo 5 Packs',
+    price_paid: 61.40,
+    purchased_at: new Date().toISOString(),
     transactionId,
-    date: new Date().toISOString(),
     type: 'combo'
   };
   

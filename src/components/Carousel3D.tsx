@@ -9,7 +9,7 @@ import ComboModal from './ComboModal';
 import PaymentStatusModal from './PaymentStatusModal';
 import MercadoPagoCheckout from './MercadoPagoCheckout';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
-import { getUserPacks } from '../data/packs';
+import { getUserPacks, purchaseCombo } from '../data/packs';
 import LoadingSpinner from './LoadingSpinner';
 
 const Carousel3D: React.FC = () => {
@@ -70,6 +70,17 @@ const Carousel3D: React.FC = () => {
       setIsLoading(false);
     }
   }, [createPaymentSession, simulatePaymentConfirmation, showPaymentStatus, isLoading]);
+
+  const handlePurchaseCombo = useCallback((selectedPackIds: string[]) => {
+    if (!currentUser) return;
+    
+    // Store selected packs for combo purchase
+    localStorage.setItem(`pendingCombo_${currentUser.id}`, JSON.stringify(selectedPackIds));
+    
+    // Simulate combo purchase for demo
+    purchaseCombo(currentUser.id, selectedPackIds, `combo_${Date.now()}`);
+    showPaymentStatus('approved', 'Combo 5 Packs');
+  }, [currentUser, showPaymentStatus]);
 
   const getVisiblePacks = useCallback(() => {
     const visible = [];
@@ -177,6 +188,7 @@ const Carousel3D: React.FC = () => {
           packs={packs}
           ownedPackIds={ownedPackIds}
           onClose={() => setIsComboModalOpen(false)}
+          onPurchaseCombo={handlePurchaseCombo}
         />
       )}
 
