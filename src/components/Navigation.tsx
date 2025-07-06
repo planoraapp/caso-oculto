@@ -25,7 +25,6 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
 
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Using React Router navigation instead of window.location
   };
 
   return (
@@ -71,9 +70,8 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
                 </Link>
                 <Button 
                   onClick={onLogout}
-                  variant="outline"
                   size="sm"
-                  className="border-case-red text-case-red hover:bg-case-red hover:text-white"
+                  className="bg-case-red hover:bg-red-600 text-white"
                 >
                   Sair
                 </Button>
@@ -135,8 +133,7 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
                           onLogout();
                           setIsOpen(false);
                         }}
-                        variant="outline"
-                        className="border-case-red text-case-red hover:bg-case-red hover:text-white mx-3"
+                        className="bg-case-red hover:bg-red-600 text-white mx-3"
                       >
                         Sair
                       </Button>

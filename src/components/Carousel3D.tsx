@@ -30,7 +30,7 @@ const Carousel3D: React.FC = () => {
   } = usePaymentStatus(currentUser.id);
 
   const featuredPacks = useMemo(() => 
-    packs.filter(p => !p.isFree && !['combo', 'complete'].includes(p.category)).slice(0, 6),
+    packs.filter(p => !['combo', 'complete'].includes(p.category)).slice(0, 6),
     []
   );
 
@@ -46,7 +46,6 @@ const Carousel3D: React.FC = () => {
     if (pack.category === 'combo') {
       setIsComboModalOpen(true);
     }
-    // Navigation will be handled by Link component in PackCard
   }, []);
 
   const handlePurchaseClick = useCallback(async (pack: any) => {
@@ -58,7 +57,6 @@ const Carousel3D: React.FC = () => {
       if (session) {
         setCheckoutPreferenceId(session.mercadopago_preference_id);
         
-        // Simular aprovação após 3 segundos (remover em produção)
         setTimeout(() => {
           simulatePaymentConfirmation(session.id, true).then(() => {
             showPaymentStatus('approved', pack.name);
@@ -85,8 +83,8 @@ const Carousel3D: React.FC = () => {
   const visiblePacks = getVisiblePacks();
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto">
-      {/* Desktop Navigation - Posicionamento lateral sem sobreposição */}
+    <div className="relative w-full max-w-6xl mx-auto mb-12">
+      {/* Desktop Navigation */}
       <div className="carousel-nav-desktop -left-20">
         <button
           onClick={prevSlide}
@@ -155,7 +153,7 @@ const Carousel3D: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* Mobile Navigation - Posicionamento abaixo do carrossel */}
+      {/* Mobile Navigation */}
       <div className="carousel-nav-mobile">
         <button
           onClick={prevSlide}

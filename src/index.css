@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -99,6 +100,97 @@
 
 .text-case-white {
   color: #f8fafc;
+}
+
+/* Logo Neon Effects */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+.logo-neon {
+  font-family: 'Orbitron', 'Century Gothic', sans-serif;
+  font-weight: 900;
+  color: #dc2626;
+  text-shadow: 
+    0 0 5px #dc2626,
+    0 0 10px #dc2626,
+    0 0 15px #dc2626,
+    0 0 20px #dc2626,
+    0 0 35px #dc2626,
+    0 0 40px #dc2626;
+  animation: neon-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neon-pulse {
+  from {
+    text-shadow: 
+      0 0 5px #dc2626,
+      0 0 10px #dc2626,
+      0 0 15px #dc2626,
+      0 0 20px #dc2626,
+      0 0 35px #dc2626,
+      0 0 40px #dc2626;
+  }
+  to {
+    text-shadow: 
+      0 0 2px #dc2626,
+      0 0 5px #dc2626,
+      0 0 8px #dc2626,
+      0 0 12px #dc2626,
+      0 0 18px #dc2626,
+      0 0 25px #dc2626;
+  }
+}
+
+.flicker-fast {
+  animation: flicker-fast 0.15s infinite linear;
+}
+
+.flicker-slow {
+  animation: flicker-slow 1.5s infinite linear;
+}
+
+@keyframes flicker-fast {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 1;
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes flicker-slow {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 60% {
+    opacity: 0.2;
+  }
+}
+
+/* Carousel Navigation Positioning */
+.carousel-nav-desktop {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+}
+
+.carousel-nav-mobile {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+  .carousel-nav-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .carousel-nav-desktop {
+    display: none;
+  }
 }
 
 /* Card flip animations */

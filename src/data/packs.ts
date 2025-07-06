@@ -37,53 +37,6 @@ export const MERCADOPAGO_LINKS = {
 
 export const packs: Pack[] = [
   {
-    id: 'amostra-gratuita-001',
-    name: 'Amostra Gratuita',
-    description: 'Cinco mistérios para você experimentar o jogo',
-    price: 0,
-    coverUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=center',
-    isFree: true,
-    category: 'starter',
-    mercadoPagoId: 'free-sample-001',
-    cards: [
-      {
-        id: '1',
-        mystery: 'Um homem entra num elevador no seu andar (20º). Aperta o botão do rés-do-chão e sai. No dia seguinte, faz a mesma coisa, mas desta vez sai no 10º andar e sobe as escadas até ao 20º. Porquê?',
-        solution: 'O homem é muito baixo e não consegue alcançar o botão do 20º andar. Consegue apenas alcançar o botão do 10º andar.',
-        difficulty: 'easy',
-        order: 1
-      },
-      {
-        id: '2',
-        mystery: 'Uma mulher vive sozinha num apartamento no 25º andar. Todos os dias toma o elevador até ao rés-do-chão para ir trabalhar. Quando regressa, toma o elevador até ao 15º andar e sobe as escadas, exceto em dias de chuva.',
-        solution: 'A mulher é muito baixa e precisa de um guarda-chuva para alcançar o botão do 25º andar.',
-        difficulty: 'medium',
-        order: 2
-      },
-      {
-        id: '3',
-        mystery: 'Um homem empurra o seu carro e para em frente a um hotel. Imediatamente percebe que faliu. Porquê?',
-        solution: 'Ele estava a jogar Monopoly. Parou na propriedade de outro jogador com um hotel e não tinha dinheiro para pagar.',
-        difficulty: 'hard',
-        order: 3
-      },
-      {
-        id: '4',
-        mystery: 'Dois pais e dois filhos foram pescar. Pescaram três peixes, mas cada um levou um peixe para casa. Como é possível?',
-        solution: 'Eram três pessoas: avô, pai e filho. O pai é filho do avô e pai do rapaz.',
-        difficulty: 'easy',
-        order: 4
-      },
-      {
-        id: '5',
-        mystery: 'Uma mulher atira algo pela janela e morre. O que aconteceu?',
-        solution: 'Ela atirou um bumerangue há três anos e esqueceu-se. O bumerangue voltou e atingiu-a.',
-        difficulty: 'medium',
-        order: 5
-      }
-    ]
-  },
-  {
     id: 'sombras-da-noite-002',
     name: 'Sombras da Noite',
     description: 'A escuridão esconde mais do que apenas o medo. Desvende 20 mistérios que só poderiam acontecer sob o manto da noite.',
@@ -262,7 +215,7 @@ export const getPackById = (id: string): Pack | undefined => {
 
 export const getUserPacks = (userId: string): string[] => {
   const purchases = localStorage.getItem(`user_${userId}_packs`);
-  return purchases ? JSON.parse(purchases) : ['amostra-gratuita-001'];
+  return purchases ? JSON.parse(purchases) : [];
 };
 
 export const purchasePack = (userId: string, packId: string, pricePaid: number, transactionId?: string): boolean => {
