@@ -1,13 +1,35 @@
 
-import React, { useState } from 'react';
-import { Card } from './ui/card';
-import { Button } from './ui/button';
+import React, { useState, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { packs } from '../data/packs';
+import PackCard from './PackCard';
+import ComboModal from './ComboModal';
+import PaymentStatusModal from './PaymentStatusModal';
+import MercadoPagoCheckout from './MercadoPagoCheckout';
+import { usePaymentStatus } from '../hooks/usePaymentStatus';
+import { getUserPacks } from '../data/packs';
 
 const Carousel3D: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const featuredPacks = packs.slice(0, 6); // Show first 6 packs
+  const [isComboModalOpen, setIsComboModalOpen] = useState(false);
+  const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
+  
+  // Simular usuário logado para o exemplo
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{"id": "demo-user"}');
+  const ownedPackIds = getUserPacks(currentUser.id);
+  
+  const {
+    paymentStatus,
+    createPaymentSession,
+    showPaymentStatus,
+    closePaymentStatus,
+    simulatePaymentConfirmation
+  } = usePaymentStatus(currentUser.id);
+
+  const featuredPacks = packs.filter(p => 
+    !p.isFree && !['combo', 'complete'].includes(p.category)
+  ).slice(0, 6);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % featuredPacks.length);
@@ -17,96 +39,112 @@ const Carousel3D: React.FC = () => {
     setCurrentIndex((prev) => (prev - 1 + featuredPacks.length) % featuredPacks.length);
   };
 
-  const getCardStyle = (index: number) => {
-    const diff = index - currentIndex;
-    const isActive = diff === 0;
-    const isNext = diff === 1 || (diff === -(featuredPacks.length - 1));
-    const isPrev = diff === -1 || (diff === featuredPacks.length - 1);
-
-    if (isActive) {
-      return {
-        transform: 'translateX(0) scale(1) rotateY(0deg)',
-        zIndex: 3,
-        opacity: 1
-      };
-    } else if (isNext) {
-      return {
-        transform: 'translateX(120%) scale(0.8) rotateY(-25deg)',
-        zIndex: 2,
-        opacity: 0.7
-      };
-    } else if (isPrev) {
-      return {
-        transform: 'translateX(-120%) scale(0.8) rotateY(25deg)',
-        zIndex: 2,
-        opacity: 0.7
-      };
+  const handlePackClick = (pack: any) => {
+    if (pack.category === 'combo') {
+      setIsComboModalOpen(true);
     } else {
-      return {
-        transform: 'translateX(0) scale(0.6) rotateY(0deg)',
-        zIndex: 1,
-        opacity: 0.3
-      };
+      // Navegar para a página do pack
+      window.location.href = `/pack/${pack.id}`;
+    }
+  };
+
+  const handlePurchaseClick = async (pack: any) => {
+    const session = await createPaymentSession(pack.id, 'individual');
+    if (session) {
+      setCheckoutPreferenceId(session.mercadopago_preference_id);
+      
+      // Simular aprovação após 3 segundos (remover em produção)
+      setTimeout(() => {
+        simulatePaymentConfirmation(session.id, true).then(() => {
+          showPaymentStatus('approved', pack.name);
+          setCheckoutPreferenceId(null);
+        });
+      }, 3000);
     }
   };
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto px-4">
-      <div className="relative h-80 lg:h-96 flex items-center justify-center perspective-1000">
-        {featuredPacks.map((pack, index) => (
-          <Card
-            key={pack.id}
-            className="absolute w-64 h-80 transition-all duration-700 ease-in-out cursor-pointer overflow-hidden bg-cover bg-center border-2 border-noir-medium hover:border-case-red"
-            style={{
-              ...getCardStyle(index),
-              backgroundImage: `url(${pack.coverUrl})`,
-            }}
-            onClick={() => setCurrentIndex(index)}
-          >
-            <div className="absolute inset-0 gradient-overlay" />
-            <div className="absolute bottom-4 left-4 right-4">
-              <h3 className="font-anton text-xl lg:text-2xl text-case-white drop-shadow-lg">
-                {pack.name}
-              </h3>
-              <p className="text-case-white/80 text-sm mt-1 drop-shadow">
-                {pack.isFree ? 'Grátis' : `€${pack.price.toFixed(2)}`}
-              </p>
-            </div>
-          </Card>
-        ))}
+    <div className="relative w-full max-w-6xl mx-auto">
+      <div className="flex items-center justify-center space-x-2 mb-8">
+        {/* Botão anterior - agora preenchido e branco */}
+        <button
+          onClick={prevSlide}
+          className="bg-white text-black p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10"
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </button>
+
+        {/* Cards do carrossel - menos espaçados */}
+        <div className="flex space-x-4 overflow-hidden">
+          <AnimatePresence mode="wait">
+            {featuredPacks.slice(currentIndex, currentIndex + 3).map((pack, index) => (
+              <motion.div
+                key={pack.id}
+                initial={{ opacity: 0, x: 300 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -300 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="w-80 flex-shrink-0"
+              >
+                <PackCard
+                  pack={pack}
+                  isPurchased={ownedPackIds.includes(pack.id)}
+                  onPackClick={() => handlePackClick(pack)}
+                  onPurchaseClick={handlePurchaseClick}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+
+        {/* Botão próximo - agora preenchido e branco */}
+        <button
+          onClick={nextSlide}
+          className="bg-white text-black p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </button>
       </div>
 
-      {/* Navigation buttons */}
-      <Button
-        variant="outline"
-        size="icon"
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-noir-dark/80 border-case-red text-case-red hover:bg-case-red hover:text-white backdrop-blur-sm"
-        onClick={prevSlide}
-      >
-        <ChevronLeft className="h-4 w-4" />
-      </Button>
-
-      <Button
-        variant="outline"
-        size="icon"
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-noir-dark/80 border-case-red text-case-red hover:bg-case-red hover:text-white backdrop-blur-sm"
-        onClick={nextSlide}
-      >
-        <ChevronRight className="h-4 w-4" />
-      </Button>
-
-      {/* Indicators */}
-      <div className="flex justify-center mt-6 space-x-2">
+      {/* Indicadores */}
+      <div className="flex justify-center space-x-2 mt-6">
         {featuredPacks.map((_, index) => (
           <button
             key={index}
-            className={`w-3 h-3 rounded-full transition-all duration-200 ${
-              index === currentIndex ? 'bg-case-red' : 'bg-noir-medium hover:bg-noir-light'
-            }`}
             onClick={() => setCurrentIndex(index)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentIndex ? 'bg-case-red' : 'bg-gray-600'
+            }`}
           />
         ))}
       </div>
+
+      {/* Modal do Combo */}
+      {isComboModalOpen && (
+        <ComboModal
+          packs={packs}
+          ownedPackIds={ownedPackIds}
+          onClose={() => setIsComboModalOpen(false)}
+        />
+      )}
+
+      {/* Modal de Status do Pagamento */}
+      <PaymentStatusModal
+        isOpen={paymentStatus.isOpen}
+        onClose={closePaymentStatus}
+        status={paymentStatus.status}
+        packName={paymentStatus.packName}
+      />
+
+      {/* Checkout do Mercado Pago */}
+      {checkoutPreferenceId && (
+        <MercadoPagoCheckout
+          preferenceId={checkoutPreferenceId}
+          onPaymentResult={(result) => {
+            console.log('Payment result:', result);
+          }}
+        />
+      )}
     </div>
   );
 };

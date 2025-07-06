@@ -9,13 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      payment_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          mercadopago_preference_id: string
+          pack_id: string | null
+          payment_type: string
+          selected_pack_ids: string[] | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mercadopago_preference_id: string
+          pack_id?: string | null
+          payment_type: string
+          selected_pack_ids?: string[] | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mercadopago_preference_id?: string
+          pack_id?: string | null
+          payment_type?: string
+          selected_pack_ids?: string[] | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      update_payment_session_status: {
+        Args: { session_id: string; new_status: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
