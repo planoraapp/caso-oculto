@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Play } from 'lucide-react';
 import Carousel3D from '../components/Carousel3D';
-import SiteFooter from '../components/SiteFooter';
 
 const Home: React.FC = () => {
   return (
@@ -57,9 +56,6 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <SiteFooter />
     </div>
   );
 };

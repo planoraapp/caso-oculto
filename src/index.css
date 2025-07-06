@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -67,12 +66,8 @@
  
     --ring: 212.7 26.8% 83.9%;
   }
-
-  body {
-    background-color: #0c143f;
-  }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
