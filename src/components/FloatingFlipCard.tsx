@@ -84,7 +84,7 @@ const FloatingFlipCard: React.FC<FloatingFlipCardProps> = ({
         {/* Card */}
         <div className="flip-card-container perspective-1000">
           <Card 
-            className={`flip-card relative w-full h-96 cursor-pointer transition-all duration-600 bg-noir-dark border-2 border-noir-medium hover:border-case-red ${isFlipped ? 'flipped' : ''}`}
+            className={`flip-card relative w-full h-96 cursor-pointer transition-all duration-600 bg-white border-2 border-gray-300 hover:border-case-red ${isFlipped ? 'flipped' : ''}`}
             onClick={handleFlip}
             style={{
               transformStyle: 'preserve-3d',
@@ -93,7 +93,7 @@ const FloatingFlipCard: React.FC<FloatingFlipCardProps> = ({
           >
             {/* Front side - Mystery */}
             <div 
-              className="flip-card-front absolute inset-0 p-6 flex flex-col justify-between backface-hidden"
+              className="flip-card-front absolute inset-0 p-6 flex flex-col justify-between backface-hidden bg-white"
               style={{ backfaceVisibility: 'hidden' }}
             >
               <div>
@@ -105,12 +105,12 @@ const FloatingFlipCard: React.FC<FloatingFlipCardProps> = ({
                     {card.order}
                   </div>
                 </div>
-                <p className="text-case-white leading-relaxed text-base">
+                <p className="text-gray-800 leading-relaxed text-base">
                   {card.mystery}
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-case-white/60 text-sm">
+                <p className="text-gray-500 text-sm">
                   {t('cardViewer.clickToFlip')}
                 </p>
               </div>
@@ -118,7 +118,7 @@ const FloatingFlipCard: React.FC<FloatingFlipCardProps> = ({
 
             {/* Back side - Solution */}
             <div 
-              className="flip-card-back absolute inset-0 p-6 flex flex-col justify-between backface-hidden"
+              className="flip-card-back absolute inset-0 p-6 flex flex-col justify-between backface-hidden bg-white"
               style={{ 
                 backfaceVisibility: 'hidden',
                 transform: 'rotateY(180deg)'
@@ -133,12 +133,12 @@ const FloatingFlipCard: React.FC<FloatingFlipCardProps> = ({
                     ✓
                   </div>
                 </div>
-                <p className="text-case-white leading-relaxed text-base">
+                <p className="text-gray-800 leading-relaxed text-base">
                   {card.solution}
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-case-white/60 text-sm">
+                <p className="text-gray-500 text-sm">
                   {t('cardViewer.clickToFlip')}
                 </p>
               </div>

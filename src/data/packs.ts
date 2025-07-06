@@ -48,16 +48,16 @@ export const packs: Pack[] = [
     cards: [
       {
         id: 'sn_1',
-        mystery: 'Um homem foi encontrado morto em sua casa às 3h da manhã. Todas as luzes estavam apagadas, mas havia velas acesas por toda a sala. A porta estava trancada por dentro e não havia sinais de arrombamento.',
-        solution: 'O homem morreu durante um apagão. Ele acendeu as velas para se locomover, mas sofreu um ataque cardíaco. As luzes voltaram depois que ele morreu.',
+        mystery: 'Um vigia noturno ouve um grito, corre para a origem do som e encontra um homem morto. A polícia conclui que foi suicídio, apesar de não haver arma. Porquê?',
+        solution: 'O homem era um limpador de janelas de arranha-céus que trabalhava à noite. Ele escorregou, gritou e caiu. A \'arma\' foi a altura.',
         difficulty: 'medium',
         order: 1
       },
       {
         id: 'sn_2',
-        mystery: 'Uma mulher acordou no meio da noite com um barulho estranho. Desceu as escadas e encontrou a porta da frente aberta e suas pegadas na lama, mas ela não se lembrava de ter saído.',
-        solution: 'Ela tinha sonambulismo. Durante a noite, saiu de casa caminhando enquanto dormia e voltou sem acordar.',
-        difficulty: 'easy',
+        mystery: 'Uma mulher apaga a luz do seu quarto para dormir. Na manhã seguinte, várias pessoas morrem por causa disso. O que aconteceu?',
+        solution: 'Ela era a faroleira de um farol. Ao apagar a luz, um navio colidiu com as rochas.',
+        difficulty: 'hard',
         order: 2
       },
       {
@@ -95,38 +95,17 @@ export const packs: Pack[] = [
     cards: [
       {
         id: 'ci_1',
-        mystery: 'Um homem planejou o assassinato perfeito de sua esposa. Criou um álibi sólido, eliminou evidências e até contratou um detetive particular para "ajudar" a encontrar o assassino. Qual foi seu erro?',
-        solution: 'Ele sabia detalhes da cena do crime que só o assassino poderia saber, revelando-os inadvertidamente ao detetive durante as investigações.',
-        difficulty: 'hard',
+        mystery: 'Um ladrão rouba uma joalharia, mas é apanhado porque deixou para trás uma única luva.',
+        solution: 'Ele era maneta e usava um gancho. A polícia encontrou a luva da mão direita no balcão e percebeu que o ladrão só tinha a mão esquerda, uma característica muito específica.',
+        difficulty: 'medium',
         order: 1
       },
       {
         id: 'ci_2',
-        mystery: 'Uma mulher fingiu seu próprio sequestro para extorquir dinheiro do marido rico. Ela se escondeu na casa de uma amiga e enviou mensagens ameaçadoras. O que a entregou?',
-        solution: 'Ela esqueceu de desligar a localização no celular e as mensagens mostravam que ela estava sempre no mesmo local - a casa da amiga.',
-        difficulty: 'medium',
+        mystery: 'Um assassino mata a sua vítima com um tiro e limpa todas as suas impressões digitais. Mesmo assim, a polícia sabe quem ele é por causa do que ele não tocou.',
+        solution: 'A vítima era cega. O assassino desligou a luz para não ser visto, mas uma pessoa cega não se importaria com a luz. A polícia procurou por alguém que conhecia a vítima e sabia da sua cegueira.',
+        difficulty: 'hard',
         order: 2
-      },
-      {
-        id: 'ci_3',
-        mystery: 'Um funcionário do banco planejou um roubo interno perfeito, alterando registros e criando contas fantasmas. Trabalhou no plano por meses. Qual detalhe o traiu?',
-        solution: 'Ele sempre trabalhava até tarde nos dias que fazia as transferências ilegais. Os logs de acesso ao sistema mostraram um padrão claro.',
-        difficulty: 'medium',
-        order: 3
-      },
-      {
-        id: 'ci_4',
-        mystery: 'Um homem matou seu sócio e encenou um acidente de carro. Destruiu o carro, alterou a cena e tinha testemunhas do seu álibi. Mas um detalhe o condenou.',
-        solution: 'Ele disse à polícia que seu sócio estava dirigindo, mas as impressões digitais dele estavam no volante na posição de quem dirige, não de passageiro.',
-        difficulty: 'hard',
-        order: 4
-      },
-      {
-        id: 'ci_5',
-        mystery: 'Uma enfermeira matou pacientes usando insulina, fazendo parecer morte natural. Foi cuidadosa por anos. O que finalmente a expôs?',
-        solution: 'Ela sempre estava de plantão quando as mortes "súbitas" aconteciam. A análise estatística revelou que as mortes só ocorriam nos seus turnos.',
-        difficulty: 'hard',
-        order: 5
       }
     ]
   },
@@ -138,8 +117,23 @@ export const packs: Pack[] = [
     coverUrl: 'https://images.unsplash.com/photo-1597432128929-2ef2a3d01b1b?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'urban',
-    mercadoPagoId: 'lendas-urbanas-004',
-    cards: []
+    mercadoPagoId: MERCADOPAGO_LINKS.individual,
+    cards: [
+      {
+        id: 'lu_1',
+        mystery: 'Um homem dá boleia a uma jovem numa estrada deserta. Ela pede para ficar em frente a um cemitério. No dia seguinte, ele volta e descobre que ela morreu há 20 anos. Como deixou o seu casaco no carro dela?',
+        solution: 'A "jovem" era a neta da falecida, que se vestiu como a avó para pregar uma partida, usando uma história famosa para assustar o motorista. Ela deixou o casaco de propósito.',
+        difficulty: 'hard',
+        order: 1
+      },
+      {
+        id: 'lu_2',
+        mystery: 'Uma mulher a conduzir sozinha à noite é seguida de perto por um camião que não para de piscar os faróis. Assustada, ela acelera. O camião persegue-a até casa. O que o camionista queria?',
+        solution: 'O camionista não a estava a perseguir. Ele via um homem com uma faca escondido no banco de trás do carro dela. Cada vez que o homem se levantava para a atacar, o camionista piscava os faróis para o assustar e fazê-lo baixar-se.',
+        difficulty: 'hard',
+        order: 2
+      }
+    ]
   },
   {
     id: 'paradoxos-mortais-005',
@@ -149,8 +143,23 @@ export const packs: Pack[] = [
     coverUrl: 'https://images.unsplash.com/photo-1557989313-06b573584323?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'complex',
-    mercadoPagoId: 'paradoxos-mortais-005',
-    cards: []
+    mercadoPagoId: MERCADOPAGO_LINKS.individual,
+    cards: [
+      {
+        id: 'pm_1',
+        mystery: 'Um homem está morto numa sala completamente vazia e trancada por dentro. Não há marcas no corpo e a causa da morte é asfixia.',
+        solution: 'A sala era uma câmara de vácuo usada para testes industriais. Alguém a ativou remotamente, removendo todo o ar.',
+        difficulty: 'hard',
+        order: 1
+      },
+      {
+        id: 'pm_2',
+        mystery: 'Um homem morre de sede na sua própria casa, que tem água corrente em todas as torneiras.',
+        solution: 'Ele era um halterofilista extremamente forte. Ficou preso debaixo de um peso que não conseguia levantar, longe de qualquer fonte de água, e morreu de desidratação.',
+        difficulty: 'medium',
+        order: 2
+      }
+    ]
   },
   {
     id: 'absurdamente-real-006',
@@ -160,8 +169,23 @@ export const packs: Pack[] = [
     coverUrl: 'https://images.unsplash.com/photo-1543373014-cfe4f4bc1cdf?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'humor',
-    mercadoPagoId: 'absurdamente-real-006',
-    cards: []
+    mercadoPagoId: MERCADOPAGO_LINKS.individual,
+    cards: [
+      {
+        id: 'ar_1',
+        mystery: 'Um homem é encontrado morto, esmagado por uma máquina de vendas.',
+        solution: 'Ele estava a abanar a máquina para tentar tirar um refrigerante de graça. A máquina, pesando 400kg, tombou sobre ele. (Baseado em casos reais).',
+        difficulty: 'easy',
+        order: 1
+      },
+      {
+        id: 'ar_2',
+        mystery: 'Um advogado morre ao cair do 24º andar do seu escritório. Ele não era suicida.',
+        solution: 'Para provar a um grupo de estudantes que o vidro da janela do seu escritório era inquebrável, ele atirou-se contra ele. O vidro não partiu, mas saiu da moldura, e ele caiu. (Caso real de Garry Hoy em Toronto).',
+        difficulty: 'medium',
+        order: 2
+      }
+    ]
   },
   {
     id: 'beco-sem-saida-007',
@@ -171,8 +195,23 @@ export const packs: Pack[] = [
     coverUrl: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'crime',
-    mercadoPagoId: 'beco-sem-saida-007',
-    cards: []
+    mercadoPagoId: MERCADOPAGO_LINKS.individual,
+    cards: [
+      {
+        id: 'bs_1',
+        mystery: 'Um homem com equipamento de mergulho completo é encontrado morto no meio de uma floresta queimada.',
+        solution: 'Ele estava a mergulhar num lago próximo quando um avião de combate a incêndios o "pescou" juntamente com a água e o largou sobre o fogo.',
+        difficulty: 'hard',
+        order: 1
+      },
+      {
+        id: 'bs_2',
+        mystery: 'Um homem é encontrado enforcado no teto de um celeiro, a 3 metros do chão. Não há nada por baixo dele, exceto uma poça de água.',
+        solution: 'Ele subiu para um grande bloco de gelo, que entretanto derreteu.',
+        difficulty: 'medium',
+        order: 2
+      }
+    ]
   },
   {
     id: 'sussurros-do-alem-008',
@@ -182,8 +221,23 @@ export const packs: Pack[] = [
     coverUrl: 'https://images.unsplash.com/photo-1598335682342-72126a153303?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'supernatural',
-    mercadoPagoId: 'sussurros-do-alem-008',
-    cards: []
+    mercadoPagoId: MERCADOPAGO_LINKS.individual,
+    cards: [
+      {
+        id: 'sa_1',
+        mystery: 'Um homem entra num bar e pede um copo d\'água. O garçom aponta-lhe uma arma. O homem agradece e sai. Porquê?',
+        solution: 'O homem tinha soluços. O susto curou-o.',
+        difficulty: 'easy',
+        order: 1
+      },
+      {
+        id: 'sa_2',
+        mystery: 'Uma mulher é encontrada morta num campo com um palito de fósforo partido na mão. O que aconteceu?',
+        solution: 'Ela estava num balão de ar quente que perdia altitude. Sortearam no palito mais curto quem saltaria para salvar os outros.',
+        difficulty: 'medium',
+        order: 2
+      }
+    ]
   },
   {
     id: 'combo-5-packs-009',
@@ -193,7 +247,7 @@ export const packs: Pack[] = [
     coverUrl: 'https://images.unsplash.com/photo-1518365642431-a2d5fb38af6c?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'combo',
-    mercadoPagoId: 'combo-5-packs-009',
+    mercadoPagoId: MERCADOPAGO_LINKS.combo,
     cards: []
   },
   {
@@ -204,7 +258,7 @@ export const packs: Pack[] = [
     coverUrl: 'https://images.unsplash.com/photo-1565008576475-23f9a8c0c6f0?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'complete',
-    mercadoPagoId: 'pack-completo-010',
+    mercadoPagoId: MERCADOPAGO_LINKS.complete,
     cards: []
   }
 ];

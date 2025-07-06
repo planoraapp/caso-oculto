@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -82,9 +83,9 @@ const Carousel3D: React.FC = () => {
   const visiblePacks = getVisiblePacks();
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto mb-8">
+    <div className="relative w-full max-w-6xl mx-auto mb-6 md:mb-8">
       {/* Cards do carrossel com efeito 3D */}
-      <div className="flex items-center justify-center mb-8" style={{ perspective: '1000px' }}>
+      <div className="flex items-center justify-center mb-6 md:mb-8 h-64 md:h-80" style={{ perspective: '1000px' }}>
         <AnimatePresence mode="wait">
           {visiblePacks.map(({ pack, position }, index) => (
             <motion.div
@@ -100,7 +101,7 @@ const Carousel3D: React.FC = () => {
                 rotateY: position === 0 ? -25 : position === 2 ? 25 : 0,
                 scale: position === 1 ? 1.1 : 0.85,
                 z: position === 1 ? 50 : 0,
-                x: position === 0 ? -120 : position === 2 ? 120 : 0
+                x: position === 0 ? -80 : position === 2 ? 80 : 0
               }}
               exit={{ 
                 opacity: 0,
@@ -112,7 +113,7 @@ const Carousel3D: React.FC = () => {
                 ease: "easeInOut",
                 delay: index * 0.1 
               }}
-              className="absolute w-80 flex-shrink-0"
+              className="absolute w-64 md:w-80 flex-shrink-0"
               style={{
                 transformStyle: 'preserve-3d',
                 zIndex: position === 1 ? 10 : 5
@@ -129,23 +130,23 @@ const Carousel3D: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* Navigation buttons below the packs */}
-      <div className="flex justify-center space-x-4 mb-6">
+      {/* Navigation buttons */}
+      <div className="flex justify-center space-x-4 mb-4 md:mb-6">
         <button
           onClick={prevSlide}
           disabled={isLoading}
-          className="bg-white text-black p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-white text-black p-2 md:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Pack anterior"
         >
-          <ChevronLeft className="h-6 w-6" />
+          <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
         </button>
         <button
           onClick={nextSlide}
           disabled={isLoading}
-          className="bg-white text-black p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-white text-black p-2 md:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Próximo pack"
         >
-          <ChevronRight className="h-6 w-6" />
+          <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
         </button>
       </div>
 
@@ -157,12 +158,12 @@ const Carousel3D: React.FC = () => {
       )}
 
       {/* Indicadores */}
-      <div className="flex justify-center space-x-2 mt-6">
+      <div className="flex justify-center space-x-2 mt-4 md:mt-6">
         {featuredPacks.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
               index === currentIndex ? 'bg-case-red' : 'bg-gray-600'
             }`}
             aria-label={`Ir para pack ${index + 1}`}
