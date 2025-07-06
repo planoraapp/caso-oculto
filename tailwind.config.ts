@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'anton': ['Anton', 'sans-serif'],
+				'inter': ['Inter', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,7 +66,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Caso Oculto brand colors
+				'case-red': '#ef4444',
+				'case-white': '#E6E6FA',
+				'noir-black': '#0a0a0a',
+				'noir-dark': '#1a1a1a',
+				'noir-medium': '#2a2a2a',
+				'noir-light': '#3a3a3a'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +96,26 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'neon-flicker': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.8' }
+				},
+				'flip-card': {
+					'0%': { transform: 'rotateY(0)' },
+					'100%': { transform: 'rotateY(180deg)' }
+				},
+				'card-hover': {
+					'0%': { transform: 'scale(1)' },
+					'100%': { transform: 'scale(1.02)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'neon-flicker': 'neon-flicker 2s ease-in-out infinite',
+				'flip-card': 'flip-card 0.6s ease-in-out',
+				'card-hover': 'card-hover 0.2s ease-in-out'
 			}
 		}
 	},
