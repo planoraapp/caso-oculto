@@ -54,7 +54,10 @@ const CouponManager: React.FC = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setCoupons(data || []);
+      setCoupons((data || []).map(coupon => ({
+        ...coupon,
+        discount_type: coupon.discount_type as 'percentage' | 'fixed'
+      })));
     } catch (error) {
       console.error('Error loading coupons:', error);
       toast({

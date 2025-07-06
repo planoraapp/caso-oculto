@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowLeft, Lock, Play, RotateCcw, Shield } from 'lucide-react';
-import { packs, getUserPacks, Pack, Card } from '../data/packs';
+import { packs, getUserPacks, Pack, Case } from '../data/packs';
 import { t } from '../data/translations';
 import FloatingFlipCard from '../components/FloatingFlipCard';
 
@@ -16,7 +16,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [pack, setPack] = useState<Pack | null>(null);
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [selectedCard, setSelectedCard] = useState<Case | null>(null);
   const [solvedCards, setSolvedCards] = useState<string[]>([]);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [showPurchasePopup, setShowPurchasePopup] = useState(false);
@@ -42,9 +42,9 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   }
 
   const userPackIds = user ? getUserPacks(user.id) : [];
-  const hasAccess = pack.isFree || userPackIds.includes(pack.id) || (user && user.email === 'conectawebapps@outlook.com');
+  const hasAccess = userPackIds.includes(pack.id) || (user && user.email === 'conectawebapps@outlook.com');
 
-  const handleCardClick = (card: Card) => {
+  const handleCardClick = (card: Case) => {
     // Allow access to free cards or if user has purchased the pack
     if (card.isFree || hasAccess) {
       setSelectedCard(card);
@@ -77,11 +77,11 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   };
 
   const getAccessibleCards = () => {
-    return pack.cards.filter(card => card.isFree || hasAccess);
+    return pack.cases.filter(card => card.isFree || hasAccess);
   };
 
   const getLockedCards = () => {
-    return pack.cards.filter(card => !card.isFree && !hasAccess);
+    return pack.cases.filter(card => !card.isFree && !hasAccess);
   };
 
   return (
@@ -119,7 +119,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
                 {pack.category}
               </Badge>
               <Badge variant="outline" className="border-case-white text-case-white text-base px-4 py-2">
-                {pack.cards.length} Casos
+                {pack.cases.length} Casos
               </Badge>
               {user && (
                 <Badge variant="outline" className="border-green-500 text-green-500 text-base px-4 py-2">
@@ -133,13 +133,13 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
               <div className="max-w-md">
                 <div className="flex justify-between text-case-white/80 text-sm mb-2">
                   <span>Progresso</span>
-                  <span>{Math.round((solvedCards.length / pack.cards.length) * 100)}%</span>
+                  <span>{Math.round((solvedCards.length / pack.cases.length) * 100)}%</span>
                 </div>
                 <div className="w-full bg-noir-medium rounded-full h-3">
                   <div 
                     className="bg-case-red h-3 rounded-full transition-all duration-300"
                     style={{ 
-                      width: `${(solvedCards.length / pack.cards.length) * 100}%` 
+                      width: `${(solvedCards.length / pack.cases.length) * 100}%` 
                     }}
                   ></div>
                 </div>
@@ -253,7 +253,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
                 Desbloquear Pack Completo
               </h3>
               <p className="text-case-white/80 mb-6 text-lg">
-                Desbloqueie todos os {pack.cards.length} casos deste pack
+                Desbloqueie todos os {pack.cases.length} casos deste pack
               </p>
               
               {/* Security Message */}

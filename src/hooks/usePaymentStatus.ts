@@ -1,8 +1,7 @@
-
 import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { purchasePack, MERCADOPAGO_LINKS } from '@/data/packs';
+import { supabase } from '../integrations/supabase/client';
+import { useToast } from '../hooks/use-toast';
+import { purchasePack, MERCADOPAGO_LINKS } from '../data/packs';
 
 export const usePaymentStatus = (userId: string) => {
   const [paymentStatus, setPaymentStatus] = useState<{

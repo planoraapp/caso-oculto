@@ -4,10 +4,10 @@ import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { X, RotateCcw } from 'lucide-react';
 import { t } from '../data/translations';
-import { Card as CardType } from '../data/packs';
+import { Case } from '../data/packs';
 
 interface FloatingFlipCardProps {
-  card: CardType;
+  card: Case;
   isOpen: boolean;
   onClose: () => void;
   isSolved: boolean;

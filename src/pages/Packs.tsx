@@ -2,7 +2,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Star, Users, Zap } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';  
@@ -10,7 +9,7 @@ import PackCard from '../components/PackCard';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { packs, getUserPacks, purchaseCombo, MERCADOPAGO_LINKS } from '../data/packs';
+import { packs, getUserPacks, MERCADOPAGO_LINKS } from '../data/packs';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
 
 interface PacksProps {

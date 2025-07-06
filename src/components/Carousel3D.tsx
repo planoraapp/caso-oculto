@@ -2,14 +2,13 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { packs } from '../data/packs';
 import PackCard from './PackCard';
 import ComboModal from './ComboModal';
 import PaymentStatusModal from './PaymentStatusModal';
 import MercadoPagoCheckout from './MercadoPagoCheckout';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
-import { getUserPacks, purchaseCombo } from '../data/packs';
+import { getUserPacks } from '../data/packs';
 import LoadingSpinner from './LoadingSpinner';
 
 const Carousel3D: React.FC = () => {
@@ -58,7 +57,7 @@ const Carousel3D: React.FC = () => {
         setCheckoutPreferenceId(session.mercadopago_preference_id);
         
         setTimeout(() => {
-          simulatePaymentConfirmation(session.id, true).then(() => {
+          simulatePaymentConfirmation && simulatePaymentConfirmation(session.id, true).then(() => {
             showPaymentStatus('approved', pack.name);
             setCheckoutPreferenceId(null);
           });
@@ -77,8 +76,7 @@ const Carousel3D: React.FC = () => {
     // Store selected packs for combo purchase
     localStorage.setItem(`pendingCombo_${currentUser.id}`, JSON.stringify(selectedPackIds));
     
-    // Simulate combo purchase for demo
-    purchaseCombo(currentUser.id, selectedPackIds, `combo_${Date.now()}`);
+    // Show success status for demo
     showPaymentStatus('approved', 'Combo 5 Packs');
   }, [currentUser, showPaymentStatus]);
 

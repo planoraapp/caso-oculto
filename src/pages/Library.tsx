@@ -5,7 +5,7 @@ import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
 import { t } from '../data/translations';
-import { getUserPacks, getPackById, getUserProgress } from '../data/packs';
+import { getUserPacks, getPackById } from '../data/packs';
 
 interface LibraryProps {
   user: any;
@@ -16,9 +16,12 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
   const userPacks = userPackIds.map(id => getPackById(id)).filter(Boolean);
 
   const calculatePackProgress = (pack: any) => {
-    if (pack.cards.length === 0) return 0;
-    const solvedCards = pack.cards.filter((card: any) => getUserProgress(user.id, card.id));
-    return (solvedCards.length / pack.cards.length) * 100;
+    if (pack.cases.length === 0) return 0;
+    const solvedCards = pack.cases.filter((card: any) => {
+      const solved = JSON.parse(localStorage.getItem(`solved_${user.id}_${pack.id}`) || '[]');
+      return solved.includes(card.id);
+    });
+    return (solvedCards.length / pack.cases.length) * 100;
   };
 
   if (userPacks.length === 0) {
@@ -58,7 +61,10 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
             if (!pack) return null;
             
             const progress = calculatePackProgress(pack);
-            const solvedCount = pack.cards.filter((card: any) => getUserProgress(user.id, card.id)).length;
+            const solvedCount = pack.cases.filter((card: any) => {
+              const solved = JSON.parse(localStorage.getItem(`solved_${user.id}_${pack.id}`) || '[]');
+              return solved.includes(card.id);
+            }).length;
             
             return (
               <Card
@@ -90,7 +96,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
                         {t('library.progress')}
                       </span>
                       <span className="text-case-white text-sm">
-                        {solvedCount}/{pack.cards.length}
+                        {solvedCount}/{pack.cases.length}
                       </span>
                     </div>
                     <Progress value={progress} className="h-2" />
