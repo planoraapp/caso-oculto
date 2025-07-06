@@ -1,21 +1,22 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import Carousel3D from '../components/Carousel3D';
 import { t } from '../data/translations';
 
 const Index: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
+    <div className="min-h-screen bg-gray-900 text-white overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative pt-20 pb-16 px-4">
         <div className="container mx-auto text-center">
-          <h1 className="font-anton text-4xl lg:text-6xl text-case-white mb-6 leading-tight">
-            {t('landing.heroTitle')}
+          <h1 className="font-extrabold text-4xl lg:text-6xl text-white mb-6 leading-tight tracking-tight">
+            Prepare-se para horas de <span className="text-case-red">diversão e mistérios...</span>
           </h1>
-          <p className="text-case-white/80 text-lg lg:text-xl mb-12 max-w-2xl mx-auto">
-            {t('landing.heroSubtitle')}
+          <p className="text-gray-400 text-lg lg:text-xl mb-12 max-w-2xl mx-auto">
+            Reúna seus amigos, leia os enigmas e desvende os casos mais bizarros e intrigantes.
           </p>
         </div>
       </section>
@@ -38,7 +39,7 @@ const Index: React.FC = () => {
               size="lg"
               className="bg-case-red hover:bg-red-600 text-white font-bold px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
-              {t('landing.knowTheGame')}
+              Conheça o jogo <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>

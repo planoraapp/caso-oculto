@@ -1,6 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 import Logo from './Logo';
 import { t } from '../data/translations';
 import { Button } from './ui/button';
@@ -12,6 +13,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
   const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
   
   const isActive = (path: string) => location.pathname === path;
   
@@ -19,11 +21,11 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
     `px-4 py-2 rounded-lg transition-all duration-200 ${
       isActive(path) 
         ? 'bg-case-red text-white font-medium' 
-        : 'text-case-white hover:bg-noir-medium hover:text-case-red'
+        : 'text-case-white hover:bg-gray-700/50 hover:text-case-red'
     }`;
 
   return (
-    <nav className="bg-noir-dark border-b border-noir-medium sticky top-0 z-50">
+    <nav className="bg-gray-900/50 backdrop-blur-sm border-b border-gray-700/50 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex-shrink-0">
@@ -72,22 +74,47 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
                 </Button>
               </Link>
             )}
+            
+            <div className="md:hidden">
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="text-case-white hover:text-case-red transition-colors"
+              >
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Mobile menu */}
-        {user && (
-          <div className="md:hidden mt-4 pt-4 border-t border-noir-medium">
-            <div className="flex space-x-1">
-              <Link to="/home" className={navLinkClass('/home')}>
-                {t('navigation.home')}
-              </Link>
-              <Link to="/packs" className={navLinkClass('/packs')}>
-                {t('navigation.packs')}
-              </Link>
-              <Link to="/library" className={navLinkClass('/library')}>
-                {t('navigation.library')}
-              </Link>
+        {isOpen && (
+          <div className="md:hidden mt-4 pt-4 border-t border-gray-700/50">
+            <div className="flex flex-col space-y-2">
+              {user && (
+                <>
+                  <Link 
+                    to="/home" 
+                    className={navLinkClass('/home')}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {t('navigation.home')}
+                  </Link>
+                  <Link 
+                    to="/packs" 
+                    className={navLinkClass('/packs')}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {t('navigation.packs')}
+                  </Link>
+                  <Link 
+                    to="/library" 
+                    className={navLinkClass('/library')}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {t('navigation.library')}
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}

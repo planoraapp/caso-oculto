@@ -67,13 +67,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Caso Oculto brand colors
+				// Caso Oculto brand colors - updated to match reference design
 				'case-red': '#ef4444',
 				'case-white': '#E6E6FA',
-				'noir-black': '#0a0a0a',
-				'noir-dark': '#1a1a1a',
-				'noir-medium': '#2a2a2a',
-				'noir-light': '#3a3a3a'
+				'noir-black': '#111827', // gray-900
+				'noir-dark': '#1f2937',  // gray-800
+				'noir-medium': '#374151', // gray-700
+				'noir-light': '#4b5563'   // gray-600
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -97,9 +97,15 @@ export default {
 						height: '0'
 					}
 				},
-				'neon-flicker': {
-					'0%, 100%': { opacity: '1' },
-					'50%': { opacity: '0.8' }
+				'flicker': {
+					'0%, 18%, 22%, 25%, 53%, 57%, 100%': {
+						textShadow: '0 0 5px rgba(239, 68, 68, 0.6), 0 0 10px rgba(239, 68, 68, 0.6), 0 0 20px rgba(239, 68, 68, 0.6), 0 0 40px #ef4444, 0 0 70px #ef4444',
+						color: '#fca5a5'
+					},
+					'20%, 24%, 55%': {
+						textShadow: 'none',
+						color: '#991b1b'
+					}
 				},
 				'flip-card': {
 					'0%': { transform: 'rotateY(0)' },
@@ -113,9 +119,14 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'neon-flicker': 'neon-flicker 2s ease-in-out infinite',
+				'flicker': 'flicker 2s ease-in-out infinite',
 				'flip-card': 'flip-card 0.6s ease-in-out',
 				'card-hover': 'card-hover 0.2s ease-in-out'
+			},
+			backdropBlur: {
+				'sm': '4px',
+				'md': '8px',
+				'lg': '12px'
 			}
 		}
 	},

@@ -54,24 +54,50 @@
   }
 
   body {
-    @apply bg-background text-foreground font-inter;
-    background: linear-gradient(135deg, hsl(10, 10%, 4%) 0%, hsl(20, 10%, 6%) 100%);
+    @apply bg-gray-900 text-foreground font-inter;
+    background: #111827;
     min-height: 100vh;
   }
 
-  /* Neon text effect for logo */
-  .neon-text {
-    color: #E6E6FA;
-    text-shadow: 
-      0 0 5px #ef4444,
-      0 0 10px #ef4444,
-      0 0 15px #ef4444,
-      0 0 20px #ef4444;
+  /* Neon logo effect with flickering LEDs */
+  .logo-neon {
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 0.05em;
+    color: #fca5a5; /* red-200 */
+    text-shadow:
+        0 0 5px rgba(239, 68, 68, 0.6),
+        0 0 10px rgba(239, 68, 68, 0.6),
+        0 0 20px rgba(239, 68, 68, 0.6),
+        0 0 40px #ef4444,
+        0 0 70px #ef4444;
   }
 
-  /* Flickering neon letters */
-  .flicker {
-    animation: neon-flicker 3s ease-in-out infinite;
+  .logo-neon span {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .logo-neon .flicker-fast {
+    animation: flicker 1.5s infinite alternate;
+  }
+
+  .logo-neon .flicker-slow {
+    animation: flicker 2.5s infinite alternate;
+  }
+
+  @keyframes flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+      text-shadow:
+          0 0 5px rgba(239, 68, 68, 0.6),
+          0 0 10px rgba(239, 68, 68, 0.6),
+          0 0 20px rgba(239, 68, 68, 0.6),
+          0 0 40px #ef4444,
+          0 0 70px #ef4444;
+      color: #fca5a5;
+    }
+    20%, 24%, 55% {
+      text-shadow: none;
+      color: #991b1b;
+    }
   }
 
   /* 3D card flip perspective */
@@ -108,16 +134,16 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: hsl(20, 10%, 8%);
+    background: #1f2937;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(20, 10%, 20%);
+    background: #374151;
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(0, 84%, 60%);
+    background: #ef4444;
   }
 }
 

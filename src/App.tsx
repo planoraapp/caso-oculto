@@ -41,7 +41,7 @@ const App = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium flex items-center justify-center">
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-case-white text-xl">Carregando...</div>
       </div>
     );
@@ -53,7 +53,7 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
+          <div className="min-h-screen bg-gray-900">
             <Navigation user={user} onLogout={handleLogout} />
             <Routes>
               <Route path="/" element={<Index />} />
