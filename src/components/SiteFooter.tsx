@@ -4,7 +4,7 @@ import React from 'react';
 const SiteFooter: React.FC = () => {
   return (
     <footer className="site-footer">
-      <style jsx>{`
+      <style>{`
         .site-footer {
           position: relative;
           height: 250px;
