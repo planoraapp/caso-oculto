@@ -51,6 +51,15 @@ const MercadoPagoCheckout: React.FC<MercadoPagoCheckoutProps> = ({
           }
         };
 
+        // Automatically trigger the payment when script loads
+        script.onload = () => {
+          if (isMounted) {
+            setIsLoading(false);
+            setError(null);
+            // The script will automatically show the payment interface
+          }
+        };
+
         document.body.appendChild(script);
       } catch (err) {
         if (isMounted) {

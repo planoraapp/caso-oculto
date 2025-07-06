@@ -7,7 +7,7 @@ import Carousel3D from '../components/Carousel3D';
 
 const Home: React.FC = () => {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#0c143f' }}>
+    <div className="min-h-screen bg-gray-900">
       {/* Hero Section */}
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="container mx-auto relative z-20 px-0">

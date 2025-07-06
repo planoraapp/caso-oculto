@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -77,7 +78,11 @@
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
-    background-color: #0c143f !important;
+    background-color: #111827 !important;
+  }
+  
+  html {
+    background-color: #111827 !important;
   }
 }
 

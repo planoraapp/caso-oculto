@@ -39,7 +39,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
 
   if (!pack) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0c143f' }}>
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <div className="text-case-white text-xl">Carregando pack...</div>
       </div>
     );
@@ -92,7 +92,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#0c143f' }}>
+    <div className="min-h-screen bg-gray-900">
       {/* Pack Banner */}
       <div 
         className="relative h-96 bg-cover bg-center"

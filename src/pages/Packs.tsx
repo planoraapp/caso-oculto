@@ -45,23 +45,22 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     if (isLoading) return;
     setIsLoading(true);
     try {
-      const paymentType = pack.category === 'complete' ? 'complete' : 'individual';
-      const session = await createPaymentSession(pack.id, paymentType);
-      if (session) {
-        setCheckoutPreferenceId(session.mercadopago_preference_id);
-        setTimeout(() => {
-          simulatePaymentConfirmation(session.id, true).then(() => {
-            showPaymentStatus('approved', pack.name);
-            setCheckoutPreferenceId(null);
-          });
-        }, 3000);
-      }
+      // Use the individual pack preference ID
+      setCheckoutPreferenceId('184163814-ebfc1885-acbb-4a9f-89d9-481e569b15b6');
+      
+      // Store the selected pack for later confirmation
+      localStorage.setItem(`selectedPack_${user?.id}`, JSON.stringify(pack));
+      
+      setTimeout(() => {
+        showPaymentStatus('approved', pack.name);
+        setCheckoutPreferenceId(null);
+      }, 3000);
     } catch (error) {
       console.error('Erro ao processar pagamento:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [createPaymentSession, simulatePaymentConfirmation, showPaymentStatus, isLoading]);
+  }, [showPaymentStatus, isLoading, user]);
 
   const handleComboClick = useCallback(() => {
     setIsComboModalOpen(true);
@@ -71,27 +70,45 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     if (isLoading) return;
     setIsLoading(true);
     try {
-      const session = await createPaymentSession(null, 'combo', selectedPackIds);
-      if (session) {
-        setCheckoutPreferenceId(session.mercadopago_preference_id);
-        setTimeout(() => {
-          simulatePaymentConfirmation(session.id, true).then(() => {
-            showPaymentStatus('approved', 'Combo 5 Packs');
-            setCheckoutPreferenceId(null);
-          });
-        }, 3000);
-      }
+      // Use the combo preference ID
+      setCheckoutPreferenceId('184163814-186d6326-c239-4676-b240-fac644c29f0e');
+      
+      // Store the selected packs for later confirmation
+      localStorage.setItem(`selectedCombo_${user?.id}`, JSON.stringify(selectedPackIds));
+      
+      setTimeout(() => {
+        showPaymentStatus('approved', 'Combo 5 Packs');
+        setCheckoutPreferenceId(null);
+      }, 3000);
     } catch (error) {
       console.error('Erro ao processar pagamento do combo:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [createPaymentSession, simulatePaymentConfirmation, showPaymentStatus, isLoading]);
+  }, [showPaymentStatus, isLoading, user]);
+
+  const handleCompletePurchase = useCallback(async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      // Use the complete access preference ID
+      setCheckoutPreferenceId('184163814-b6e81aba-f60e-4256-8a73-2658243e4259');
+      
+      setTimeout(() => {
+        showPaymentStatus('approved', 'Acesso Total');
+        setCheckoutPreferenceId(null);
+      }, 3000);
+    } catch (error) {
+      console.error('Erro ao processar pagamento completo:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [showPaymentStatus, isLoading]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
+    <div className="min-h-screen bg-gray-900">
       <div className="pt-20 px-4 pb-8">
-        <div className="container mx-auto max-w-7xl bg-gray-900">
+        <div className="container mx-auto max-w-7xl">
           {/* Header */}
           <div className="text-center mb-8 md:mb-12">
             <motion.h1 
@@ -195,7 +212,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                         <span className="text-xl md:text-2xl font-bold text-yellow-500">R$ 110,90</span>
                       </div>
                       <Button 
-                        onClick={() => handlePurchaseClick(specialPacks.find(p => p.category === 'complete')!)} 
+                        onClick={handleCompletePurchase} 
                         disabled={isLoading} 
                         className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold disabled:opacity-50 text-sm md:text-base"
                       >
@@ -206,6 +223,18 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+
+            {/* Mercado Pago Security Message */}
+            <div className="text-center mt-8">
+              <p className="text-case-white/80 text-sm mb-4">
+                Sua compra é segura com a:
+              </p>
+              <img 
+                src="/lovable-uploads/47a1e5b5-9595-489c-b0ec-bfc2a17f5fe8.png" 
+                alt="Mercado Pago" 
+                className="mx-auto h-12 object-contain"
+              />
             </div>
           </motion.div>
 
