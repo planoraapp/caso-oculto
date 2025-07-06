@@ -61,9 +61,9 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer with gradient transition */}
+      {/* Footer with seamless transition */}
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-noir-medium to-transparent h-20 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-noir-medium to-gray-900 h-32 z-10"></div>
         <SiteFooter />
       </div>
     </div>

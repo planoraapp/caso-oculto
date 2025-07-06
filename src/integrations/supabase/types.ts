@@ -9,6 +9,134 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      affiliate_codes: {
+        Row: {
+          affiliate_email: string
+          affiliate_name: string
+          code: string
+          commission_percentage: number
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          total_commission: number | null
+          total_sales: number | null
+          updated_at: string
+        }
+        Insert: {
+          affiliate_email: string
+          affiliate_name: string
+          code: string
+          commission_percentage?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          total_commission?: number | null
+          total_sales?: number | null
+          updated_at?: string
+        }
+        Update: {
+          affiliate_email?: string
+          affiliate_name?: string
+          code?: string
+          commission_percentage?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          total_commission?: number | null
+          total_sales?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      coupon_usage: {
+        Row: {
+          coupon_id: string | null
+          discount_applied: number | null
+          id: string
+          purchase_id: string | null
+          used_at: string
+          user_id: string | null
+        }
+        Insert: {
+          coupon_id?: string | null
+          discount_applied?: number | null
+          id?: string
+          purchase_id?: string | null
+          used_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          coupon_id?: string | null
+          discount_applied?: number | null
+          id?: string
+          purchase_id?: string | null
+          used_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupon_usage_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "discount_coupons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      discount_coupons: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          current_uses: number | null
+          description: string | null
+          discount_type: string
+          discount_value: number
+          id: string
+          is_active: boolean | null
+          max_uses: number | null
+          min_purchase_amount: number | null
+          updated_at: string
+          valid_from: string
+          valid_until: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          current_uses?: number | null
+          description?: string | null
+          discount_type: string
+          discount_value: number
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+          min_purchase_amount?: number | null
+          updated_at?: string
+          valid_from?: string
+          valid_until?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          current_uses?: number | null
+          description?: string | null
+          discount_type?: string
+          discount_value?: number
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+          min_purchase_amount?: number | null
+          updated_at?: string
+          valid_from?: string
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
       payment_sessions: {
         Row: {
           created_at: string

@@ -7,6 +7,7 @@ import { LogOut, Calendar, ShoppingBag, RotateCcw, Mail } from 'lucide-react';
 import { getUserPurchases } from '../data/packs';
 import { supabase } from '../integrations/supabase/client';
 import { useToast } from '../hooks/use-toast';
+import ContactForm from '../components/ContactForm';
 
 interface AccountProps {
   user: any;
@@ -15,13 +16,14 @@ interface AccountProps {
 
 const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
   const { toast } = useToast();
   
   // Add a sample purchase for demonstration
   const samplePurchases = [
     {
       id: 'sample_1',
-      packId: 'pack1',
+      packId: 'sombras-da-noite',
       packName: 'Sombras da Noite',
       price_paid: 14.80,
       purchased_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
@@ -62,12 +64,6 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleContactSupport = () => {
-    const subject = encodeURIComponent('Dúvida sobre compra - CASO OCULTO');
-    const body = encodeURIComponent(`Olá,\n\nTenho uma dúvida sobre minha compra.\n\nUsuário: ${user.email}\n\nDescreva sua dúvida aqui...\n\nObrigado!`);
-    window.open(`mailto:conectawebapps@outlook.com?subject=${subject}&body=${body}`);
   };
 
   const canRequestRefund = (purchaseDate: string) => {
@@ -184,7 +180,7 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                     
                     <div className="mt-6 pt-4 border-t border-noir-medium">
                       <Button
-                        onClick={handleContactSupport}
+                        onClick={() => setShowContactForm(true)}
                         variant="outline"
                         className="w-full border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
                       >
@@ -199,6 +195,11 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
           </div>
         </div>
       </div>
+
+      <ContactForm 
+        isOpen={showContactForm}
+        onClose={() => setShowContactForm(false)}
+      />
     </div>
   );
 };

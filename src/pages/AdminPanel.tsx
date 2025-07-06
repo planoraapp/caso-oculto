@@ -5,11 +5,12 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { Badge } from '../components/ui/badge';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { supabase } from '../integrations/supabase/client';
 import { useToast } from '../hooks/use-toast';
-import { Users, Package, AlertTriangle, Mail, Edit, Check, X } from 'lucide-react';
+import { Users, Package, AlertTriangle, Mail, Edit, Check, X, Percent, UserCheck } from 'lucide-react';
+import CouponManager from '../components/CouponManager';
+import AffiliateManager from '../components/AffiliateManager';
 
 interface User {
   id: string;
@@ -201,157 +202,194 @@ const AdminPanel: React.FC<{ user: any }> = ({ user }) => {
           <h1 className="text-3xl md:text-4xl font-anton text-case-white mb-2">
             Painel Administrativo
           </h1>
-          <p className="text-case-white/80">Gerencie usuários, packs e pedidos de devolução</p>
+          <p className="text-case-white/80">Gerencie usuários, packs, cupons e afiliados</p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-noir-dark border-noir-medium">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-case-white">
-                Total de Usuários
-              </CardTitle>
-              <Users className="h-4 w-4 text-case-red" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-case-white">{users.length}</div>
-            </CardContent>
-          </Card>
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5 bg-noir-dark">
+            <TabsTrigger value="overview" className="text-case-white">Visão Geral</TabsTrigger>
+            <TabsTrigger value="refunds" className="text-case-white">Devoluções</TabsTrigger>
+            <TabsTrigger value="users" className="text-case-white">Usuários</TabsTrigger>
+            <TabsTrigger value="coupons" className="text-case-white">Cupons</TabsTrigger>
+            <TabsTrigger value="affiliates" className="text-case-white">Afiliados</TabsTrigger>
+          </TabsList>
 
-          <Card className="bg-noir-dark border-noir-medium">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-case-white">
-                Pedidos de Devolução
-              </CardTitle>
-              <AlertTriangle className="h-4 w-4 text-case-red" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-case-white">
-                {refundRequests.filter(r => r.status === 'pending').length}
-              </div>
-              <p className="text-xs text-case-white/60">Pendentes</p>
-            </CardContent>
-          </Card>
+          <TabsContent value="overview">
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+              <Card className="bg-noir-dark border-noir-medium">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-case-white">
+                    Total de Usuários
+                  </CardTitle>
+                  <Users className="h-4 w-4 text-case-red" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-case-white">{users.length}</div>
+                </CardContent>
+              </Card>
 
-          <Card className="bg-noir-dark border-noir-medium">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-case-white">
-                Acessos Ativos
-              </CardTitle>
-              <Package className="h-4 w-4 text-case-red" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-case-white">
-                {packAccess.filter(a => a.is_active).length}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              <Card className="bg-noir-dark border-noir-medium">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-case-white">
+                    Pedidos de Devolução
+                  </CardTitle>
+                  <AlertTriangle className="h-4 w-4 text-case-red" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-case-white">
+                    {refundRequests.filter(r => r.status === 'pending').length}
+                  </div>
+                  <p className="text-xs text-case-white/60">Pendentes</p>
+                </CardContent>
+              </Card>
 
-        {/* Refund Requests */}
-        <Card className="mb-8 bg-noir-dark border-noir-medium">
-          <CardHeader>
-            <CardTitle className="text-case-white">Pedidos de Devolução</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="text-case-white">Usuário</TableHead>
-                  <TableHead className="text-case-white">Pack</TableHead>
-                  <TableHead className="text-case-white">Data</TableHead>
-                  <TableHead className="text-case-white">Status</TableHead>
-                  <TableHead className="text-case-white">Motivo</TableHead>
-                  <TableHead className="text-case-white">Ações</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {refundRequests.map((request) => (
-                  <TableRow key={request.id}>
-                    <TableCell className="text-case-white">{request.user_email}</TableCell>
-                    <TableCell className="text-case-white">{request.pack_id}</TableCell>
-                    <TableCell className="text-case-white">
-                      {new Date(request.request_date).toLocaleDateString('pt-BR')}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={
-                        request.status === 'pending' ? 'default' :
-                        request.status === 'approved' ? 'destructive' : 'secondary'
-                      }>
-                        {request.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-case-white">{request.reason || 'N/A'}</TableCell>
-                    <TableCell>
-                      {request.status === 'pending' && (
-                        <div className="flex gap-2">
+              <Card className="bg-noir-dark border-noir-medium">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-case-white">
+                    Acessos Ativos
+                  </CardTitle>
+                  <Package className="h-4 w-4 text-case-red" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-case-white">
+                    {packAccess.filter(a => a.is_active).length}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-noir-dark border-noir-medium">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-case-white">
+                    Sistema
+                  </CardTitle>
+                  <Package className="h-4 w-4 text-case-red" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-lg font-bold text-case-white">Ativo</div>
+                  <p className="text-xs text-case-white/60">Funcionando</p>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="refunds">
+            {/* Refund Requests */}
+            <Card className="bg-noir-dark border-noir-medium">
+              <CardHeader>
+                <CardTitle className="text-case-white">Pedidos de Devolução</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-case-white">Usuário</TableHead>
+                      <TableHead className="text-case-white">Pack</TableHead>
+                      <TableHead className="text-case-white">Data</TableHead>
+                      <TableHead className="text-case-white">Status</TableHead>
+                      <TableHead className="text-case-white">Motivo</TableHead>
+                      <TableHead className="text-case-white">Ações</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {refundRequests.map((request) => (
+                      <TableRow key={request.id}>
+                        <TableCell className="text-case-white">{request.user_email}</TableCell>
+                        <TableCell className="text-case-white">{request.pack_id}</TableCell>
+                        <TableCell className="text-case-white">
+                          {new Date(request.request_date).toLocaleDateString('pt-BR')}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={
+                            request.status === 'pending' ? 'default' :
+                            request.status === 'approved' ? 'destructive' : 'secondary'
+                          }>
+                            {request.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-case-white">{request.reason || 'N/A'}</TableCell>
+                        <TableCell>
+                          {request.status === 'pending' && (
+                            <div className="flex gap-2">
+                              <Button
+                                size="sm"
+                                onClick={() => handleRefundRequest(request.id, 'approved')}
+                                className="bg-green-600 hover:bg-green-700"
+                              >
+                                <Check className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => handleRefundRequest(request.id, 'rejected')}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="users">
+            {/* Users Management */}
+            <Card className="bg-noir-dark border-noir-medium">
+              <CardHeader>
+                <CardTitle className="text-case-white">Gerenciar Usuários</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-case-white">Email</TableHead>
+                      <TableHead className="text-case-white">Criado em</TableHead>
+                      <TableHead className="text-case-white">Último login</TableHead>
+                      <TableHead className="text-case-white">Ações</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {users.map((userData) => (
+                      <TableRow key={userData.id}>
+                        <TableCell className="text-case-white">{userData.email}</TableCell>
+                        <TableCell className="text-case-white">
+                          {new Date(userData.created_at).toLocaleDateString('pt-BR')}
+                        </TableCell>
+                        <TableCell className="text-case-white">
+                          {userData.last_sign_in_at ? 
+                            new Date(userData.last_sign_in_at).toLocaleDateString('pt-BR') : 
+                            'Nunca'
+                          }
+                        </TableCell>
+                        <TableCell>
                           <Button
                             size="sm"
-                            onClick={() => handleRefundRequest(request.id, 'approved')}
-                            className="bg-green-600 hover:bg-green-700"
+                            onClick={() => setSelectedUser(userData)}
+                            className="bg-case-red hover:bg-red-600"
                           >
-                            <Check className="h-4 w-4" />
+                            <Edit className="h-4 w-4" />
                           </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => handleRefundRequest(request.id, 'rejected')}
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        {/* Users Management */}
-        <Card className="bg-noir-dark border-noir-medium">
-          <CardHeader>
-            <CardTitle className="text-case-white">Gerenciar Usuários</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="text-case-white">Email</TableHead>
-                  <TableHead className="text-case-white">Criado em</TableHead>
-                  <TableHead className="text-case-white">Último login</TableHead>
-                  <TableHead className="text-case-white">Ações</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users.map((userData) => (
-                  <TableRow key={userData.id}>
-                    <TableCell className="text-case-white">{userData.email}</TableCell>
-                    <TableCell className="text-case-white">
-                      {new Date(userData.created_at).toLocaleDateString('pt-BR')}
-                    </TableCell>
-                    <TableCell className="text-case-white">
-                      {userData.last_sign_in_at ? 
-                        new Date(userData.last_sign_in_at).toLocaleDateString('pt-BR') : 
-                        'Nunca'
-                      }
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        size="sm"
-                        onClick={() => setSelectedUser(userData)}
-                        className="bg-case-red hover:bg-red-600"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+          <TabsContent value="coupons">
+            <CouponManager />
+          </TabsContent>
+
+          <TabsContent value="affiliates">
+            <AffiliateManager />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
