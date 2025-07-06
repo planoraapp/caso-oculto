@@ -232,15 +232,15 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
               </Card>
             </div>
 
-            {/* Mercado Pago Security Message - Logo maior */}
+            {/* Mercado Pago Security Message - Logo maior e texto branco */}
             <div className="text-center mt-8">
-              <p className="text-case-white/80 text-sm mb-4">
+              <p className="text-case-white text-sm mb-4">
                 Sua compra é segura com a:
               </p>
               <img 
                 src="/lovable-uploads/47a1e5b5-9595-489c-b0ec-bfc2a17f5fe8.png" 
                 alt="Mercado Pago" 
-                className="mx-auto h-20 object-contain"
+                className="mx-auto h-24 object-contain"
               />
             </div>
           </motion.div>

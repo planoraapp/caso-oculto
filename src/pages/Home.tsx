@@ -3,13 +3,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Play } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Carousel3D from '../components/Carousel3D';
 
 const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Hero Section */}
-      <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Hero Section with fade-in */}
+      <motion.div 
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
         <div className="container mx-auto relative z-20 px-0">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-anton text-4xl md:text-6xl lg:text-7xl text-case-white mb-6 leading-tight">
@@ -31,16 +37,21 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Featured Packs Section - Reduzir espaçamento */}
-      <div className="py-4">
+      {/* Featured Packs Section with fade-in and reduced spacing */}
+      <motion.div 
+        className="py-8"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-anton text-case-white mb-4">
               Packs em Destaque
             </h2>
-            <p className="text-case-white/80 text-lg md:text-xl max-w-2xl mx-auto">
+            <p className="text-case-white/80 text-lg md:text-xl max-w-2xl mx-auto mb-6 md:mb-8">
               Explore nossos mistérios mais desafiadores e populares
             </p>
           </div>
@@ -55,7 +66,7 @@ const Home: React.FC = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
