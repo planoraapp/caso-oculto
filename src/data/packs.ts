@@ -1,4 +1,4 @@
-import { Pack } from './types';
+import { Pack, Case, Purchase } from './types';
 
 export const packs: Pack[] = [
   {
@@ -13,27 +13,33 @@ export const packs: Pack[] = [
       {
         id: 'cm1',
         order: 1,
+        name: 'Mente Perdida',
         mystery: 'Um paciente acorda sem memória e com um comportamento estranho. Qual é a causa?',
         solution: 'Amnésia dissociativa causada por trauma psicológico.',
         difficulty: 'medium',
         isFree: true,
-        theme: 'mystery'
+        theme: 'mystery',
+        icon: '🧠'
       },
       {
         id: 'cm2',
         order: 2,
+        name: 'Sonhos Reveladores',
         mystery: 'Uma série de sonhos recorrentes revelam pistas sobre um crime não resolvido.',
         solution: 'O sonhador é testemunha subconsciente do crime.',
         difficulty: 'medium',
-        theme: 'mystery'
+        theme: 'mystery',
+        icon: '💭'
       },
       {
         id: 'cm3',
         order: 3,
+        name: 'Segredos Obscuros',
         mystery: 'Um psicólogo desaparece após descobrir segredos obscuros de seus pacientes.',
         solution: 'Foi sequestrado por um paciente instável.',
         difficulty: 'hard',
-        theme: 'thriller'
+        theme: 'thriller',
+        icon: '🔍'
       }
     ]
   },
@@ -49,27 +55,33 @@ export const packs: Pack[] = [
       {
         id: 'co1',
         order: 1,
+        name: 'Mensagem Fatal',
         mystery: 'Um corpo é encontrado em um beco com uma mensagem enigmática.',
         solution: 'A mensagem é um código que revela o assassino.',
         difficulty: 'hard',
         isFree: true,
-        theme: 'murder'
+        theme: 'murder',
+        icon: '💀'
       },
       {
         id: 'co2',
         order: 2,
+        name: 'Desaparecimento Forjado',
         mystery: 'Um detetive particular é contratado para desvendar um desaparecimento misterioso.',
         solution: 'O desaparecido forjou seu próprio sumiço.',
         difficulty: 'hard',
-        theme: 'investigation'
+        theme: 'investigation',
+        icon: '🕵️'
       },
       {
         id: 'co3',
         order: 3,
+        name: 'Segredo Antigo',
         mystery: 'Uma série de roubos em uma cidade pequena parecem estar conectados a um segredo antigo.',
         solution: 'Os roubos são distrações para um crime maior.',
         difficulty: 'hard',
-        theme: 'theft'
+        theme: 'theft',
+        icon: '💎'
       }
     ]
   },
@@ -85,27 +97,33 @@ export const packs: Pack[] = [
       {
         id: 'bs1',
         order: 1,
+        name: 'Informante Perdido',
         mystery: 'Um informante desaparece após revelar informações sobre uma gangue local.',
         solution: 'Foi capturado para impedir que falasse.',
         difficulty: 'hard',
         isFree: true,
-        theme: 'crime'
+        theme: 'crime',
+        icon: '🚫'
       },
       {
         id: 'bs2',
         order: 2,
+        name: 'Silêncio Final',
         mystery: 'Uma testemunha chave é assassinada antes do julgamento.',
         solution: 'O assassino queria garantir a impunidade.',
         difficulty: 'hard',
-        theme: 'murder'
+        theme: 'murder',
+        icon: '⚖️'
       },
       {
         id: 'bs3',
         order: 3,
+        name: 'Armadilha Oculta',
         mystery: 'Um pacote misterioso é deixado em um beco, contendo pistas para um grande roubo.',
         solution: 'O pacote é uma armadilha para a polícia.',
         difficulty: 'hard',
-        theme: 'theft'
+        theme: 'theft',
+        icon: '📦'
       }
     ]
   },
@@ -121,27 +139,33 @@ export const packs: Pack[] = [
       {
         id: 'dc1',
         order: 1,
+        name: 'Executivo Silenciado',
         mystery: 'Um executivo é encontrado morto em seu escritório com documentos desaparecidos.',
         solution: 'Foi assassinado para esconder informações confidenciais.',
         difficulty: 'medium',
         isFree: true,
-        theme: 'murder'
+        theme: 'murder',
+        icon: '💼'
       },
       {
         id: 'dc2',
         order: 2,
+        name: 'Sabotagem Interna',
         mystery: 'Uma sabotagem ameaça a reputação de uma grande empresa.',
         solution: 'Um funcionário descontente é o responsável.',
         difficulty: 'medium',
-        theme: 'crime'
+        theme: 'crime',
+        icon: '⚙️'
       },
       {
         id: 'dc3',
         order: 3,
+        name: 'Acordo Secreto',
         mystery: 'Um acordo secreto entre empresas é descoberto, causando um escândalo.',
         solution: 'O acordo envolvia práticas ilegais de concorrência.',
         difficulty: 'medium',
-        theme: 'conspiracy'
+        theme: 'conspiracy',
+        icon: '🤝'
       }
     ]
   },
@@ -157,27 +181,33 @@ export const packs: Pack[] = [
       {
         id: 'dv1',
         order: 1,
+        name: 'Mansão Sombria',
         mystery: 'Um assassinato em uma mansão antiga durante uma tempestade.',
         solution: 'O mordomo foi o culpado, motivado por herança.',
         difficulty: 'medium',
         isFree: true,
-        theme: 'murder'
+        theme: 'murder',
+        icon: '🏚️'
       },
       {
         id: 'dv2',
         order: 2,
+        name: 'Baile de Máscaras',
         mystery: 'Um roubo de joias em um baile de máscaras.',
         solution: 'O ladrão estava entre os convidados, disfarçado.',
         difficulty: 'medium',
-        theme: 'theft'
+        theme: 'theft',
+        icon: '🎭'
       },
       {
         id: 'dv3',
         order: 3,
+        name: 'Vila Misteriosa',
         mystery: 'Um desaparecimento misterioso em uma pequena vila.',
         solution: 'A vítima fugiu para escapar de dívidas.',
         difficulty: 'medium',
-        theme: 'investigation'
+        theme: 'investigation',
+        icon: '🏘️'
       }
     ]
   },
@@ -193,27 +223,33 @@ export const packs: Pack[] = [
       {
         id: 'cn1',
         order: 1,
+        name: 'Tempestade Fatal',
         mystery: 'Um assassinato ocorre durante uma tempestade, sem testemunhas.',
         solution: 'O assassino usou a chuva para escapar sem ser visto.',
         difficulty: 'hard',
         isFree: true,
-        theme: 'murder'
+        theme: 'murder',
+        icon: '🌧️'
       },
       {
         id: 'cn2',
         order: 2,
+        name: 'Neblina Traíçoeira',
         mystery: 'Um carro desaparece na neblina da noite chuvosa.',
         solution: 'Foi roubado para encobrir outro crime.',
         difficulty: 'hard',
-        theme: 'theft'
+        theme: 'theft',
+        icon: '🌫️'
       },
       {
         id: 'cn3',
         order: 3,
+        name: 'Mensagem Molhada',
         mystery: 'Uma mensagem codificada é encontrada em uma garrafa na chuva.',
         solution: 'A mensagem revela a localização de um esconderijo.',
         difficulty: 'hard',
-        theme: 'mystery'
+        theme: 'mystery',
+        icon: '💌'
       }
     ]
   },
@@ -229,27 +265,33 @@ export const packs: Pack[] = [
       {
         id: 'vv1',
         order: 1,
+        name: 'Toxina Mortal',
         mystery: 'Uma série de envenenamentos misteriosos em uma pequena cidade.',
         solution: 'O culpado usava um veneno raro extraído de plantas.',
         difficulty: 'hard',
         isFree: true,
-        theme: 'danger'
+        theme: 'danger',
+        icon: '☠️'
       },
       {
         id: 'vv2',
         order: 2,
+        name: 'Cientista Desaparecido',
         mystery: 'Um cientista desaparece após descobrir uma nova toxina.',
         solution: 'Foi sequestrado para impedir a divulgação da descoberta.',
         difficulty: 'hard',
-        theme: 'conspiracy'
+        theme: 'conspiracy',
+        icon: '🧪'
       },
       {
         id: 'vv3',
         order: 3,
+        name: 'Laboratório Sombrio',
         mystery: 'Um laboratório clandestino é descoberto com substâncias perigosas.',
         solution: 'O laboratório produzia drogas ilegais.',
         difficulty: 'hard',
-        theme: 'crime'
+        theme: 'crime',
+        icon: '⚗️'
       }
     ]
   },
@@ -265,27 +307,33 @@ export const packs: Pack[] = [
       {
         id: 'ds1',
         order: 1,
+        name: 'Arquivos Roubados',
         mystery: 'Documentos secretos desaparecem de um arquivo governamental.',
         solution: 'Um agente duplo roubou os documentos.',
         difficulty: 'hard',
         isFree: true,
-        theme: 'conspiracy'
+        theme: 'conspiracy',
+        icon: '📁'
       },
       {
         id: 'ds2',
         order: 2,
+        name: 'Corrupção Exposta',
         mystery: 'Uma investigação revela corrupção em altos cargos públicos.',
         solution: 'Os envolvidos tentam encobrir as evidências.',
         difficulty: 'hard',
-        theme: 'crime'
+        theme: 'crime',
+        icon: '🏛️'
       },
       {
         id: 'ds3',
         order: 3,
+        name: 'Denunciante Silenciado',
         mystery: 'Um whistleblower desaparece após denunciar irregularidades.',
         solution: 'Foi silenciado por uma organização secreta.',
         difficulty: 'hard',
-        theme: 'danger'
+        theme: 'danger',
+        icon: '🤐'
       }
     ]
   },
@@ -301,27 +349,33 @@ export const packs: Pack[] = [
       {
         id: 'xm1',
         order: 1,
+        name: 'Jogo Mortal',
         mystery: 'Um assassinato planejado como um jogo de xadrez, com pistas em cada movimento.',
         solution: 'O assassino é um mestre em estratégia que deixou um padrão.',
         difficulty: 'hard',
         isFree: true,
-        theme: 'power'
+        theme: 'power',
+        icon: '♟️'
       },
       {
         id: 'xm2',
         order: 2,
+        name: 'Plano Complexo',
         mystery: 'Um roubo complexo que envolve múltiplos cúmplices e distrações.',
         solution: 'Cada cúmplice tinha um papel específico para o sucesso do plano.',
         difficulty: 'hard',
-        theme: 'theft'
+        theme: 'theft',
+        icon: '🎯'
       },
       {
         id: 'xm3',
         order: 3,
+        name: 'Enigma Lógico',
         mystery: 'Um enigma que desafia a lógica para encontrar o culpado.',
         solution: 'A solução está em decifrar o padrão dos eventos.',
         difficulty: 'hard',
-        theme: 'mystery'
+        theme: 'mystery',
+        icon: '🧩'
       }
     ]
   },
@@ -337,31 +391,71 @@ export const packs: Pack[] = [
       {
         id: 'vp1',
         order: 1,
+        name: 'Janela Quebrada',
         mystery: 'Uma janela quebrada é a única pista em um crime aparentemente perfeito.',
         solution: 'Os cacos indicam a direção do agressor.',
         difficulty: 'medium',
         isFree: true,
-        theme: 'investigation'
+        theme: 'investigation',
+        icon: '🔨'
       },
       {
         id: 'vp2',
         order: 2,
+        name: 'Fragmentos Reveladores',
         mystery: 'Fragmentos de vidro encontrados na cena do crime revelam um segredo.',
         solution: 'O vidro pertence a um objeto valioso roubado.',
         difficulty: 'medium',
-        theme: 'theft'
+        theme: 'theft',
+        icon: '💎'
       },
       {
         id: 'vp3',
         order: 3,
+        name: 'Sons Noturnos',
         mystery: 'Uma testemunha relata sons de vidro quebrando na noite do crime.',
         solution: 'O som foi usado para distrair a vítima.',
         difficulty: 'medium',
-        theme: 'mystery'
+        theme: 'mystery',
+        icon: '👂'
       }
     ]
-  },
-  // Additional packs can be added here if needed
+  }
 ];
 
-// Additional utility functions and constants related to packs can be defined below if needed.
+export const MERCADOPAGO_LINKS = {
+  individual: 'pref_individual_pack',
+  combo: 'pref_combo_5_packs',
+  complete: 'pref_complete_access'
+};
+
+// Utility functions
+export const getUserPacks = (userId: string): string[] => {
+  const purchases = JSON.parse(localStorage.getItem(`purchases_${userId}`) || '[]');
+  return purchases.map((p: Purchase) => p.packId);
+};
+
+export const getPackById = (id: string): Pack | undefined => {
+  return packs.find(pack => pack.id === id);
+};
+
+export const purchasePack = (userId: string, packId: string, price: number, transactionId: string) => {
+  const purchases = JSON.parse(localStorage.getItem(`purchases_${userId}`) || '[]');
+  const newPurchase: Purchase = {
+    id: `purchase_${Date.now()}`,
+    userId,
+    packId,
+    price,
+    purchaseDate: new Date().toISOString(),
+    transactionId
+  };
+  purchases.push(newPurchase);
+  localStorage.setItem(`purchases_${userId}`, JSON.stringify(purchases));
+};
+
+export const getUserPurchases = (userId: string): Purchase[] => {
+  return JSON.parse(localStorage.getItem(`purchases_${userId}`) || '[]');
+};
+
+// Export types
+export type { Pack, Case, Purchase };
