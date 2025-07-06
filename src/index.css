@@ -201,3 +201,15 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #b91c1c;
 }
+
+/* Hide Mercado Pago buttons that appear at the bottom */
+div[id*="mercadopago-button"],
+div[class*="mercadopago-button"],
+script[src*="mercadopago"],
+.cho-container,
+#button-checkout {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  left: -9999px !important;
+}

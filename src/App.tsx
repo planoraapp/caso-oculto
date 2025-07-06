@@ -46,14 +46,14 @@ const AppContent = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0c143f' }}>
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <div className="text-case-white text-xl">Carregando...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#0c143f' }}>
+    <div className="min-h-screen bg-gray-900">
       <Navigation user={user} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -33,10 +33,10 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* Featured Packs Section */}
-      <div className="py-8">
+      {/* Featured Packs Section - Reduzir espaçamento */}
+      <div className="py-4">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-anton text-case-white mb-4">
               Packs em Destaque
             </h2>
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
           
           <Carousel3D />
           
-          <div className="text-center mt-12">
+          <div className="text-center mt-8">
             <Link to="/packs">
               <Button size="lg" className="bg-case-red hover:bg-red-600 text-white font-bold px-8 py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 Ver Todos os Packs

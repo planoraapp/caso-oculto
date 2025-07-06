@@ -137,6 +137,42 @@ export type Database = {
         }
         Relationships: []
       }
+      packs: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          difficulty: string
+          id: string
+          image: string | null
+          name: string
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description: string
+          difficulty?: string
+          id: string
+          image?: string | null
+          name: string
+          price?: number
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          difficulty?: string
+          id?: string
+          image?: string | null
+          name?: string
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       payment_sessions: {
         Row: {
           created_at: string

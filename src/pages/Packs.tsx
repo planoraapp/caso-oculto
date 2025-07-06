@@ -23,14 +23,14 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   const [isComboModalOpen, setIsComboModalOpen] = useState(false);
   const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const ownedPackIds = getUserPacks(user.id);
+  const ownedPackIds = getUserPacks(user?.id || '');
   const {
     paymentStatus,
     createPaymentSession,
     showPaymentStatus,
     closePaymentStatus,
     simulatePaymentConfirmation
-  } = usePaymentStatus(user.id);
+  } = usePaymentStatus(user?.id || '');
 
   const regularPacks = useMemo(() => packs.filter(p => !['combo', 'complete'].includes(p.category)), []);
   const specialPacks = useMemo(() => packs.filter(p => ['combo', 'complete'].includes(p.category)), []);
@@ -42,15 +42,17 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   }, [ownedPackIds]);
 
   const handlePurchaseClick = useCallback(async (pack: any) => {
-    if (isLoading) return;
+    if (isLoading || !user) return;
     setIsLoading(true);
+    
     try {
       // Use the individual pack preference ID
       setCheckoutPreferenceId('184163814-ebfc1885-acbb-4a9f-89d9-481e569b15b6');
       
       // Store the selected pack for later confirmation
-      localStorage.setItem(`selectedPack_${user?.id}`, JSON.stringify(pack));
+      localStorage.setItem(`selectedPack_${user.id}`, JSON.stringify(pack));
       
+      // Simulate payment success after 3 seconds
       setTimeout(() => {
         showPaymentStatus('approved', pack.name);
         setCheckoutPreferenceId(null);
@@ -63,19 +65,22 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   }, [showPaymentStatus, isLoading, user]);
 
   const handleComboClick = useCallback(() => {
+    if (!user) return;
     setIsComboModalOpen(true);
-  }, []);
+  }, [user]);
 
   const handlePurchaseCombo = useCallback(async (selectedPackIds: string[]) => {
-    if (isLoading) return;
+    if (isLoading || !user) return;
     setIsLoading(true);
+    
     try {
       // Use the combo preference ID
       setCheckoutPreferenceId('184163814-186d6326-c239-4676-b240-fac644c29f0e');
       
       // Store the selected packs for later confirmation
-      localStorage.setItem(`selectedCombo_${user?.id}`, JSON.stringify(selectedPackIds));
+      localStorage.setItem(`selectedCombo_${user.id}`, JSON.stringify(selectedPackIds));
       
+      // Simulate payment success after 3 seconds
       setTimeout(() => {
         showPaymentStatus('approved', 'Combo 5 Packs');
         setCheckoutPreferenceId(null);
@@ -88,12 +93,14 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   }, [showPaymentStatus, isLoading, user]);
 
   const handleCompletePurchase = useCallback(async () => {
-    if (isLoading) return;
+    if (isLoading || !user) return;
     setIsLoading(true);
+    
     try {
       // Use the complete access preference ID
       setCheckoutPreferenceId('184163814-b6e81aba-f60e-4256-8a73-2658243e4259');
       
+      // Simulate payment success after 3 seconds
       setTimeout(() => {
         showPaymentStatus('approved', 'Acesso Total');
         setCheckoutPreferenceId(null);
@@ -103,7 +110,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [showPaymentStatus, isLoading]);
+  }, [showPaymentStatus, isLoading, user]);
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -176,11 +183,11 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                       </div>
                       <Button 
                         onClick={handleComboClick} 
-                        disabled={isLoading} 
+                        disabled={isLoading || !user} 
                         className="w-full bg-case-red hover:bg-red-600 text-white disabled:opacity-50 text-sm md:text-base"
                       >
                         <ShoppingCart className="h-4 w-4 mr-2" />
-                        Montar Combo
+                        {!user ? 'Faça login para comprar' : 'Montar Combo'}
                       </Button>
                     </div>
                   </div>
@@ -213,11 +220,11 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                       </div>
                       <Button 
                         onClick={handleCompletePurchase} 
-                        disabled={isLoading} 
+                        disabled={isLoading || !user} 
                         className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold disabled:opacity-50 text-sm md:text-base"
                       >
                         <ShoppingCart className="h-4 w-4 mr-2" />
-                        Comprar Acesso Total
+                        {!user ? 'Faça login para comprar' : 'Comprar Acesso Total'}
                       </Button>
                     </div>
                   </div>
@@ -225,7 +232,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
               </Card>
             </div>
 
-            {/* Mercado Pago Security Message */}
+            {/* Mercado Pago Security Message - Logo maior */}
             <div className="text-center mt-8">
               <p className="text-case-white/80 text-sm mb-4">
                 Sua compra é segura com a:
@@ -233,7 +240,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
               <img 
                 src="/lovable-uploads/47a1e5b5-9595-489c-b0ec-bfc2a17f5fe8.png" 
                 alt="Mercado Pago" 
-                className="mx-auto h-12 object-contain"
+                className="mx-auto h-20 object-contain"
               />
             </div>
           </motion.div>

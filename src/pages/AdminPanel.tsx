@@ -11,6 +11,7 @@ import { useToast } from '../hooks/use-toast';
 import { Users, Package, AlertTriangle, Mail, Edit, Check, X, Percent, UserCheck } from 'lucide-react';
 import CouponManager from '../components/CouponManager';
 import AffiliateManager from '../components/AffiliateManager';
+import PackManager from '../components/PackManager';
 
 interface User {
   id: string;
@@ -189,14 +190,14 @@ const AdminPanel: React.FC<{ user: any }> = ({ user }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium flex items-center justify-center">
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-case-white text-xl">Carregando painel administrativo...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
+    <div className="min-h-screen bg-gray-900">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-anton text-case-white mb-2">
@@ -206,8 +207,9 @@ const AdminPanel: React.FC<{ user: any }> = ({ user }) => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-noir-dark">
+          <TabsList className="grid w-full grid-cols-6 bg-noir-dark">
             <TabsTrigger value="overview" className="text-case-white">Visão Geral</TabsTrigger>
+            <TabsTrigger value="packs" className="text-case-white">Packs</TabsTrigger>
             <TabsTrigger value="refunds" className="text-case-white">Devoluções</TabsTrigger>
             <TabsTrigger value="users" className="text-case-white">Usuários</TabsTrigger>
             <TabsTrigger value="coupons" className="text-case-white">Cupons</TabsTrigger>
@@ -271,6 +273,10 @@ const AdminPanel: React.FC<{ user: any }> = ({ user }) => {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="packs">
+            <PackManager />
           </TabsContent>
 
           <TabsContent value="refunds">
