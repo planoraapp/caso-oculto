@@ -148,9 +148,11 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                     {purchases.map((purchase) => (
                       <div key={purchase.id} className="flex items-center justify-between p-4 bg-noir-medium rounded-lg">
                         <div className="flex-1">
-                          <h4 className="font-semibold text-case-white">{purchase.packName}</h4>
+                          <h4 className="font-semibold text-case-white">
+                            {purchase.packName || `Pack ${purchase.packId}`}
+                          </h4>
                           <p className="text-sm text-case-white/60">
-                            {new Date(purchase.purchased_at).toLocaleDateString('pt-BR')}
+                            {new Date(purchase.purchased_at || purchase.purchaseDate).toLocaleDateString('pt-BR')}
                           </p>
                         </div>
                         <div className="flex items-center gap-3">
@@ -159,10 +161,10 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                               Pago
                             </Badge>
                             <p className="text-sm text-case-white/60 mt-1">
-                              R$ {purchase.price_paid.toFixed(2)}
+                              R$ {(purchase.price_paid || purchase.price).toFixed(2)}
                             </p>
                           </div>
-                          {canRequestRefund(purchase.purchased_at) && (
+                          {canRequestRefund(purchase.purchased_at || purchase.purchaseDate) && (
                             <Button
                               size="sm"
                               variant="outline"

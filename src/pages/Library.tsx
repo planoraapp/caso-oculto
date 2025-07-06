@@ -74,7 +74,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
                 <Link to={`/pack/${pack.id}`} className="block">
                   <div 
                     className="h-48 bg-cover bg-center relative"
-                    style={{ backgroundImage: `url(${pack.coverUrl})` }}
+                    style={{ backgroundImage: `url(${pack.image})` }}
                   >
                     <div className="absolute inset-0 gradient-overlay" />
                     <div className="absolute bottom-4 left-4 right-4">
