@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -102,7 +101,7 @@
   color: #f8fafc;
 }
 
-/* Logo Neon Effects */
+/* Logo Neon Effects - Reduced intensity */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
 .logo-neon {
@@ -110,33 +109,33 @@
   font-weight: 900;
   color: #dc2626;
   text-shadow: 
-    0 0 5px #dc2626,
-    0 0 10px #dc2626,
-    0 0 15px #dc2626,
-    0 0 20px #dc2626,
-    0 0 35px #dc2626,
-    0 0 40px #dc2626;
+    0 0 3px #dc2626,
+    0 0 6px #dc2626,
+    0 0 9px #dc2626,
+    0 0 12px #dc2626,
+    0 0 18px #dc2626,
+    0 0 22px #dc2626;
   animation: neon-pulse 2s ease-in-out infinite alternate;
 }
 
 @keyframes neon-pulse {
   from {
     text-shadow: 
-      0 0 5px #dc2626,
-      0 0 10px #dc2626,
-      0 0 15px #dc2626,
-      0 0 20px #dc2626,
-      0 0 35px #dc2626,
-      0 0 40px #dc2626;
+      0 0 3px #dc2626,
+      0 0 6px #dc2626,
+      0 0 9px #dc2626,
+      0 0 12px #dc2626,
+      0 0 18px #dc2626,
+      0 0 22px #dc2626;
   }
   to {
     text-shadow: 
-      0 0 2px #dc2626,
+      0 0 1px #dc2626,
+      0 0 3px #dc2626,
       0 0 5px #dc2626,
       0 0 8px #dc2626,
       0 0 12px #dc2626,
-      0 0 18px #dc2626,
-      0 0 25px #dc2626;
+      0 0 15px #dc2626;
   }
 }
 
@@ -153,7 +152,7 @@
     opacity: 1;
   }
   20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
-    opacity: 0.4;
+    opacity: 0.6;
   }
 }
 
@@ -162,7 +161,7 @@
     opacity: 1;
   }
   51%, 60% {
-    opacity: 0.2;
+    opacity: 0.4;
   }
 }
 

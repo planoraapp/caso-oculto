@@ -209,13 +209,30 @@ export const packs: Pack[] = [
   }
 ];
 
+// Auto-assign all packs to these accounts
+const AUTO_ASSIGN_EMAILS = ['appplanora@gmail.com', 'conectawebapps@outlook.com'];
+
 export const getPackById = (id: string): Pack | undefined => {
   return packs.find(pack => pack.id === id);
 };
 
+// Function to get user's purchased packs
 export const getUserPacks = (userId: string): string[] => {
-  const purchases = localStorage.getItem(`user_${userId}_packs`);
-  return purchases ? JSON.parse(purchases) : [];
+  const userEmail = getCurrentUserEmail(userId);
+  
+  // Auto-assign all packs to specified accounts
+  if (AUTO_ASSIGN_EMAILS.includes(userEmail)) {
+    return packs.map(pack => pack.id);
+  }
+  
+  const purchases = JSON.parse(localStorage.getItem('userPurchases') || '{}');
+  return purchases[userId] || [];
+};
+
+// Helper function to get current user email
+const getCurrentUserEmail = (userId: string): string => {
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  return currentUser.email || '';
 };
 
 export const purchasePack = (userId: string, packId: string, pricePaid: number, transactionId?: string): boolean => {

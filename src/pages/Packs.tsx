@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Star, Users, Zap } from 'lucide-react';
@@ -119,7 +118,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
             <h2 className="text-2xl font-bold text-case-white mb-8 text-center">Ofertas Especiais</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {/* Combo Pack */}
-              <Card className="bg-gradient-to-br from-case-red/20 to-case-red/5 border-case-red/50 hover:border-case-red transition-all duration-300">
+              <Card className="bg-gradient-to-br from-noir-dark to-noir-medium border-case-red/50 hover:border-case-red transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <Badge className="bg-case-red text-white">COMBO</Badge>
@@ -162,7 +161,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
               </Card>
 
               {/* Pack Completo */}
-              <Card className="bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-yellow-500/50 hover:border-yellow-500 transition-all duration-300">
+              <Card className="bg-gradient-to-br from-noir-dark to-noir-medium border-yellow-500/50 hover:border-yellow-500 transition-all duration-300">
                 <CardHeader>
                   <Badge className="bg-yellow-500 text-black w-fit">COMPLETO</Badge>
                   <CardTitle className="text-case-white text-xl">Acesso Total</CardTitle>

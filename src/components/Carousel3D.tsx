@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -83,30 +82,7 @@ const Carousel3D: React.FC = () => {
   const visiblePacks = getVisiblePacks();
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto mb-12">
-      {/* Desktop Navigation */}
-      <div className="carousel-nav-desktop -left-20">
-        <button
-          onClick={prevSlide}
-          disabled={isLoading}
-          className="bg-white text-black p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Pack anterior"
-        >
-          <ChevronLeft className="h-6 w-6" />
-        </button>
-      </div>
-
-      <div className="carousel-nav-desktop -right-20">
-        <button
-          onClick={nextSlide}
-          disabled={isLoading}
-          className="bg-white text-black p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Próximo pack"
-        >
-          <ChevronRight className="h-6 w-6" />
-        </button>
-      </div>
-
+    <div className="relative w-full max-w-6xl mx-auto mb-8">
       {/* Cards do carrossel com efeito 3D */}
       <div className="flex items-center justify-center mb-8" style={{ perspective: '1000px' }}>
         <AnimatePresence mode="wait">
@@ -153,8 +129,8 @@ const Carousel3D: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* Mobile Navigation */}
-      <div className="carousel-nav-mobile">
+      {/* Navigation buttons below the packs */}
+      <div className="flex justify-center space-x-4 mb-6">
         <button
           onClick={prevSlide}
           disabled={isLoading}

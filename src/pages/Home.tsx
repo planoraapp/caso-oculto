@@ -22,7 +22,7 @@ const Home: React.FC = () => {
           </div>
 
           {/* Featured Packs Carousel */}
-          <div className="mb-16">
+          <div className="mb-8">
             <h2 className="text-2xl lg:text-3xl font-anton text-case-white text-center mb-8">
               Packs em Destaque
             </h2>
