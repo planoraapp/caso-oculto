@@ -67,6 +67,10 @@
  
     --ring: 212.7 26.8% 83.9%;
   }
+
+  body {
+    background-color: #0c143f;
+  }
 }
  
 @layer base {
@@ -78,6 +82,7 @@
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
+    background-color: #0c143f !important;
   }
 }
 

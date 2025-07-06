@@ -43,9 +43,6 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     
     setIsLoading(true);
     
-    // Create Mercado Pago checkout URL
-    const checkoutUrl = `https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js?preference-id=${MERCADOPAGO_LINKS.individual}`;
-    
     // Open in new tab
     window.open(`https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${MERCADOPAGO_LINKS.individual}`, '_blank');
     
@@ -83,7 +80,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   }, [isLoading]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
+    <div className="min-h-screen" style={{ backgroundColor: '#0c143f' }}>
       <div className="pt-20 px-4 pb-8">
         <div className="container mx-auto max-w-7xl">
           {/* Header */}

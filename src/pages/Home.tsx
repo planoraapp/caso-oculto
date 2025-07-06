@@ -2,18 +2,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Play, Star, Users, Trophy } from 'lucide-react';
-import { t } from '../data/translations';
+import { Play } from 'lucide-react';
 import Carousel3D from '../components/Carousel3D';
 import SiteFooter from '../components/SiteFooter';
 
 const Home: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-noir-black via-noir-dark to-noir-medium">
+    <div className="min-h-screen" style={{ backgroundColor: '#0c143f' }}>
       {/* Hero Section */}
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent z-10"></div>
-        
         <div className="container mx-auto relative z-20 px-0">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-anton text-4xl md:text-6xl lg:text-7xl text-case-white mb-6 leading-tight">
@@ -61,11 +58,8 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer with seamless transition */}
-      <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-noir-medium to-gray-900 h-32 z-10"></div>
-        <SiteFooter />
-      </div>
+      {/* Footer */}
+      <SiteFooter />
     </div>
   );
 };
