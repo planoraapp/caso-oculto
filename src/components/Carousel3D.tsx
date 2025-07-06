@@ -63,10 +63,19 @@ const Carousel3D: React.FC = () => {
     }
   };
 
+  const getVisiblePacks = () => {
+    const visible = [];
+    for (let i = 0; i < 3; i++) {
+      const index = (currentIndex + i) % featuredPacks.length;
+      visible.push({ pack: featuredPacks[index], position: i });
+    }
+    return visible;
+  };
+
   return (
-    <div className="relative w-full max-w-6xl mx-auto">
-      <div className="flex items-center justify-center space-x-2 mb-8">
-        {/* Botão anterior - agora preenchido e branco */}
+    <div className="relative w-full max-w-6xl mx-auto perspective-1000">
+      <div className="flex items-center justify-center space-x-8 mb-8">
+        {/* Botão anterior - branco preenchido */}
         <button
           onClick={prevSlide}
           className="bg-white text-black p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10"
@@ -74,17 +83,40 @@ const Carousel3D: React.FC = () => {
           <ChevronLeft className="h-6 w-6" />
         </button>
 
-        {/* Cards do carrossel - menos espaçados */}
-        <div className="flex space-x-4 overflow-hidden">
+        {/* Cards do carrossel com efeito 3D */}
+        <div className="relative flex items-center justify-center" style={{ perspective: '1000px' }}>
           <AnimatePresence mode="wait">
-            {featuredPacks.slice(currentIndex, currentIndex + 3).map((pack, index) => (
+            {getVisiblePacks().map(({ pack, position }, index) => (
               <motion.div
-                key={pack.id}
-                initial={{ opacity: 0, x: 300 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -300 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="w-80 flex-shrink-0"
+                key={`${pack.id}-${position}`}
+                initial={{ 
+                  opacity: 0,
+                  rotateY: position === 0 ? -45 : position === 2 ? 45 : 0,
+                  scale: position === 1 ? 1.1 : 0.8,
+                  z: position === 1 ? 50 : 0
+                }}
+                animate={{ 
+                  opacity: position === 1 ? 1 : 0.6,
+                  rotateY: position === 0 ? -25 : position === 2 ? 25 : 0,
+                  scale: position === 1 ? 1.1 : 0.85,
+                  z: position === 1 ? 50 : 0,
+                  x: position === 0 ? -120 : position === 2 ? 120 : 0
+                }}
+                exit={{ 
+                  opacity: 0,
+                  rotateY: position === 0 ? -45 : position === 2 ? 45 : 0,
+                  scale: 0.8
+                }}
+                transition={{ 
+                  duration: 0.6, 
+                  ease: "easeInOut",
+                  delay: index * 0.1 
+                }}
+                className="absolute w-80 flex-shrink-0"
+                style={{
+                  transformStyle: 'preserve-3d',
+                  zIndex: position === 1 ? 10 : 5
+                }}
               >
                 <PackCard
                   pack={pack}
@@ -97,7 +129,7 @@ const Carousel3D: React.FC = () => {
           </AnimatePresence>
         </div>
 
-        {/* Botão próximo - agora preenchido e branco */}
+        {/* Botão próximo - branco preenchido */}
         <button
           onClick={nextSlide}
           className="bg-white text-black p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10"

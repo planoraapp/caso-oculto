@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import Logo from './Logo';
+import NeonLogo from './NeonLogo';
 import { Menu, User, ShoppingBag, Library, Home } from 'lucide-react';
 
 interface NavigationProps {
@@ -23,13 +23,16 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
 
   const filteredNavItems = navItems.filter(item => !item.requireAuth || user);
 
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.location.href = '/';
+  };
+
   return (
     <nav className="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center">
-            <Logo />
-          </Link>
+          <NeonLogo onClick={handleLogoClick} />
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">

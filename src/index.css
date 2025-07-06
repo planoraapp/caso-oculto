@@ -59,7 +59,7 @@
     min-height: 100vh;
   }
 
-  /* Neon logo effect with flickering LEDs */
+  /* Neon logo effect with flickering letters */
   .logo-neon {
     font-family: 'Anton', sans-serif;
     letter-spacing: 0.05em;
@@ -126,6 +126,11 @@
 
   .flip-card-back {
     transform: rotateY(180deg);
+  }
+
+  /* 3D Carousel perspective utility */
+  .perspective-1000 {
+    perspective: 1000px;
   }
 
   /* Scrollbar styling for dark theme */

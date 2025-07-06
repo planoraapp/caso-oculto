@@ -7,10 +7,10 @@ const SiteFooter: React.FC = () => {
       <style>{`
         .site-footer {
           position: relative;
-          height: 250px;
-          background-image: url('https://storage.googleapis.com/gemini-prod/images/420a8118-2c40-4c7b-9c71-c0e863152701');
+          height: 300px;
+          background-image: url('/lovable-uploads/854e76ba-1423-4b2a-bf59-2f1394558793.png');
           background-size: cover;
-          background-position: center 80%;
+          background-position: center;
           overflow: hidden;
         }
 
@@ -39,6 +39,27 @@ const SiteFooter: React.FC = () => {
           z-index: 2;
         }
 
+        .copyright-text {
+          position: absolute;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          color: white;
+          font-weight: 600;
+          font-size: 16px;
+          text-shadow: 
+            -2px -2px 0 #000,  
+            2px -2px 0 #000,
+            -2px  2px 0 #000,
+             2px  2px 0 #000,
+             0 -2px 0 #000,
+             0  2px 0 #000,
+            -2px  0 0 #000,
+             2px  0 0 #000;
+          z-index: 10;
+          text-align: center;
+        }
+
         @keyframes rain {
           0% { background-position: 0% 0%; }
           100% { background-position: 20% 100%; }
@@ -46,11 +67,19 @@ const SiteFooter: React.FC = () => {
 
         @media (max-width: 768px) {
           .site-footer {
-            height: 200px;
-            background-position: 30% bottom;
+            height: 250px;
+            background-position: center;
+          }
+          
+          .copyright-text {
+            font-size: 14px;
           }
         }
       `}</style>
+      
+      <div className="copyright-text">
+        2025® - CASO OCULTO. Todos os direitos reservados.
+      </div>
     </footer>
   );
 };
