@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Star, Users, Zap } from 'lucide-react';
@@ -238,7 +237,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                 Sua compra é segura com a:
               </p>
               <img 
-                src="/lovable-uploads/47a1e5b5-9595-489c-b0ec-bfc2a17f5fe8.png" 
+                src="/lovable-uploads/8a513714-34eb-49ec-b837-6e3bb5e273e1.png" 
                 alt="Mercado Pago" 
                 className="mx-auto h-24 object-contain"
               />

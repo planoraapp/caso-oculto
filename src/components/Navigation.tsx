@@ -51,6 +51,14 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
               >
                 Packs
               </Link>
+              <Link 
+                to="/terms" 
+                className={`text-case-white hover:text-case-red transition-colors ${
+                  isActive('/terms') ? 'text-case-red' : ''
+                }`}
+              >
+                Termos
+              </Link>
               
               {user && (
                 <Link 
@@ -159,6 +167,17 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
               >
                 <Package className="h-5 w-5" />
                 Packs
+              </Link>
+              
+              <Link 
+                to="/terms" 
+                onClick={closeMobileMenu}
+                className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                  isActive('/terms') ? 'bg-case-red text-white' : 'text-case-white hover:bg-noir-medium'
+                }`}
+              >
+                <Settings className="h-5 w-5" />
+                Termos e Políticas
               </Link>
               
               {user && (

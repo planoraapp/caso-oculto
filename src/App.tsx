@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -14,6 +13,7 @@ import PackView from "./pages/PackView";
 import Library from "./pages/Library";
 import Account from "./pages/Account";
 import AdminPanel from "./pages/AdminPanel";
+import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,7 +42,7 @@ const AppContent = () => {
     localStorage.removeItem('currentUser');
   };
 
-  const showFooter = ['/', '/packs', '/library'].includes(location.pathname);
+  const showFooter = ['/', '/packs', '/library', '/terms'].includes(location.pathname);
 
   if (loading) {
     return (
@@ -65,6 +65,7 @@ const AppContent = () => {
         />
         <Route path="/packs" element={<Packs user={user} />} />
         <Route path="/pack/:id" element={<PackView user={user} />} />
+        <Route path="/terms" element={<Terms />} />
         <Route 
           path="/library" 
           element={
