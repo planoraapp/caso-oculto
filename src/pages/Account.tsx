@@ -1,10 +1,12 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { LogOut, Calendar, ShoppingBag } from 'lucide-react';
+import { LogOut, Calendar, ShoppingBag, RotateCcw, Mail } from 'lucide-react';
 import { getUserPurchases } from '../data/packs';
+import { supabase } from '../integrations/supabase/client';
+import { useToast } from '../hooks/use-toast';
 
 interface AccountProps {
   user: any;
@@ -12,8 +14,66 @@ interface AccountProps {
 }
 
 const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
-  const purchases = getUserPurchases(user.id);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  
+  // Add a sample purchase for demonstration
+  const samplePurchases = [
+    {
+      id: 'sample_1',
+      packId: 'pack1',
+      packName: 'Sombras da Noite',
+      price_paid: 14.80,
+      purchased_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
+      transactionId: 'mp_sample_123',
+      type: 'individual'
+    }
+  ];
+  
+  const purchases = [...getUserPurchases(user.id), ...samplePurchases];
   const totalPurchases = purchases.length;
+
+  const handleRefundRequest = async (purchase: any) => {
+    if (isLoading) return;
+    
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.functions.invoke('send-refund-notification', {
+        body: {
+          userEmail: user.email,
+          packId: purchase.packId,
+          reason: 'Solicitação de devolução via conta do usuário'
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Solicitação Enviada!",
+        description: "Sua solicitação de devolução foi enviada ao administrador. O pack ficará indisponível após a aprovação.",
+      });
+    } catch (error) {
+      console.error('Erro ao solicitar devolução:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao enviar solicitação de devolução",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleContactSupport = () => {
+    const subject = encodeURIComponent('Dúvida sobre compra - CASO OCULTO');
+    const body = encodeURIComponent(`Olá,\n\nTenho uma dúvida sobre minha compra.\n\nUsuário: ${user.email}\n\nDescreva sua dúvida aqui...\n\nObrigado!`);
+    window.open(`mailto:conectawebapps@outlook.com?subject=${subject}&body=${body}`);
+  };
+
+  const canRequestRefund = (purchaseDate: string) => {
+    const daysSincePurchase = Math.floor((Date.now() - new Date(purchaseDate).getTime()) / (1000 * 60 * 60 * 24));
+    return daysSincePurchase <= 7;
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 pt-20 px-4">
@@ -58,30 +118,25 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
             </Card>
           </div>
 
-          {/* Estatísticas e Histórico */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Estatísticas */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card className="bg-noir-dark border-noir-medium">
-                <CardContent className="p-6">
+          {/* Histórico de Compras */}
+          <div className="lg:col-span-2">
+            <Card className="bg-noir-dark border-noir-medium">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-case-white">Histórico de Compras</CardTitle>
+                    <CardDescription className="text-case-white/60">
+                      Seus packs adquiridos recentemente
+                    </CardDescription>
+                  </div>
                   <div className="flex items-center gap-4">
                     <ShoppingBag className="h-8 w-8 text-case-red" />
-                    <div>
+                    <div className="text-right">
                       <p className="text-2xl font-bold text-case-white">{totalPurchases}</p>
                       <p className="text-sm text-case-white/60">Total de Compras</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Histórico de Compras */}
-            <Card className="bg-noir-dark border-noir-medium">
-              <CardHeader>
-                <CardTitle className="text-case-white">Histórico de Compras</CardTitle>
-                <CardDescription className="text-case-white/60">
-                  Seus packs adquiridos recentemente
-                </CardDescription>
+                </div>
               </CardHeader>
               <CardContent>
                 {purchases.length === 0 ? (
@@ -102,16 +157,41 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                             {new Date(purchase.purchased_at).toLocaleDateString('pt-BR')}
                           </p>
                         </div>
-                        <div className="text-right">
-                          <Badge variant="outline" className="border-green-500 text-green-500">
-                            Pago
-                          </Badge>
-                          <p className="text-sm text-case-white/60 mt-1">
-                            R$ {purchase.price_paid.toFixed(2)}
-                          </p>
+                        <div className="flex items-center gap-3">
+                          <div className="text-right">
+                            <Badge variant="outline" className="border-green-500 text-green-500">
+                              Pago
+                            </Badge>
+                            <p className="text-sm text-case-white/60 mt-1">
+                              R$ {purchase.price_paid.toFixed(2)}
+                            </p>
+                          </div>
+                          {canRequestRefund(purchase.purchased_at) && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleRefundRequest(purchase)}
+                              disabled={isLoading}
+                              className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white"
+                            >
+                              <RotateCcw className="h-4 w-4 mr-1" />
+                              Devolver
+                            </Button>
+                          )}
                         </div>
                       </div>
                     ))}
+                    
+                    <div className="mt-6 pt-4 border-t border-noir-medium">
+                      <Button
+                        onClick={handleContactSupport}
+                        variant="outline"
+                        className="w-full border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Dúvidas sobre compras? Entre em contato
+                      </Button>
+                    </div>
                   </div>
                 )}
               </CardContent>
