@@ -259,6 +259,46 @@ export const packs: Pack[] = [
   }
 ];
 
+export const getUserPacks = (userId: string): string[] => {
+  const purchases = JSON.parse(localStorage.getItem(`purchases_${userId}`) || '[]');
+  
+  // Grant admin full access to all packs
+  const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  if (user.email === 'conectawebapps@outlook.com') {
+    return packs.map(pack => pack.id);
+  }
+  
+  return purchases;
+};
+
+export const getPackById = (packId: string): Pack | undefined => {
+  return packs.find(pack => pack.id === packId);
+};
+
+export const getUserProgress = (userId: string, cardId: string): boolean => {
+  const progress = JSON.parse(localStorage.getItem(`progress_${userId}`) || '{}');
+  return progress[cardId] || false;
+};
+
+export const getUserPurchases = (userId: string): Array<{
+  id: string;
+  packName: string;
+  purchased_at: string;
+  price_paid: number;
+}> => {
+  const purchases = getUserPacks(userId);
+  
+  return purchases.map(packId => {
+    const pack = getPackById(packId);
+    return {
+      id: packId,
+      packName: pack?.name || 'Pack Desconhecido',
+      purchased_at: new Date().toISOString(),
+      price_paid: pack?.price || 0
+    };
+  });
+};
+
 export const purchasePack = (userId: string, packId: string, price: number, transactionId: string) => {
   const purchases = JSON.parse(localStorage.getItem(`purchases_${userId}`) || '[]');
   if (!purchases.includes(packId)) {
@@ -298,18 +338,6 @@ export const canRequestRefund = (userId: string, packId: string): boolean => {
   return (now - purchaseTimestamp) <= sevenDays;
 };
 
-// Update getUserPurchases to include admin access
-export const getUserPurchases = (userId: string): string[] => {
-  const purchases = JSON.parse(localStorage.getItem(`purchases_${userId}`) || '[]');
-  
-  // Grant admin full access to all packs
-  const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-  if (user.email === 'conectawebapps@outlook.com') {
-    return packs.map(pack => pack.id);
-  }
-  
-  return purchases;
-};
 export const MERCADOPAGO_LINKS = {
     individual: 'https://www.mercadopago.com.br/home',
     combo: 'https://www.mercadopago.com.br/home',

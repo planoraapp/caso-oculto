@@ -2,12 +2,18 @@
 import React from 'react';
 
 interface NeonLogoProps {
-  onClick: (e: React.MouseEvent) => void;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 const NeonLogo: React.FC<NeonLogoProps> = ({ onClick }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      onClick(e);
+    }
+  };
+
   return (
-    <a href="#" onClick={onClick} className="logo-neon text-2xl md:text-3xl">
+    <a href="#" onClick={handleClick} className="logo-neon text-2xl md:text-3xl">
       <span>C</span>
       <span>A</span>
       <span className="flicker-fast">S</span>
