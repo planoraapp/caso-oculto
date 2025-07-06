@@ -1,15 +1,17 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Play, Star, Users, Trophy } from 'lucide-react';
+import { Play } from 'lucide-react';
 import { t } from '../data/translations';
 import Carousel3D from '../components/Carousel3D';
 import SiteFooter from '../components/SiteFooter';
 
 const Home: React.FC = () => {
-  return <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
       {/* Hero Section */}
-      <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
+      <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent z-10"></div>
         
         <div className="container mx-auto px-4 relative z-20">
@@ -37,15 +39,12 @@ const Home: React.FC = () => {
                 </Button>
               </Link>
             </div>
-
-            {/* Stats Section */}
-            
           </div>
         </div>
       </div>
 
       {/* Featured Packs Section */}
-      <div className="py-16 bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
+      <div className="py-8">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-anton text-case-white mb-4">
@@ -69,7 +68,8 @@ const Home: React.FC = () => {
       </div>
       
       <SiteFooter />
-    </div>;
+    </div>
+  );
 };
 
 export default Home;

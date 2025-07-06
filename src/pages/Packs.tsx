@@ -9,10 +9,8 @@ import { Badge } from '../components/ui/badge';
 import PackCard from '../components/PackCard';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
-import MercadoPagoCheckout from '../components/MercadoPagoCheckout';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { packs } from '../data/packs';
-import { getUserPacks } from '../data/packs';
+import { packs, getUserPacks, purchaseCombo, MERCADOPAGO_LINKS } from '../data/packs';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
 
 interface PacksProps {
@@ -21,25 +19,17 @@ interface PacksProps {
 
 const Packs: React.FC<PacksProps> = ({ user }) => {
   const [isComboModalOpen, setIsComboModalOpen] = useState(false);
-  const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   
-  const ownedPackIds = getUserPacks(user.id);
+  const ownedPackIds = user ? getUserPacks(user.id) : [];
   const {
     paymentStatus,
-    createPaymentSession,
     showPaymentStatus,
-    closePaymentStatus,
-    simulatePaymentConfirmation
-  } = usePaymentStatus(user.id);
+    closePaymentStatus
+  } = usePaymentStatus(user?.id || '');
 
   const regularPacks = useMemo(() => 
     packs.filter(p => !['combo', 'complete'].includes(p.category)),
-    []
-  );
-  
-  const specialPacks = useMemo(() => 
-    packs.filter(p => ['combo', 'complete'].includes(p.category)),
     []
   );
 
@@ -49,34 +39,49 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     }
   }, [ownedPackIds]);
 
-  const handlePurchaseClick = useCallback(async (pack: any) => {
+  const handlePurchaseClick = useCallback((pack: any) => {
     if (isLoading) return;
     
     setIsLoading(true);
-    try {
-      const paymentType = pack.category === 'complete' ? 'complete' : 'individual';
-      const session = await createPaymentSession(pack.id, paymentType);
-      
-      if (session) {
-        setCheckoutPreferenceId(session.mercadopago_preference_id);
-        
-        setTimeout(() => {
-          simulatePaymentConfirmation(session.id, true).then(() => {
-            showPaymentStatus('approved', pack.name);
-            setCheckoutPreferenceId(null);
-          });
-        }, 3000);
-      }
-    } catch (error) {
-      console.error('Erro ao processar pagamento:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [createPaymentSession, simulatePaymentConfirmation, showPaymentStatus, isLoading]);
+    
+    // Create Mercado Pago checkout URL
+    const checkoutUrl = `https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js?preference-id=${MERCADOPAGO_LINKS.individual}`;
+    
+    // Open in new tab
+    window.open(`https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${MERCADOPAGO_LINKS.individual}`, '_blank');
+    
+    setIsLoading(false);
+  }, [isLoading]);
 
   const handleComboClick = useCallback(() => {
+    if (!user) {
+      // Redirect to login if not authenticated
+      window.location.href = '/login';
+      return;
+    }
     setIsComboModalOpen(true);
-  }, []);
+  }, [user]);
+
+  const handlePurchaseCombo = useCallback((selectedPackIds: string[]) => {
+    if (!user) return;
+    
+    // Store selected packs for combo purchase
+    localStorage.setItem(`pendingCombo_${user.id}`, JSON.stringify(selectedPackIds));
+    
+    // Open Mercado Pago checkout
+    window.open(`https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${MERCADOPAGO_LINKS.combo}`, '_blank');
+  }, [user]);
+
+  const handleCompleteAccess = useCallback(() => {
+    if (isLoading) return;
+    
+    setIsLoading(true);
+    
+    // Open Mercado Pago checkout for complete access
+    window.open(`https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${MERCADOPAGO_LINKS.complete}`, '_blank');
+    
+    setIsLoading(false);
+  }, [isLoading]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
@@ -185,7 +190,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                         <span className="text-xl md:text-2xl font-bold text-yellow-500">R$ 110,90</span>
                       </div>
                       <Button 
-                        onClick={() => handlePurchaseClick(specialPacks.find(p => p.category === 'complete')!)}
+                        onClick={handleCompleteAccess}
                         disabled={isLoading}
                         className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold disabled:opacity-50 text-sm md:text-base"
                       >
@@ -233,6 +238,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
           packs={packs}
           ownedPackIds={ownedPackIds}
           onClose={() => setIsComboModalOpen(false)}
+          onPurchaseCombo={handlePurchaseCombo}
         />
       )}
 
@@ -242,15 +248,6 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
         status={paymentStatus.status}
         packName={paymentStatus.packName}
       />
-
-      {checkoutPreferenceId && (
-        <MercadoPagoCheckout
-          preferenceId={checkoutPreferenceId}
-          onPaymentResult={(result) => {
-            console.log('Payment result:', result);
-          }}
-        />
-      )}
     </div>
   );
 };
