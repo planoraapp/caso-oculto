@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -7,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import SiteFooter from "./components/SiteFooter";
-import Index from "./pages/Index";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Packs from "./pages/Packs";
@@ -42,7 +40,7 @@ const AppContent = () => {
     localStorage.removeItem('currentUser');
   };
 
-  const showFooter = ['/', '/home', '/packs', '/library'].includes(location.pathname);
+  const showFooter = ['/', '/packs', '/library'].includes(location.pathname);
 
   if (loading) {
     return (
@@ -56,17 +54,11 @@ const AppContent = () => {
     <div className="min-h-screen bg-gray-900">
       <Navigation user={user} onLogout={handleLogout} />
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<Home />} />
         <Route 
           path="/login" 
           element={
-            user ? <Navigate to="/home" replace /> : <Login onLogin={handleLogin} />
-          } 
-        />
-        <Route 
-          path="/home" 
-          element={
-            user ? <Home /> : <Navigate to="/login" replace />
+            user ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />
           } 
         />
         <Route 
