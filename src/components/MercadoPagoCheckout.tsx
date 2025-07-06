@@ -11,6 +11,8 @@ const MercadoPagoCheckout: React.FC<MercadoPagoCheckoutProps> = ({
   onPaymentResult 
 }) => {
   useEffect(() => {
+    console.log('Initializing MercadoPago checkout with preference ID:', preferenceId);
+    
     // Remover script anterior se existir
     const existingScript = document.querySelector(`script[data-preference-id="${preferenceId}"]`);
     if (existingScript) {
@@ -28,6 +30,15 @@ const MercadoPagoCheckout: React.FC<MercadoPagoCheckoutProps> = ({
       (window as any).mpCallback = onPaymentResult;
     }
 
+    // Log quando o script é carregado
+    script.onload = () => {
+      console.log('MercadoPago script loaded successfully');
+    };
+
+    script.onerror = () => {
+      console.error('Error loading MercadoPago script');
+    };
+
     document.body.appendChild(script);
 
     return () => {
@@ -36,10 +47,21 @@ const MercadoPagoCheckout: React.FC<MercadoPagoCheckoutProps> = ({
       if (scriptToRemove) {
         scriptToRemove.remove();
       }
+      
+      // Remove callback
+      if ((window as any).mpCallback) {
+        delete (window as any).mpCallback;
+      }
     };
   }, [preferenceId, onPaymentResult]);
 
-  return null; // O botão é renderizado automaticamente pelo script do MP
+  return (
+    <div className="mercadopago-checkout-container">
+      <p className="text-case-white text-center mb-4">
+        Redirecionando para o checkout do Mercado Pago...
+      </p>
+    </div>
+  );
 };
 
 export default MercadoPagoCheckout;

@@ -15,6 +15,7 @@ export interface Pack {
   isFree: boolean;
   category: string;
   cards: Card[];
+  mercadoPagoId?: string; // ID único para tracking de pagamentos
 }
 
 export interface Purchase {
@@ -24,24 +25,26 @@ export interface Purchase {
   purchased_at: string;
   price_paid: number;
   packName?: string;
+  mercadoPagoTransactionId?: string;
 }
 
-// Links de checkout da InfinitePay
-export const INFINITEPAY_LINKS = {
-  individual: "https://checkout.infinitepay.io/conectawebapps?items=[{\"name\":\"Pack+individual+-+Caso+Oculto\",\"price\":1480,\"quantity\":1}]&redirect_url=https://caso-oculto-mist.lovable.app/",
-  combo: "https://checkout.infinitepay.io/conectawebapps?items=[{\"name\":\"Combo+5+Packs+-+Caso+Oculto\",\"price\":6140,\"quantity\":1}]&redirect_url=https://caso-oculto-mist.lovable.app/",
-  complete: "https://checkout.infinitepay.io/conectawebapps?items=[{\"name\":\"Pack+completo+-+Caso+Oculto\",\"price\":11090,\"quantity\":1}]&redirect_url=https://caso-oculto-mist.lovable.app/"
+// Links de checkout do Mercado Pago (corrigidos)
+export const MERCADOPAGO_LINKS = {
+  individual: "184163814-ebfc1885-acbb-4a9f-89d9-481e569b15b6",
+  combo: "184163814-186d6326-c239-4676-b240-fac644c29f0e",
+  complete: "184163814-b6e81aba-f60e-4256-8a73-2658243e4259"
 };
 
 export const packs: Pack[] = [
   {
-    id: 'amostra',
+    id: 'amostra-gratuita-001',
     name: 'Amostra Gratuita',
     description: 'Cinco mistérios para você experimentar o jogo',
     price: 0,
     coverUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=center',
     isFree: true,
     category: 'starter',
+    mercadoPagoId: 'free-sample-001',
     cards: [
       {
         id: '1',
@@ -81,93 +84,102 @@ export const packs: Pack[] = [
     ]
   },
   {
-    id: 'sombras-da-noite',
+    id: 'sombras-da-noite-002',
     name: 'Sombras da Noite',
     description: 'A escuridão esconde mais do que apenas o medo. Desvende 20 mistérios que só poderiam acontecer sob o manto da noite.',
     price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1531656230934-6041139385a3?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'horror',
+    mercadoPagoId: 'sombras-noite-002',
     cards: []
   },
   {
-    id: 'crimes-imperfeitos',
+    id: 'crimes-imperfeitos-003',
     name: 'Crimes Imperfeitos',
     description: 'Todo plano genial tem uma falha. Encontre o detalhe que desmascarou o culpado em 20 casos de crimes que quase deram certo.',
     price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1568219659398-01a45afe453a?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'crime',
+    mercadoPagoId: 'crimes-imperfeitos-003',
     cards: []
   },
   {
-    id: 'lendas-urbanas',
+    id: 'lendas-urbanas-004',
     name: 'Lendas Urbanas',
     description: 'Aquelas histórias que todos juram que aconteceram com um "amigo de um amigo". 20 enigmas baseados nos contos mais famosos do folclore moderno.',
     price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1597432128929-2ef2a3d01b1b?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'urban',
+    mercadoPagoId: 'lendas-urbanas-004',
     cards: []
   },
   {
-    id: 'paradoxos-mortais',
+    id: 'paradoxos-mortais-005',
     name: 'Paradoxos Mortais',
     description: 'Mortes que desafiam a lógica e a física. Prepare-se para 20 quebra-cabeças que vão torcer sua percepção da realidade.',
     price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1557989313-06b573584323?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'complex',
+    mercadoPagoId: 'paradoxos-mortais-005',
     cards: []
   },
   {
-    id: 'absurdamente-real',
+    id: 'absurdamente-real-006',
     name: 'Absurdamente Real',
     description: 'A vida real é mais estranha que a ficção. Investigue 20 casos baseados em acidentes e mortes tão bizarras que foram parar nas notícias.',
     price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1543373014-cfe4f4bc1cdf?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'humor',
+    mercadoPagoId: 'absurdamente-real-006',
     cards: []
   },
   {
-    id: 'beco-sem-saida',
+    id: 'beco-sem-saida-007',
     name: 'Beco Sem Saída',
     description: 'Vítimas encontradas em situações impossíveis, sem escapatória aparente. A solução está onde você menos espera.',
     price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'crime',
+    mercadoPagoId: 'beco-sem-saida-007',
     cards: []
   },
   {
-    id: 'sussurros-do-alem',
+    id: 'sussurros-do-alem-008',
     name: 'Sussurros do Além',
     description: 'Eventos que arrepiam a espinha e sugerem o sobrenatural. Foram fantasmas ou há uma explicação lógica para estes 20 contos de terror?',
     price: 14.80,
     coverUrl: 'https://images.unsplash.com/photo-1598335682342-72126a153303?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'supernatural',
+    mercadoPagoId: 'sussurros-do-alem-008',
     cards: []
   },
   {
-    id: 'combo-5-packs',
+    id: 'combo-5-packs-009',
     name: 'Combo 5 Packs',
     description: 'Combo especial com 5 packs de mistérios selecionados',
     price: 61.40,
     coverUrl: 'https://images.unsplash.com/photo-1518365642431-a2d5fb38af6c?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'combo',
+    mercadoPagoId: 'combo-5-packs-009',
     cards: []
   },
   {
-    id: 'pack-completo',
+    id: 'pack-completo-010',
     name: 'Pack Completo',
     description: 'Coleção completa com todos os casos e mistérios exclusivos',
     price: 110.90,
     coverUrl: 'https://images.unsplash.com/photo-1565008576475-23f9a8c0c6f0?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'complete',
+    mercadoPagoId: 'pack-completo-010',
     cards: []
   }
 ];
@@ -178,10 +190,10 @@ export const getPackById = (id: string): Pack | undefined => {
 
 export const getUserPacks = (userId: string): string[] => {
   const purchases = localStorage.getItem(`user_${userId}_packs`);
-  return purchases ? JSON.parse(purchases) : ['amostra'];
+  return purchases ? JSON.parse(purchases) : ['amostra-gratuita-001'];
 };
 
-export const purchasePack = (userId: string, packId: string, pricePaid: number): boolean => {
+export const purchasePack = (userId: string, packId: string, pricePaid: number, transactionId?: string): boolean => {
   try {
     const currentPacks = getUserPacks(userId);
     if (!currentPacks.includes(packId)) {
@@ -189,14 +201,15 @@ export const purchasePack = (userId: string, packId: string, pricePaid: number):
       localStorage.setItem(`user_${userId}_packs`, JSON.stringify(currentPacks));
     }
     
-    // Store purchase history
+    // Store purchase history with transaction ID
     const purchases = getUserPurchases(userId);
     const newPurchase: Purchase = {
       id: `purchase_${Date.now()}`,
       userId,
       packId,
       purchased_at: new Date().toISOString(),
-      price_paid: pricePaid
+      price_paid: pricePaid,
+      mercadoPagoTransactionId: transactionId
     };
     purchases.push(newPurchase);
     localStorage.setItem(`user_${userId}_purchases`, JSON.stringify(purchases));

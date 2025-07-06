@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
-import { purchasePack } from '@/data/packs';
+import { purchasePack, MERCADOPAGO_LINKS } from '@/data/packs';
 
 export const usePaymentStatus = (userId: string) => {
   const [paymentStatus, setPaymentStatus] = useState<{
@@ -23,9 +23,9 @@ export const usePaymentStatus = (userId: string) => {
   ) => {
     try {
       const preferenceIds = {
-        individual: '184163814-ebfc1885-acbb-4a9f-89d9-481e569b15b6',
-        combo: '184163814-186d6326-c239-4676-b240-fac644c29f0e',
-        complete: '184163814-b6e81aba-f60e-4256-8a73-2658243e4259'
+        individual: MERCADOPAGO_LINKS.individual,
+        combo: MERCADOPAGO_LINKS.combo,
+        complete: MERCADOPAGO_LINKS.complete
       };
 
       const { data, error } = await supabase
@@ -42,6 +42,8 @@ export const usePaymentStatus = (userId: string) => {
         .single();
 
       if (error) throw error;
+      
+      console.log('Payment session created:', data);
       return data;
     } catch (error) {
       console.error('Error creating payment session:', error);
@@ -99,21 +101,28 @@ export const usePaymentStatus = (userId: string) => {
       if (error) throw error;
 
       if (approved) {
-        // Adicionar pack(s) à biblioteca do usuário
+        // Adicionar pack(s) à biblioteca do usuário com ID de transação
+        const transactionId = `mp_${sessionId}_${Date.now()}`;
+        
         if (session.payment_type === 'combo' && session.selected_pack_ids) {
           session.selected_pack_ids.forEach(packId => {
-            purchasePack(userId, packId, 12.28); // Preço dividido
+            purchasePack(userId, packId, 12.28, transactionId); // Preço dividido
           });
         } else if (session.pack_id) {
           const price = session.payment_type === 'individual' ? 14.80 : 
                        session.payment_type === 'complete' ? 110.90 : 61.40;
-          purchasePack(userId, session.pack_id, price);
+          purchasePack(userId, session.pack_id, price, transactionId);
         }
 
         toast({
           title: "Pagamento Confirmado!",
           description: "Pack adicionado à sua biblioteca",
         });
+        
+        // Recarregar a página para atualizar o estado dos packs
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
 
       return newStatus;

@@ -59,10 +59,11 @@
     min-height: 100vh;
   }
 
-  /* Neon logo effect with flickering letters */
+  /* Neon logo effect with flickering letters - Century Gothic style */
   .logo-neon {
-    font-family: 'Anton', sans-serif;
-    letter-spacing: 0.05em;
+    font-family: 'Century Gothic', 'Futura', 'Trebuchet MS', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.1em;
     color: #fca5a5; /* red-200 */
     text-shadow:
         0 0 5px rgba(239, 68, 68, 0.6),

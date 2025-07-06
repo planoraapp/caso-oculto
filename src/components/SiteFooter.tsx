@@ -7,10 +7,10 @@ const SiteFooter: React.FC = () => {
       <style>{`
         .site-footer {
           position: relative;
-          height: 300px;
+          height: 400px;
           background-image: url('/lovable-uploads/854e76ba-1423-4b2a-bf59-2f1394558793.png');
           background-size: cover;
-          background-position: center;
+          background-position: center top;
           overflow: hidden;
         }
 
@@ -67,8 +67,8 @@ const SiteFooter: React.FC = () => {
 
         @media (max-width: 768px) {
           .site-footer {
-            height: 250px;
-            background-position: center;
+            height: 300px;
+            background-position: center top;
           }
           
           .copyright-text {
