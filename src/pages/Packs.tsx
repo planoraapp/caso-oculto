@@ -13,9 +13,11 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { packs } from '../data/packs';
 import { getUserPacks } from '../data/packs';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
+
 interface PacksProps {
   user: any;
 }
+
 const Packs: React.FC<PacksProps> = ({
   user
 }) => {
@@ -32,11 +34,13 @@ const Packs: React.FC<PacksProps> = ({
   } = usePaymentStatus(user.id);
   const regularPacks = useMemo(() => packs.filter(p => !['combo', 'complete'].includes(p.category)), []);
   const specialPacks = useMemo(() => packs.filter(p => ['combo', 'complete'].includes(p.category)), []);
+
   const handlePackClick = useCallback((pack: any) => {
     if (ownedPackIds.includes(pack.id)) {
       // Navigation handled by Link in PackCard
     }
   }, [ownedPackIds]);
+
   const handlePurchaseClick = useCallback(async (pack: any) => {
     if (isLoading) return;
     setIsLoading(true);
@@ -58,9 +62,32 @@ const Packs: React.FC<PacksProps> = ({
       setIsLoading(false);
     }
   }, [createPaymentSession, simulatePaymentConfirmation, showPaymentStatus, isLoading]);
+
+  const handlePurchaseCombo = useCallback(async (selectedPackIds: string[]) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      const session = await createPaymentSession(null, 'combo', selectedPackIds);
+      if (session) {
+        setCheckoutPreferenceId(session.mercadopago_preference_id);
+        setTimeout(() => {
+          simulatePaymentConfirmation(session.id, true).then(() => {
+            showPaymentStatus('approved', 'Combo 5 Packs');
+            setCheckoutPreferenceId(null);
+          });
+        }, 3000);
+      }
+    } catch (error) {
+      console.error('Erro ao processar pagamento do combo:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [createPaymentSession, simulatePaymentConfirmation, showPaymentStatus, isLoading]);
+
   const handleComboClick = useCallback(() => {
     setIsComboModalOpen(true);
   }, []);
+
   return <div className="min-h-screen bg-gradient-to-br from-noir-black via-noir-dark to-noir-medium">
       <div className="pt-20 px-4 pb-8">
         <div className="container mx-auto max-w-7xl">
@@ -208,13 +235,12 @@ const Packs: React.FC<PacksProps> = ({
       </div>
 
       {/* Modals */}
-      {isComboModalOpen && <ComboModal packs={packs} ownedPackIds={ownedPackIds} onClose={() => setIsComboModalOpen(false)} />}
-
-      
+      {isComboModalOpen && <ComboModal packs={packs} ownedPackIds={ownedPackIds} onClose={() => setIsComboModalOpen(false)} onPurchaseCombo={handlePurchaseCombo} />}
 
       {checkoutPreferenceId && <MercadoPagoCheckout preferenceId={checkoutPreferenceId} onPaymentResult={result => {
       console.log('Payment result:', result);
     }} />}
     </div>;
 };
+
 export default React.memo(Packs);
