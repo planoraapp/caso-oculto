@@ -446,7 +446,8 @@ export const purchasePack = (userId: string, packId: string, price: number, tran
     userId,
     packId,
     price,
-    purchaseDate: new Date().toISOString(),
+    price_paid: price,
+    purchased_at: new Date().toISOString(),
     transactionId
   };
   purchases.push(newPurchase);
