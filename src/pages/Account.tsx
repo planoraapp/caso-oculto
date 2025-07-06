@@ -25,6 +25,7 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
       id: 'sample_1',
       packId: 'sombras-da-noite',
       packName: 'Sombras da Noite',
+      price: 14.80,
       price_paid: 14.80,
       purchased_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
       transactionId: 'mp_sample_123',
@@ -152,7 +153,7 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                             {purchase.packName || `Pack ${purchase.packId}`}
                           </h4>
                           <p className="text-sm text-case-white/60">
-                            {new Date(purchase.purchased_at || purchase.purchaseDate).toLocaleDateString('pt-BR')}
+                            {new Date(purchase.purchased_at).toLocaleDateString('pt-BR')}
                           </p>
                         </div>
                         <div className="flex items-center gap-3">
@@ -161,10 +162,10 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                               Pago
                             </Badge>
                             <p className="text-sm text-case-white/60 mt-1">
-                              R$ {(purchase.price_paid || purchase.price).toFixed(2)}
+                              R$ {purchase.price_paid.toFixed(2)}
                             </p>
                           </div>
-                          {canRequestRefund(purchase.purchased_at || purchase.purchaseDate) && (
+                          {canRequestRefund(purchase.purchased_at) && (
                             <Button
                               size="sm"
                               variant="outline"

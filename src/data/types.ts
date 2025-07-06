@@ -27,10 +27,10 @@ export interface Purchase {
   userId: string;
   packId: string;
   packName?: string;
-  price: number;
-  price_paid?: number;
-  purchaseDate: string;
-  purchased_at?: string;
+  price?: number;
+  price_paid: number;
+  purchaseDate?: string;
+  purchased_at: string;
   transactionId: string;
   type?: string;
 }
