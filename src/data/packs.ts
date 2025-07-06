@@ -91,7 +91,7 @@ export const packs: Pack[] = [
     coverUrl: 'https://images.unsplash.com/photo-1531656230934-6041139385a3?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'horror',
-    mercadoPagoId: 'sombras-noite-002',
+    mercadoPagoId: MERCADOPAGO_LINKS.individual,
     cards: [
       {
         id: 'sn_1',
@@ -99,8 +99,35 @@ export const packs: Pack[] = [
         solution: 'O homem morreu durante um apagão. Ele acendeu as velas para se locomover, mas sofreu um ataque cardíaco. As luzes voltaram depois que ele morreu.',
         difficulty: 'medium',
         order: 1
+      },
+      {
+        id: 'sn_2',
+        mystery: 'Uma mulher acordou no meio da noite com um barulho estranho. Desceu as escadas e encontrou a porta da frente aberta e suas pegadas na lama, mas ela não se lembrava de ter saído.',
+        solution: 'Ela tinha sonambulismo. Durante a noite, saiu de casa caminhando enquanto dormia e voltou sem acordar.',
+        difficulty: 'easy',
+        order: 2
+      },
+      {
+        id: 'sn_3',
+        mystery: 'Um vigilante noturno encontrou um carro abandonado com o motor ligado e faróis acesos. Dentro havia uma xícara de café ainda quente, mas nenhum sinal do motorista.',
+        solution: 'O motorista teve uma emergência médica (derrame) e saiu confuso do carro. Foi encontrado horas depois andando desorientado nas proximidades.',
+        difficulty: 'medium',
+        order: 3
+      },
+      {
+        id: 'sn_4',
+        mystery: 'Moradores de um bairro relataram ver a mesma mulher de branco caminhando pela rua todas as noites às 2h. Quando se aproximavam, ela desaparecia.',
+        solution: 'Era uma vizinha com Alzheimer que saía de casa todas as noites procurando por seu marido falecido. Ela usava uma camisola branca e se escondia quando via pessoas.',
+        difficulty: 'hard',
+        order: 4
+      },
+      {
+        id: 'sn_5',
+        mystery: 'Um homem chegou em casa e encontrou todas as janelas abertas, apesar de ter certeza de que as havia fechado. Não havia sinais de arrombamento.',
+        solution: 'Sua esposa, que sofria de demência, havia aberto todas as janelas porque "sentia cheiro de gás", mas era uma alucinação causada pela doença.',
+        difficulty: 'medium',
+        order: 5
       }
-      // Mais cards seriam adicionados aqui
     ]
   },
   {
@@ -111,8 +138,44 @@ export const packs: Pack[] = [
     coverUrl: 'https://images.unsplash.com/photo-1568219659398-01a45afe453a?w=400&h=500&fit=crop&crop=center',
     isFree: false,
     category: 'crime',
-    mercadoPagoId: 'crimes-imperfeitos-003',
-    cards: []
+    mercadoPagoId: MERCADOPAGO_LINKS.individual,
+    cards: [
+      {
+        id: 'ci_1',
+        mystery: 'Um homem planejou o assassinato perfeito de sua esposa. Criou um álibi sólido, eliminou evidências e até contratou um detetive particular para "ajudar" a encontrar o assassino. Qual foi seu erro?',
+        solution: 'Ele sabia detalhes da cena do crime que só o assassino poderia saber, revelando-os inadvertidamente ao detetive durante as investigações.',
+        difficulty: 'hard',
+        order: 1
+      },
+      {
+        id: 'ci_2',
+        mystery: 'Uma mulher fingiu seu próprio sequestro para extorquir dinheiro do marido rico. Ela se escondeu na casa de uma amiga e enviou mensagens ameaçadoras. O que a entregou?',
+        solution: 'Ela esqueceu de desligar a localização no celular e as mensagens mostravam que ela estava sempre no mesmo local - a casa da amiga.',
+        difficulty: 'medium',
+        order: 2
+      },
+      {
+        id: 'ci_3',
+        mystery: 'Um funcionário do banco planejou um roubo interno perfeito, alterando registros e criando contas fantasmas. Trabalhou no plano por meses. Qual detalhe o traiu?',
+        solution: 'Ele sempre trabalhava até tarde nos dias que fazia as transferências ilegais. Os logs de acesso ao sistema mostraram um padrão claro.',
+        difficulty: 'medium',
+        order: 3
+      },
+      {
+        id: 'ci_4',
+        mystery: 'Um homem matou seu sócio e encenou um acidente de carro. Destruiu o carro, alterou a cena e tinha testemunhas do seu álibi. Mas um detalhe o condenou.',
+        solution: 'Ele disse à polícia que seu sócio estava dirigindo, mas as impressões digitais dele estavam no volante na posição de quem dirige, não de passageiro.',
+        difficulty: 'hard',
+        order: 4
+      },
+      {
+        id: 'ci_5',
+        mystery: 'Uma enfermeira matou pacientes usando insulina, fazendo parecer morte natural. Foi cuidadosa por anos. O que finalmente a expôs?',
+        solution: 'Ela sempre estava de plantão quando as mortes "súbitas" aconteciam. A análise estatística revelou que as mortes só ocorriam nos seus turnos.',
+        difficulty: 'hard',
+        order: 5
+      }
+    ]
   },
   {
     id: 'lendas-urbanas-004',

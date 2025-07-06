@@ -4,10 +4,12 @@ import { useParams, Link } from 'react-router-dom';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Lock, Eye, EyeOff } from 'lucide-react';
 import { t } from '../data/translations';
-import { getPackById, getUserPacks, getUserProgress, setCardSolved } from '../data/packs';
+import { getPackById, getUserPacks, getUserProgress, setCardSolved, MERCADOPAGO_LINKS } from '../data/packs';
 import FloatingFlipCard from '../components/FloatingFlipCard';
+import { GlareCard } from '../components/ui/glare-card';
+import { cn } from '../lib/utils';
 
 interface PackViewProps {
   user: any;
@@ -19,27 +21,12 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   
   const pack = id ? getPackById(id) : null;
   const userPacks = getUserPacks(user.id);
-  const hasAccess = pack && userPacks.includes(pack.id);
+  const hasAccess = pack && (pack.isFree || userPacks.includes(pack.id));
 
   if (!pack) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-case-white text-xl">Pack não encontrado</div>
-      </div>
-    );
-  }
-
-  if (!hasAccess) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-case-white text-xl mb-4">Você não possui este pack</div>
-          <Link to="/packs">
-            <Button className="bg-case-red hover:bg-red-600 text-white">
-              Voltar aos Packs
-            </Button>
-          </Link>
-        </div>
       </div>
     );
   }
@@ -63,8 +50,14 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     return (solvedCards.length / pack.cards.length) * 100;
   };
 
-  const handleCardClick = (card: any) => {
-    setSelectedCard(card);
+  const handleCardClick = (card: any, index: number) => {
+    // Primeiras 2 cartas são sempre gratuitas, ou se o usuário tem acesso completo
+    if (hasAccess || index < 2) {
+      setSelectedCard(card);
+    } else {
+      // Scroll para seção de desbloqueio
+      document.getElementById('unlock-section')?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleToggleSolved = () => {
@@ -74,6 +67,13 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
       // Force re-render
       setSelectedCard({...selectedCard});
     }
+  };
+
+  const getCardIcon = (index: number) => {
+    // Ícones temáticos baseados no tipo de caso
+    const icons = ['🔍', '💀', '🗝️', '👁️', '🌙', '🔪', '💰', '🚗', '🏠', '📞', 
+                   '⚡', '🔥', '💊', '🔫', '👻', '🎭', '⚰️', '🩸', '📝', '🔮'];
+    return icons[index] || '❓';
   };
 
   return (
@@ -105,69 +105,148 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
             
             <div className="flex-1">
               <p className="text-case-white/80 text-lg mb-4">{pack.description}</p>
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-case-white font-medium">{t('packView.progress')}</span>
-                  <span className="text-case-white text-sm">{Math.round(calculateProgress())}%</span>
+              {hasAccess && (
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-case-white font-medium">{t('packView.progress')}</span>
+                    <span className="text-case-white text-sm">{Math.round(calculateProgress())}%</span>
+                  </div>
+                  <Progress value={calculateProgress()} className="h-2" />
                 </div>
-                <Progress value={calculateProgress()} className="h-2" />
-              </div>
+              )}
               <p className="text-case-white/60">
                 {pack.cards.length} mistérios para desvendar
               </p>
+              {!hasAccess && (
+                <p className="text-yellow-400 mt-2">
+                  2 casos gratuitos • {pack.cards.length - 2} casos premium
+                </p>
+              )}
             </div>
           </div>
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {pack.cards.map((card) => {
+        <h2 className="text-2xl lg:text-3xl font-anton text-case-white text-center mb-8">
+          Casos do Pack
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+          {pack.cards.map((card, index) => {
             const isSolved = getUserProgress(user.id, card.id);
+            const isLocked = !hasAccess && index >= 2;
+            const isFree = index < 2;
             
             return (
-              <Card
-                key={card.id}
-                className="bg-noir-dark border-noir-medium p-6 cursor-pointer hover:border-case-red transition-all duration-200 relative"
-                onClick={() => handleCardClick(card)}
-              >
-                {/* Status Badge */}
-                <div className="absolute top-4 right-4 flex items-center space-x-2">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium text-white ${getDifficultyColor(card.difficulty)}`}>
-                    {getDifficultyText(card.difficulty)}
-                  </span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    isSolved 
-                      ? 'bg-green-600 text-white' 
-                      : 'bg-gray-600 text-white'
-                  }`}>
-                    {isSolved ? t('packView.solved') : t('packView.unsolved')}
-                  </span>
-                </div>
+              <div key={card.id} className="relative">
+                <GlareCard 
+                  className={cn(
+                    "cursor-pointer transition-all duration-300",
+                    isLocked && "opacity-50 saturate-50"
+                  )}
+                >
+                  <div 
+                    className="w-full h-full flex flex-col justify-between p-6 relative"
+                    onClick={() => handleCardClick(card, index)}
+                  >
+                    {/* Status Badges */}
+                    <div className="absolute top-3 right-3 flex flex-col gap-1">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium text-white ${getDifficultyColor(card.difficulty)}`}>
+                        {getDifficultyText(card.difficulty)}
+                      </span>
+                      {hasAccess || isFree ? (
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          isSolved 
+                            ? 'bg-green-600 text-white' 
+                            : 'bg-gray-600 text-white'
+                        }`}>
+                          {isSolved ? t('packView.solved') : t('packView.unsolved')}
+                        </span>
+                      ) : (
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-orange-600 text-white">
+                          Premium
+                        </span>
+                      )}
+                    </div>
 
-                {/* Card Number */}
-                <div className="mb-4">
-                  <div className="bg-case-red text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
-                    {card.order}
+                    {/* Case Number */}
+                    <div className="mb-4">
+                      <div className="bg-case-red text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-sm">
+                        {card.order}
+                      </div>
+                    </div>
+
+                    {/* Case Icon and Title */}
+                    <div className="flex-1 flex flex-col items-center justify-center text-center">
+                      <div className="text-4xl mb-3">
+                        {getCardIcon(index)}
+                      </div>
+                      <h3 className="text-case-white text-lg font-bold mb-2">
+                        Caso #{card.order}
+                      </h3>
+                      <p className="text-case-white/60 text-sm">
+                        {isLocked ? 'Caso Bloqueado' : 'Clique para investigar'}
+                      </p>
+                    </div>
+
+                    {/* Lock Icon for Premium Cases */}
+                    {isLocked && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg">
+                        <Lock className="h-8 w-8 text-case-red" />
+                      </div>
+                    )}
+
+                    {/* Free Badge */}
+                    {isFree && !hasAccess && (
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-600 text-white">
+                          Grátis
+                        </span>
+                      </div>
+                    )}
                   </div>
-                </div>
-
-                {/* Mystery Preview */}
-                <div className="mt-8">
-                  <p className="text-case-white line-clamp-4 leading-relaxed">
-                    {card.mystery}
-                  </p>
-                </div>
-
-                {/* Click hint */}
-                <div className="mt-4 text-center">
-                  <p className="text-case-white/40 text-sm">
-                    Clique para ver a carta completa
-                  </p>
-                </div>
-              </Card>
+                </GlareCard>
+              </div>
             );
           })}
         </div>
+
+        {/* Unlock Section */}
+        {!hasAccess && (
+          <div id="unlock-section" className="mt-16 text-center bg-noir-dark p-8 rounded-lg border border-case-red/50">
+            <Lock className="h-12 w-12 text-case-red mx-auto mb-4"/>
+            <h2 className="text-3xl font-bold text-case-white mb-2">Desbloqueie o Pack Completo</h2>
+            <p className="text-case-white/80 mb-6">
+              Adquira este pack para ter acesso a todos os {pack.cards.length} casos e desvendar todos os mistérios!
+            </p>
+            <div className="flex flex-col md:flex-row gap-4 justify-center max-w-4xl mx-auto">
+              <a 
+                href={`https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${MERCADOPAGO_LINKS.individual}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-case-red hover:bg-red-600 text-white px-6 py-3 rounded-lg font-bold transition-colors"
+              >
+                Comprar Pack Individual - R$ 14,80
+              </a>
+              <a 
+                href={`https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${MERCADOPAGO_LINKS.combo}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-noir-medium hover:bg-gray-600 text-case-white px-6 py-3 rounded-lg font-bold transition-colors border border-case-red"
+              >
+                Ver Combo 5 Packs - R$ 61,40
+              </a>
+              <a 
+                href={`https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${MERCADOPAGO_LINKS.complete}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-noir-medium hover:bg-gray-600 text-case-white px-6 py-3 rounded-lg font-bold transition-colors border border-case-red"
+              >
+                Pack Completo - R$ 110,90
+              </a>
+            </div>
+          </div>
+        )}
 
         {/* Empty state */}
         {pack.cards.length === 0 && (
