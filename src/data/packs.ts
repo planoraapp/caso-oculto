@@ -56,33 +56,203 @@ export const packs: Pack[] = [
       {
         id: 'bs1',
         order: 1,
-        name: 'Informante Perdido',
-        mystery: 'Um informante desaparece após revelar informações sobre uma gangue local.',
-        solution: 'Foi capturado para impedir que falasse.',
-        difficulty: 'hard',
+        name: 'Última Saída',
+        mystery: 'Ela correu até o fim da rua... e desapareceu.',
+        solution: 'A jovem fugia de dois perseguidores e entrou em um beco sem saída. Quando a polícia chegou, nada foi encontrado. Mais tarde, descobriu-se uma escotilha escondida sob caixas de madeira, usada por moradores de rua como abrigo subterrâneo.',
+        difficulty: 'medium',
         isFree: true,
-        theme: 'crime',
-        icon: '🚫'
+        theme: 'mystery',
+        icon: '🏃'
       },
       {
         id: 'bs2',
         order: 2,
-        name: 'Silêncio Final',
-        mystery: 'Uma testemunha chave é assassinada antes do julgamento.',
-        solution: 'O assassino queria garantir a impunidade.',
+        name: 'Sem Pegadas',
+        mystery: 'O corpo estava lá. Mas ninguém entrou nem saiu.',
+        solution: 'A cena do crime mostrava um beco coberto de barro, mas só havia pegadas da vítima. O assassino havia escalado os prédios pelas laterais, matado com uma injeção letal e saído pelo telhado.',
         difficulty: 'hard',
         theme: 'murder',
-        icon: '⚖️'
+        icon: '👣'
       },
       {
         id: 'bs3',
         order: 3,
-        name: 'Armadilha Oculta',
-        mystery: 'Um pacote misterioso é deixado em um beco, contendo pistas para um grande roubo.',
-        solution: 'O pacote é uma armadilha para a polícia.',
+        name: 'O Grito da Sinaleira',
+        mystery: 'Um grito. Um carro parado. Ninguém dentro.',
+        solution: 'Testemunhas ouviram um grito vindo de um carro parado no cruzamento. A polícia encontrou sangue no banco do passageiro. O motorista havia sido sequestrado segundos antes e levado pelo esgoto que passava sob a rua.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🚗'
+      },
+      {
+        id: 'bs4',
+        order: 4,
+        name: 'Gaiola de Concreto',
+        mystery: 'Ele pediu socorro... de dentro das paredes.',
+        solution: 'Durante uma reforma, trabalhadores ouviram batidas vindas de uma parede. Dentro, encontraram um homem desacordado. Um criminoso o havia sedado e o emparedado vivo, usando cimento fresco para ocultar o crime.',
         difficulty: 'hard',
-        theme: 'theft',
+        theme: 'crime',
+        icon: '🧱'
+      },
+      {
+        id: 'bs5',
+        order: 5,
+        name: 'Ponto Cego',
+        mystery: 'Ela passou por cinco câmeras. Mas nenhuma filmou o crime.',
+        solution: 'O ataque ocorreu exatamente em um ponto cego, entre dois postes com câmeras desalinhadas. O criminoso estudou os ângulos por semanas antes de agir. A vítima só foi socorrida após um transeunte ouvir seus gritos.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '📹'
+      },
+      {
+        id: 'bs6',
+        order: 6,
+        name: 'O Estouro',
+        mystery: 'Um barulho enorme e estilhaços no chão.',
+        solution: 'Um morador, limpando o apartamento, tropeçou ao puxar o tapete e derrubou um enorme aquário do sétimo andar. O impacto espalhou água e peixes pela calçada, assustando os pedestres.',
+        difficulty: 'easy',
+        theme: 'investigation',
+        icon: '🐠'
+      },
+      {
+        id: 'bs7',
+        order: 7,
+        name: 'Fumaça no Parabrisa',
+        mystery: 'O carro estava em chamas, mas ninguém dentro.',
+        solution: 'Criminosos queimaram o carro de propósito para encobrir rastros de DNA após um sequestro. A vítima havia sido levada minutos antes para um galpão ao lado, onde foi mantida refém.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '🔥'
+      },
+      {
+        id: 'bs8',
+        order: 8,
+        name: 'O Muro Pintado',
+        mystery: 'A nova arte de rua cobria um crime antigo.',
+        solution: 'Grafiteiros pintaram um mural sobre uma parede já marcada por uma silhueta de sangue. Sem saber, estavam cobrindo evidências de um homicídio arquivado. A tinta selou uma mensagem que só seria revelada com reagente químico.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🎨'
+      },
+      {
+        id: 'bs9',
+        order: 9,
+        name: 'Entrega Misteriosa',
+        mystery: 'Um pacote era deixado todo mês no mesmo beco.',
+        solution: 'Durante meses, um entregador largava pacotes em um beco escuro. Desconfiado, um vizinho chamou a polícia. Era apenas um filho deixando mantimentos para o pai recluso, que vivia ilegalmente em um porão.',
+        difficulty: 'easy',
+        theme: 'mystery',
         icon: '📦'
+      },
+      {
+        id: 'bs10',
+        order: 10,
+        name: 'O Som da Viga',
+        mystery: 'A estrutura caiu cinco minutos após ele sair.',
+        solution: 'Um homem saiu correndo de um beco e minutos depois, uma viga de aço despencou. Ele havia sabotado a base com um maçarico portátil. A demolição foi disfarçada como acidente estrutural.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🏗️'
+      },
+      {
+        id: 'bs11',
+        order: 11,
+        name: 'Degraus Ocultos',
+        mystery: 'Ninguém viu ele subir, mas estava no telhado.',
+        solution: 'Um antigo beco possuía uma escada escondida atrás de uma fachada falsa. O criminoso a utilizava para acesso a telhados, de onde espionava e fotografava suas vítimas.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '🪜'
+      },
+      {
+        id: 'bs12',
+        order: 12,
+        name: 'Cartão de Visita',
+        mystery: 'Cada corpo vinha com um número diferente.',
+        solution: 'Os assassinatos em becos escuros tinham algo em comum: cartões com um número manuscrito. Descobriu-se que eram coordenadas de outros becos da cidade, onde havia indícios de crimes antigos interligados.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🃏'
+      },
+      {
+        id: 'bs13',
+        order: 13,
+        name: 'Noite da Perseguição',
+        mystery: 'Ele fugia da polícia... mas não era criminoso.',
+        solution: 'Um entregador foi confundido com um suspeito e correu por instinto. Ao entrar em um beco, caiu em um fosso aberto. Morreu na queda. A confusão levou a uma investigação de falhas sistêmicas.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🏃'
+      },
+      {
+        id: 'bs14',
+        order: 14,
+        name: 'Sombra no Telhado',
+        mystery: 'Alguém caía, mas ninguém subia.',
+        solution: 'Testemunhas viram um corpo cair do alto de um prédio ao lado de um beco, mas nenhuma entrada ao telhado havia sido violada. A vítima havia sido içada durante a noite por cordas no fosso do elevador.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🏢'
+      },
+      {
+        id: 'bs15',
+        order: 15,
+        name: 'O Teto Que Afundou',
+        mystery: 'A casa desabou. Mas o beco atrás dela ficou intacto.',
+        solution: 'Criminosos usaram explosivos colocados sob a casa para soterrar provas escondidas no porão. O beco estreito serviu como zona de fuga e distração, com caixas de som simulando passos e sirenes.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '💥'
+      },
+      {
+        id: 'bs16',
+        order: 16,
+        name: 'Escuridão Perfeita',
+        mystery: 'Ninguém viu o que aconteceu — e todos estavam lá.',
+        solution: 'Durante um apagão, um assalto ocorreu num beco onde três casais estavam conversando. O criminoso usava óculos de visão noturna e uma rota de fuga escondida sob tábuas de madeira.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🌑'
+      },
+      {
+        id: 'bs17',
+        order: 17,
+        name: 'Paredes que Ouvem',
+        mystery: 'Uma confissão foi gravada sem microfones por perto.',
+        solution: 'A parede do beco havia sido usada em testes acústicos de uma antiga rádio da cidade. Os tijolos com microfones embutidos ainda funcionavam e gravaram acidentalmente uma conversa entre dois criminosos.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '🎙️'
+      },
+      {
+        id: 'bs18',
+        order: 18,
+        name: 'Grito Gravado',
+        mystery: 'O áudio mostrava um grito... mas ninguém gritava.',
+        solution: 'Durante uma perseguição, a polícia analisou um áudio que indicava um grito humano vindo de um beco. Era, na verdade, uma gravação deixada como distração para despistar os agentes.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '📱'
+      },
+      {
+        id: 'bs19',
+        order: 19,
+        name: 'Cadáver Errado',
+        mystery: 'A polícia identificou a vítima... mas ela apareceu viva.',
+        solution: 'Um homem foi encontrado morto com documentos de outro. O verdadeiro dono havia perdido sua carteira e um criminoso a usou para enganar as autoridades. O verdadeiro culpado era o suposto morto.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '🆔'
+      },
+      {
+        id: 'bs20',
+        order: 20,
+        name: 'Chuva e Cinzas',
+        mystery: 'O beco pegou fogo... em plena chuva.',
+        solution: 'Os bombeiros se surpreenderam ao ver um incêndio se espalhar mesmo com a chuva intensa. O fogo vinha de uma substância altamente inflamável despejada no local, vinda de um laboratório clandestino no porão de um prédio.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🌧️'
       }
     ]
   },
