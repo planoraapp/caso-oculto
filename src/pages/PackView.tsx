@@ -8,8 +8,11 @@ import { packs, getUserPacks, Pack, Case } from '../data/packs';
 import { t } from '../data/translations';
 import FloatingFlipCard from '../components/FloatingFlipCard';
 import CaseCard from '../components/CaseCard';
-import PurchaseModal from '../components/PurchaseModal';
+import PaymentOptionsModal from '../components/PaymentOptionsModal';
 import ComboModal from '../components/ComboModal';
+import PaymentStatusModal from '../components/PaymentStatusModal';
+import MercadoPagoCheckout from '../components/MercadoPagoCheckout';
+import { usePaymentStatus } from '../hooks/usePaymentStatus';
 
 interface PackViewProps {
   user: any;
@@ -22,8 +25,16 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   const [selectedCard, setSelectedCard] = useState<Case | null>(null);
   const [solvedCards, setSolvedCards] = useState<string[]>([]);
   const [isCardOpen, setIsCardOpen] = useState(false);
-  const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isComboModalOpen, setIsComboModalOpen] = useState(false);
+  const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
+
+  const {
+    paymentStatus,
+    createPaymentSession,
+    showPaymentStatus,
+    closePaymentStatus
+  } = usePaymentStatus(user?.id || '');
 
   useEffect(() => {
     const foundPack = packs.find(p => p.id === id);
@@ -55,7 +66,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
       setIsCardOpen(true);
     } else {
       // Show purchase modal for locked cards
-      setIsPurchaseModalOpen(true);
+      setIsPaymentModalOpen(true);
     }
   };
 
@@ -71,24 +82,21 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     localStorage.setItem(`solved_${user.id}_${pack.id}`, JSON.stringify(newSolvedCards));
   };
 
-  const handleIndividualPurchase = () => {
-    window.open('https://www.mercadopago.com.br/home', '_blank');
-    setIsPurchaseModalOpen(false);
+  const handlePaymentCreated = (preferenceId: string) => {
+    setCheckoutPreferenceId(preferenceId);
   };
 
-  const handleComboPurchase = () => {
-    setIsPurchaseModalOpen(false);
-    setIsComboModalOpen(true);
-  };
-
-  const handleCompletePurchase = () => {
-    window.open('https://www.mercadopago.com.br/home', '_blank');
-    setIsPurchaseModalOpen(false);
-  };
-
-  const handlePurchaseCombo = (selectedPackIds: string[]) => {
-    localStorage.setItem(`pendingCombo_${user?.id}`, JSON.stringify(selectedPackIds));
-    window.open('https://www.mercadopago.com.br/home', '_blank');
+  const handlePurchaseCombo = async (selectedPackIds: string[]) => {
+    if (!user) return;
+    
+    try {
+      const session = await createPaymentSession(null, 'combo', selectedPackIds);
+      setCheckoutPreferenceId(session.mercadopago_preference_id);
+      setIsComboModalOpen(false);
+    } catch (error) {
+      console.error('Erro ao processar pagamento do combo:', error);
+      showPaymentStatus('rejected', 'Combo 5 Packs');
+    }
   };
 
   return (
@@ -134,6 +142,18 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
                 </Badge>
               )}
             </div>
+
+            {/* Purchase Button */}
+            {!hasAccess && user && (
+              <div className="mb-6">
+                <Button
+                  onClick={() => setIsPaymentModalOpen(true)}
+                  className="bg-case-red hover:bg-red-600 text-white text-lg px-8 py-3"
+                >
+                  Desbloquear Pack - R$ {pack.price.toFixed(2).replace('.', ',')}
+                </Button>
+              </div>
+            )}
             
             {/* Progress Bar */}
             {user && hasAccess && (
@@ -177,14 +197,16 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
       </div>
 
       {/* Modals */}
-      <PurchaseModal
-        isOpen={isPurchaseModalOpen}
-        onClose={() => setIsPurchaseModalOpen(false)}
-        packName={pack.name}
-        onIndividualPurchase={handleIndividualPurchase}
-        onComboPurchase={handleComboPurchase}
-        onCompletePurchase={handleCompletePurchase}
-      />
+      {pack && (
+        <PaymentOptionsModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+          packName={pack.name}
+          packId={pack.id}
+          userId={user?.id || ''}
+          onPaymentCreated={handlePaymentCreated}
+        />
+      )}
 
       {isComboModalOpen && (
         <ComboModal
@@ -192,6 +214,23 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
           ownedPackIds={userPackIds}
           onClose={() => setIsComboModalOpen(false)}
           onPurchaseCombo={handlePurchaseCombo}
+        />
+      )}
+
+      <PaymentStatusModal
+        isOpen={paymentStatus.isOpen}
+        onClose={closePaymentStatus}
+        status={paymentStatus.status}
+        packName={paymentStatus.packName}
+      />
+
+      {checkoutPreferenceId && (
+        <MercadoPagoCheckout
+          preferenceId={checkoutPreferenceId}
+          onPaymentResult={(result) => {
+            console.log('Payment result:', result);
+            setCheckoutPreferenceId(null);
+          }}
         />
       )}
 

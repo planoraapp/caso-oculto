@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Star, Users, Zap } from 'lucide-react';
@@ -8,6 +9,7 @@ import { Badge } from '../components/ui/badge';
 import PackCard from '../components/PackCard';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
+import PaymentOptionsModal from '../components/PaymentOptionsModal';
 import MercadoPagoCheckout from '../components/MercadoPagoCheckout';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { packs } from '../data/packs';
@@ -20,6 +22,8 @@ interface PacksProps {
 
 const Packs: React.FC<PacksProps> = ({ user }) => {
   const [isComboModalOpen, setIsComboModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedPack, setSelectedPack] = useState<any>(null);
   const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const ownedPackIds = getUserPacks(user?.id || '');
@@ -40,21 +44,16 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     }
   }, [ownedPackIds]);
 
-  const handlePurchaseClick = useCallback(async (pack: any) => {
-    if (isLoading || !user) return;
-    setIsLoading(true);
-    
-    try {
-      console.log('Starting individual purchase for pack:', pack.id);
-      const session = await createPaymentSession(pack.id, 'individual');
-      setCheckoutPreferenceId(session.mercadopago_preference_id);
-    } catch (error) {
-      console.error('Erro ao processar pagamento:', error);
-      showPaymentStatus('rejected', pack.name);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [createPaymentSession, showPaymentStatus, isLoading, user]);
+  const handlePurchaseClick = useCallback((pack: any) => {
+    if (!user) return;
+    setSelectedPack(pack);
+    setIsPaymentModalOpen(true);
+  }, [user]);
+
+  const handlePaymentCreated = useCallback((preferenceId: string) => {
+    setCheckoutPreferenceId(preferenceId);
+    setIsPaymentModalOpen(false);
+  }, []);
 
   const handleComboClick = useCallback(() => {
     if (!user) return;
@@ -262,6 +261,17 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
           ownedPackIds={ownedPackIds} 
           onClose={() => setIsComboModalOpen(false)} 
           onPurchaseCombo={handlePurchaseCombo}
+        />
+      )}
+
+      {selectedPack && (
+        <PaymentOptionsModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+          packName={selectedPack.name}
+          packId={selectedPack.id}
+          userId={user?.id || ''}
+          onPaymentCreated={handlePaymentCreated}
         />
       )}
 
