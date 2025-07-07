@@ -1,5 +1,6 @@
 
 import React, { useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface MercadoPagoCheckoutProps {
   preferenceId: string;
@@ -13,11 +14,7 @@ const MercadoPagoCheckout: React.FC<MercadoPagoCheckoutProps> = ({
   useEffect(() => {
     if (!preferenceId) return;
 
-    const script = document.createElement('script');
-    script.src = 'https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js';
-    script.setAttribute('data-preference-id', preferenceId);
-    
-    // Criar um container temporário para o checkout
+    // Create checkout container
     const container = document.createElement('div');
     container.id = 'mercadopago-checkout-container';
     container.style.cssText = `
@@ -42,10 +39,38 @@ const MercadoPagoCheckout: React.FC<MercadoPagoCheckoutProps> = ({
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
+      position: relative;
     `;
+
+    // Add close button
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '×';
+    closeButton.style.cssText = `
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    `;
+    closeButton.onclick = () => {
+      document.body.removeChild(container);
+    };
+
+    checkoutFrame.appendChild(closeButton);
     
-    container.appendChild(checkoutFrame);
+    // Create Mercado Pago script
+    const script = document.createElement('script');
+    script.src = 'https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js';
+    script.setAttribute('data-preference-id', preferenceId);
+    script.onload = () => {
+      console.log('Mercado Pago checkout loaded');
+    };
+    
     checkoutFrame.appendChild(script);
+    container.appendChild(checkoutFrame);
     document.body.appendChild(container);
 
     // Cleanup function

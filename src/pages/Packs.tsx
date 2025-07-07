@@ -45,23 +45,16 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     setIsLoading(true);
     
     try {
-      // Use the individual pack preference ID
-      setCheckoutPreferenceId('184163814-ebfc1885-acbb-4a9f-89d9-481e569b15b6');
-      
-      // Store the selected pack for later confirmation
-      localStorage.setItem(`selectedPack_${user.id}`, JSON.stringify(pack));
-      
-      // Simulate payment success after 3 seconds
-      setTimeout(() => {
-        showPaymentStatus('approved', pack.name);
-        setCheckoutPreferenceId(null);
-      }, 3000);
+      console.log('Starting individual purchase for pack:', pack.id);
+      const session = await createPaymentSession(pack.id, 'individual');
+      setCheckoutPreferenceId(session.mercadopago_preference_id);
     } catch (error) {
       console.error('Erro ao processar pagamento:', error);
+      showPaymentStatus('rejected', pack.name);
     } finally {
       setIsLoading(false);
     }
-  }, [showPaymentStatus, isLoading, user]);
+  }, [createPaymentSession, showPaymentStatus, isLoading, user]);
 
   const handleComboClick = useCallback(() => {
     if (!user) return;
@@ -73,43 +66,33 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     setIsLoading(true);
     
     try {
-      // Use the combo preference ID
-      setCheckoutPreferenceId('184163814-186d6326-c239-4676-b240-fac644c29f0e');
-      
-      // Store the selected packs for later confirmation
-      localStorage.setItem(`selectedCombo_${user.id}`, JSON.stringify(selectedPackIds));
-      
-      // Simulate payment success after 3 seconds
-      setTimeout(() => {
-        showPaymentStatus('approved', 'Combo 5 Packs');
-        setCheckoutPreferenceId(null);
-      }, 3000);
+      console.log('Starting combo purchase for packs:', selectedPackIds);
+      const session = await createPaymentSession(null, 'combo', selectedPackIds);
+      setCheckoutPreferenceId(session.mercadopago_preference_id);
+      setIsComboModalOpen(false);
     } catch (error) {
       console.error('Erro ao processar pagamento do combo:', error);
+      showPaymentStatus('rejected', 'Combo 5 Packs');
     } finally {
       setIsLoading(false);
     }
-  }, [showPaymentStatus, isLoading, user]);
+  }, [createPaymentSession, showPaymentStatus, isLoading, user]);
 
   const handleCompletePurchase = useCallback(async () => {
     if (isLoading || !user) return;
     setIsLoading(true);
     
     try {
-      // Use the complete access preference ID
-      setCheckoutPreferenceId('184163814-b6e81aba-f60e-4256-8a73-2658243e4259');
-      
-      // Simulate payment success after 3 seconds
-      setTimeout(() => {
-        showPaymentStatus('approved', 'Acesso Total');
-        setCheckoutPreferenceId(null);
-      }, 3000);
+      console.log('Starting complete access purchase');
+      const session = await createPaymentSession(null, 'complete');
+      setCheckoutPreferenceId(session.mercadopago_preference_id);
     } catch (error) {
       console.error('Erro ao processar pagamento completo:', error);
+      showPaymentStatus('rejected', 'Acesso Total');
     } finally {
       setIsLoading(false);
     }
-  }, [showPaymentStatus, isLoading, user]);
+  }, [createPaymentSession, showPaymentStatus, isLoading, user]);
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -231,7 +214,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
               </Card>
             </div>
 
-            {/* Mercado Pago Security Message - Logo maior e texto branco */}
+            {/* Mercado Pago Security Message */}
             <div className="text-center mt-8">
               <p className="text-case-white text-sm mb-4">
                 Sua compra é segura com a:
@@ -294,6 +277,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
           preferenceId={checkoutPreferenceId} 
           onPaymentResult={(result) => {
             console.log('Payment result:', result);
+            setCheckoutPreferenceId(null);
           }} 
         />
       )}

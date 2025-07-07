@@ -1,5 +1,6 @@
 
 import { useState, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface PaymentStatus {
   isOpen: boolean;
@@ -19,17 +20,33 @@ export const usePaymentStatus = (userId: string) => {
     paymentType: 'individual' | 'combo' | 'complete',
     selectedPackIds?: string[]
   ) => {
-    // Simulate creating a payment session
-    const sessionId = `session_${Date.now()}`;
-    const preferenceId = `pref_${Date.now()}`;
-    
     console.log('Creating payment session:', { packId, paymentType, selectedPackIds, userId });
     
-    return {
-      id: sessionId,
-      mercadopago_preference_id: preferenceId,
-      status: 'pending'
-    };
+    try {
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          type: paymentType,
+          packId,
+          selectedPackIds,
+          userId
+        }
+      });
+
+      if (error) {
+        console.error('Error creating payment:', error);
+        throw error;
+      }
+
+      console.log('Payment preference created:', data);
+      return {
+        id: `session_${Date.now()}`,
+        mercadopago_preference_id: data.preference_id,
+        status: 'pending'
+      };
+    } catch (error) {
+      console.error('Error in createPaymentSession:', error);
+      throw error;
+    }
   }, [userId]);
 
   const simulatePaymentConfirmation = useCallback(async (sessionId: string, success: boolean) => {

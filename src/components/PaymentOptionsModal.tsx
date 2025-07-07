@@ -4,24 +4,58 @@ import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { X, ShoppingCart, Users, Star, Zap } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface PaymentOptionsModalProps {
   isOpen: boolean;
   onClose: () => void;
   packName: string;
-  onIndividualPurchase: () => void;
-  onComboPurchase: () => void;
-  onCompletePurchase: () => void;
+  packId: string;
+  userId: string;
+  onPaymentCreated: (preferenceId: string) => void;
 }
 
 const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   isOpen,
   onClose,
   packName,
-  onIndividualPurchase,
-  onComboPurchase,
-  onCompletePurchase
+  packId,
+  userId,
+  onPaymentCreated
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const createPayment = async (type: 'individual' | 'combo' | 'complete', selectedPackIds?: string[]) => {
+    if (!userId) return;
+    
+    setIsLoading(true);
+    try {
+      console.log('Creating payment:', { type, packId, selectedPackIds, userId });
+      
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          type,
+          packId: type === 'individual' ? packId : null,
+          selectedPackIds,
+          userId
+        }
+      });
+
+      if (error) {
+        console.error('Error creating payment:', error);
+        throw error;
+      }
+
+      console.log('Payment created:', data.preference_id);
+      onPaymentCreated(data.preference_id);
+      onClose();
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -59,7 +93,11 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
               <CardContent>
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-case-red">R$ 14,80</span>
-                  <Button onClick={onIndividualPurchase} className="bg-case-red hover:bg-red-600 text-white">
+                  <Button 
+                    onClick={() => createPayment('individual')} 
+                    disabled={isLoading}
+                    className="bg-case-red hover:bg-red-600 text-white"
+                  >
                     <ShoppingCart className="h-4 w-4 mr-2" />
                     Comprar Agora
                   </Button>
@@ -98,7 +136,11 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
                     <span className="text-case-white/60 line-through text-sm">R$ 74,00</span>
                     <span className="text-2xl font-bold text-yellow-500 ml-2">R$ 61,40</span>
                   </div>
-                  <Button onClick={onComboPurchase} className="bg-yellow-500 hover:bg-yellow-600 text-black">
+                  <Button 
+                    onClick={() => createPayment('combo', [packId])} 
+                    disabled={isLoading}
+                    className="bg-yellow-500 hover:bg-yellow-600 text-black"
+                  >
                     <ShoppingCart className="h-4 w-4 mr-2" />
                     Montar Combo
                   </Button>
@@ -128,7 +170,11 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-green-500">R$ 110,90</span>
-                  <Button onClick={onCompletePurchase} className="bg-green-500 hover:bg-green-600 text-white">
+                  <Button 
+                    onClick={() => createPayment('complete')} 
+                    disabled={isLoading}
+                    className="bg-green-500 hover:bg-green-600 text-white"
+                  >
                     <ShoppingCart className="h-4 w-4 mr-2" />
                     Comprar Acesso Total
                   </Button>
