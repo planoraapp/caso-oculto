@@ -1,3 +1,4 @@
+
 import { Pack, Case, Purchase } from './types';
 
 export const packs: Pack[] = [
@@ -1539,75 +1540,415 @@ export const packs: Pack[] = [
       {
         id: 'id1',
         order: 1,
-        name: 'Janela Quebrada',
-        mystery: 'Uma janela quebrada é a única pista em um crime aparentemente perfeito.',
-        solution: 'Os cacos indicam a direção do agressor.',
+        name: 'Círculo Vicioso',
+        mystery: 'Um detetive investiga um crime que ele mesmo cometeu sem saber, devido à perda de memória.',
+        solution: 'Ele havia sido hipnotizado para cometer o crime e depois ter a memória apagada. O verdadeiro criminoso era seu próprio psiquiatra.',
         difficulty: 'medium',
         isFree: true,
-        theme: 'investigation',
-        icon: '🔨'
+        theme: 'mystery',
+        icon: '🔄'
       },
       {
         id: 'id2',
         order: 2,
-        name: 'Fragmentos Reveladores',
-        mystery: 'Fragmentos de vidro encontrados na cena do crime revelam um segredo.',
-        solution: 'O vidro pertence a um objeto valioso roubado.',
-        difficulty: 'medium',
-        theme: 'theft',
-        icon: '💎'
+        name: 'Salvando o Assassino',
+        mystery: 'Um médico salva a vida de um homem, que depois mata a esposa do médico.',
+        solution: 'O homem era um hitman contratado pelo próprio médico para matar sua esposa. O médico não esperava que o assassino se machucasse no processo.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '💔'
       },
       {
         id: 'id3',
         order: 3,
-        name: 'Sons Noturnos',
-        mystery: 'Uma testemunha relata sons de vidro quebrando na noite do crime.',
-        solution: 'O som foi usado para distrair a vítima.',
+        name: 'Testemunha Cega',
+        mystery: 'Uma pessoa cega é a única testemunha de um assassinato.',
+        solution: 'Ela reconheceu o assassino pelo som de sua respiração - era seu ex-marido que ela pensava estar morto há anos.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '👁️'
+      },
+      {
+        id: 'id4',
+        order: 4,
+        name: 'Herança Maldita',
+        mystery: 'Todos que herdam uma fortuna específica morrem em acidentes dentro de um ano.',
+        solution: 'O testamenteiro estava matando os herdeiros para que a herança sempre retornasse ao estado, onde ele tinha controle sobre os fundos.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '💰'
+      },
+      {
+        id: 'id5',
+        order: 5,
+        name: 'Carta do Futuro',
+        mystery: 'Uma pessoa recebe uma carta detalhando sua própria morte, que acontece exatamente como descrito.',
+        solution: 'A carta foi escrita por ela mesma em um episódio psicótico. Sua mente subconsciente planejou o suicídio de forma elaborada.',
         difficulty: 'medium',
         theme: 'mystery',
-        icon: '👂'
+        icon: '📮'
+      },
+      {
+        id: 'id6',
+        order: 6,
+        name: 'Anjo da Guarda',
+        mystery: 'Uma pessoa sempre escapa da morte por coincidências impossíveis.',
+        solution: 'Seu irmão gêmeo separado no nascimento estava secretamente protegendo-o, interferindo em situações perigosas sem ele saber.',
+        difficulty: 'easy',
+        theme: 'protection',
+        icon: '👼'
+      },
+      {
+        id: 'id7',
+        order: 7,
+        name: 'Vingança Tardia',
+        mystery: 'Um homem mata seu melhor amigo 30 anos depois de serem separados.',
+        solution: 'Ele descobriu que o amigo havia se passado por ele durante a guerra, vivendo a vida que deveria ter sido sua.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '⚔️'
+      },
+      {
+        id: 'id8',
+        order: 8,
+        name: 'Profecia Cumprida',
+        mystery: 'Uma cartomante prevê a própria morte e tenta evitá-la, mas cada tentativa a aproxima do destino.',
+        solution: 'Suas tentativas de evitar a morte estavam sendo monitoradas por alguém que usava as informações para planejar seu assassinato.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🔮'
+      },
+      {
+        id: 'id9',
+        order: 9,
+        name: 'Doação Fatal',
+        mystery: 'Todas as pessoas que recebem órgãos de um doador específico começam a ter pesadelos idênticos.',
+        solution: 'O doador estava vivo e usando implantes para se comunicar com os receptores, planejando usar seus corpos para crimes.',
+        difficulty: 'hard',
+        theme: 'supernatural',
+        icon: '💉'
+      },
+      {
+        id: 'id10',
+        order: 10,
+        name: 'Espelho do Crime',
+        mystery: 'Crimes idênticos acontecem simultaneamente em cidades diferentes, cometidos por pessoas que nunca se conheceram.',
+        solution: 'Ambos estavam seguindo instruções de um livro que encontraram, escrito por um serial killer que queria criar copycats.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🪞'
+      },
+      {
+        id: 'id11',
+        order: 11,
+        name: 'Último Desejo',
+        mystery: 'Um homem moribundo pede para ver seu pior inimigo, que morre misteriosamente logo após a visita.',
+        solution: 'O moribundo tinha uma doença contagiosa rara. Ele infectou propositalmente seu inimigo durante o encontro.',
+        difficulty: 'easy',
+        theme: 'murder',
+        icon: '💀'
+      },
+      {
+        id: 'id12',
+        order: 12,
+        name: 'Coincidência Mortal',
+        mystery: 'Duas pessoas com o mesmo nome morrem no mesmo dia, em cidades diferentes, da mesma forma.',
+        solution: 'Era o mesmo assassino contratado. Ele confundiu os alvos e matou ambos para garantir que havia eliminado o correto.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🎯'
+      },
+      {
+        id: 'id13',
+        order: 13,
+        name: 'Protetor Letal',
+        mystery: 'Um guarda-costas mata seu cliente para "protegê-lo".',
+        solution: 'O cliente estava sendo chantageado para cometer um atentado terrorista. O guarda-costas o matou para salvar centenas de vidas.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🛡️'
+      },
+      {
+        id: 'id14',
+        order: 14,
+        name: 'Verdade Mentirosa',
+        mystery: 'Um patologista mente sobre a causa da morte para proteger o assassino.',
+        solution: 'O "assassino" era na verdade um médico que fez eutanásia em seu próprio pai terminal. O patologista era seu irmão.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🩺'
+      },
+      {
+        id: 'id15',
+        order: 15,
+        name: 'Sonho Premonitório',
+        mystery: 'Uma mulher sonha com crimes antes deles acontecerem.',
+        solution: 'Ela era sonâmbula e estava cometendo os crimes durante o sono, depois sonhando com eles como se fossem premonições.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '💤'
+      },
+      {
+        id: 'id16',
+        order: 16,
+        name: 'Justiça Cega',
+        mystery: 'Um juiz corrompe processos para libertar criminosos que depois são mortos misteriosamente.',
+        solution: 'Ele estava trabalhando com um vigilante. Libertava os criminosos para que pudessem ser eliminados fora do sistema legal.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '⚖️'
+      },
+      {
+        id: 'id17',
+        order: 17,
+        name: 'Amor Impossível',
+        mystery: 'Dois amantes de famílias rivais planejam fugir juntos, mas um mata o outro.',
+        solution: 'Eles descobriram que eram irmãos separados na infância. O assassinato foi um pacto suicida disfarçado para proteger a honra das famílias.',
+        difficulty: 'medium',
+        theme: 'love',
+        icon: '💔'
+      },
+      {
+        id: 'id18',
+        order: 18,
+        name: 'Presente Envenenado',
+        mystery: 'Uma pessoa dá um presente que acidentalmente mata quem recebe.',
+        solution: 'O presente continha um perfume com substância à qual apenas a pessoa específica era alergica. Era um assassinato muito bem planejado.',
+        difficulty: 'easy',
+        theme: 'murder',
+        icon: '🎁'
+      },
+      {
+        id: 'id19',
+        order: 19,
+        name: 'Memória Falsa',
+        mystery: 'Várias pessoas têm a mesma lembrança de um evento que nunca aconteceu.',
+        solution: 'Elas foram expostas a um experimento de implantação de memórias falsas para encobrir um crime real que todas testemunharam.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🧠'
+      },
+      {
+        id: 'id20',
+        order: 20,
+        name: 'Destino Selado',
+        mystery: 'Um homem mata a pessoa que salvou sua vida, exatamente como uma cigana havia previsto.',
+        solution: 'A cigana era sua mãe adotiva que orquestrou toda a situação. Ela programou psicologicamente ambos para cumprir a "profecia".',
+        difficulty: 'hard',
+        theme: 'destiny',
+        icon: '🔮'
       }
     ]
   },
   {
-    id: 'paradoxos-mortais',
-    name: 'Paradoxos Mortais',
+    id: 'paxarodos-mortais',
+    name: 'Paxarodos Mortais',
     description: 'Mistérios sombrios em cenários urbanos cheios de perigos e segredos.',
     price: 14.80,
     difficulty: 'hard',
-    image: '/lovable-uploads/9670a496-6047-4797-8881-53708d7cf69f.png',
+    image: '/lovable-uploads/34c251ba-c4c2-4172-bfb8-70d72411b3b0.png',
     category: 'urban',
     cases: [
       {
         id: 'pm1',
         order: 1,
-        name: 'Prédio Silencioso',
-        mystery: 'Um prédio inteiro fica em silêncio após uma noite estranha.',
-        solution: 'Todos os moradores foram sequestrados em uma operação coordenada.',
+        name: 'Metrô da Meia-Noite',
+        mystery: 'Passageiros do último trem do metrô desaparecem um por um durante o trajeto.',
+        solution: 'O maquinista estava druggando o ar do vagão. Era parte de um esquema de tráfico de órgãos usando pessoas sem família.',
         difficulty: 'hard',
         isFree: true,
-        theme: 'mystery',
-        icon: '🏢'
+        theme: 'disappearance',
+        icon: '🚇'
       },
       {
         id: 'pm2',
         order: 2,
-        name: 'Luzes da Cidade',
-        mystery: 'Luzes piscando em um padrão estranho revelam uma mensagem codificada.',
-        solution: 'É um pedido de socorro de alguém em cativeiro.',
+        name: 'Arranha-Céu Assassino',
+        mystery: 'Pessoas que trabalham no 13º andar de um prédio começam a se suicidar.',
+        solution: 'Gases tóxicos estavam sendo bombeados pelo sistema de ventilação, causando depressão severa e pensamentos suicidas.',
         difficulty: 'hard',
-        theme: 'danger',
-        icon: '💡'
+        theme: 'murder',
+        icon: '🏢'
       },
       {
         id: 'pm3',
         order: 3,
-        name: 'Encontro Noturno',
-        mystery: 'Um encontro secreto em um beco resulta em desaparecimento.',
-        solution: 'Foi uma armadilha para silenciar uma testemunha.',
+        name: 'Semáforo da Morte',
+        mystery: 'Acidentes fatais acontecem sempre no mesmo cruzamento, mesmo com o semáforo funcionando.',
+        solution: 'Alguém estava hackeando o sistema de semáforos, criando conflitos de sinal para causar acidentes propositais.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🚦'
+      },
+      {
+        id: 'pm4',
+        order: 4,
+        name: 'Elevador Fantasma',
+        mystery: 'Um elevador vai para andares que não existem no prédio.',
+        solution: 'Era um esconderijo secreto para um laboratório de drogas. O elevador tinha programação especial ativada por códigos específicos.',
         difficulty: 'hard',
         theme: 'crime',
-        icon: '🌃'
+        icon: '🛗'
+      },
+      {
+        id: 'pm5',
+        order: 5,
+        name: 'Ponte dos Sussurros',
+        mystery: 'Pessoas que passam por uma ponte específica ouvem vozes que as fazem pular.',
+        solution: 'Alto-falantes ocultos reproduziam frequências que causavam alucinações auditivas. Era um experimento psicológico ilegal.',
+        difficulty: 'medium',
+        theme: 'supernatural',
+        icon: '🌉'
+      },
+      {
+        id: 'pm6',
+        order: 6,
+        name: 'Lixo Radioativo',
+        mystery: 'Moradores de um bairro desenvolvem doenças misteriosas após a instalação de novas lixeiras.',
+        solution: 'As lixeiras continham material radioativo disfarçado. Era um descarte ilegal de resíduos hospitalares perigosos.',
+        difficulty: 'easy',
+        theme: 'danger',
+        icon: '🗑️'
+      },
+      {
+        id: 'pm7',
+        order: 7,
+        name: 'Táxi Desaparecido',
+        mystery: 'Táxis de uma empresa específica desaparecem com os passageiros.',
+        solution: 'Os táxis eram usados para sequestros. A empresa era uma fachada para um esquema de tráfico humano internacional.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '🚕'
+      },
+      {
+        id: 'pm8',
+        order: 8,
+        name: 'Parque dos Mortos',
+        mystery: 'Animais e pessoas morrem misteriosamente após visitarem um parque recém-reformado.',
+        solution: 'O solo estava contaminado com produtos químicos industriais que a empresa de reforma tentou encobrir com grama nova.',
+        difficulty: 'medium',
+        theme: 'danger',
+        icon: '🏞️'
+      },
+      {
+        id: 'pm9',
+        order: 9,
+        name: 'Ônibus Fantasma',
+        mystery: 'Um ônibus aparece em horários não programados, levando passageiros para destinos desconhecidos.',
+        solution: 'Era usado por um culto para recrutar novos membros. Eles drogavam passageiros solitários e os levavam para a seita.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '🚌'
+      },
+      {
+        id: 'pm10',
+        order: 10,
+        name: 'Catacumbas Urbanas',
+        mystery: 'Pessoas entram nos esgotos da cidade e nunca mais são vistas.',
+        solution: 'Uma comunidade subterrânea de criminosos havia criado uma cidade paralela nos túneis abandonados.',
+        difficulty: 'medium',
+        theme: 'disappearance',
+        icon: '🕳️'
+      },
+      {
+        id: 'pm11',
+        order: 11,
+        name: 'Antena Mortal',
+        mystery: 'Moradores próximos a uma torre de celular desenvolvem comportamentos violentos.',
+        solution: 'A torre estava sendo usada para transmitir frequências que afetavam o comportamento humano em um experimento militar secreto.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '📡'
+      },
+      {
+        id: 'pm12',
+        order: 12,
+        name: 'Estacionamento Amaldiçoado',
+        mystery: 'Carros estacionados em um local específico têm problemas mecânicos fatais.',
+        solution: 'Alguém estava sabotando os carros para causar acidentes. Era um mecânico corrupto criando clientes forçados.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '🅿️'
+      },
+      {
+        id: 'pm13',
+        order: 13,
+        name: 'Hospital Fantasma',
+        mystery: 'Pacientes entram em um hospital abandonado mas ainda recebem tratamento médico.',
+        solution: 'Médicos cassados estavam operando ilegalmente no prédio abandonado, realizando cirurgias não autorizadas.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '🏥'
+      },
+      {
+        id: 'pm14',
+        order: 14,
+        name: 'Escola da Noite',
+        mystery: 'Uma escola fechada tem luzes acesas durante a madrugada.',
+        solution: 'Era usada como centro de treinamento para criminosos menores de idade. Eles "estudavam" técnicas de roubo e fraude.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🏫'
+      },
+      {
+        id: 'pm15',
+        order: 15,
+        name: 'Biblioteca Silenciosa',
+        mystery: 'Pessoas que entram numa biblioteca específica nunca mais falam.',
+        solution: 'Eram expostas a um gás experimental que danificava as cordas vocais. Era um teste para criar soldados silenciosos.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '📚'
+      },
+      {
+        id: 'pm16',
+        order: 16,
+        name: 'Supermercado 24h',
+        mystery: 'Clientes que fazem compras após meia-noite desaparecem.',
+        solution: 'O supermercado era uma fachada para lavagem de dinheiro. Clientes noturnos eram eliminados para manter o segredo.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🛒'
+      },
+      {
+        id: 'pm17',
+        order: 17,
+        name: 'Cinema Maldito',
+        mystery: 'Espectadores de um cinema específico saem com amnésia.',
+        solution: 'Gases amnésicos eram liberados durante os filmes. Era um experimento para apagar memórias de testemunhas de crimes.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🎬'
+      },
+      {
+        id: 'pm18',
+        order: 18,
+        name: 'ATM Assassino',
+        mystery: 'Pessoas que usam um caixa eletrônico específico morrem em 24 horas.',
+        solution: 'O ATM estava infectado com agulhas microscópicas que injetavam veneno. Era um método de assassinato seletivo.',
+        difficulty: 'easy',
+        theme: 'murder',
+        icon: '🏧'
+      },
+      {
+        id: 'pm19',
+        order: 19,
+        name: 'Praça dos Desaparecidos',
+        mystery: 'Uma praça pública sempre está vazia, mesmo em horários movimentados.',
+        solution: 'Substâncias químicas no ar causavam extremo desconforto psicológico. Era para afastar pessoas de evidências enterradas no local.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '🏛️'
+      },
+      {
+        id: 'pm20',
+        order: 20,
+        name: 'Cidade Fantasma',
+        mystery: 'Um bairro inteiro é evacuado misteriosamente durante a noite.',
+        solution: 'Era uma operação militar para encobrir um acidente com armas químicas. Todos os moradores foram realocados secretamente.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🏘️'
       }
     ]
   },
@@ -1617,38 +1958,208 @@ export const packs: Pack[] = [
     description: 'Casos que desafiam a lógica e parecem impossíveis, mas têm explicações surpreendentes.',
     price: 14.80,
     difficulty: 'hard',
-    image: '/lovable-uploads/49d3890a-5154-4a90-b145-8b78afe84713.png',
+    image: '/lovable-uploads/ce660aa4-1ed1-4019-bef2-65d5dd86c0e6.png',
     category: 'surreal',
     cases: [
       {
         id: 'ar1',
         order: 1,
-        name: 'Prisão do Tempo',
-        mystery: 'Uma pessoa afirma estar presa em um loop temporal em uma prisão abandonada.',
-        solution: 'É um distúrbio psicológico causado por isolamento extremo.',
+        name: 'Homem Voador',
+        mystery: 'Testemunhas veem consistentemente um homem voando sobre a cidade durante as noites.',
+        solution: 'Era um dublê usando equipamento de jetpack experimental roubado de uma empresa militar. Ele voava para escapar de perseguições.',
         difficulty: 'hard',
         isFree: true,
         theme: 'mystery',
-        icon: '⏰'
+        icon: '🛸'
       },
       {
         id: 'ar2',
         order: 2,
-        name: 'Ecos do Passado',
-        mystery: 'Vozes do passado ecoam pelos corredores de uma antiga penitenciária.',
-        solution: 'Gravações antigas foram plantadas para assustar invasores.',
-        difficulty: 'hard',
-        theme: 'thriller',
-        icon: '👻'
+        name: 'Chuva de Peixes',
+        mystery: 'Peixes caem do céu em uma cidade do interior durante um dia ensolarado.',
+        solution: 'Um avião transportando peixes ilegais teve uma falha no compartimento de carga. O piloto despejou a carga para evitar ser preso.',
+        difficulty: 'medium',
+        theme: 'mystery',
+        icon: '🐟'
       },
       {
         id: 'ar3',
         order: 3,
-        name: 'Realidade Distorcida',
-        mystery: 'A realidade parece se distorcer em um local específico da prisão.',
-        solution: 'Drogas alucinógenas foram colocadas no sistema de ventilação.',
+        name: 'Casa que Sangra',
+        mystery: 'Sangue escorre das paredes de uma casa abandonada todos os dias às 3h da manhã.',
+        solution: 'Canos antigos com resíduos de matadouro se expandiam com o calor noturno, fazendo o sangue seco se liquefazer e vazar.',
+        difficulty: 'easy',
+        theme: 'supernatural',
+        icon: '🏚️'
+      },
+      {
+        id: 'ar4',
+        order: 4,
+        name: 'Pessoa Invisível',
+        mystery: 'Pegadas aparecem na areia, mas não há ninguém visível caminhando.',
+        solution: 'Era um criminoso usando um traje de camuflagem óptica experimental roubado de um laboratório militar.',
         difficulty: 'hard',
+        theme: 'crime',
+        icon: '👻'
+      },
+      {
+        id: 'ar5',
+        order: 5,
+        name: 'Árvore que Grita',
+        mystery: 'Uma árvore emite gritos humanos durante as noites de lua cheia.',
+        solution: 'Havia uma pessoa enterrada viva na base da árvore. Os gritos saíam através das raízes ocas quando a pessoa ainda estava consciente.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🌳'
+      },
+      {
+        id: 'ar6',
+        order: 6,
+        name: 'Espelhos Mentirosos',
+        mystery: 'Espelhos em uma casa mostram reflexos de pessoas que não estão no cômodo.',
+        solution: 'Eram espelhos unidirecionais conectados a câmeras e telas. Alguém estava projetando imagens gravadas para assustar os moradores.',
+        difficulty: 'medium',
+        theme: 'mystery',
+        icon: '🪞'
+      },
+      {
+        id: 'ar7',
+        order: 7,
+        name: 'Gravidade Reversa',
+        mystery: 'Objetos caem para cima em um quarto específico de uma casa.',
+        solution: 'Um campo magnético poderoso estava instalado no teto, atraindo objetos metálicos. Era para esconder um cofre magnético no forro.',
+        difficulty: 'medium',
+        theme: 'mystery',
+        icon: '⬆️'
+      },
+      {
+        id: 'ar8',
+        order: 8,
+        name: 'Telefone dos Mortos',
+        mystery: 'Um telefone antigo recebe ligações de pessoas que morreram há décadas.',
+        solution: 'Era um sistema automatizado usando inteligência artificial treinada com gravações das vozes dos falecidos para chantagear herdeiros.',
+        difficulty: 'hard',
+        theme: 'fraud',
+        icon: '☎️'
+      },
+      {
+        id: 'ar9',
+        order: 9,
+        name: 'Sombras Independentes',
+        mystery: 'Sombras de pessoas se movem independentemente de seus donos.',
+        solution: 'Projetores ocultos criavam sombras falsas controladas remotamente. Era um método de intimidação psicológica.',
+        difficulty: 'easy',
+        theme: 'psychological',
+        icon: '👤'
+      },
+      {
+        id: 'ar10',
+        order: 10,
+        name: 'Água que Queima',
+        mystery: 'A água de uma fonte pública queima a pele de quem toca.',
+        solution: 'Alguém estava despejando ácido diluído na fonte durante a madrugada. Era uma tentativa de envenenar uma pessoa específica.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '💧'
+      },
+      {
+        id: 'ar11',
+        order: 11,
+        name: 'Livro que se Escreve',
+        mystery: 'Páginas de um livro aparecem escritas durante a noite, prevendo eventos futuros.',
+        solution: 'Era um código entre criminosos. Eles usavam tinta invisível que aparecia com o calor noturno para comunicar planos.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '📖'
+      },
+      {
+        id: 'ar12',
+        order: 12,
+        name: 'Cachorro Falante',
+        mystery: 'Um cachorro fala perfeitamente e resolve crimes complexos.',
+        solution: 'O dono era ventrílogo e usava o cachorro como disfarce para suas investigações particulares sem levantar suspeitas.',
+        difficulty: 'easy',
         theme: 'investigation',
+        icon: '🐕'
+      },
+      {
+        id: 'ar13',
+        order: 13,
+        name: 'Relógio do Tempo',
+        mystery: 'Um relógio antigo para o tempo ao seu redor quando soa.',
+        solution: 'Era um dispositivo que liberava gás paralítico no ar. Quando tocava, todos ao redor ficavam temporariamente paralisados.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '⏰'
+      },
+      {
+        id: 'ar14',
+        order: 14,
+        name: 'Retrato Envelhecendo',
+        mystery: 'Um retrato em uma casa envelhece enquanto a pessoa fotografada permanece jovem.',
+        solution: 'Eram gêmeos idênticos. Um envelhecia normalmente enquanto o outro usava cirurgias plásticas para manter a aparência jovem.',
+        difficulty: 'medium',
+        theme: 'identity',
+        icon: '🖼️'
+      },
+      {
+        id: 'ar15',
+        order: 15,
+        name: 'Música dos Espíritos',
+        mystery: 'Piano toca sozinho todas as noites, sempre a mesma música melancólica.',
+        solution: 'Um mecanismo automático foi instalado no piano. Era ativado por um timer para mascarar os sons de escavação no porão.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🎹'
+      },
+      {
+        id: 'ar16',
+        order: 16,
+        name: 'Duplo Impossível',
+        mystery: 'Uma pessoa aparece em dois lugares ao mesmo tempo, com testemunhas confiáveis.',
+        solution: 'Era um clone criado ilegalmente em laboratório clandestino. Ambos compartilhavam memórias através de implantes cerebrais.',
+        difficulty: 'hard',
+        theme: 'science',
+        icon: '👥'
+      },
+      {
+        id: 'ar17',
+        order: 17,
+        name: 'Jardim Mortal',
+        mystery: 'Plantas de um jardim crescem instantaneamente e depois morrem no mesmo dia.',
+        solution: 'Fertilizantes radioativos eram injetados nas plantas para acelerar crescimento. Era um experimento para criar alimentos de crescimento rápido.',
+        difficulty: 'medium',
+        theme: 'science',
+        icon: '🌱'
+      },
+      {
+        id: 'ar18',
+        order: 18,
+        name: 'Carro Fantasma',
+        mystery: 'Um carro dirige sozinho pelas ruas, sempre respeitando o trânsito.',
+        solution: 'Era um protótipo de carro autônomo sendo testado ilegalmente. O "fantasma" era um sistema de IA avançado.',
+        difficulty: 'easy',
+        theme: 'technology',
+        icon: '🚗'
+      },
+      {
+        id: 'ar19',
+        order: 19,
+        name: 'Neve Vermelha',
+        mystery: 'Neve vermelha como sangue cai em pleno verão.',
+        solution: 'Era pó de óxido de ferro liberado de uma fábrica próxima. A empresa tentava encobrir um acidente industrial.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '❄️'
+      },
+      {
+        id: 'ar20',
+        order: 20,
+        name: 'Realidade Impossível',
+        mystery: 'Uma cidade inteira testemunha eventos que contradizem as leis da física.',
+        solution: 'Era um experimento de realidade virtual em massa. Toda a população foi exposta a alucinógenos através do suprimento de água.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
         icon: '🌀'
       }
     ]
