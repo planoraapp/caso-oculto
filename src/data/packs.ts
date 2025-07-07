@@ -1,4 +1,3 @@
-
 import { Pack, Case, Purchase } from './types';
 
 export const packs: Pack[] = [
@@ -268,9 +267,9 @@ export const packs: Pack[] = [
       {
         id: 'jc1',
         order: 1,
-        name: 'Executivo Silenciado',
-        mystery: 'Um executivo é encontrado morto em seu escritório com documentos desaparecidos.',
-        solution: 'Foi assassinado para esconder informações confidenciais.',
+        name: 'Reunião Cancelada',
+        mystery: 'A reunião foi cancelada, mas o CEO apareceu morto na sala.',
+        solution: 'O executivo foi ao escritório para uma reunião secreta com um chantagista. Foi assassinado para proteger segredos corporativos que poderiam destruir a empresa.',
         difficulty: 'medium',
         isFree: true,
         theme: 'murder',
@@ -279,20 +278,190 @@ export const packs: Pack[] = [
       {
         id: 'jc2',
         order: 2,
-        name: 'Sabotagem Interna',
-        mystery: 'Uma sabotagem ameaça a reputação de uma grande empresa.',
-        solution: 'Um funcionário descontente é o responsável.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '⚙️'
+        name: 'Café da Manhã',
+        mystery: 'O diretor morreu durante o café da manhã da empresa.',
+        solution: 'Alguém envenenou sua xícara específica com uma substância que imitava um ataque cardíaco. O assassino conhecia sua rotina matinal e aproveitou a confusão para escapar.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '☕'
       },
       {
         id: 'jc3',
         order: 3,
-        name: 'Acordo Secreto',
-        mystery: 'Um acordo secreto entre empresas é descoberto, causando um escândalo.',
-        solution: 'O acordo envolvia práticas ilegais de concorrência.',
+        name: 'Elevador Vazio',
+        mystery: 'O elevador desceu vazio, mas havia sangue no teto.',
+        solution: 'Um funcionário foi morto no andar superior e o corpo foi escondido no forro do elevador. O assassino desceu normalmente enquanto as evidências ficaram suspensas sobre todos.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🛗'
+      },
+      {
+        id: 'jc4',
+        order: 4,
+        name: 'Servidor Hackeado',
+        mystery: 'Os dados foram roubados, mas ninguém invadiu o sistema.',
+        solution: 'Um funcionário da TI vendeu acesso aos dados para concorrentes. Ele criou uma brecha falsa para esconder que foi um crime interno, não um hack externo.',
         difficulty: 'medium',
+        theme: 'crime',
+        icon: '💻'
+      },
+      {
+        id: 'jc5',
+        order: 5,
+        name: 'Apresentação Fatal',
+        mystery: 'O projetor explodiu durante a apresentação mais importante do ano.',
+        solution: 'Um sabotador infiltrado plantou um dispositivo no projetor para interromper a apresentação de um projeto que prejudicaria sua empresa rival.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '📊'
+      },
+      {
+        id: 'jc6',
+        order: 6,
+        name: 'Contrato Fantasma',
+        mystery: 'O contrato de milhões desapareceu da mesa do advogado.',
+        solution: 'O próprio advogado destruiu o contrato após descobrir cláusulas ilegais. Ele simulou o roubo para proteger sua carreira e evitar ser cúmplice de fraude.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '📄'
+      },
+      {
+        id: 'jc7',
+        order: 7,
+        name: 'Reunião Secreta',
+        mystery: 'Três CEOs se encontraram em segredo e um desapareceu.',
+        solution: 'O encontro era para dividir territórios de mercado ilegalmente. Um deles foi sequestrado por autoridades federais como parte de uma investigação antitruste.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🤝'
+      },
+      {
+        id: 'jc8',
+        order: 8,
+        name: 'Balanço Alterado',
+        mystery: 'Os números do balanço mudaram sozinhos durante a auditoria.',
+        solution: 'O contador programou um vírus que alterava automaticamente os dados financeiros sempre que auditores acessavam o sistema, escondendo fraudes por anos.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '📈'
+      },
+      {
+        id: 'jc9',
+        order: 9,
+        name: 'Sala Lacrada',
+        mystery: 'O cofre da empresa foi aberto, mas a sala estava lacrada.',
+        solution: 'O ladrão era um funcionário de segurança que conhecia o sistema. Ele abriu o cofre durante seu turno e reativou o lacre eletrônico para criar um álibi perfeito.',
+        difficulty: 'hard',
+        theme: 'theft',
+        icon: '🔒'
+      },
+      {
+        id: 'jc10',
+        order: 10,
+        name: 'Funcionário Modelo',
+        mystery: 'O funcionário do mês foi encontrado morto em seu carro.',
+        solution: 'Ele descobriu que seus colegas estavam roubando da empresa e o ameaçaram. Tentou fugir, mas foi perseguido e assassinado no estacionamento.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🏆'
+      },
+      {
+        id: 'jc11',
+        order: 11,
+        name: 'Ligação Interrompida',
+        mystery: 'A videoconferência com investidores foi cortada no momento crucial.',
+        solution: 'Um funcionário descontente sabotou a apresentação cortando cabos específicos. Ele queria que a empresa perdesse o investimento para forçar demissões em massa.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '📹'
+      },
+      {
+        id: 'jc12',
+        order: 12,
+        name: 'Proposta Rejeitada',
+        mystery: 'A proposta foi rejeitada antes mesmo de ser apresentada.',
+        solution: 'Um espião corporativo roubou a proposta e a entregou aos concorrentes, que fizeram uma oferta melhor minutos antes da apresentação oficial.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '📋'
+      },
+      {
+        id: 'jc13',
+        order: 13,
+        name: 'Escritório Vazio',
+        mystery: 'Todos os funcionários do andar desapareceram ao mesmo tempo.',
+        solution: 'Era um simulado de emergência não comunicado, mas um funcionário aproveitou para roubar documentos confidenciais durante a confusão.',
+        difficulty: 'easy',
+        theme: 'theft',
+        icon: '🏢'
+      },
+      {
+        id: 'jc14',
+        order: 14,
+        name: 'Impressora Sabotada',
+        mystery: 'Todos os contratos importantes saíram em branco da impressora.',
+        solution: 'Um técnico em TI alterou o driver da impressora para não imprimir documentos com certas palavras-chave, sabotando acordos que prejudicariam sua empresa anterior.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🖨️'
+      },
+      {
+        id: 'jc15',
+        order: 15,
+        name: 'Ações em Queda',
+        mystery: 'As ações despencaram sem motivo aparente.',
+        solution: 'Um grupo de investidores espalhou rumores falsos sobre a empresa através de bots nas redes sociais, manipulando o mercado para comprar ações a preço baixo.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '📉'
+      },
+      {
+        id: 'jc16',
+        order: 16,
+        name: 'Cliente Fantasma',
+        mystery: 'O maior cliente da empresa nunca existiu.',
+        solution: 'O diretor comercial criou um cliente fictício para justificar transferências de dinheiro. Ele estava desviando recursos para contas pessoais há anos.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '👻'
+      },
+      {
+        id: 'jc17',
+        order: 17,
+        name: 'Segurança Comprometida',
+        mystery: 'As câmeras de segurança gravaram apenas 30 segundos do crime.',
+        solution: 'O chefe de segurança programou o sistema para ter uma falha programada. Ele estava sendo chantageado e precisava criar uma janela para o criminoso agir.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '📸'
+      },
+      {
+        id: 'jc18',
+        order: 18,
+        name: 'Produto Defeituoso',
+        mystery: 'O produto principal da empresa começou a falhar simultaneamente.',
+        solution: 'Um ex-funcionário demitido havia inserido um código malicioso que seria ativado meses depois de sua saída, causando falhas em massa como vingança.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '⚙️'
+      },
+      {
+        id: 'jc19',
+        order: 19,
+        name: 'Viagem de Negócios',
+        mystery: 'O executivo embarcou no voo, mas não chegou ao destino.',
+        solution: 'Ele fingiu embarcar e se escondeu em um hotel. Estava fugindo de investigações federais com dinheiro da empresa e precisava desaparecer.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '✈️'
+      },
+      {
+        id: 'jc20',
+        order: 20,
+        name: 'Acordo Secreto',
+        mystery: 'Duas empresas rivais anunciaram fusão do nada.',
+        solution: 'Descobriram que ambas estavam sendo investigadas pelo mesmo crime. A fusão era uma estratégia para confundir as autoridades e dividir a responsabilidade legal.',
+        difficulty: 'hard',
         theme: 'conspiracy',
         icon: '🤝'
       }
@@ -311,8 +480,8 @@ export const packs: Pack[] = [
         id: 'ce1',
         order: 1,
         name: 'Mansão Sombria',
-        mystery: 'Um assassinato em uma mansão antiga durante uma tempestade.',
-        solution: 'O mordomo foi o culpado, motivado por herança.',
+        mystery: 'O dono da mansão foi encontrado morto na biblioteca trancada.',
+        solution: 'O mordomo usou uma chave mestra para entrar, envenenou o chá e saiu pela janela dos fundos. Ele descobriu que seria demitido e perderia sua pensão.',
         difficulty: 'medium',
         isFree: true,
         theme: 'murder',
@@ -322,8 +491,8 @@ export const packs: Pack[] = [
         id: 'ce2',
         order: 2,
         name: 'Baile de Máscaras',
-        mystery: 'Um roubo de joias em um baile de máscaras.',
-        solution: 'O ladrão estava entre os convidados, disfarçado.',
+        mystery: 'As joias da condessa desapareceram durante a valsa.',
+        solution: 'Seu próprio marido roubou as joias para pagar dívidas de jogo. Ele aproveitou a confusão do baile e a máscara para não ser reconhecido pelos criados.',
         difficulty: 'medium',
         theme: 'theft',
         icon: '🎭'
@@ -331,12 +500,394 @@ export const packs: Pack[] = [
       {
         id: 'ce3',
         order: 3,
-        name: 'Vila Misteriosa',
-        mystery: 'Um desaparecimento misterioso em uma pequena vila.',
-        solution: 'A vítima fugiu para escapar de dívidas.',
+        name: 'Carruagem Vazia',
+        mystery: 'A carruagem chegou vazia, mas havia sangue nos assentos.',
+        solution: 'O passageiro foi atacado por bandidos na estrada. Ferido, conseguiu se esconder nas matas enquanto os cavalos continuaram sozinhos até a cidade.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '🐎'
+      },
+      {
+        id: 'ce4',
+        order: 4,
+        name: 'Duelo Impossível',
+        mystery: 'Ambos os duelistas caíram, mas apenas um tiro foi ouvido.',
+        solution: 'Um atirador escondido matou ambos simultaneamente com uma única bala que os atravessou. Era uma armação para eliminar dois inimigos políticos de uma vez.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🔫'
+      },
+      {
+        id: 'ce5',
+        order: 5,
+        name: 'Carta Perdida',
+        mystery: 'A carta com o testamento desapareceu do correio.',
+        solution: 'O carteiro foi subornado pelo herdeiro desfavorecido para interceptar e destruir o testamento. Sem o documento, ele herdaria por direito legal.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '✉️'
+      },
+      {
+        id: 'ce6',
+        order: 6,
+        name: 'Jantar Fatal',
+        mystery: 'Todos comeram o mesmo prato, mas só um morreu.',
+        solution: 'O veneno estava no remédio que apenas a vítima tomava após as refeições. O assassino conhecia seus hábitos médicos e aproveitou a rotina.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🍽️'
+      },
+      {
+        id: 'ce7',
+        order: 7,
+        name: 'Relógio Parado',
+        mystery: 'Todos os relógios da casa pararam no mesmo horário.',
+        solution: 'O assassino parou os relógios para confundir a hora da morte. Ele precisava de um álibi para o momento em que estaria sendo visto em outro local.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🕰️'
+      },
+      {
+        id: 'ce8',
+        order: 8,
+        name: 'Espelho Quebrado',
+        mystery: 'O espelho antigo se quebrou sozinho durante a noite.',
+        solution: 'Alguém atirou uma pedra da janela dos fundos para quebrar o espelho e assustar a família. Era uma distração para roubar objetos de valor da sala.',
+        difficulty: 'easy',
+        theme: 'theft',
+        icon: '🪞'
+      },
+      {
+        id: 'ce9',
+        order: 9,
+        name: 'Cavalo Assombrado',
+        mystery: 'O cavalo voltou sozinho, mas o cavaleiro desapareceu.',
+        solution: 'O cavaleiro foi sequestrado por credores e mantido em cativeiro. Eles soltaram o cavalo para que voltasse para casa, criando confusão sobre seu paradeiro.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🐴'
+      },
+      {
+        id: 'ce10',
+        order: 10,
+        name: 'Vela Apagada',
+        mystery: 'A vela se apagou e quando foi reacesa, havia um morto na sala.',
+        solution: 'O assassino esperou no escuro e matou a vítima nos segundos de escuridão. Ele conhecia o local perfeitamente e planejou cada movimento.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🕯️'
+      },
+      {
+        id: 'ce11',
+        order: 11,
+        name: 'Jardim Secreto',
+        mystery: 'Pegadas levam ao jardim, mas ninguém foi visto saindo.',
+        solution: 'Havia um túnel secreto sob o jardim que conectava à adega da casa vizinha. O criminoso usou a passagem para escapar sem ser detectado.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '🌹'
+      },
+      {
+        id: 'ce12',
+        order: 12,
+        name: 'Música Sinistra',
+        mystery: 'O piano tocou sozinho durante o funeral.',
+        solution: 'O filho da vítima instalou um mecanismo no piano para tocar uma música específica. Era sua forma de revelar que sabia quem havia matado seu pai.',
         difficulty: 'medium',
         theme: 'investigation',
-        icon: '🏘️'
+        icon: '🎹'
+      },
+      {
+        id: 'ce13',
+        order: 13,
+        name: 'Herança Maldita',
+        mystery: 'Todos os herdeiros morreram em uma semana.',
+        solution: 'O advogado da família estava envenenando os herdeiros um por um para ficar com a herança. Ele alterou o testamento para se beneficiar após todas as mortes.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '💎'
+      },
+      {
+        id: 'ce14',
+        order: 14,
+        name: 'Retrato Amaldiçoado',
+        mystery: 'O retrato na parede sangrava pelos olhos.',
+        solution: 'Alguém perfurou o quadro por trás e colocou tinta vermelha que escorria lentamente. Era para assustar a família e forçá-los a vender a casa barato.',
+        difficulty: 'easy',
+        theme: 'mystery',
+        icon: '🖼️'
+      },
+      {
+        id: 'ce15',
+        order: 15,
+        name: 'Chave Dourada',
+        mystery: 'A chave dourada abria uma porta que não existia.',
+        solution: 'A porta estava escondida atrás de uma estante móvel. A chave abria um cofre secreto onde estavam guardados documentos comprometedores sobre negócios ilegais.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🗝️'
+      },
+      {
+        id: 'ce16',
+        order: 16,
+        name: 'Fantasma do Teatro',
+        mystery: 'A atriz principal morreu no palco durante a peça.',
+        solution: 'O contra-regra trocou a adaga cenográfica por uma real. Ele estava apaixonado pela atriz e não suportava vê-la beijar outro homem toda noite.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🎭'
+      },
+      {
+        id: 'ce17',
+        order: 17,
+        name: 'Livro Proibido',
+        mystery: 'Quem lia o livro antigo desaparecia sem deixar rastros.',
+        solution: 'O livro continha um mapa para um tesouro escondido. Um grupo secreto sequestrava os leitores para interrogá-los sobre o que haviam descoberto.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '📚'
+      },
+      {
+        id: 'ce18',
+        order: 18,
+        name: 'Sino da Igreja',
+        mystery: 'O sino tocou 13 vezes à meia-noite.',
+        solution: 'O sineiro estava sinalizando para contrabandistas que a rota estava livre. O toque extra era o código para que pudessem passar com a mercadoria ilegal.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '🔔'
+      },
+      {
+        id: 'ce19',
+        order: 19,
+        name: 'Casamento Interrompido',
+        mystery: 'O noivo desapareceu no altar durante a cerimônia.',
+        solution: 'Ele descobriu minutos antes que a noiva era na verdade sua irmã perdida. Fugiu em choque, mas não conseguiu explicar sem revelar o segredo da família.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '💒'
+      },
+      {
+        id: 'ce20',
+        order: 20,
+        name: 'Última Vontade',
+        mystery: 'O testamento mudou após a morte do testador.',
+        solution: 'O notário foi chantageado por um dos herdeiros e falsificou uma nova versão. Ele alterou o documento original para favorecer quem tinha provas de seus crimes passados.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '📜'
+      }
+    ]
+  },
+  {
+    id: 'dose-letal',
+    name: 'Dose Letal',
+    description: 'Desvende casos envolvendo substâncias tóxicas e crimes químicos.',
+    price: 14.80,
+    difficulty: 'hard',
+    image: '/lovable-uploads/9f3c7c39-613b-46d9-a2bc-e7b1091d0a41.png',
+    category: 'forensic',
+    cases: [
+      {
+        id: 'dl1',
+        order: 1,
+        name: 'Perfume Mortal',
+        mystery: 'Ela borrifou o perfume novo e desmaiou imediatamente.',
+        solution: 'O frasco foi adulterado com um neurotóxico por um ex-namorado químico. Ele sabia que ela sempre testava perfumes novos antes de sair de casa.',
+        difficulty: 'hard',
+        isFree: true,
+        theme: 'danger',
+        icon: '💐'
+      },
+      {
+        id: 'dl2',
+        order: 2,
+        name: 'Laboratório Silencioso',
+        mystery: 'Todos os cientistas do laboratório desmaiaram ao mesmo tempo.',
+        solution: 'Um experimento com gases tóxicos vazou pelo sistema de ventilação. O responsável havia alterado as válvulas de segurança para acelerar um projeto e lucrar mais.',
+        difficulty: 'hard',
+        theme: 'danger',
+        icon: '🧪'
+      },
+      {
+        id: 'dl3',
+        order: 3,
+        name: 'Água Contaminada',
+        mystery: 'A família inteira adoeceu após beber água da torneira.',
+        solution: 'Alguém injetou pesticida no encanamento da casa. Era um vizinho que queria forçá-los a vender a propriedade para expandir seu terreno.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '💧'
+      },
+      {
+        id: 'dl4',
+        order: 4,
+        name: 'Remédio Trocado',
+        mystery: 'O remédio para diabetes matou em vez de curar.',
+        solution: 'Um farmacêutico trocou os comprimidos por uma substância letal similar. Ele estava sendo chantageado por dívidas e foi forçado a cometer o crime.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '💊'
+      },
+      {
+        id: 'dl5',
+        order: 5,
+        name: 'Flores Venenosas',
+        mystery: 'O buquê de flores matou quem o cheirou.',
+        solution: 'As flores foram pulverizadas com um aerossol tóxico disfarçado de perfume floral. O assassino conhecia a alergia severa da vítima e potencializou a reação.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🌺'
+      },
+      {
+        id: 'dl6',
+        order: 6,
+        name: 'Tinta Radioativa',
+        mystery: 'O artista morreu pintando sua obra-prima.',
+        solution: 'Alguém misturou material radioativo na tinta branca que ele mais usava. Era um colega invejoso que sabia que o artista sempre pintava sem proteção.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🎨'
+      },
+      {
+        id: 'dl7',
+        order: 7,
+        name: 'Escape de Gás',
+        mystery: 'O vazamento de gás não foi acidental.',
+        solution: 'O síndico do prédio afrouxou as conexões de gás para forçar os moradores a sair. Ele havia vendido o prédio secretamente e precisava desocupá-lo rapidamente.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '💨'
+      },
+      {
+        id: 'dl8',
+        order: 8,
+        name: 'Comida Envenenada',
+        mystery: 'Apenas um prato do restaurante estava contaminado.',
+        solution: 'O chef envenenou especificamente o prato do crítico gastronômico que havia destruído sua carreira com uma resenha negativa anos antes.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🍽️'
+      },
+      {
+        id: 'dl9',
+        order: 9,
+        name: 'Cigarro Mortal',
+        mystery: 'Um único cigarro matou o fumante inveterado.',
+        solution: 'Alguém injetou cianeto no filtro de um cigarro específico do maço. O assassino sabia exatamente qual cigarro a vítima fumaria primeiro na manhã seguinte.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🚬'
+      },
+      {
+        id: 'dl10',
+        order: 10,
+        name: 'Piscina Tóxica',
+        mystery: 'A água da piscina queimou a pele dos banhistas.',
+        solution: 'Alguém despejou ácido industrial na piscina durante a noite. Era um funcionário demitido que queria se vingar do clube que o humilhou publicamente.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🏊'
+      },
+      {
+        id: 'dl11',
+        order: 11,
+        name: 'Inseticida Letal',
+        mystery: 'O jardineiro morreu usando o inseticida de sempre.',
+        solution: 'Alguém concentrou o inseticida comum em uma fórmula 50 vezes mais potente. O jardineiro não usava proteção adequada e foi envenenado pela inalação.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '🌱'
+      },
+      {
+        id: 'dl12',
+        order: 12,
+        name: 'Sabão Corrosivo',
+        mystery: 'O sabão em pó queimou as mãos da dona de casa.',
+        solution: 'Alguém misturou soda cáustica no sabão em pó. Era uma vizinha invejosa que não suportava ver suas roupas sempre impecáveis.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '🧼'
+      },
+      {
+        id: 'dl13',
+        order: 13,
+        name: 'Ar Contaminado',
+        mystery: 'Todos no escritório ficaram doentes no mesmo dia.',
+        solution: 'Alguém liberou esporos tóxicos pelo sistema de ar condicionado. Era um ex-funcionário que havia sido demitido e queria se vingar de todos os colegas.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '🌪️'
+      },
+      {
+        id: 'dl14',
+        order: 14,
+        name: 'Vitamina Falsa',
+        mystery: 'O suplemento vitamínico causou overdose.',
+        solution: 'Um vendedor inescrupuloso misturou drogas sintéticas nos comprimidos para causar dependência e aumentar as vendas. A dosagem ficou descontrolada.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '💊'
+      },
+      {
+        id: 'dl15',
+        order: 15,
+        name: 'Shampoo Químico',
+        mystery: 'O cabelo dela caiu completamente após o banho.',
+        solution: 'O ex-marido trocou o shampoo por um produto químico industrial. Ele queria destruir sua autoestima antes da audiência de divórcio.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🧴'
+      },
+      {
+        id: 'dl16',
+        order: 16,
+        name: 'Álcool Metílico',
+        mystery: 'A bebida "premium" cegou todos na festa.',
+        solution: 'Um fornecedor desonesto substituiu o álcool etílico por metílico para economizar custos. Ele não sabia das consequências fatais da troca.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '🍾'
+      },
+      {
+        id: 'dl17',
+        order: 17,
+        name: 'Pasta de Dente',
+        mystery: 'A escovação diária virou tortura para toda a família.',
+        solution: 'Alguém misturou capsaicina (pimenta concentrada) na pasta de dente da família. Era uma babá demitida que queria se vingar das crianças malcriadas.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '🦷'
+      },
+      {
+        id: 'dl18',
+        order: 18,
+        name: 'Preservativo Tóxico',
+        mystery: 'O casal foi parar no hospital após a relação.',
+        solution: 'Alguém injetou uma substância irritante nos preservativos da marca preferida deles. Era um ex-parceiro obsessivo que queria sabotá-los.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '💊'
+      },
+      {
+        id: 'dl19',
+        order: 19,
+        name: 'Desinfetante Mortal',
+        mystery: 'A limpeza da casa se tornou um pesadelo tóxico.',
+        solution: 'Alguém misturou água sanitária com amônia no produto de limpeza, criando gás cloro mortal. Foi um acidente causado por um funcionário inexperiente.',
+        difficulty: 'hard',
+        theme: 'danger',
+        icon: '🧽'
+      },
+      {
+        id: 'dl20',
+        order: 20,
+        name: 'Antídoto Falso',
+        mystery: 'O antídoto para o veneno era o próprio veneno.',
+        solution: 'O médico estava sendo chantageado para matar o paciente específico. Ele trocou o antídoto real por mais veneno, garantindo que a vítima não sobrevivesse.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '💉'
       }
     ]
   },
@@ -379,48 +930,6 @@ export const packs: Pack[] = [
         difficulty: 'hard',
         theme: 'mystery',
         icon: '💌'
-      }
-    ]
-  },
-  {
-    id: 'dose-letal',
-    name: 'Dose Letal',
-    description: 'Desvende casos envolvendo substâncias tóxicas e crimes químicos.',
-    price: 14.80,
-    difficulty: 'hard',
-    image: '/lovable-uploads/9f3c7c39-613b-46d9-a2bc-e7b1091d0a41.png',
-    category: 'forensic',
-    cases: [
-      {
-        id: 'dl1',
-        order: 1,
-        name: 'Toxina Mortal',
-        mystery: 'Uma série de envenenamentos misteriosos em uma pequena cidade.',
-        solution: 'O culpado usava um veneno raro extraído de plantas.',
-        difficulty: 'hard',
-        isFree: true,
-        theme: 'danger',
-        icon: '☠️'
-      },
-      {
-        id: 'dl2',
-        order: 2,
-        name: 'Cientista Desaparecido',
-        mystery: 'Um cientista desaparece após descobrir uma nova toxina.',
-        solution: 'Foi sequestrado para impedir a divulgação da descoberta.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🧪'
-      },
-      {
-        id: 'dl3',
-        order: 3,
-        name: 'Laboratório Sombrio',
-        mystery: 'Um laboratório clandestino é descoberto com substâncias perigosas.',
-        solution: 'O laboratório produzia drogas ilegais.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '⚗️'
       }
     ]
   },
