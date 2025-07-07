@@ -1,6 +1,6 @@
 
 export interface Case {
-  id: string;
+  id: string | number;
   order: number;
   mystery: string;
   solution: string;
@@ -9,6 +9,9 @@ export interface Case {
   theme: 'mystery' | 'murder' | 'theft' | 'investigation' | 'thriller' | 'crime' | 'conspiracy' | 'danger' | 'power';
   name?: string;
   icon?: string;
+  title?: string;
+  description?: string;
+  category?: string;
 }
 
 export interface Pack {
