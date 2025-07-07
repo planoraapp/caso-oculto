@@ -1,4 +1,3 @@
-
 import { Pack, Case } from "./types";
 
 export const packs: Pack[] = [
@@ -13,163 +12,243 @@ export const packs: Pack[] = [
     cases: [
       {
         id: 1,
+        order: 1,
+        mystery: "Uma figura feminina vestida de branco aparece sempre à meia-noite na ponte velha, sinalizando para os carros pararem. Motoristas relatam experiências sobrenaturais, mas será que existe uma explicação racional?",
+        solution: "A 'mulher de branco' é na verdade Maria Santos, uma enfermeira que perdeu o filho em um acidente na ponte há 20 anos. Ela sofre de episódios dissociativos e, vestida com seu uniforme antigo, tenta 'salvar' outros motoristas do mesmo destino. A explicação sobrenatural mascarava um caso de trauma psicológico não tratado.",
+        difficulty: "easy",
+        theme: "mystery",
+        isFree: true,
         title: "A Mulher de Branco da Ponte",
         description: "Uma figura feminina vestida de branco aparece sempre à meia-noite na ponte velha, sinalizando para os carros pararem. Motoristas relatam experiências sobrenaturais, mas será que existe uma explicação racional?",
-        difficulty: "easy",
-        category: "mystery",
-        isFree: true
+        category: "mystery"
       },
       {
         id: 2,
+        order: 2,
+        mystery: "Um prédio de 12 andares onde o elevador às vezes para em um misterioso 13º andar que não deveria existir. Quem entra nesse andar nunca mais é visto.",
+        solution: "O 13º andar era um laboratório secreto de experimentos psicológicos dos anos 80. O elevador foi modificado por um ex-funcionário perturbado que sequestrava pessoas para continuar os experimentos. As vítimas eram mantidas em cativeiro no subsolo do prédio, que foi disfarçado como um andar fantasma.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "O Elevador do 13º Andar",
         description: "Um prédio de 12 andares onde o elevador às vezes para em um misterioso 13º andar que não deveria existir. Quem entra nesse andar nunca mais é visto.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 3,
+        order: 3,
+        mystery: "Risadas infantis ecoam no parque abandonado após o pôr do sol. Vizinhos juram ver uma criança brincando sozinha nos balanços enferrujados.",
+        solution: "A 'criança fantasma' é Tomás, um garoto de 8 anos que fugiu de casa após abuso familiar. Ele se esconde no parque durante a noite, brincando para esquecer seus traumas. Os vizinhos, supersticiosos, preferiram criar uma lenda a investigar e ajudar uma criança em perigo.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Criança do Parque Abandonado",
         description: "Risadas infantis ecoam no parque abandonado após o pôr do sol. Vizinhos juram ver uma criança brincando sozinha nos balanços enferrujados.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 4,
+        order: 4,
+        mystery: "Um cão preto gigantesco persegue carros em uma rodovia específica. Acidentes inexplicáveis acontecem sempre que alguém tenta fugir da criatura.",
+        solution: "O 'cão fantasma' é na verdade um sistema de projeção holográfica instalado por um serial killer que usa a lenda para forçar motoristas a sair da estrada, onde ele os aguarda. Os acidentes são causados propositalmente para encobrir seus crimes.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "O Cachorro Fantasma da Rodovia",
         description: "Um cão preto gigantesco persegue carros em uma rodovia específica. Acidentes inexplicáveis acontecem sempre que alguém tenta fugir da criatura.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       },
       {
         id: 5,
+        order: 5,
+        mystery: "Uma construção abandonada que ganha novos cômodos durante a noite. Pela manhã, sempre há algo novo construído com materiais que ninguém trouxe.",
+        solution: "A casa pertence a um engenheiro com demência que trabalha obsessivamente durante as madrugadas, usando materiais que coleta de construções vizinhas. Sua família, envergonhada, espalhou a lenda sobrenatural para evitar que ele fosse internado.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Casa que Constrói Sozinha",
         description: "Uma construção abandonada que ganha novos cômodos durante a noite. Pela manhã, sempre há algo novo construído com materiais que ninguém trouxe.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 6,
+        order: 6,
+        mystery: "Um mendigo que pede esmolas na mesma esquina há 50 anos e não envelhece. Fotografias antigas confirmam sua presença décadas atrás.",
+        solution: "O 'mendigo imortal' é na verdade uma dinastia familiar. Três gerações da família Santos se revezam no mesmo ponto, usando roupas e aparência similares. É uma operação de esmola organizada que lucra com a lenda urbana que eles mesmos criaram.",
+        difficulty: "hard",
+        theme: "mystery",
+        isFree: false,
         title: "O Mendigo Imortal",
         description: "Um mendigo que pede esmolas na mesma esquina há 50 anos e não envelhece. Fotografias antigas confirmam sua presença décadas atrás.",
-        difficulty: "hard",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 7,
+        order: 7,
+        mystery: "Uma loja antiga que só pode ser vista e acessada após as 22h. Durante o dia, no mesmo local há apenas um terreno vazio.",
+        solution: "A 'loja fantasma' é um estabelecimento clandestino que opera em um porão subterrâneo. Durante o dia, a entrada é camuflada por uma projeção holográfica. À noite, quando as condições de luz mudam, a entrada real se torna visível.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Loja que Só Aparece à Noite",
         description: "Uma loja antiga que só pode ser vista e acessada após as 22h. Durante o dia, no mesmo local há apenas um terreno vazio.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 8,
+        order: 8,
+        mystery: "Um ônibus que circula em horários não oficiais, levando passageiros para destinos que não existem nos mapas. Quem embarca demora dias para retornar.",
+        solution: "O 'ônibus fantasma' é operado por um grupo de traficantes que usa a lenda para transportar pessoas para fazendas de trabalho escravo. Os passageiros são drogados e acordam em locais remotos, levando dias para escapar e retornar à cidade.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "O Ônibus da Linha Fantasma",
         description: "Um ônibus que circula em horários não oficiais, levando passageiros para destinos que não existem nos mapas. Quem embarca demora dias para retornar.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       },
       {
         id: 9,
+        order: 9,
+        mystery: "Uma estátua no centro da cidade que chora lágrimas vermelhas em datas específicas. Análises químicas são inconclusivas sobre a origem do líquido.",
+        solution: "As 'lágrimas de sangue' são causadas por um sistema hidráulico oculto instalado por um artista ativista. O líquido vermelho é liberado em datas que marcam massacres históricos, como protesto artístico contra a violência. As análises falham porque o artista muda a composição química constantemente.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Estatua que Chora Sangue",
         description: "Uma estátua no centro da cidade que chora lágrimas vermelhas em datas específicas. Análises químicas são inconclusivas sobre a origem do líquido.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 10,
+        order: 10,
+        mystery: "Um túnel onde as pessoas entram e saem horas depois, mas para elas passaram-se apenas minutos. Relógios param de funcionar no local.",
+        solution: "O túnel contém um poderoso campo eletromagnético gerado por equipamentos militares abandonados da Guerra Fria. O campo afeta dispositivos eletrônicos e causa desorientação temporal nas pessoas, criando a ilusão de tempo perdido.",
+        difficulty: "hard",
+        theme: "mystery",
+        isFree: false,
         title: "O Túnel do Tempo Perdido",
         description: "Um túnel onde as pessoas entram e saem horas depois, mas para elas passaram-se apenas minutos. Relógios param de funcionar no local.",
-        difficulty: "hard",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 11,
+        order: 11,
+        mystery: "Uma antiga cabine telefônica que ainda recebe ligações, mesmo desconectada há décadas. As conversas são sempre com pessoas que morreram anos atrás.",
+        solution: "A cabine foi convertida em um dispositivo de escuta por um hacker solitário que intercepta ligações e usa inteligência artificial para imitar vozes de pessoas mortas, baseando-se em registros de áudio antigos. Ele faz isso para consolar pessoas em luto, mas acabou criando uma obsessão doentia.",
+        difficulty: "medium",
+        theme: "thriller",
+        isFree: false,
         title: "A Cabine Telefônica Assombrada",
         description: "Uma antiga cabine telefônica que ainda recebe ligações, mesmo desconectada há décadas. As conversas são sempre com pessoas que morreram anos atrás.",
-        difficulty: "medium",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       },
       {
         id: 12,
+        order: 12,
+        mystery: "Um espelho em um banheiro público que mostra reflexos de pessoas diferentes. Visitantes veem rostos desconhecidos olhando de volta.",
+        solution: "O espelho possui uma tela LCD oculta que exibe rostos aleatórios de um banco de dados. Foi instalado por um estudante de psicologia para seu projeto sobre percepção e paranoia urbana. O experimento saiu de controle quando as pessoas começaram a se machucar de medo.",
+        difficulty: "easy",
+        theme: "mystery",
+        isFree: false,
         title: "O Espelho do Banheiro Público",
         description: "Um espelho em um banheiro público que mostra reflexos de pessoas diferentes. Visitantes veem rostos desconhecidos olhando de volta.",
-        difficulty: "easy",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 13,
+        order: 13,
+        mystery: "Uma melodia melancólica que toca em rádios desligados em uma área específica da cidade. A música não existe em nenhum arquivo conhecido.",
+        solution: "A música é transmitida por uma estação pirata operada por um compositor recluso que perdeu a família em um acidente. Ele transmite sua composição original como uma forma de luto eterno, usando equipamentos que interferem com rádios próximos mesmo quando desligados.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Música que Toca Sozinha",
         description: "Uma melodia melancólica que toca em rádios desligados em uma área específica da cidade. A música não existe em nenhum arquivo conhecido.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 14,
+        order: 14,
+        mystery: "Um gato que foi visto morrer em acidentes múltiplas vezes, mas sempre reaparece vivo no dia seguinte, exatamente igual.",
+        solution: "O 'gato imortal' são na verdade múltiplos gatos idênticos criados por uma senhora idosa que opera um esquema de clonagem ilegal de animais. Quando um gato morre, ela rapidamente o substitui por um clone, mantendo a ilusão de imortalidade para proteger seu negócio clandestino.",
+        difficulty: "hard",
+        theme: "mystery",
+        isFree: false,
         title: "O Gato de Nove Vidas Infinitas",
         description: "Um gato que foi visto morrer em acidentes múltiplas vezes, mas sempre reaparece vivo no dia seguinte, exatamente igual.",
-        difficulty: "hard",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 15,
+        order: 15,
+        mystery: "Uma escadaria em um prédio antigo onde algumas pessoas sobem infinitamente sem nunca chegar ao topo, enquanto outras chegam normalmente.",
+        solution: "A escada possui um mecanismo oculto que detecta certas pessoas (baseado em peso e altura) e ativa escadas rolantes reversas imperceptíveis. As vítimas escolhidas são pessoas com dívidas com agiotas que controlam o prédio - é uma forma de tortura psicológica para forçar pagamentos.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "A Escada que Não Termina",
         description: "Uma escadaria em um prédio antigo onde algumas pessoas sobem infinitamente sem nunca chegar ao topo, enquanto outras chegam normalmente.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       },
       {
         id: 16,
+        order: 16,
+        mystery: "Um homem misterioso que vende sonhos em frascos de vidro. Quem compra tem sonhos lúcidos específicos, mas alguns nunca mais acordam.",
+        solution: "O 'vendedor de sonhos' é um neurocientista que desenvolveu uma droga experimental que induz sonhos lúcidos. Alguns frascos contêm doses letais - é um experimento humano ilegal para testar os limites da consciência. As vítimas entram em coma profundo.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "O Vendedor de Sonhos",
         description: "Um homem misterioso que vende sonhos em frascos de vidro. Quem compra tem sonhos lúcidos específicos, mas alguns nunca mais acordam.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 17,
+        order: 17,
+        mystery: "Uma árvore antiga onde desejos escritos em papel se realizam, mas sempre com consequências terríveis e inesperadas.",
+        solution: "A 'árvore dos desejos' é monitorada por um grupo de hackers que lê os papéis deixados e usa informações pessoais para manipular as vidas das pessoas. Eles causam 'coincidências' terríveis para fazer parecer que os desejos se realizam de forma distorcida, como experimento social cruel.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "A Árvore dos Desejos Sombrios",
         description: "Uma árvore antiga onde desejos escritos em papel se realizam, mas sempre com consequências terríveis e inesperadas.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       },
       {
         id: 18,
+        order: 18,
+        mystery: "Fotografias aparecem misteriosamente nas casas das pessoas, mostrando momentos íntimos que ninguém registrou. O fotógrafo nunca é visto.",
+        solution: "O 'fotógrafo invisível' é um stalker tecnológico que hackeia câmeras de segurança, celulares e dispositivos IoT para capturar imagens íntimas. Ele imprime e entrega as fotos como forma de intimidação psicológica, preparando suas vítimas para chantagem ou sequestro.",
+        difficulty: "medium",
+        theme: "crime",
+        isFree: false,
         title: "O Fotógrafo Invisível",
         description: "Fotografias aparecem misteriosamente nas casas das pessoas, mostrando momentos íntimos que ninguém registrou. O fotógrafo nunca é visto.",
-        difficulty: "medium",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 19,
+        order: 19,
+        mystery: "Uma biblioteca secreta onde livros escrevem suas próprias histórias. Leitores descobrem suas vidas futuras descritas em detalhes assustadores.",
+        solution: "A 'biblioteca profética' é operada por um grupo de analistas de dados que usa inteligência artificial para prever comportamentos futuros baseado em dados pessoais roubados. Eles imprimem essas previsões em livros falsos para testar a precisão de seus algoritmos preditivos.",
+        difficulty: "hard",
+        theme: "mystery",
+        isFree: false,
         title: "A Biblioteca dos Livros Proibidos",
         description: "Uma biblioteca secreta onde livros escrevem suas próprias histórias. Leitores descobrem suas vidas futuras descritas em detalhes assustadores.",
-        difficulty: "hard",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 20,
+        order: 20,
+        mystery: "Um homem que afirma ser o único sobrevivente de uma cidade que foi completamente evacuada há décadas, mas que ele ainda vê cheia de pessoas.",
+        solution: "O 'último habitante' sofre de esquizofrenia severa e vive em uma réplica da cidade construída por uma empresa farmacêutica para testar medicamentos experimentais. As 'pessoas' que ele vê são hologramas e atores pagos para manter a ilusão enquanto ele serve como cobaia humana.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "O Último Habitante da Cidade",
         description: "Um homem que afirma ser o único sobrevivente de uma cidade que foi completamente evacuada há décadas, mas que ele ainda vê cheia de pessoas.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       }
     ]
   },
@@ -184,163 +263,243 @@ export const packs: Pack[] = [
     cases: [
       {
         id: 1,
+        order: 1,
+        mystery: "Um voo comercial que partiu normalmente, mas nunca chegou ao destino. Passageiros, tripulação e aeronave simplesmente desapareceram sem deixar rastros no radar ou destroços.",
+        solution: "O voo 447 foi desviado por terroristas que forçaram o piloto a pousar em uma pista clandestina. Os passageiros foram vendidos como escravos para fazendas remotas, enquanto a aeronave foi desmontada e vendida no mercado negro. O governo encobriu o caso para evitar pânico.",
+        difficulty: "easy",
+        theme: "mystery",
+        isFree: true,
         title: "O Voo 447 que Nunca Pousou",
         description: "Um voo comercial que partiu normalmente, mas nunca chegou ao destino. Passageiros, tripulação e aeronave simplesmente desapareceram sem deixar rastros no radar ou destroços.",
-        difficulty: "easy",
-        category: "mystery",
-        isFree: true
+        category: "mystery"
       },
       {
         id: 2,
-        title: "A Excursão do Vale Perdido",
-        description: "Um grupo de turistas se aventurou em uma trilha famosa, mas apenas um retornou - sem memória dos outros e falando sobre um vale que não existe nos mapas.",
+        order: 2,
+        mystery: "Uma excursão de turistas que desapareceu em uma trilha famosa, mas apenas um retornou - sem memória dos outros e falando sobre um vale que não existe nos mapas.",
+        solution: "O grupo de turistas foi capturado por uma seita que realiza rituais de sacrifício. O único sobrevivente foi libertado após prometer não contar a ninguém sobre o que viu. Ele não se lembra dos detalhes, mas a seita continua ativa na região.",
         difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        theme: "mystery",
+        isFree: false,
+        title: "A Excursão do Vale Perdido",
+        description: "Uma excursão de turistas que desapareceu em uma trilha famosa, mas apenas um retornou - sem memória dos outros e falando sobre um vale que não existe nos mapas.",
+        category: "mystery"
       },
       {
         id: 3,
+        order: 3,
+        mystery: "Um navio de cruzeiro foi encontrado à deriva com todos os sistemas funcionando, mas completamente vazio. As câmeras de segurança mostram os passageiros simplesmente desaparecendo.",
+        solution: "O navio foi sequestrado por piratas modernos que usaram um sistema de desativação de segurança para roubar os passageiros e a carga. As câmeras foram manipuladas para ocultar o crime, e o navio foi abandonado após o roubo.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "O Cruzeiro Fantasma",
         description: "Um navio de cruzeiro foi encontrado à deriva com todos os sistemas funcionando, mas completamente vazio. As câmeras de segurança mostram os passageiros simplesmente desaparecendo.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       },
       {
         id: 4,
+        order: 4,
+        mystery: "Uma família seguiu as instruções do GPS e entrou em uma estrada que os levou a uma cidade abandonada. Quando tentaram voltar, a estrada havia desaparecido.",
+        solution: "A estrada é uma ilusão criada por um grupo de cientistas que testam um novo tipo de tecnologia de realidade aumentada. Eles atraem pessoas para a cidade abandonada para estudar suas reações e comportamentos em situações de estresse.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Estrada Que Não Existe",
         description: "Uma família seguiu as instruções do GPS e entrou em uma estrada que os levou a uma cidade abandonada. Quando tentaram voltar, a estrada havia desaparecido.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 5,
+        order: 5,
+        mystery: "Passageiros embarcaram em um trem noturno para uma viagem de 6 horas. Quando acordaram, estavam no mesmo lugar, mas 30 anos no futuro.",
+        solution: "O trem é um experimento de viagem no tempo realizado por uma organização secreta. Os passageiros foram escolhidos aleatoriamente e enviados para o futuro como parte de um teste de controle social. Eles foram devolvidos ao mesmo ponto no tempo, mas com suas memórias apagadas.",
+        difficulty: "hard",
+        theme: "mystery",
+        isFree: false,
         title: "O Trem da Meia-Noite",
         description: "Passageiros embarcaram em um trem noturno para uma viagem de 6 horas. Quando acordaram, estavam no mesmo lugar, mas 30 anos no futuro.",
-        difficulty: "hard",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 6,
+        order: 6,
+        mystery: "Uma equipe de pesquisadores partiu para o Ártico e enviou suas últimas comunicações normalmente. A equipe de resgate encontrou apenas suas pegadas levando ao nada.",
+        solution: "A equipe foi capturada por uma tribo secreta que vive no Ártico e que protege um antigo segredo. Eles foram forçados a se juntar à tribo e não puderam retornar. As pegadas foram deixadas para confundir os resgatadores.",
+        difficulty: "hard",
+        theme: "investigation",
+        isFree: false,
         title: "A Expedição Ártica Perdida",
         description: "Uma equipe de pesquisadores partiu para o Ártico e enviou suas últimas comunicações normalmente. A equipe de resgate encontrou apenas suas pegadas levando ao nada.",
-        difficulty: "hard",
-        category: "investigation",
-        isFree: false
+        category: "investigation"
       },
       {
         id: 7,
+        order: 7,
+        mystery: "Turistas fizeram reservas online para um resort luxuoso. Chegaram ao local e encontraram apenas ruínas antigas, mas suas reservas eram reais e foram cobradas.",
+        solution: "O resort foi um esquema de fraude que usou tecnologia de realidade aumentada para criar uma experiência falsa. Os turistas foram enganados e suas informações foram vendidas no mercado negro.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "O Hotel que Nunca Existiu",
         description: "Turistas fizeram reservas online para um resort luxuoso. Chegaram ao local e encontraram apenas ruínas antigas, mas suas reservas eram reais e foram cobradas.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 8,
+        order: 8,
+        mystery: "Um grupo de aventureiros entrou no deserto em uma excursão organizada. Satélites registraram sua entrada, mas nunca sua saída. O deserto não tem outras rotas de fuga.",
+        solution: "O grupo foi capturado por uma gangue que opera no deserto e que usa a lenda para atrair turistas. Eles são mantidos em cativeiro e forçados a trabalhar em plantações ilegais.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "A Caravana do Deserto",
         description: "Um grupo de aventureiros entrou no deserto em uma excursão organizada. Satélites registraram sua entrada, mas nunca sua saída. O deserto não tem outras rotas de fuga.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       },
       {
         id: 9,
+        order: 9,
+        mystery: "Mergulhadores experientes desceram em uma fossa oceânica e perderam contato. Seus equipamentos foram encontrados na superfície, mas eles nunca emergiram.",
+        solution: "Os mergulhadores foram atraídos para uma caverna subaquática que leva a um mundo paralelo. Eles não conseguiram voltar e suas histórias foram perdidas no tempo.",
+        difficulty: "medium",
+        theme: "investigation",
+        isFree: false,
         title: "O Mergulho no Abismo",
         description: "Mergulhadores experientes desceram em uma fossa oceânica e perderam contato. Seus equipamentos foram encontrados na superfície, mas eles nunca emergiram.",
-        difficulty: "medium",
-        category: "investigation",
-        isFree: false
+        category: "investigation"
       },
       {
         id: 10,
-        title: "A Trilha do Tempo Perdido",
-        description: "Caminhantes entraram em uma trilha de montanha pela manhã. Quando a equipe de resgate os encontrou, eles insistiam que haviam caminhado por apenas uma hora, mas já era uma semana depois.",
+        order: 10,
+        mystery: "Caminhantes entraram em uma trilha de montanha pela manhã. Quando a equipe de resgate os encontrou, insistiam que haviam caminhado por apenas uma hora, mas já era uma semana depois.",
+        solution: "A trilha é um portal para outra dimensão que distorce o tempo. Os caminhantes foram capturados por criaturas que habitam a montanha e foram forçados a viver em um ciclo de repetição.",
         difficulty: "hard",
-        category: "mystery",
-        isFree: false
+        theme: "mystery",
+        isFree: false,
+        title: "A Trilha do Tempo Perdido",
+        description: "Caminhantes entraram em uma trilha de montanha pela manhã. Quando a equipe de resgate os encontrou, insistiam que haviam caminhado por apenas uma hora, mas já era uma semana depois.",
+        category: "mystery"
       },
       {
         id: 11,
+        order: 11,
+        mystery: "Um ônibus escolar foi visto pegando crianças em paradas normais, mas não chegou à escola. As crianças não voltaram para casa, e o ônibus não existe nos registros.",
+        solution: "O ônibus é operado por uma rede de tráfico de crianças que usa a lenda para encobrir suas atividades. As crianças são levadas para um local secreto e vendidas no mercado negro.",
+        difficulty: "hard",
+        theme: "crime",
+        isFree: false,
         title: "O Ônibus Escolar Fantasma",
         description: "Um ônibus escolar foi visto pegando crianças em paradas normais, mas não chegou à escola. As crianças não voltaram para casa, e o ônibus não existe nos registros.",
-        difficulty: "hard",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 12,
+        order: 12,
+        mystery: "Um casal partiu para lua de mel em um resort tropical. Suas malas chegaram ao destino, mas eles nunca fizeram check-in. O voo confirmou que embarcaram.",
+        solution: "O casal foi sequestrado por uma gangue que opera na ilha e que usa a lenda do resort para atrair turistas. Eles foram mantidos em cativeiro e suas identidades foram roubadas.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Viagem de Lua de Mel",
         description: "Um casal partiu para lua de mel em um resort tropical. Suas malas chegaram ao destino, mas eles nunca fizeram check-in. O voo confirmou que embarcaram.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 13,
+        order: 13,
+        mystery: "Espeleólogos exploraram uma caverna recém-descoberta. Suas cordas foram encontradas cortadas, mas não há sinais de luta ou de como saíram da caverna.",
+        solution: "Os espeleólogos foram capturados por uma criatura que habita a caverna e que usa ilusões para desorientar suas vítimas. Eles foram forçados a se juntar a um culto que adora a criatura.",
+        difficulty: "hard",
+        theme: "investigation",
+        isFree: false,
         title: "A Expedição Subterrânea",
         description: "Espeleólogos exploraram uma caverna recém-descoberta. Suas cordas foram encontradas cortadas, mas não há sinais de luta ou de como saíram da caverna.",
-        difficulty: "hard",
-        category: "investigation",
-        isFree: false
+        category: "investigation"
       },
       {
         id: 14,
+        order: 14,
+        mystery: "Turistas em um safari africano saíram para um passeio matinal e nunca retornaram ao acampamento. Seus veículos foram encontrados intactos, mas vazios.",
+        solution: "Os turistas foram atacados por uma tribo que vive na floresta e que usa a lenda do safari para atrair visitantes. Eles foram capturados e levados para um local secreto.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "O Safari Perdido",
         description: "Turistas em um safari africano saíram para um passeio matinal e nunca retornaram ao acampamento. Seus veículos foram encontrados intactos, mas vazios.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 15,
+        order: 15,
+        mystery: "Uma balsa fluvial transportava passageiros regularmente até desaparecer em uma curva do rio. Mergulhadores não encontraram destroços no fundo do rio.",
+        solution: "A balsa é um disfarce para um esquema de tráfico de pessoas. Os passageiros são levados para um local secreto e vendidos no mercado negro. A balsa é desmantelada após cada viagem para evitar rastreamento.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "A Balsa do Rio Maldito",
         description: "Uma balsa fluvial transportava passageiros regularmente até desaparecer em uma curva do rio. Mergulhadores não encontraram destroços no fundo do rio.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       },
       {
         id: 16,
+        order: 16,
+        mystery: "Motociclistas experientes partiram para uma viagem em grupo. Câmeras de trânsito mostram todos passando por um posto, mas apenas as motocicletas chegaram ao destino final.",
+        solution: "Os motociclistas foram capturados por uma gangue que opera na estrada e que usa a lenda para atrair novos membros. Eles foram forçados a se juntar à gangue ou enfrentar consequências severas.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "O Grupo de Motociclistas",
         description: "Motociclistas experientes partiram para uma viagem em grupo. Câmeras de trânsito mostram todos passando por um posto, mas apenas as motocicletas chegaram ao destino final.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 17,
+        order: 17,
+        mystery: "Exploradores partiram para o Polo Sul com equipamentos de última geração. Seus GPS pararam de transmitir simultaneamente, como se tivessem saído do planeta.",
+        solution: "Os exploradores foram capturados por uma civilização secreta que vive sob o gelo. Eles foram forçados a se juntar à civilização e não puderam retornar. O GPS foi sabotado para evitar que fossem encontrados.",
+        difficulty: "hard",
+        theme: "investigation",
+        isFree: false,
         title: "A Expedição Polar",
         description: "Exploradores partiram para o Polo Sul com equipamentos de última geração. Seus GPS pararam de transmitir simultaneamente, como se tivessem saído do planeta.",
-        difficulty: "hard",
-        category: "investigation",
-        isFree: false
+        category: "investigation"
       },
       {
         id: 18,
+        order: 18,
+        mystery: "Crianças partiram para um acampamento de verão tradicional. Os pais receberam cartas e fotos durante duas semanas, mas o acampamento havia sido fechado há cinco anos.",
+        solution: "As crianças foram sequestradas por um grupo que opera acampamentos ilegais. Eles usam a lenda do acampamento para atrair novas vítimas e mantêm as crianças em cativeiro.",
+        difficulty: "hard",
+        theme: "crime",
+        isFree: false,
         title: "O Acampamento de Verão",
         description: "Crianças partiram para um acampamento de verão tradicional. Os pais receberam cartas e fotos durante duas semanas, mas o acampamento havia sido fechado há cinco anos.",
-        difficulty: "hard",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 19,
+        order: 19,
+        mystery: "Ciclistas atravessavam o país em uma jornada beneficente. Passaram por várias cidades confirmando presença, até que em uma pequena cidade, simplesmente desapareceram.",
+        solution: "Os ciclistas foram capturados por uma gangue que opera na estrada e que usa a lenda para atrair novos membros. Eles foram forçados a se juntar à gangue ou enfrentar consequências severas.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Jornada de Bicicleta",
         description: "Ciclistas atravessavam o país em uma jornada beneficente. Passaram por várias cidades confirmando presença, até que em uma pequena cidade, simplesmente desapareceram.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 20,
+        order: 20,
+        mystery: "Um avião charter particular decolou com destino conhecido, mas pousou em um aeroporto que havia sido demolido décadas atrás. O piloto insiste que acabou de pousar.",
+        solution: "O avião foi sequestrado por um grupo que opera no tráfico de pessoas. O piloto foi forçado a pousar em um local clandestino e as pessoas a bordo foram vendidas no mercado negro.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "O Último Voo Charter",
         description: "Um avião charter particular decolou com destino conhecido, mas pousou em um aeroporto que havia sido demolido décadas atrás. O piloto insiste que acabou de pousar.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       }
     ]
   },
@@ -355,163 +514,243 @@ export const packs: Pack[] = [
     cases: [
       {
         id: 1,
+        order: 1,
+        mystery: "Um criminoso que rouba apenas durante eclipses lunares, deixando as vítimas temporariamente sem suas próprias sombras. Um fenômeno impossível que desafia a lógica.",
+        solution: "O ladrão usa tecnologia de camuflagem avançada que o torna invisível durante eclipses. Ele se aproveita da superstição das pessoas para cometer os crimes sem ser notado.",
+        difficulty: "easy",
+        theme: "crime",
+        isFree: true,
         title: "O Ladrão de Sombras",
         description: "Um criminoso que rouba apenas durante eclipses lunares, deixando as vítimas temporariamente sem suas próprias sombras. Um fenômeno impossível que desafia a lógica.",
-        difficulty: "easy",
-        category: "crime",
-        isFree: true
+        category: "crime"
       },
       {
         id: 2,
+        order: 2,
+        mystery: "Vítimas são encontradas mortas em quartos iluminados apenas por velas, sempre às 3h33 da madrugada. Não há sinais de invasão ou luta.",
+        solution: "As mortes são causadas por um serial killer que usa veneno em velas. Ele se infiltra nas casas das vítimas e as mata enquanto dormem, deixando a cena do crime limpa.",
+        difficulty: "medium",
+        theme: "murder",
+        isFree: false,
         title: "Assassinatos à Luz de Velas",
         description: "Vítimas são encontradas mortas em quartos iluminados apenas por velas, sempre às 3h33 da madrugada. Não há sinais de invasão ou luta.",
-        difficulty: "medium",
-        category: "murder",
-        isFree: false
+        category: "murder"
       },
       {
         id: 3,
+        order: 3,
+        mystery: "Um vigilante misterioso protege as ruas durante a madrugada, mas deixa criminosos em estado catatônico, murmurando sobre 'a escuridão que vê tudo'.",
+        solution: "O vigilante é um ex-policial que usa tecnologia de hipnose para controlar mentes de criminosos. Ele se vinga de quem o prejudicou, mas acaba criando uma lenda urbana.",
+        difficulty: "medium",
+        theme: "crime",
+        isFree: false,
         title: "O Vigilante das Madrugadas",
         description: "Um vigilante misterioso protege as ruas durante a madrugada, mas deixa criminosos em estado catatônico, murmurando sobre 'a escuridão que vê tudo'.",
-        difficulty: "medium",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 4,
+        order: 4,
+        mystery: "Corpos em necrotérios são encontrados em posições diferentes pela manhã, como se tivessem dançado durante a noite. Câmeras de segurança mostram apenas escuridão.",
+        solution: "Os corpos são manipulados por um grupo de artistas que realizam performances macabras. Eles usam tecnologia de projeção para criar a ilusão de movimento e danças.",
+        difficulty: "hard",
+        theme: "mystery",
+        isFree: false,
         title: "A Dança dos Mortos",
         description: "Corpos em necrotérios são encontrados em posições diferentes pela manhã, como se tivessem dançado durante a noite. Câmeras de segurança mostram apenas escuridão.",
-        difficulty: "hard",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 5,
+        order: 5,
+        mystery: "Pessoas dormem normalmente, mas acordam exaustas, com memórias de terem sido forçadas a viver pesadelos de outras pessoas durante toda a noite.",
+        solution: "Um grupo de cientistas realiza experimentos de controle mental em pessoas que dormem. Eles usam tecnologia de indução de sonhos para manipular as experiências das vítimas.",
+        difficulty: "medium",
+        theme: "crime",
+        isFree: false,
         title: "O Sequestrador de Sonhos",
         description: "Pessoas dormem normalmente, mas acordam exaustas, com memórias de terem sido forçadas a viver pesadelos de outras pessoas durante toda a noite.",
-        difficulty: "medium",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 6,
+        order: 6,
+        mystery: "Vítimas morrem após semanas sem conseguir dormir, mas todas relatam ver a mesma figura sombria que as impede de adormecer.",
+        solution: "A figura sombria é um ser sobrenatural que se alimenta do medo das pessoas. Ele se manifesta em sonhos e causa insônia, levando as vítimas à morte.",
+        difficulty: "hard",
+        theme: "murder",
+        isFree: false,
         title: "Mortes por Insônia Terminal",
         description: "Vítimas morrem após semanas sem conseguir dormir, mas todas relatam ver a mesma figura sombria que as impede de adormecer.",
-        difficulty: "hard",
-        category: "murder",
-        isFree: false
+        category: "murder"
       },
       {
         id: 7,
+        order: 7,
+        mystery: "Um criminoso que de alguma forma descobre os medos mais profundos das pessoas e os transforma em realidade durante a noite.",
+        solution: "O criminoso usa tecnologia de realidade virtual para invadir os sonhos das vítimas e manifestar seus medos. Ele se aproveita da vulnerabilidade das pessoas enquanto dormem.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "O Colecionador de Medos",
         description: "Um criminoso que de alguma forma descobre os medos mais profundos das pessoas e os transforma em realidade durante a noite.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       },
       {
         id: 8,
+        order: 8,
+        mystery: "Uma enfermeira fantasma visita pacientes terminais durante a madrugada. Alguns se recuperam milagrosamente, outros desaparecem sem deixar rastros.",
+        solution: "A enfermeira é uma médica que usa métodos não convencionais para curar pacientes. Ela se infiltra em hospitais e realiza tratamentos secretos, mas alguns pacientes desaparecem devido a complicações.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Enfermeira da Madrugada",
         description: "Uma enfermeira fantasma visita pacientes terminais durante a madrugada. Alguns se recuperam milagrosamente, outros desaparecem sem deixar rastros.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 9,
+        order: 9,
+        mystery: "Um artista pinta crimes que ainda não aconteceram. Suas obras sempre se tornam realidade na noite seguinte, mas ele jura não ter controle sobre isso.",
+        solution: "O artista é um médium que tem a capacidade de prever o futuro através da arte. Ele não controla as visões, mas suas pinturas se tornam realidade, atraindo a atenção de criminosos.",
+        difficulty: "hard",
+        theme: "crime",
+        isFree: false,
         title: "O Pintor de Crimes Futuros",
         description: "Um artista pinta crimes que ainda não aconteceram. Suas obras sempre se tornam realidade na noite seguinte, mas ele jura não ter controle sobre isso.",
-        difficulty: "hard",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 10,
+        order: 10,
+        mystery: "Pessoas ligam para uma linha telefônica inexistente e confessam crimes que não se lembram de ter cometido. Os crimes são descobertos no dia seguinte.",
+        solution: "A linha telefônica é um esquema de escuta que coleta informações de pessoas em estado de confusão. As confissões são manipuladas e usadas para chantagear as vítimas.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "As Confissões da Meia-Noite",
         description: "Pessoas ligam para uma linha telefônica inexistente e confessam crimes que não se lembram de ter cometido. Os crimes são descobertos no dia seguinte.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 11,
+        order: 11,
+        mystery: "Moradores de rua desaparecem durante a noite, deixando apenas suas roupas. Testemunhas falam de uma figura que 'coleta almas perdidas'.",
+        solution: "A figura é um serial killer que se disfarça de morador de rua para atrair suas vítimas. Ele usa métodos de hipnose para controlar as pessoas e as leva para um local secreto.",
+        difficulty: "hard",
+        theme: "crime",
+        isFree: false,
         title: "O Caçador de Almas Perdidas",
         description: "Moradores de rua desaparecem durante a noite, deixando apenas suas roupas. Testemunhas falam de uma figura que 'coleta almas perdidas'.",
-        difficulty: "hard",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 12,
+        order: 12,
+        mystery: "Uma loja que só abre à noite vende objetos pessoais de pessoas vivas. Os proprietários originais não se lembram de ter vendido nada.",
+        solution: "A loja é um portal para outra dimensão onde os objetos são coletados de pessoas que não se lembram de suas vidas. Os proprietários são seres que se alimentam das memórias das pessoas.",
+        difficulty: "medium",
+        theme: "theft",
+        isFree: false,
         title: "A Loja de Antiguidades Noturna",
         description: "Uma loja que só abre à noite vende objetos pessoais de pessoas vivas. Os proprietários originais não se lembram de ter vendido nada.",
-        difficulty: "medium",
-        category: "theft",
-        isFree: false
+        category: "theft"
       },
       {
         id: 13,
+        order: 13,
+        mystery: "Criminosos são encontrados mortos com sentenças escritas em suas próprias mãos, como se tivessem sido julgados por um tribunal invisível.",
+        solution: "Um grupo de vigilantes se faz passar por um tribunal e executa criminosos que escaparam da justiça. Eles usam métodos de tortura psicológica para fazer com que as vítimas se entreguem.",
+        difficulty: "hard",
+        theme: "murder",
+        isFree: false,
         title: "O Julgamento das Sombras",
         description: "Criminosos são encontrados mortos com sentenças escritas em suas próprias mãos, como se tivessem sido julgados por um tribunal invisível.",
-        difficulty: "hard",
-        category: "murder",
-        isFree: false
+        category: "murder"
       },
       {
         id: 14,
+        order: 14,
+        mystery: "Pessoas acordam com cirurgias perfeitas que salvam suas vidas, mas não se lembram de ter ido ao hospital. Não há registros médicos das operações.",
+        solution: "Um grupo de médicos clandestinos realiza cirurgias em pessoas que não pediram. Eles usam anestesia não autorizada e manipulam as memórias das vítimas para evitar que se lembrem.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Cirurgiã da Escuridão",
         description: "Pessoas acordam com cirurgias perfeitas que salvam suas vidas, mas não se lembram de ter ido ao hospital. Não há registros médicos das operações.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 15,
+        order: 15,
+        mystery: "Um mercado clandestino onde memórias são compradas e vendidas. Vítimas acordam sem lembrar de partes importantes de suas vidas.",
+        solution: "O mercado é operado por um grupo que usa tecnologia de manipulação de memória. Eles vendem memórias a pessoas ricas que desejam viver experiências que nunca tiveram.",
+        difficulty: "hard",
+        theme: "crime",
+        isFree: false,
         title: "O Mercado Negro de Memórias",
         description: "Um mercado clandestino onde memórias são compradas e vendidas. Vítimas acordam sem lembrar de partes importantes de suas vidas.",
-        difficulty: "hard",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 16,
+        order: 16,
+        mystery: "Crianças desaparecidas são vistas frequentando uma escola que só existe durante a noite. De dia, o prédio está abandonado há décadas.",
+        solution: "A escola é um local de treinamento para uma seita que recruta crianças. Elas são manipuladas e ensinadas a seguir a seita, e suas memórias são apagadas.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "A Escola Noturna dos Perdidos",
         description: "Crianças desaparecidas são vistas frequentando uma escola que só existe durante a noite. De dia, o prédio está abandonado há décadas.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 17,
+        order: 17,
+        mystery: "Uma organização que executa favores impossíveis durante a noite, mas sempre cobra um preço terrível que só é revelado depois.",
+        solution: "A organização é um culto que usa os favores como forma de controle. Eles manipulam as pessoas para que se tornem dependentes e depois cobram um preço alto por suas almas.",
+        difficulty: "hard",
+        theme: "conspiracy",
+        isFree: false,
         title: "O Banco de Favores Sombrios",
         description: "Uma organização que executa favores impossíveis durante a noite, mas sempre cobra um preço terrível que só é revelado depois.",
-        difficulty: "hard",
-        category: "conspiracy",
-        isFree: false
+        category: "conspiracy"
       },
       {
         id: 18,
+        order: 18,
+        mystery: "Uma confeitaria noturna onde doces concedem desejos, mas cada mordida custa anos de vida. Clientes não percebem o preço até ser tarde demais.",
+        solution: "A confeitaria é um disfarce para um culto que se alimenta da vida das pessoas. Eles usam os doces como isca para atrair clientes e depois drenam suas energias vitais.",
+        difficulty: "medium",
+        theme: "crime",
+        isFree: false,
         title: "A Confeitaria dos Desejos Proibidos",
         description: "Uma confeitaria noturna onde doces concedem desejos, mas cada mordida custa anos de vida. Clientes não percebem o preço até ser tarde demais.",
-        difficulty: "medium",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 19,
+        order: 19,
+        mystery: "Um teatro abandonado onde crimes reais são encenados como peças. A plateia não sabe que está assistindo assassinatos verdadeiros.",
+        solution: "O teatro é operado por um grupo de criminosos que encena suas atividades para se vingar de quem os prejudicou. Eles atraem espectadores e os usam como testemunhas em seus crimes.",
+        difficulty: "hard",
+        theme: "murder",
+        isFree: false,
         title: "O Teatro dos Crimes Perfeitos",
         description: "Um teatro abandonado onde crimes reais são encenados como peças. A plateia não sabe que está assistindo assassinatos verdadeiros.",
-        difficulty: "hard",
-        category: "murder",
-        isFree: false
+        category: "murder"
       },
       {
         id: 20,
+        order: 20,
+        mystery: "Pessoas recebem ligações de entes queridos mortos, pedindo para encontrá-los em locais específicos. Quem vai ao encontro nunca mais retorna.",
+        solution: "As ligações são um esquema de manipulação emocional criado por um grupo que se alimenta do luto das pessoas. Eles atraem as vítimas para locais onde são sequestradas.",
+        difficulty: "hard",
+        theme: "thriller",
+        isFree: false,
         title: "A Última Chamada da Noite",
         description: "Pessoas recebem ligações de entes queridos mortos, pedindo para encontrá-los em locais específicos. Quem vai ao encontro nunca mais retorna.",
-        difficulty: "hard",
-        category: "thriller",
-        isFree: false
+        category: "thriller"
       }
     ]
   },
@@ -526,163 +765,243 @@ export const packs: Pack[] = [
     cases: [
       {
         id: 1,
+        order: 1,
+        mystery: "Uma mulher recebe cartas manuscritas de seu marido morto, revelando detalhes sobre seu assassinato que apenas o assassino poderia saber. A caligrafia é idêntica.",
+        solution: "As cartas são escritas por um amigo do marido que se aproveita da situação para manipular a mulher. Ele usa a caligrafia do marido para enganá-la e obter sua confiança.",
+        difficulty: "easy",
+        theme: "murder",
+        isFree: true,
         title: "A Carta do Além",
         description: "Uma mulher recebe cartas manuscritas de seu marido morto, revelando detalhes sobre seu assassinato que apenas o assassino poderia saber. A caligrafia é idêntica.",
-        difficulty: "easy",
-        category: "murder",
-        isFree: true
+        category: "murder"
       },
       {
         id: 2,
+        order: 2,
+        mystery: "Um antigo telefone de linha fixa recebe ligações de pessoas falecidas, sempre com informações sobre crimes não resolvidos. As vozes são reconhecidas por familiares.",
+        solution: "O telefone é um dispositivo de escuta que capta ondas sonoras de espíritos. Ele é manipulado por um médium que usa as informações para resolver crimes e ganhar fama.",
+        difficulty: "medium",
+        theme: "crime",
+        isFree: false,
         title: "O Telefone dos Mortos",
         description: "Um antigo telefone de linha fixa recebe ligações de pessoas falecidas, sempre com informações sobre crimes não resolvidos. As vozes são reconhecidas por familiares.",
-        difficulty: "medium",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 3,
+        order: 3,
+        mystery: "Mensagens aparecem escritas no vapor de espelhos de banheiro, sempre após banhos quentes. As mensagens revelam localizações de corpos desaparecidos.",
+        solution: "As mensagens são escritas por um artista que usa a técnica de vapor para criar arte. Ele se aproveita da fama das mensagens para atrair atenção e resolver crimes.",
+        difficulty: "medium",
+        theme: "investigation",
+        isFree: false,
         title: "Mensagens no Espelho",
         description: "Mensagens aparecem escritas no vapor de espelhos de banheiro, sempre após banhos quentes. As mensagens revelam localizações de corpos desaparecidos.",
-        difficulty: "medium",
-        category: "investigation",
-        isFree: false
+        category: "investigation"
       },
       {
         id: 4,
+        order: 4,
+        mystery: "Um tabuleiro Ouija usado em uma festa começa a acusar pessoas presentes de crimes específicos. Investigações posteriores confirmam as acusações.",
+        solution: "O tabuleiro é manipulado por um dos convidados que usa informações pessoais para incriminar os outros. Ele se aproveita da superstição para criar caos e desconfiança.",
+        difficulty: "hard",
+        theme: "crime",
+        isFree: false,
         title: "A Ouija Que Acusa",
         description: "Um tabuleiro Ouija usado em uma festa começa a acusar pessoas presentes de crimes específicos. Investigações posteriores confirmam as acusações.",
-        difficulty: "hard",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 5,
+        order: 5,
+        mystery: "Um investigador paranormal encontra gravações de EVPs (Eletronic Voice Phenomena) que descrevem crimes em andamento em tempo real.",
+        solution: "As gravações são manipuladas por um grupo que usa tecnologia de gravação para criar ilusões. Eles se aproveitam da fama do investigador para ganhar notoriedade.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "O Gravador de Vozes Fantasmas",
         description: "Um investigador paranormal encontra gravações de EVPs (Eletronic Voice Phenomena) que descrevem crimes em andamento em tempo real.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 6,
+        order: 6,
+        mystery: "Múltiplas pessoas têm o mesmo sonho com uma vítima de assassinato, que revela detalhes sobre sua morte e pede justiça.",
+        solution: "As pessoas estão conectadas por um fenômeno psíquico que permite que compartilhem sonhos. Um grupo de médiums usa isso para resolver crimes e ganhar fama.",
+        difficulty: "hard",
+        theme: "murder",
+        isFree: false,
         title: "Sonhos Compartilhados com Mortos",
         description: "Múltiplas pessoas têm o mesmo sonho com uma vítima de assassinato, que revela detalhes sobre sua morte e pede justiça.",
-        difficulty: "hard",
-        category: "murder",
-        isFree: false
+        category: "murder"
       },
       {
         id: 7,
+        order: 7,
+        mystery: "Uma cética em fenômenos paranormais começa a receber visões de mortos que a guiam para resolver casos arquivados pela polícia.",
+        solution: "As visões são causadas por um distúrbio psicológico que a faz acreditar que está recebendo mensagens. Ela se torna famosa por resolver casos, mas na verdade é uma ilusão.",
+        difficulty: "medium",
+        theme: "investigation",
+        isFree: false,
         title: "A Médium Relutante",
         description: "Uma cética em fenômenos paranormais começa a receber visões de mortos que a guiam para resolver casos arquivados pela polícia.",
-        difficulty: "medium",
-        category: "investigation",
-        isFree: false
+        category: "investigation"
       },
       {
         id: 8,
+        order: 8,
+        mystery: "Um diário antigo continua sendo escrito por mãos invisíveis, documentando crimes que aconteceram décadas atrás com detalhes precisos.",
+        solution: "O diário é um dispositivo de gravação que capta informações de espíritos. Ele é manipulado por um médium que usa as informações para resolver crimes e ganhar fama.",
+        difficulty: "hard",
+        theme: "mystery",
+        isFree: false,
         title: "O Diário Que Escreve Sozinho",
         description: "Um diário antigo continua sendo escrito por mãos invisíveis, documentando crimes que aconteceram décadas atrás com detalhes precisos.",
-        difficulty: "hard",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 9,
+        order: 9,
+        mystery: "Câmeras digitais capturam imagens de pessoas mortas apontando para evidências de crimes que a polícia não conseguiu encontrar.",
+        solution: "As câmeras são manipuladas por um grupo que usa tecnologia de vigilância para capturar imagens. Eles se aproveitam da fama das imagens para ganhar notoriedade.",
+        difficulty: "medium",
+        theme: "crime",
+        isFree: false,
         title: "Fotografias do Além",
         description: "Câmeras digitais capturam imagens de pessoas mortas apontando para evidências de crimes que a polícia não conseguiu encontrar.",
-        difficulty: "medium",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 10,
+        order: 10,
+        mystery: "Durante sessões espíritas, os mortos revelam não apenas como morreram, mas também segredos sobre outros crimes relacionados.",
+        solution: "As sessões são manipuladas por um grupo que usa tecnologia de hipnose para controlar as pessoas. Eles se aproveitam da fama das sessões para ganhar notoriedade.",
+        difficulty: "hard",
+        theme: "murder",
+        isFree: false,
         title: "A Sessão Espírita Criminal",
         description: "Durante sessões espíritas, os mortos revelam não apenas como morreram, mas também segredos sobre outros crimes relacionados.",
-        difficulty: "hard",
-        category: "murder",
-        isFree: false
+        category: "murder"
       },
       {
         id: 11,
+        order: 11,
+        mystery: "Um computador antigo liga sozinho durante a madrugada e digita mensagens de pessoas mortas, revelando localização de tesouros roubados.",
+        solution: "O computador é um dispositivo de escuta que capta ondas sonoras de espíritos. Ele é manipulado por um médium que usa as informações para resolver crimes e ganhar fama.",
+        difficulty: "medium",
+        theme: "theft",
+        isFree: false,
         title: "O Computador Assombrado",
         description: "Um computador antigo liga sozinho durante a madrugada e digita mensagens de pessoas mortas, revelando localização de tesouros roubados.",
-        difficulty: "medium",
-        category: "theft",
-        isFree: false
+        category: "theft"
       },
       {
         id: 12,
+        order: 12,
+        mystery: "Espíritos de pessoas que ainda estão vivas aparecem avisando sobre suas próprias mortes futuras, criando paradoxos temporais.",
+        solution: "Os espíritos são manipulados por um grupo que usa tecnologia de hipnose para controlar as pessoas. Eles se aproveitam da fama das aparições para ganhar notoriedade.",
+        difficulty: "hard",
+        theme: "mystery",
+        isFree: false,
         title: "Avisos do Futuro Mortal",
         description: "Espíritos de pessoas que ainda estão vivas aparecem avisando sobre suas próprias mortes futuras, criando paradoxos temporais.",
-        difficulty: "hard",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 13,
+        order: 13,
+        mystery: "Uma frequência de rádio específica transmite vozes de soldados mortos em guerra, revelando crimes de guerra que foram encobertos.",
+        solution: "A frequência é manipulada por um grupo que usa tecnologia de vigilância para capturar informações. Eles se aproveitam da fama das vozes para ganhar notoriedade.",
+        difficulty: "hard",
+        theme: "conspiracy",
+        isFree: false,
         title: "A Radio Frequency dos Mortos",
         description: "Uma frequência de rádio específica transmite vozes de soldados mortos em guerra, revelando crimes de guerra que foram encobertos.",
-        difficulty: "hard",
-        category: "conspiracy",
-        isFree: false
+        category: "conspiracy"
       },
       {
         id: 14,
+        order: 14,
+        mystery: "Um antigo chat online é invadido por usuários que morreram anos atrás, mas continuam conversando e revelando segredos sobre suas mortes.",
+        solution: "O chat é manipulado por um grupo que usa tecnologia de vigilância para capturar informações. Eles se aproveitam da fama do chat para ganhar notoriedade.",
+        difficulty: "medium",
+        theme: "crime",
+        isFree: false,
         title: "O Chat Room do Além",
         description: "Um antigo chat online é invadido por usuários que morreram anos atrás, mas continuam conversando e revelando segredos sobre suas mortes.",
-        difficulty: "medium",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 15,
+        order: 15,
+        mystery: "Uma televisão antiga sintoniza programas que mostram crimes reais acontecendo no passado, como se fossem gravações ao vivo.",
+        solution: "A televisão é um dispositivo de escuta que capta ondas sonoras de espíritos. Ela é manipulada por um médium que usa as informações para resolver crimes e ganhar fama.",
+        difficulty: "hard",
+        theme: "investigation",
+        isFree: false,
         title: "A TV que Mostra o Passado",
         description: "Uma televisão antiga sintoniza programas que mostram crimes reais acontecendo no passado, como se fossem gravações ao vivo.",
-        difficulty: "hard",
-        category: "investigation",
-        isFree: false
+        category: "investigation"
       },
       {
         id: 16,
+        order: 16,
+        mystery: "Pessoas recebem emails de criminosos mortos pedindo perdão e revelando onde esconderam evidências de seus crimes.",
+        solution: "Os emails são manipulados por um grupo que usa tecnologia de vigilância para capturar informações. Eles se aproveitam da fama dos emails para ganhar notoriedade.",
+        difficulty: "medium",
+        theme: "crime",
+        isFree: false,
         title: "O Email dos Arrependidos",
         description: "Pessoas recebem emails de criminosos mortos pedindo perdão e revelando onde esconderam evidências de seus crimes.",
-        difficulty: "medium",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 17,
+        order: 17,
+        mystery: "Uma plancheta de Ouija começa a se mover sozinha, escrevendo nomes de assassinos ainda vivos e descrevendo seus métodos em detalhes.",
+        solution: "A plancheta é manipulada por um grupo que usa tecnologia de hipnose para controlar as pessoas. Eles se aproveitam da fama da plancheta para ganhar notoriedade.",
+        difficulty: "hard",
+        theme: "murder",
+        isFree: false,
         title: "A Plancheta Acusatória",
         description: "Uma plancheta de Ouija começa a se mover sozinha, escrevendo nomes de assassinos ainda vivos e descrevendo seus métodos em detalhes.",
-        difficulty: "hard",
-        category: "murder",
-        isFree: false
+        category: "murder"
       },
       {
         id: 18,
+        order: 18,
+        mystery: "Um aplicativo de mensagens recebe mensagens de perfis de pessoas mortas, sempre com informações sobre crimes relacionados às suas mortes.",
+        solution: "O aplicativo é manipulado por um grupo que usa tecnologia de vigilância para capturar informações. Eles se aproveitam da fama do aplicativo para ganhar notoriedade.",
+        difficulty: "medium",
+        theme: "mystery",
+        isFree: false,
         title: "O Aplicativo dos Mortos",
         description: "Um aplicativo de mensagens recebe mensagens de perfis de pessoas mortas, sempre com informações sobre crimes relacionados às suas mortes.",
-        difficulty: "medium",
-        category: "mystery",
-        isFree: false
+        category: "mystery"
       },
       {
         id: 19,
+        order: 19,
+        mystery: "Uma máquina de escrever vintage digita sozinha durante as madrugadas, produzindo confissões detalhadas de crimes nunca solucionados.",
+        solution: "A máquina é um dispositivo de escuta que capta ondas sonoras de espíritos. Ela é manipulada por um médium que usa as informações para resolver crimes e ganhar fama.",
+        difficulty: "hard",
+        theme: "crime",
+        isFree: false,
         title: "A Máquina de Escrever Fantasma",
         description: "Uma máquina de escrever vintage digita sozinha durante as madrugadas, produzindo confissões detalhadas de crimes nunca solucionados.",
-        difficulty: "hard",
-        category: "crime",
-        isFree: false
+        category: "crime"
       },
       {
         id: 20,
+        order: 20,
+        mystery: "Vítimas de assassinato aparecem em sonhos de investigadores, fornecendo testemunhos completos sobre seus últimos momentos e identificando seus assassinos.",
+        solution: "Os sonhos são manipulados por um grupo que usa tecnologia de hipnose para controlar as pessoas. Eles se aproveitam da fama dos sonhos para ganhar notoriedade.",
+        difficulty: "hard",
+        theme: "murder",
+        isFree: false,
         title: "O Último Testemunho",
         description: "Vítimas de assassinato aparecem em sonhos de investigadores, fornecendo testemunhos completos sobre seus últimos momentos e identificando seus assassinos.",
-        difficulty: "hard",
-        category: "murder",
-        isFree: false
+        category: "murder"
       }
     ]
   }
