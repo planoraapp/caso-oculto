@@ -9,9 +9,9 @@ import Carousel3D from '../components/Carousel3D';
 const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Hero Section with fade-in */}
+      {/* Hero Section with fade-in - Moved up */}
       <motion.div 
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        className="relative min-h-[80vh] flex items-center justify-center overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -27,7 +27,7 @@ const Home: React.FC = () => {
               Mergulhe em casos enigmáticos que desafiarão sua mente. Cada pack contém mistérios únicos que vão testar sua capacidade de dedução.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
               <Link to="/packs">
                 <Button size="lg" className="bg-case-red hover:bg-red-600 text-white font-bold px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-3">
                   <Play className="h-6 w-6" />
@@ -39,9 +39,9 @@ const Home: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Featured Packs Section with fade-in and reduced spacing */}
+      {/* Featured Packs Section with reduced top spacing */}
       <motion.div 
-        className="py-8"
+        className="py-4"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
