@@ -232,9 +232,9 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
               </Card>
             </div>
 
-            {/* Mercado Pago Security Message - Mobile responsive layout */}
-            <div className="flex flex-col md:flex-row items-center justify-center mt-8 gap-2 md:gap-4">
-              <p className="text-case-white text-base font-medium text-center md:text-left">
+            {/* Mercado Pago Security Message - Updated Layout */}
+            <div className="flex items-center justify-center mt-8 gap-4">
+              <p className="text-case-white text-base font-medium">
                 Sua compra é segura com a
               </p>
               <img 
