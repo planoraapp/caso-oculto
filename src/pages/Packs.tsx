@@ -1,7 +1,7 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingCart, Star, Users, Zap } from 'lucide-react';
+import { ShoppingCart, Star, Users, Zap, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
@@ -12,6 +12,7 @@ import PaymentStatusModal from '../components/PaymentStatusModal';
 import PaymentOptionsModal from '../components/PaymentOptionsModal';
 import MercadoPagoCheckout from '../components/MercadoPagoCheckout';
 import LoadingSpinner from '../components/LoadingSpinner';
+import HowToPlayModal from '../components/HowToPlayModal';
 import { packs } from '../data/packs';
 import { getUserPacks } from '../data/packs';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
@@ -23,6 +24,7 @@ interface PacksProps {
 const Packs: React.FC<PacksProps> = ({ user }) => {
   const [isComboModalOpen, setIsComboModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isHowToPlayModalOpen, setIsHowToPlayModalOpen] = useState(false);
   const [selectedPack, setSelectedPack] = useState<any>(null);
   const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -114,6 +116,23 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
             >
               Desvende casos intrigantes e desafie sua mente com nossos packs exclusivos de mistérios.
             </motion.p>
+            
+            {/* How to Play Button */}
+            <motion.div
+              className="mt-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Button
+                onClick={() => setIsHowToPlayModalOpen(true)}
+                variant="outline"
+                className="bg-gray-800/50 border-gray-600 text-case-white hover:bg-gray-700 hover:border-case-red/50"
+              >
+                <HelpCircle className="h-4 w-4 mr-2" />
+                Como Jogar
+              </Button>
+            </motion.div>
           </div>
 
           {/* Loading Indicator */}
@@ -213,15 +232,15 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
               </Card>
             </div>
 
-            {/* Mercado Pago Security Message */}
-            <div className="text-center mt-8">
-              <p className="text-case-white text-sm mb-4">
-                Sua compra é segura com a:
+            {/* Mercado Pago Security Message - Updated Layout */}
+            <div className="flex items-center justify-center mt-8 gap-4">
+              <p className="text-case-white text-base font-medium">
+                Sua compra é segura com a
               </p>
               <img 
-                src="/lovable-uploads/8a513714-34eb-49ec-b837-6e3bb5e273e1.png" 
+                src="/lovable-uploads/c6a6bf1f-4108-4b06-80c7-3e109ecb7f5f.png" 
                 alt="Mercado Pago" 
-                className="mx-auto h-24 object-contain"
+                className="h-12 object-contain"
               />
             </div>
           </motion.div>
@@ -255,6 +274,11 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
       </div>
 
       {/* Modals */}
+      <HowToPlayModal 
+        isOpen={isHowToPlayModalOpen} 
+        onClose={() => setIsHowToPlayModalOpen(false)} 
+      />
+
       {isComboModalOpen && (
         <ComboModal 
           packs={packs} 
