@@ -1,2373 +1,688 @@
-
-import { Pack, Case, Purchase } from './types';
+import { Pack } from "../types";
 
 export const packs: Pack[] = [
   {
-    id: 'labirintos-mentais',
-    name: 'Labirintos Mentais', 
-    description: 'Mergulhe nos enigmas da mente humana e desvende mistérios psicológicos complexos.',
-    price: 14.80,
-    difficulty: 'medium',
-    image: '/lovable-uploads/0c624752-27c9-4965-949c-119f01c03679.png',
-    category: 'psychological',
+    id: "lendas-urbanas",
+    name: "Lendas Urbanas",
+    description: "Mitos modernos que ganharam vida real. Investigue se há verdade por trás das lendas mais assombradas da cidade.",
+    price: 12.99,
+    difficulty: "medium",
+    category: "mystery",
+    image: "/lovable-uploads/7ba0dfbf-4fdb-4ba4-a328-c56e1e43338a.png",
     cases: [
       {
-        id: 'lm1',
-        order: 1,
-        name: 'Mente Perdida',
-        mystery: 'Um paciente acorda sem memória e com um comportamento estranho. Qual é a causa?',
-        solution: 'Amnésia dissociativa causada por trauma psicológico.',
-        difficulty: 'medium',
-        isFree: true,
-        theme: 'mystery',
-        icon: '🧠'
+        id: 1,
+        title: "A Mulher de Branco da Ponte",
+        description: "Uma figura feminina vestida de branco aparece sempre à meia-noite na ponte velha, sinalizando para os carros pararem. Motoristas relatam experiências sobrenaturais, mas será que existe uma explicação racional?",
+        difficulty: "easy",
+        category: "mystery",
+        isFree: true
       },
       {
-        id: 'lm2',
-        order: 2,
-        name: 'Sonhos Reveladores',
-        mystery: 'Uma série de sonhos recorrentes revelam pistas sobre um crime não resolvido.',
-        solution: 'O sonhador é testemunha subconsciente do crime.',
-        difficulty: 'medium',
-        theme: 'mystery',
-        icon: '💭'
+        id: 2,
+        title: "O Elevador do 13º Andar",
+        description: "Um prédio de 12 andares onde o elevador às vezes para em um misterioso 13º andar que não deveria existir. Quem entra nesse andar nunca mais é visto.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'lm3',
-        order: 3,
-        name: 'Segredos Obscuros',
-        mystery: 'Um psicólogo desaparece após descobrir segredos obscuros de seus pacientes.',
-        solution: 'Foi sequestrado por um paciente instável.',
-        difficulty: 'hard',
-        theme: 'thriller',
-        icon: '🔍'
+        id: 3,
+        title: "A Criança do Parque Abandonado",
+        description: "Risadas infantis ecoam no parque abandonado após o pôr do sol. Vizinhos juram ver uma criança brincando sozinha nos balanços enferrujados.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 4,
+        title: "O Cachorro Fantasma da Rodovia",
+        description: "Um cão preto gigantesco persegue carros em uma rodovia específica. Acidentes inexplicáveis acontecem sempre que alguém tenta fugir da criatura.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
+      },
+      {
+        id: 5,
+        title: "A Casa que Constrói Sozinha",
+        description: "Uma construção abandonada que ganha novos cômodos durante a noite. Pela manhã, sempre há algo novo construído com materiais que ninguém trouxe.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 6,
+        title: "O Mendigo Imortal",
+        description: "Um mendigo que pede esmolas na mesma esquina há 50 anos e não envelhece. Fotografias antigas confirmam sua presença décadas atrás.",
+        difficulty: "hard",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 7,
+        title: "A Loja que Só Aparece à Noite",
+        description: "Uma loja antiga que só pode ser vista e acessada após as 22h. Durante o dia, no mesmo local há apenas um terreno vazio.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 8,
+        title: "O Ônibus da Linha Fantasma",
+        description: "Um ônibus que circula em horários não oficiais, levando passageiros para destinos que não existem nos mapas. Quem embarca demora dias para retornar.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
+      },
+      {
+        id: 9,
+        title: "A Estatua que Chora Sangue",
+        description: "Uma estátua no centro da cidade que chora lágrimas vermelhas em datas específicas. Análises químicas são inconclusivas sobre a origem do líquido.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 10,
+        title: "O Túnel do Tempo Perdido",
+        description: "Um túnel onde as pessoas entram e saem horas depois, mas para elas passaram-se apenas minutos. Relógios param de funcionar no local.",
+        difficulty: "hard",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 11,
+        title: "A Cabine Telefônica Assombrada",
+        description: "Uma antiga cabine telefônica que ainda recebe ligações, mesmo desconectada há décadas. As conversas são sempre com pessoas que morreram anos atrás.",
+        difficulty: "medium",
+        category: "thriller",
+        isFree: false
+      },
+      {
+        id: 12,
+        title: "O Espelho do Banheiro Público",
+        description: "Um espelho em um banheiro público que mostra reflexos de pessoas diferentes. Visitantes veem rostos desconhecidos olhando de volta.",
+        difficulty: "easy",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 13,
+        title: "A Música que Toca Sozinha",
+        description: "Uma melodia melancólica que toca em rádios desligados em uma área específica da cidade. A música não existe em nenhum arquivo conhecido.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 14,
+        title: "O Gato de Nove Vidas Infinitas",
+        description: "Um gato que foi visto morrer em acidentes múltiplas vezes, mas sempre reaparece vivo no dia seguinte, exatamente igual.",
+        difficulty: "hard",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 15,
+        title: "A Escada que Não Termina",
+        description: "Uma escadaria em um prédio antigo onde algumas pessoas sobem infinitamente sem nunca chegar ao topo, enquanto outras chegam normalmente.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
+      },
+      {
+        id: 16,
+        title: "O Vendedor de Sonhos",
+        description: "Um homem misterioso que vende sonhos em frascos de vidro. Quem compra tem sonhos lúcidos específicos, mas alguns nunca mais acordam.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 17,
+        title: "A Árvore dos Desejos Sombrios",
+        description: "Uma árvore antiga onde desejos escritos em papel se realizam, mas sempre com consequências terríveis e inesperadas.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
+      },
+      {
+        id: 18,
+        title: "O Fotógrafo Invisível",
+        description: "Fotografias aparecem misteriosamente nas casas das pessoas, mostrando momentos íntimos que ninguém registrou. O fotógrafo nunca é visto.",
+        difficulty: "medium",
+        category: "crime",
+        isFree: false
+      },
+      {
+        id: 19,
+        title: "A Biblioteca dos Livros Proibidos",
+        description: "Uma biblioteca secreta onde livros escrevem suas próprias histórias. Leitores descobrem suas vidas futuras descritas em detalhes assustadores.",
+        difficulty: "hard",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 20,
+        title: "O Último Habitante da Cidade",
+        description: "Um homem que afirma ser o único sobrevivente de uma cidade que foi completamente evacuada há décadas, mas que ele ainda vê cheia de pessoas.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
       }
     ]
   },
   {
-    id: 'beco-sem-saida',
-    name: 'Beco sem Saída',
-    description: 'Explore os cantos mais escuros da cidade onde os crimes mais terríveis acontecem.',
-    price: 14.80,
-    difficulty: 'hard',
-    image: '/lovable-uploads/f761b836-5d49-4501-8289-4e1d9800ddf8.png',
-    category: 'thriller',
+    id: "viagem-sem-volta",
+    name: "Viagem sem Volta",
+    description: "Destinos que mudaram vidas para sempre. Investigue mistérios de viagens que se transformaram em pesadelos sem retorno.",
+    price: 13.99,
+    difficulty: "hard",
+    category: "thriller",
+    image: "/lovable-uploads/af996bb5-0bb4-4d14-9a21-4c7a1cc9bcf7.png",
     cases: [
       {
-        id: 'bs1',
-        order: 1,
-        name: 'Última Saída',
-        mystery: 'Ela correu até o fim da rua... e desapareceu.',
-        solution: 'A jovem fugia de dois perseguidores e entrou em um beco sem saída. Quando a polícia chegou, nada foi encontrado. Mais tarde, descobriu-se uma escotilha escondida sob caixas de madeira, usada por moradores de rua como abrigo subterrâneo.',
-        difficulty: 'medium',
-        isFree: true,
-        theme: 'mystery',
-        icon: '🏃'
+        id: 1,
+        title: "O Voo 447 que Nunca Pousou",
+        description: "Um voo comercial que partiu normalmente, mas nunca chegou ao destino. Passageiros, tripulação e aeronave simplesmente desapareceram sem deixar rastros no radar ou destroços.",
+        difficulty: "easy",
+        category: "mystery",
+        isFree: true
       },
       {
-        id: 'bs2',
-        order: 2,
-        name: 'Sem Pegadas',
-        mystery: 'O corpo estava lá. Mas ninguém entrou nem saiu.',
-        solution: 'A cena do crime mostrava um beco coberto de barro, mas só havia pegadas da vítima. O assassino havia escalado os prédios pelas laterais, matado com uma injeção letal e saído pelo telhado.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '👣'
+        id: 2,
+        title: "A Excursão do Vale Perdido",
+        description: "Um grupo de turistas se aventurou em uma trilha famosa, mas apenas um retornou - sem memória dos outros e falando sobre um vale que não existe nos mapas.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'bs3',
-        order: 3,
-        name: 'O Grito da Sinaleira',
-        mystery: 'Um grito. Um carro parado. Ninguém dentro.',
-        solution: 'Testemunhas ouviram um grito vindo de um carro parado no cruzamento. A polícia encontrou sangue no banco do passageiro. O motorista havia sido sequestrado segundos antes e levado pelo esgoto que passava sob a rua.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🚗'
+        id: 3,
+        title: "O Cruzeiro Fantasma",
+        description: "Um navio de cruzeiro foi encontrado à deriva com todos os sistemas funcionando, mas completamente vazio. As câmeras de segurança mostram os passageiros simplesmente desaparecendo.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
       },
       {
-        id: 'bs4',
-        order: 4,
-        name: 'Gaiola de Concreto',
-        mystery: 'Ele pediu socorro... de dentro das paredes.',
-        solution: 'Durante uma reforma, trabalhadores ouviram batidas vindas de uma parede. Dentro, encontraram um homem desacordado. Um criminoso o havia sedado e o emparedado vivo, usando cimento fresco para ocultar o crime.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '🧱'
+        id: 4,
+        title: "A Estrada Que Não Existe",
+        description: "Uma família seguiu as instruções do GPS e entrou em uma estrada que os levou a uma cidade abandonada. Quando tentaram voltar, a estrada havia desaparecido.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'bs5',
-        order: 5,
-        name: 'Ponto Cego',
-        mystery: 'Ela passou por cinco câmeras. Mas nenhuma filmou o crime.',
-        solution: 'O ataque ocorreu exatamente em um ponto cego, entre dois postes com câmeras desalinhadas. O criminoso estudou os ângulos por semanas antes de agir. A vítima só foi socorrida após um transeunte ouvir seus gritos.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '📹'
+        id: 5,
+        title: "O Trem da Meia-Noite",
+        description: "Passageiros embarcaram em um trem noturno para uma viagem de 6 horas. Quando acordaram, estavam no mesmo lugar, mas 30 anos no futuro.",
+        difficulty: "hard",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'bs6',
-        order: 6,
-        name: 'O Estouro',
-        mystery: 'Um barulho enorme e estilhaços no chão.',
-        solution: 'Um morador, limpando o apartamento, tropeçou ao puxar o tapete e derrubou um enorme aquário do sétimo andar. O impacto espalhou água e peixes pela calçada, assustando os pedestres.',
-        difficulty: 'easy',
-        theme: 'investigation',
-        icon: '🐠'
+        id: 6,
+        title: "A Expedição Ártica Perdida",
+        description: "Uma equipe de pesquisadores partiu para o Ártico e enviou suas últimas comunicações normalmente. A equipe de resgate encontrou apenas suas pegadas levando ao nada.",
+        difficulty: "hard",
+        category: "investigation",
+        isFree: false
       },
       {
-        id: 'bs7',
-        order: 7,
-        name: 'Fumaça no Parabrisa',
-        mystery: 'O carro estava em chamas, mas ninguém dentro.',
-        solution: 'Criminosos queimaram o carro de propósito para encobrir rastros de DNA após um sequestro. A vítima havia sido levada minutos antes para um galpão ao lado, onde foi mantida refém.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '🔥'
+        id: 7,
+        title: "O Hotel que Nunca Existiu",
+        description: "Turistas fizeram reservas online para um resort luxuoso. Chegaram ao local e encontraram apenas ruínas antigas, mas suas reservas eram reais e foram cobradas.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'bs8',
-        order: 8,
-        name: 'O Muro Pintado',
-        mystery: 'A nova arte de rua cobria um crime antigo.',
-        solution: 'Grafiteiros pintaram um mural sobre uma parede já marcada por uma silhueta de sangue. Sem saber, estavam cobrindo evidências de um homicídio arquivado. A tinta selou uma mensagem que só seria revelada com reagente químico.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '🎨'
+        id: 8,
+        title: "A Caravana do Deserto",
+        description: "Um grupo de aventureiros entrou no deserto em uma excursão organizada. Satélites registraram sua entrada, mas nunca sua saída. O deserto não tem outras rotas de fuga.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
       },
       {
-        id: 'bs9',
-        order: 9,
-        name: 'Entrega Misteriosa',
-        mystery: 'Um pacote era deixado todo mês no mesmo beco.',
-        solution: 'Durante meses, um entregador largava pacotes em um beco escuro. Desconfiado, um vizinho chamou a polícia. Era apenas um filho deixando mantimentos para o pai recluso, que vivia ilegalmente em um porão.',
-        difficulty: 'easy',
-        theme: 'mystery',
-        icon: '📦'
+        id: 9,
+        title: "O Mergulho no Abismo",
+        description: "Mergulhadores experientes desceram em uma fossa oceânica e perderam contato. Seus equipamentos foram encontrados na superfície, mas eles nunca emergiram.",
+        difficulty: "medium",
+        category: "investigation",
+        isFree: false
       },
       {
-        id: 'bs10',
-        order: 10,
-        name: 'O Som da Viga',
-        mystery: 'A estrutura caiu cinco minutos após ele sair.',
-        solution: 'Um homem saiu correndo de um beco e minutos depois, uma viga de aço despencou. Ele havia sabotado a base com um maçarico portátil. A demolição foi disfarçada como acidente estrutural.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🏗️'
+        id: 10,
+        title: "A Trilha do Tempo Perdido",
+        description: "Caminhantes entraram em uma trilha de montanha pela manhã. Quando a equipe de resgate os encontrou, eles insistiam que haviam caminhado por apenas uma hora, mas já era uma semana depois.",
+        difficulty: "hard",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'bs11',
-        order: 11,
-        name: 'Degraus Ocultos',
-        mystery: 'Ninguém viu ele subir, mas estava no telhado.',
-        solution: 'Um antigo beco possuía uma escada escondida atrás de uma fachada falsa. O criminoso a utilizava para acesso a telhados, de onde espionava e fotografava suas vítimas.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '🪜'
+        id: 11,
+        title: "O Ônibus Escolar Fantasma",
+        description: "Um ônibus escolar foi visto pegando crianças em paradas normais, mas não chegou à escola. As crianças não voltaram para casa, e o ônibus não existe nos registros.",
+        difficulty: "hard",
+        category: "crime",
+        isFree: false
       },
       {
-        id: 'bs12',
-        order: 12,
-        name: 'Cartão de Visita',
-        mystery: 'Cada corpo vinha com um número diferente.',
-        solution: 'Os assassinatos em becos escuros tinham algo em comum: cartões com um número manuscrito. Descobriu-se que eram coordenadas de outros becos da cidade, onde havia indícios de crimes antigos interligados.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🃏'
+        id: 12,
+        title: "A Viagem de Lua de Mel",
+        description: "Um casal partiu para lua de mel em um resort tropical. Suas malas chegaram ao destino, mas eles nunca fizeram check-in. O voo confirmou que embarcaram.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'bs13',
-        order: 13,
-        name: 'Noite da Perseguição',
-        mystery: 'Ele fugia da polícia... mas não era criminoso.',
-        solution: 'Um entregador foi confundido com um suspeito e correu por instinto. Ao entrar em um beco, caiu em um fosso aberto. Morreu na queda. A confusão levou a uma investigação de falhas sistêmicas.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '🏃'
+        id: 13,
+        title: "A Expedição Subterrânea",
+        description: "Espeleólogos exploraram uma caverna recém-descoberta. Suas cordas foram encontradas cortadas, mas não há sinais de luta ou de como saíram da caverna.",
+        difficulty: "hard",
+        category: "investigation",
+        isFree: false
       },
       {
-        id: 'bs14',
-        order: 14,
-        name: 'Sombra no Telhado',
-        mystery: 'Alguém caía, mas ninguém subia.',
-        solution: 'Testemunhas viram um corpo cair do alto de um prédio ao lado de um beco, mas nenhuma entrada ao telhado havia sido violada. A vítima havia sido içada durante a noite por cordas no fosso do elevador.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🏢'
+        id: 14,
+        title: "O Safari Perdido",
+        description: "Turistas em um safari africano saíram para um passeio matinal e nunca retornaram ao acampamento. Seus veículos foram encontrados intactos, mas vazios.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'bs15',
-        order: 15,
-        name: 'O Teto Que Afundou',
-        mystery: 'A casa desabou. Mas o beco atrás dela ficou intacto.',
-        solution: 'Criminosos usaram explosivos colocados sob a casa para soterrar provas escondidas no porão. O beco estreito serviu como zona de fuga e distração, com caixas de som simulando passos e sirenes.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '💥'
+        id: 15,
+        title: "A Balsa do Rio Maldito",
+        description: "Uma balsa fluvial transportava passageiros regularmente até desaparecer em uma curva do rio. Mergulhadores não encontraram destroços no fundo do rio.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
       },
       {
-        id: 'bs16',
-        order: 16,
-        name: 'Escuridão Perfeita',
-        mystery: 'Ninguém viu o que aconteceu — e todos estavam lá.',
-        solution: 'Durante um apagão, um assalto ocorreu num beco onde três casais estavam conversando. O criminoso usava óculos de visão noturna e uma rota de fuga escondida sob tábuas de madeira.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🌑'
+        id: 16,
+        title: "O Grupo de Motociclistas",
+        description: "Motociclistas experientes partiram para uma viagem em grupo. Câmeras de trânsito mostram todos passando por um posto, mas apenas as motocicletas chegaram ao destino final.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'bs17',
-        order: 17,
-        name: 'Paredes que Ouvem',
-        mystery: 'Uma confissão foi gravada sem microfones por perto.',
-        solution: 'A parede do beco havia sido usada em testes acústicos de uma antiga rádio da cidade. Os tijolos com microfones embutidos ainda funcionavam e gravaram acidentalmente uma conversa entre dois criminosos.',
-        difficulty: 'hard',
-        theme: 'investigation',
-        icon: '🎙️'
+        id: 17,
+        title: "A Expedição Polar",
+        description: "Exploradores partiram para o Polo Sul com equipamentos de última geração. Seus GPS pararam de transmitir simultaneamente, como se tivessem saído do planeta.",
+        difficulty: "hard",
+        category: "investigation",
+        isFree: false
       },
       {
-        id: 'bs18',
-        order: 18,
-        name: 'Grito Gravado',
-        mystery: 'O áudio mostrava um grito... mas ninguém gritava.',
-        solution: 'Durante uma perseguição, a polícia analisou um áudio que indicava um grito humano vindo de um beco. Era, na verdade, uma gravação deixada como distração para despistar os agentes.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '📱'
+        id: 18,
+        title: "O Acampamento de Verão",
+        description: "Crianças partiram para um acampamento de verão tradicional. Os pais receberam cartas e fotos durante duas semanas, mas o acampamento havia sido fechado há cinco anos.",
+        difficulty: "hard",
+        category: "crime",
+        isFree: false
       },
       {
-        id: 'bs19',
-        order: 19,
-        name: 'Cadáver Errado',
-        mystery: 'A polícia identificou a vítima... mas ela apareceu viva.',
-        solution: 'Um homem foi encontrado morto com documentos de outro. O verdadeiro dono havia perdido sua carteira e um criminoso a usou para enganar as autoridades. O verdadeiro culpado era o suposto morto.',
-        difficulty: 'hard',
-        theme: 'investigation',
-        icon: '🆔'
+        id: 19,
+        title: "A Jornada de Bicicleta",
+        description: "Ciclistas atravessavam o país em uma jornada beneficente. Passaram por várias cidades confirmando presença, até que em uma pequena cidade, simplesmente desapareceram.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'bs20',
-        order: 20,
-        name: 'Chuva e Cinzas',
-        mystery: 'O beco pegou fogo... em plena chuva.',
-        solution: 'Os bombeiros se surpreenderam ao ver um incêndio se espalhar mesmo com a chuva intensa. O fogo vinha de uma substância altamente inflamável despejada no local, vinda de um laboratório clandestino no porão de um prédio.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '🌧️'
+        id: 20,
+        title: "O Último Voo Charter",
+        description: "Um avião charter particular decolou com destino conhecido, mas pousou em um aeroporto que havia sido demolido décadas atrás. O piloto insiste que acabou de pousar.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
       }
     ]
   },
   {
-    id: 'jogos-corporativos',
-    name: 'Jogos Corporativos',
-    description: 'Desvende os mistérios por trás de crimes empresariais e conflitos corporativos.',
-    price: 14.80,
-    difficulty: 'medium',
-    image: '/lovable-uploads/494fd0cb-99c2-48cb-bd87-1b63007c684a.png',
-    category: 'corporate',
+    id: "sombras-da-noite",
+    name: "Sombras da Noite",
+    description: "Quando o sol se põe, os mistérios emergem. Crimes e enigmas que só acontecem na escuridão da noite urbana.",
+    price: 11.99,
+    difficulty: "medium",
+    category: "crime",
+    image: "/lovable-uploads/c6a6bf1f-4108-4b06-80c7-3e109ecb7f5f.png",
     cases: [
       {
-        id: 'jc1',
-        order: 1,
-        name: 'Reunião Cancelada',
-        mystery: 'A reunião foi cancelada, mas o CEO apareceu morto na sala.',
-        solution: 'O executivo foi ao escritório para uma reunião secreta com um chantagista. Foi assassinado para proteger segredos corporativos que poderiam destruir a empresa.',
-        difficulty: 'medium',
-        isFree: true,
-        theme: 'murder',
-        icon: '💼'
+        id: 1,
+        title: "O Ladrão de Sombras",
+        description: "Um criminoso que rouba apenas durante eclipses lunares, deixando as vítimas temporariamente sem suas próprias sombras. Um fenômeno impossível que desafia a lógica.",
+        difficulty: "easy",
+        category: "crime",
+        isFree: true
       },
       {
-        id: 'jc2',
-        order: 2,
-        name: 'Café da Manhã',
-        mystery: 'O diretor morreu durante o café da manhã da empresa.',
-        solution: 'Alguém envenenou sua xícara específica com uma substância que imitava um ataque cardíaco. O assassino conhecia sua rotina matinal e aproveitou a confusão para escapar.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '☕'
+        id: 2,
+        title: "Assassinatos à Luz de Velas",
+        description: "Vítimas são encontradas mortas em quartos iluminados apenas por velas, sempre às 3h33 da madrugada. Não há sinais de invasão ou luta.",
+        difficulty: "medium",
+        category: "murder",
+        isFree: false
       },
       {
-        id: 'jc3',
-        order: 3,
-        name: 'Elevador Vazio',
-        mystery: 'O elevador desceu vazio, mas havia sangue no teto.',
-        solution: 'Um funcionário foi morto no andar superior e o corpo foi escondido no forro do elevador. O assassino desceu normalmente enquanto as evidências ficaram suspensas sobre todos.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🛗'
+        id: 3,
+        title: "O Vigilante das Madrugadas",
+        description: "Um vigilante misterioso protege as ruas durante a madrugada, mas deixa criminosos em estado catatônico, murmurando sobre 'a escuridão que vê tudo'.",
+        difficulty: "medium",
+        category: "crime",
+        isFree: false
       },
       {
-        id: 'jc4',
-        order: 4,
-        name: 'Servidor Hackeado',
-        mystery: 'Os dados foram roubados, mas ninguém invadiu o sistema.',
-        solution: 'Um funcionário da TI vendeu acesso aos dados para concorrentes. Ele criou uma brecha falsa para esconder que foi um crime interno, não um hack externo.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '💻'
+        id: 4,
+        title: "A Dança dos Mortos",
+        description: "Corpos em necrotérios são encontrados em posições diferentes pela manhã, como se tivessem dançado durante a noite. Câmeras de segurança mostram apenas escuridão.",
+        difficulty: "hard",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'jc5',
-        order: 5,
-        name: 'Apresentação Fatal',
-        mystery: 'O projetor explodiu durante a apresentação mais importante do ano.',
-        solution: 'Um sabotador infiltrado plantou um dispositivo no projetor para interromper a apresentação de um projeto que prejudicaria sua empresa rival.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '📊'
+        id: 5,
+        title: "O Sequestrador de Sonhos",
+        description: "Pessoas dormem normalmente, mas acordam exaustas, com memórias de terem sido forçadas a viver pesadelos de outras pessoas durante toda a noite.",
+        difficulty: "medium",
+        category: "crime",
+        isFree: false
       },
       {
-        id: 'jc6',
-        order: 6,
-        name: 'Contrato Fantasma',
-        mystery: 'O contrato de milhões desapareceu da mesa do advogado.',
-        solution: 'O próprio advogado destruiu o contrato após descobrir cláusulas ilegais. Ele simulou o roubo para proteger sua carreira e evitar ser cúmplice de fraude.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '📄'
+        id: 6,
+        title: "Mortes por Insônia Terminal",
+        description: "Vítimas morrem após semanas sem conseguir dormir, mas todas relatam ver a mesma figura sombria que as impede de adormecer.",
+        difficulty: "hard",
+        category: "murder",
+        isFree: false
       },
       {
-        id: 'jc7',
-        order: 7,
-        name: 'Reunião Secreta',
-        mystery: 'Três CEOs se encontraram em segredo e um desapareceu.',
-        solution: 'O encontro era para dividir territórios de mercado ilegalmente. Um deles foi sequestrado por autoridades federais como parte de uma investigação antitruste.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🤝'
+        id: 7,
+        title: "O Colecionador de Medos",
+        description: "Um criminoso que de alguma forma descobre os medos mais profundos das pessoas e os transforma em realidade durante a noite.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
       },
       {
-        id: 'jc8',
-        order: 8,
-        name: 'Balanço Alterado',
-        mystery: 'Os números do balanço mudaram sozinhos durante a auditoria.',
-        solution: 'O contador programou um vírus que alterava automaticamente os dados financeiros sempre que auditores acessavam o sistema, escondendo fraudes por anos.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '📈'
+        id: 8,
+        title: "A Enfermeira da Madrugada",
+        description: "Uma enfermeira fantasma visita pacientes terminais durante a madrugada. Alguns se recuperam milagrosamente, outros desaparecem sem deixar rastros.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'jc9',
-        order: 9,
-        name: 'Sala Lacrada',
-        mystery: 'O cofre da empresa foi aberto, mas a sala estava lacrada.',
-        solution: 'O ladrão era um funcionário de segurança que conhecia o sistema. Ele abriu o cofre durante seu turno e reativou o lacre eletrônico para criar um álibi perfeito.',
-        difficulty: 'hard',
-        theme: 'theft',
-        icon: '🔒'
+        id: 9,
+        title: "O Pintor de Crimes Futuros",
+        description: "Um artista pinta crimes que ainda não aconteceram. Suas obras sempre se tornam realidade na noite seguinte, mas ele jura não ter controle sobre isso.",
+        difficulty: "hard",
+        category: "crime",
+        isFree: false
       },
       {
-        id: 'jc10',
-        order: 10,
-        name: 'Funcionário Modelo',
-        mystery: 'O funcionário do mês foi encontrado morto em seu carro.',
-        solution: 'Ele descobriu que seus colegas estavam roubando da empresa e o ameaçaram. Tentou fugir, mas foi perseguido e assassinado no estacionamento.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '🏆'
+        id: 10,
+        title: "As Confissões da Meia-Noite",
+        description: "Pessoas ligam para uma linha telefônica inexistente e confessam crimes que não se lembram de ter cometido. Os crimes são descobertos no dia seguinte.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'jc11',
-        order: 11,
-        name: 'Ligação Interrompida',
-        mystery: 'A videoconferência com investidores foi cortada no momento crucial.',
-        solution: 'Um funcionário descontente sabotou a apresentação cortando cabos específicos. Ele queria que a empresa perdesse o investimento para forçar demissões em massa.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '📹'
+        id: 11,
+        title: "O Caçador de Almas Perdidas",
+        description: "Moradores de rua desaparecem durante a noite, deixando apenas suas roupas. Testemunhas falam de uma figura que 'coleta almas perdidas'.",
+        difficulty: "hard",
+        category: "crime",
+        isFree: false
       },
       {
-        id: 'jc12',
-        order: 12,
-        name: 'Proposta Rejeitada',
-        mystery: 'A proposta foi rejeitada antes mesmo de ser apresentada.',
-        solution: 'Um espião corporativo roubou a proposta e a entregou aos concorrentes, que fizeram uma oferta melhor minutos antes da apresentação oficial.',
-        difficulty: 'medium',
-        theme: 'conspiracy',
-        icon: '📋'
+        id: 12,
+        title: "A Loja de Antiguidades Noturna",
+        description: "Uma loja que só abre à noite vende objetos pessoais de pessoas vivas. Os proprietários originais não se lembram de ter vendido nada.",
+        difficulty: "medium",
+        category: "theft",
+        isFree: false
       },
       {
-        id: 'jc13',
-        order: 13,
-        name: 'Escritório Vazio',
-        mystery: 'Todos os funcionários do andar desapareceram ao mesmo tempo.',
-        solution: 'Era um simulado de emergência não comunicado, mas um funcionário aproveitou para roubar documentos confidenciais durante a confusão.',
-        difficulty: 'easy',
-        theme: 'theft',
-        icon: '🏢'
+        id: 13,
+        title: "O Julgamento das Sombras",
+        description: "Criminosos são encontrados mortos com sentenças escritas em suas próprias mãos, como se tivessem sido julgados por um tribunal invisível.",
+        difficulty: "hard",
+        category: "murder",
+        isFree: false
       },
       {
-        id: 'jc14',
-        order: 14,
-        name: 'Impressora Sabotada',
-        mystery: 'Todos os contratos importantes saíram em branco da impressora.',
-        solution: 'Um técnico em TI alterou o driver da impressora para não imprimir documentos com certas palavras-chave, sabotando acordos que prejudicariam sua empresa anterior.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🖨️'
+        id: 14,
+        title: "A Cirurgiã da Escuridão",
+        description: "Pessoas acordam com cirurgias perfeitas que salvam suas vidas, mas não se lembram de ter ido ao hospital. Não há registros médicos das operações.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'jc15',
-        order: 15,
-        name: 'Ações em Queda',
-        mystery: 'As ações despencaram sem motivo aparente.',
-        solution: 'Um grupo de investidores espalhou rumores falsos sobre a empresa através de bots nas redes sociais, manipulando o mercado para comprar ações a preço baixo.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '📉'
+        id: 15,
+        title: "O Mercado Negro de Memórias",
+        description: "Um mercado clandestino onde memórias são compradas e vendidas. Vítimas acordam sem lembrar de partes importantes de suas vidas.",
+        difficulty: "hard",
+        category: "crime",
+        isFree: false
       },
       {
-        id: 'jc16',
-        order: 16,
-        name: 'Cliente Fantasma',
-        mystery: 'O maior cliente da empresa nunca existiu.',
-        solution: 'O diretor comercial criou um cliente fictício para justificar transferências de dinheiro. Ele estava desviando recursos para contas pessoais há anos.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '👻'
+        id: 16,
+        title: "A Escola Noturna dos Perdidos",
+        description: "Crianças desaparecidas são vistas frequentando uma escola que só existe durante a noite. De dia, o prédio está abandonado há décadas.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
       },
       {
-        id: 'jc17',
-        order: 17,
-        name: 'Segurança Comprometida',
-        mystery: 'As câmeras de segurança gravaram apenas 30 segundos do crime.',
-        solution: 'O chefe de segurança programou o sistema para ter uma falha programada. Ele estava sendo chantageado e precisava criar uma janela para o criminoso agir.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '📸'
+        id: 17,
+        title: "O Banco de Favores Sombrios",
+        description: "Uma organização que executa favores impossíveis durante a noite, mas sempre cobra um preço terrível que só é revelado depois.",
+        difficulty: "hard",
+        category: "conspiracy",
+        isFree: false
       },
       {
-        id: 'jc18',
-        order: 18,
-        name: 'Produto Defeituoso',
-        mystery: 'O produto principal da empresa começou a falhar simultaneamente.',
-        solution: 'Um ex-funcionário demitido havia inserido um código malicioso que seria ativado meses depois de sua saída, causando falhas em massa como vingança.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '⚙️'
+        id: 18,
+        title: "A Confeitaria dos Desejos Proibidos",
+        description: "Uma confeitaria noturna onde doces concedem desejos, mas cada mordida custa anos de vida. Clientes não percebem o preço até ser tarde demais.",
+        difficulty: "medium",
+        category: "crime",
+        isFree: false
       },
       {
-        id: 'jc19',
-        order: 19,
-        name: 'Viagem de Negócios',
-        mystery: 'O executivo embarcou no voo, mas não chegou ao destino.',
-        solution: 'Ele fingiu embarcar e se escondeu em um hotel. Estava fugindo de investigações federais com dinheiro da empresa e precisava desaparecer.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '✈️'
+        id: 19,
+        title: "O Teatro dos Crimes Perfeitos",
+        description: "Um teatro abandonado onde crimes reais são encenados como peças. A plateia não sabe que está assistindo assassinatos verdadeiros.",
+        difficulty: "hard",
+        category: "murder",
+        isFree: false
       },
       {
-        id: 'jc20',
-        order: 20,
-        name: 'Acordo Secreto',
-        mystery: 'Duas empresas rivais anunciaram fusão do nada.',
-        solution: 'Descobriram que ambas estavam sendo investigadas pelo mesmo crime. A fusão era uma estratégia para confundir as autoridades e dividir a responsabilidade legal.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🤝'
+        id: 20,
+        title: "A Última Chamada da Noite",
+        description: "Pessoas recebem ligações de entes queridos mortos, pedindo para encontrá-los em locais específicos. Quem vai ao encontro nunca mais retorna.",
+        difficulty: "hard",
+        category: "thriller",
+        isFree: false
       }
     ]
   },
   {
-    id: 'crimes-de-epoca',
-    name: 'Crimes de Época',
-    description: 'Volte ao passado e resolva crimes clássicos no estilo dos grandes detetives.',
-    price: 14.80,
-    difficulty: 'medium',
-    image: '/lovable-uploads/23f912c3-cc63-42df-b864-7a3ca8800506.png',
-    category: 'classic',
+    id: "sussurros-do-alem",
+    name: "Sussurros do Além",
+    description: "Comunicações do mundo dos mortos que revelam segredos enterrados. Investigue mensagens que chegam de onde não deveriam vir.",
+    price: 14.99,
+    difficulty: "hard",
+    category: "mystery",
+    image: "/lovable-uploads/d8636981-dee1-40ad-91bd-0ab35d871077.png",
     cases: [
       {
-        id: 'ce1',
-        order: 1,
-        name: 'Mansão Sombria',
-        mystery: 'O dono da mansão foi encontrado morto na biblioteca trancada.',
-        solution: 'O mordomo usou uma chave mestra para entrar, envenenou o chá e saiu pela janela dos fundos. Ele descobriu que seria demitido e perderia sua pensão.',
-        difficulty: 'medium',
-        isFree: true,
-        theme: 'murder',
-        icon: '🏚️'
-      },
-      {
-        id: 'ce2',
-        order: 2,
-        name: 'Baile de Máscaras',
-        mystery: 'As joias da condessa desapareceram durante a valsa.',
-        solution: 'Seu próprio marido roubou as joias para pagar dívidas de jogo. Ele aproveitou a confusão do baile e a máscara para não ser reconhecido pelos criados.',
-        difficulty: 'medium',
-        theme: 'theft',
-        icon: '🎭'
-      },
-      {
-        id: 'ce3',
-        order: 3,
-        name: 'Carruagem Vazia',
-        mystery: 'A carruagem chegou vazia, mas havia sangue nos assentos.',
-        solution: 'O passageiro foi atacado por bandidos na estrada. Ferido, conseguiu se esconder nas matas enquanto os cavalos continuaram sozinhos até a cidade.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '🐎'
-      },
-      {
-        id: 'ce4',
-        order: 4,
-        name: 'Duelo Impossível',
-        mystery: 'Ambos os duelistas caíram, mas apenas um tiro foi ouvido.',
-        solution: 'Um atirador escondido matou ambos simultaneamente com uma única bala que os atravessou. Era uma armação para eliminar dois inimigos políticos de uma vez.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🔫'
-      },
-      {
-        id: 'ce5',
-        order: 5,
-        name: 'Carta Perdida',
-        mystery: 'A carta com o testamento desapareceu do correio.',
-        solution: 'O carteiro foi subornado pelo herdeiro desfavorecido para interceptar e destruir o testamento. Sem o documento, ele herdaria por direito legal.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '✉️'
-      },
-      {
-        id: 'ce6',
-        order: 6,
-        name: 'Jantar Fatal',
-        mystery: 'Todos comeram o mesmo prato, mas só um morreu.',
-        solution: 'O veneno estava no remédio que apenas a vítima tomava após as refeições. O assassino conhecia seus hábitos médicos e aproveitou a rotina.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '🍽️'
-      },
-      {
-        id: 'ce7',
-        order: 7,
-        name: 'Relógio Parado',
-        mystery: 'Todos os relógios da casa pararam no mesmo horário.',
-        solution: 'O assassino parou os relógios para confundir a hora da morte. Ele precisava de um álibi para o momento em que estaria sendo visto em outro local.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🕰️'
-      },
-      {
-        id: 'ce8',
-        order: 8,
-        name: 'Espelho Quebrado',
-        mystery: 'O espelho antigo se quebrou sozinho durante a noite.',
-        solution: 'Alguém atirou uma pedra da janela dos fundos para quebrar o espelho e assustar a família. Era uma distração para roubar objetos de valor da sala.',
-        difficulty: 'easy',
-        theme: 'theft',
-        icon: '🪞'
-      },
-      {
-        id: 'ce9',
-        order: 9,
-        name: 'Cavalo Assombrado',
-        mystery: 'O cavalo voltou sozinho, mas o cavaleiro desapareceu.',
-        solution: 'O cavaleiro foi sequestrado por credores e mantido em cativeiro. Eles soltaram o cavalo para que voltasse para casa, criando confusão sobre seu paradeiro.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🐴'
-      },
-      {
-        id: 'ce10',
-        order: 10,
-        name: 'Vela Apagada',
-        mystery: 'A vela se apagou e quando foi reacesa, havia um morto na sala.',
-        solution: 'O assassino esperou no escuro e matou a vítima nos segundos de escuridão. Ele conhecia o local perfeitamente e planejou cada movimento.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '🕯️'
-      },
-      {
-        id: 'ce11',
-        order: 11,
-        name: 'Jardim Secreto',
-        mystery: 'Pegadas levam ao jardim, mas ninguém foi visto saindo.',
-        solution: 'Havia um túnel secreto sob o jardim que conectava à adega da casa vizinha. O criminoso usou a passagem para escapar sem ser detectado.',
-        difficulty: 'hard',
-        theme: 'mystery',
-        icon: '🌹'
-      },
-      {
-        id: 'ce12',
-        order: 12,
-        name: 'Música Sinistra',
-        mystery: 'O piano tocou sozinho durante o funeral.',
-        solution: 'O filho da vítima instalou um mecanismo no piano para tocar uma música específica. Era sua forma de revelar que sabia quem havia matado seu pai.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '🎹'
-      },
-      {
-        id: 'ce13',
-        order: 13,
-        name: 'Herança Maldita',
-        mystery: 'Todos os herdeiros morreram em uma semana.',
-        solution: 'O advogado da família estava envenenando os herdeiros um por um para ficar com a herança. Ele alterou o testamento para se beneficiar após todas as mortes.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '💎'
-      },
-      {
-        id: 'ce14',
-        order: 14,
-        name: 'Retrato Amaldiçoado',
-        mystery: 'O retrato na parede sangrava pelos olhos.',
-        solution: 'Alguém perfurou o quadro por trás e colocou tinta vermelha que escorria lentamente. Era para assustar a família e forçá-los a vender a casa barato.',
-        difficulty: 'easy',
-        theme: 'mystery',
-        icon: '🖼️'
-      },
-      {
-        id: 'ce15',
-        order: 15,
-        name: 'Chave Dourada',
-        mystery: 'A chave dourada abria uma porta que não existia.',
-        solution: 'A porta estava escondida atrás de uma estante móvel. A chave abria um cofre secreto onde estavam guardados documentos comprometedores sobre negócios ilegais.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '🗝️'
-      },
-      {
-        id: 'ce16',
-        order: 16,
-        name: 'Fantasma do Teatro',
-        mystery: 'A atriz principal morreu no palco durante a peça.',
-        solution: 'O contra-regra trocou a adaga cenográfica por uma real. Ele estava apaixonado pela atriz e não suportava vê-la beijar outro homem toda noite.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🎭'
-      },
-      {
-        id: 'ce17',
-        order: 17,
-        name: 'Livro Proibido',
-        mystery: 'Quem lia o livro antigo desaparecia sem deixar rastros.',
-        solution: 'O livro continha um mapa para um tesouro escondido. Um grupo secreto sequestrava os leitores para interrogá-los sobre o que haviam descoberto.',
-        difficulty: 'medium',
-        theme: 'conspiracy',
-        icon: '📚'
-      },
-      {
-        id: 'ce18',
-        order: 18,
-        name: 'Sino da Igreja',
-        mystery: 'O sino tocou 13 vezes à meia-noite.',
-        solution: 'O sineiro estava sinalizando para contrabandistas que a rota estava livre. O toque extra era o código para que pudessem passar com a mercadoria ilegal.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '🔔'
-      },
-      {
-        id: 'ce19',
-        order: 19,
-        name: 'Casamento Interrompido',
-        mystery: 'O noivo desapareceu no altar durante a cerimônia.',
-        solution: 'Ele descobriu minutos antes que a noiva era na verdade sua irmã perdida. Fugiu em choque, mas não conseguiu explicar sem revelar o segredo da família.',
-        difficulty: 'hard',
-        theme: 'mystery',
-        icon: '💒'
-      },
-      {
-        id: 'ce20',
-        order: 20,
-        name: 'Última Vontade',
-        mystery: 'O testamento mudou após a morte do testador.',
-        solution: 'O notário foi chantageado por um dos herdeiros e falsificou uma nova versão. Ele alterou o documento original para favorecer quem tinha provas de seus crimes passados.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '📜'
-      }
-    ]
-  },
-  {
-    id: 'dose-letal',
-    name: 'Dose Letal',
-    description: 'Desvende casos envolvendo substâncias tóxicas e crimes químicos.',
-    price: 14.80,
-    difficulty: 'hard',
-    image: '/lovable-uploads/9f3c7c39-613b-46d9-a2bc-e7b1091d0a41.png',
-    category: 'forensic',
-    cases: [
-      {
-        id: 'dl1',
-        order: 1,
-        name: 'Perfume Mortal',
-        mystery: 'Ela borrifou o perfume novo e desmaiou imediatamente.',
-        solution: 'O frasco foi adulterado com um neurotóxico por um ex-namorado químico. Ele sabia que ela sempre testava perfumes novos antes de sair de casa.',
-        difficulty: 'hard',
-        isFree: true,
-        theme: 'danger',
-        icon: '💐'
-      },
-      {
-        id: 'dl2',
-        order: 2,
-        name: 'Laboratório Silencioso',
-        mystery: 'Todos os cientistas do laboratório desmaiaram ao mesmo tempo.',
-        solution: 'Um experimento com gases tóxicos vazou pelo sistema de ventilação. O responsável havia alterado as válvulas de segurança para acelerar um projeto e lucrar mais.',
-        difficulty: 'hard',
-        theme: 'danger',
-        icon: '🧪'
-      },
-      {
-        id: 'dl3',
-        order: 3,
-        name: 'Água Contaminada',
-        mystery: 'A família inteira adoeceu após beber água da torneira.',
-        solution: 'Alguém injetou pesticida no encanamento da casa. Era um vizinho que queria forçá-los a vender a propriedade para expandir seu terreno.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '💧'
-      },
-      {
-        id: 'dl4',
-        order: 4,
-        name: 'Remédio Trocado',
-        mystery: 'O remédio para diabetes matou em vez de curar.',
-        solution: 'Um farmacêutico trocou os comprimidos por uma substância letal similar. Ele estava sendo chantageado por dívidas e foi forçado a cometer o crime.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '💊'
-      },
-      {
-        id: 'dl5',
-        order: 5,
-        name: 'Flores Venenosas',
-        mystery: 'O buquê de flores matou quem o cheirou.',
-        solution: 'As flores foram pulverizadas com um aerossol tóxico disfarçado de perfume floral. O assassino conhecia a alergia severa da vítima e potencializou a reação.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '🌺'
-      },
-      {
-        id: 'dl6',
-        order: 6,
-        name: 'Tinta Radioativa',
-        mystery: 'O artista morreu pintando sua obra-prima.',
-        solution: 'Alguém misturou material radioativo na tinta branca que ele mais usava. Era um colega invejoso que sabia que o artista sempre pintava sem proteção.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🎨'
-      },
-      {
-        id: 'dl7',
-        order: 7,
-        name: 'Escape de Gás',
-        mystery: 'O vazamento de gás não foi acidental.',
-        solution: 'O síndico do prédio afrouxou as conexões de gás para forçar os moradores a sair. Ele havia vendido o prédio secretamente e precisava desocupá-lo rapidamente.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '💨'
-      },
-      {
-        id: 'dl8',
-        order: 8,
-        name: 'Comida Envenenada',
-        mystery: 'Apenas um prato do restaurante estava contaminado.',
-        solution: 'O chef envenenou especificamente o prato do crítico gastronômico que havia destruído sua carreira com uma resenha negativa anos antes.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '🍽️'
-      },
-      {
-        id: 'dl9',
-        order: 9,
-        name: 'Cigarro Mortal',
-        mystery: 'Um único cigarro matou o fumante inveterado.',
-        solution: 'Alguém injetou cianeto no filtro de um cigarro específico do maço. O assassino sabia exatamente qual cigarro a vítima fumaria primeiro na manhã seguinte.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🚬'
-      },
-      {
-        id: 'dl10',
-        order: 10,
-        name: 'Piscina Tóxica',
-        mystery: 'A água da piscina queimou a pele dos banhistas.',
-        solution: 'Alguém despejou ácido industrial na piscina durante a noite. Era um funcionário demitido que queria se vingar do clube que o humilhou publicamente.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🏊'
-      },
-      {
-        id: 'dl11',
-        order: 11,
-        name: 'Inseticida Letal',
-        mystery: 'O jardineiro morreu usando o inseticida de sempre.',
-        solution: 'Alguém concentrou o inseticida comum em uma fórmula 50 vezes mais potente. O jardineiro não usava proteção adequada e foi envenenado pela inalação.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '🌱'
-      },
-      {
-        id: 'dl12',
-        order: 12,
-        name: 'Sabão Corrosivo',
-        mystery: 'O sabão em pó queimou as mãos da dona de casa.',
-        solution: 'Alguém misturou soda cáustica no sabão em pó. Era uma vizinha invejosa que não suportava ver suas roupas sempre impecáveis.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '🧼'
-      },
-      {
-        id: 'dl13',
-        order: 13,
-        name: 'Ar Contaminado',
-        mystery: 'Todos no escritório ficaram doentes no mesmo dia.',
-        solution: 'Alguém liberou esporos tóxicos pelo sistema de ar condicionado. Era um ex-funcionário que havia sido demitido e queria se vingar de todos os colegas.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '🌪️'
-      },
-      {
-        id: 'dl14',
-        order: 14,
-        name: 'Vitamina Falsa',
-        mystery: 'O suplemento vitamínico causou overdose.',
-        solution: 'Um vendedor inescrupuloso misturou drogas sintéticas nos comprimidos para causar dependência e aumentar as vendas. A dosagem ficou descontrolada.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '💊'
-      },
-      {
-        id: 'dl15',
-        order: 15,
-        name: 'Shampoo Químico',
-        mystery: 'O cabelo dela caiu completamente após o banho.',
-        solution: 'O ex-marido trocou o shampoo por um produto químico industrial. Ele queria destruir sua autoestima antes da audiência de divórcio.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🧴'
-      },
-      {
-        id: 'dl16',
-        order: 16,
-        name: 'Álcool Metílico',
-        mystery: 'A bebida "premium" cegou todos na festa.',
-        solution: 'Um fornecedor desonesto substituiu o álcool etílico por metílico para economizar custos. Ele não sabia das consequências fatais da troca.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '🍾'
-      },
-      {
-        id: 'dl17',
-        order: 17,
-        name: 'Pasta de Dente',
-        mystery: 'A escovação diária virou tortura para toda a família.',
-        solution: 'Alguém misturou capsaicina (pimenta concentrada) na pasta de dente da família. Era uma babá demitida que queria se vingar das crianças malcriadas.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '🦷'
-      },
-      {
-        id: 'dl18',
-        order: 18,
-        name: 'Preservativo Tóxico',
-        mystery: 'O casal foi parar no hospital após a relação.',
-        solution: 'Alguém injetou uma substância irritante nos preservativos da marca preferida deles. Era um ex-parceiro obsessivo que queria sabotá-los.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '💊'
-      },
-      {
-        id: 'dl19',
-        order: 19,
-        name: 'Desinfetante Mortal',
-        mystery: 'A limpeza da casa se tornou um pesadelo tóxico.',
-        solution: 'Alguém misturou água sanitária com amônia no produto de limpeza, criando gás cloro mortal. Foi um acidente causado por um funcionário inexperiente.',
-        difficulty: 'hard',
-        theme: 'danger',
-        icon: '🧽'
-      },
-      {
-        id: 'dl20',
-        order: 20,
-        name: 'Antídoto Falso',
-        mystery: 'O antídoto para o veneno era o próprio veneno.',
-        solution: 'O médico estava sendo chantageado para matar o paciente específico. Ele trocou o antídoto real por mais veneno, garantindo que a vítima não sobrevivesse.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '💉'
-      }
-    ]
-  },
-  {
-    id: 'crimes-imperfeitos',
-    name: 'Crimes Imperfeitos',
-    description: 'Investigue crimes que acontecem nas noites chuvosas da cidade.',
-    price: 14.80,
-    difficulty: 'hard',
-    image: '/lovable-uploads/2a601ddc-13da-4a0a-8dce-983968670ebc.png',
-    category: 'atmospheric',
-    cases: [
-      {
-        id: 'ci1',
-        order: 1,
-        name: 'Tempestade Fatal',
-        mystery: 'Durante uma tempestade violenta, um homem é encontrado morto em sua casa trancada por dentro. Não há sinais de arrombamento.',
-        solution: 'O assassino entrou pela chaminé durante a tempestade, matou a vítima e saiu da mesma forma. A chuva apagou todas as pegadas no telhado.',
-        difficulty: 'hard',
-        isFree: true,
-        theme: 'murder',
-        icon: '🌧️'
-      },
-      {
-        id: 'ci2',
-        order: 2,
-        name: 'Neblina Traíçoeira',
-        mystery: 'Um carro desaparece completamente na neblina da madrugada. Apenas marcas de pneu até a metade da ponte.',
-        solution: 'O carro foi içado por um guindaste escondido na neblina. Era um plano para simular um acidente e coletar o seguro.',
-        difficulty: 'hard',
-        theme: 'theft',
-        icon: '🌫️'
-      },
-      {
-        id: 'ci3',
-        order: 3,
-        name: 'Chuva de Sangue',
-        mystery: 'Moradores relatam gotas de sangue caindo do céu durante uma chuva intensa.',
-        solution: 'Um assassino havia escondido o corpo no reservatório de água da torre. A chuva fez o sangue vazar pelo sistema de distribuição.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '💧'
-      },
-      {
-        id: 'ci4',
-        order: 4,
-        name: 'Relâmpago Mortal',
-        mystery: 'Uma mulher morre eletrocutada em casa durante uma tempestade, mas não havia equipamentos ligados.',
-        solution: 'O marido instalou fios de cobre conectados ao para-raios. Durante a tempestade, direcionou a descarga elétrica para a banheira onde ela estava.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '⚡'
-      },
-      {
-        id: 'ci5',
-        order: 5,
-        name: 'Pegadas na Lama',
-        mystery: 'Pegadas na lama levam a um beco sem saída, mas não há ninguém lá.',
-        solution: 'O criminoso usou sapatos com sola falsa que se destacavam, deixando pegadas falsas enquanto caminhava descalço por outro caminho.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '👣'
-      },
-      {
-        id: 'ci6',
-        order: 6,
-        name: 'Trovão Silencioso',
-        mystery: 'Durante uma tempestade, testemunhas ouvem um trovão, mas não veem relâmpago. Minutos depois, encontram um corpo.',
-        solution: 'O som foi de um tiro disfarçado durante o barulho da tempestade. O assassino cronometrou perfeitamente o momento.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🔫'
-      },
-      {
-        id: 'ci7',
-        order: 7,
-        name: 'Janela Quebrada',
-        mystery: 'Uma janela se quebra de dentro para fora durante a tempestade, mas não há vento forte o suficiente.',
-        solution: 'Alguém quebrou a janela por dentro para simular uma invasão, mas estava tentando sair sem ser visto.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '🪟'
-      },
-      {
-        id: 'ci8',
-        order: 8,
-        name: 'Guarda-Chuva Perdido',
-        mystery: 'Dezenas de guarda-chuvas são encontrados abandonados após uma tempestade.',
-        solution: 'Era uma distração. Enquanto todos pegavam os guarda-chuvas, ladrões roubavam as casas vazias na chuva.',
-        difficulty: 'medium',
-        theme: 'theft',
-        icon: '☂️'
-      },
-      {
-        id: 'ci9',
-        order: 9,
-        name: 'Poça Vermelha',
-        mystery: 'Uma poça de líquido vermelho se forma durante a chuva, mas não há fonte aparente.',
-        solution: 'Tinta vermelha foi plantada em um buraco no asfalto. Era um sinal para cúmplices indicando que a operação havia dado errado.',
-        difficulty: 'easy',
-        theme: 'investigation',
-        icon: '🔴'
-      },
-      {
-        id: 'ci10',
-        order: 10,
-        name: 'Carro Fantasma',
-        mystery: 'Um carro é visto dirigindo sem motorista durante uma tempestade.',
-        solution: 'O carro foi programado para dirigir sozinho usando um sistema de piloto automático improvisado. Era para criar um álibi para o verdadeiro motorista.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '👻'
-      },
-      {
-        id: 'ci11',
-        order: 11,
-        name: 'Mensagem Molhada',
-        mystery: 'Uma mensagem aparece escrita na condensação de uma janela durante a chuva.',
-        solution: 'A mensagem foi escrita com gordura invisível. Só aparecia quando o vidro embaçava com a umidade. Era um pedido de socorro.',
-        difficulty: 'medium',
-        theme: 'mystery',
-        icon: '💌'
-      },
-      {
-        id: 'ci12',
-        order: 12,
-        name: 'Raio Duplo',
-        mystery: 'Dois raios atingem o mesmo local com segundos de diferença.',
-        solution: 'O primeiro "raio" foi um dispositivo explosivo. O segundo foi um raio real atraído pela estrutura metálica plantada no local.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '⚡'
-      },
-      {
-        id: 'ci13',
-        order: 13,
-        name: 'Chuva Seca',
-        mystery: 'Durante uma tempestade, uma área específica permanece completamente seca.',
-        solution: 'Uma lona transparente foi estendida sobre o local para proteger evidências de um crime que seria investigado no dia seguinte.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '🌧️'
-      },
-      {
-        id: 'ci14',
-        order: 14,
-        name: 'Vento Suspeito',
-        mystery: 'O vento da tempestade sopra apenas em uma direção específica, contrariando a meteorologia.',
-        solution: 'Ventiladores industriais escondidos criavam corrente de ar artificial para dispersar gases tóxicos de um laboratório clandestino.',
-        difficulty: 'hard',
-        theme: 'danger',
-        icon: '💨'
-      },
-      {
-        id: 'ci15',
-        order: 15,
-        name: 'Eco na Chuva',
-        mystery: 'Durante a tempestade, um eco estranho ressoa entre os prédios.',
-        solution: 'O som vinha de um sistema de alto-falantes escondido. Era usado para mascarar os gritos de uma vítima de sequestro.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🔊'
-      },
-      {
-        id: 'ci16',
-        order: 16,
-        name: 'Luz na Tempestade',
-        mystery: 'Uma luz estranha pisca em padrão específico durante toda a tempestade.',
-        solution: 'Era um sinal de código Morse para comunicação entre criminosos. A tempestade mascarava a transmissão de rádio.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '💡'
-      },
-      {
-        id: 'ci17',
-        order: 17,
-        name: 'Árvore Caída',
-        mystery: 'Uma árvore cai exatamente sobre um carro específico durante a tempestade.',
-        solution: 'A árvore foi parcialmente cortada dias antes. O vento da tempestade apenas finalizou o que já estava planejado.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '🌳'
-      },
-      {
-        id: 'ci18',
-        order: 18,
-        name: 'Telefone Molhado',
-        mystery: 'Um telefone público toca incessantemente durante a tempestade, mas ninguém atende.',
-        solution: 'Era um sistema automático ativado pela chuva. O telefone estava programado para tocar quando detectasse umidade - era o sinal para início de uma operação.',
-        difficulty: 'easy',
-        theme: 'mystery',
-        icon: '📞'
-      },
-      {
-        id: 'ci19',
-        order: 19,
-        name: 'Sombra na Chuva',
-        mystery: 'Uma sombra humana aparece projetada em uma parede durante a tempestade, mas não há ninguém por perto.',
-        solution: 'A projeção vinha de uma fotografia iluminada por um projetor ativado pela chuva. Era uma mensagem póstuma de uma vítima.',
-        difficulty: 'hard',
-        theme: 'mystery',
-        icon: '👤'
-      },
-      {
-        id: 'ci20',
-        order: 20,
-        name: 'Última Gota',
-        mystery: 'A tempestade para abruptamente no momento exato em que um crime é descoberto.',
-        solution: 'O criminoso controlava o sistema de irrigação da cidade. Ele criou a "tempestade" artificial para lavar as evidências e a desligou quando terminou.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '💧'
-      }
-    ]
-  },
-  {
-    id: 'dossie-confidencial',
-    name: 'Dossiê Confidencial',
-    description: 'Acesse arquivos confidenciais e desvende conspirações governamentais.',
-    price: 14.80,
-    difficulty: 'hard',
-    image: '/lovable-uploads/94e47921-ddae-490b-9625-a18c64c3e4c7.png',
-    category: 'conspiracy',
-    cases: [
-      {
-        id: 'dc1',
-        order: 1,
-        name: 'Arquivo Fantasma',
-        mystery: 'Documentos ultra-secretos desaparecem de um cofre governamental sem deixar rastros. O sistema de segurança não registrou nenhuma entrada.',
-        solution: 'Um funcionário da limpeza teve acesso durante anos. Ele memorizava os documentos e os reescrevia em casa, vendendo cópias para outros países.',
-        difficulty: 'hard',
-        isFree: true,
-        theme: 'conspiracy',
-        icon: '📁'
-      },
-      {
-        id: 'dc2',
-        order: 2,
-        name: 'Operação Sombra',
-        mystery: 'Agentes governamentais começam a desaparecer um por um, sempre após receberem uma ligação anônima.',
-        solution: 'Um ex-agente desonrado estava usando informações internas para chantagear e depois eliminar seus antigos colegas.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '☎️'
-      },
-      {
-        id: 'dc3',
-        order: 3,
-        name: 'Código Vermelho',
-        mystery: 'Uma sequência numérica aparece rabiscada em documentos confidenciais de diferentes departamentos.',
-        solution: 'Os números eram coordenadas de locais onde evidências de corrupção estavam escondidas. Um whistleblower estava deixando pistas.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '🔢'
-      },
-      {
-        id: 'dc4',
-        order: 4,
-        name: 'Reunião Secreta',
-        mystery: 'Políticos de partidos opostos são vistos se encontrando secretamente em locais diversos.',
-        solution: 'Eles estavam sendo chantageados pelo mesmo criminoso que tinha informações comprometedoras sobre todos.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🤝'
-      },
-      {
-        id: 'dc5',
-        order: 5,
-        name: 'Vazamento Controlado',
-        mystery: 'Informações confidenciais vazam para a imprensa, mas sempre beneficiando o governo.',
-        solution: 'O próprio governo estava vazando informações falsas para confundir inimigos e testar a lealdade de seus funcionários.',
-        difficulty: 'medium',
-        theme: 'conspiracy',
-        icon: '📰'
-      },
-      {
-        id: 'dc6',
-        order: 6,
-        name: 'Identidade Dupla',
-        mystery: 'Um alto funcionário do governo é visto em dois lugares diferentes ao mesmo tempo.',
-        solution: 'Eram gêmeos idênticos compartilhando a mesma identidade há décadas, alternando posições para criar álibis perfeitos.',
-        difficulty: 'hard',
-        theme: 'mystery',
-        icon: '👥'
-      },
-      {
-        id: 'dc7',
-        order: 7,
-        name: 'Projeto Apagado',
-        mystery: 'Todos os registros de um projeto militar ultra-secreto desaparecem simultaneamente de múltiplos servidores.',
-        solution: 'Um vírus programado para ativar em data específica foi implantado pelo próprio criador do projeto, arrependido de sua criação.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '💻'
-      },
-      {
-        id: 'dc8',
-        order: 8,
-        name: 'Morte Anunciada',
-        mystery: 'Um informante é encontrado morto exatamente como havia previsto em uma carta selada.',
-        solution: 'Ele próprio planejou sua morte e escreveu a carta. Estava com doença terminal e queria que sua morte parecesse assassinato para proteger sua família.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '📜'
-      },
-      {
-        id: 'dc9',
-        order: 9,
-        name: 'Espião Interno',
-        mystery: 'Operações secretas são sabotadas sempre antes de começar, sugerindo espionagem interna.',
-        solution: 'Não havia espião. O próprio sistema de segurança estava comprometido por um hack externo há meses.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🕵️'
-      },
-      {
-        id: 'dc10',
-        order: 10,
-        name: 'Chave Mestra',
-        mystery: 'Uma única pessoa tem acesso a todos os sistemas governamentais, mas oficialmente não existe.',
-        solution: 'Era uma identidade criada coletivamente por um grupo de hackers que se passavam por funcionário fantasma há anos.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🗝️'
-      },
-      {
-        id: 'dc11',
-        order: 11,
-        name: 'Relatório Falso',
-        mystery: 'Relatórios oficiais contradizem completamente evidências físicas de uma investigação.',
-        solution: 'Os relatórios eram verdadeiros, mas as evidências físicas foram plantadas para desacreditar a investigação oficial.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '📊'
-      },
-      {
-        id: 'dc12',
-        order: 12,
-        name: 'Testemunha Fantasma',
-        mystery: 'Uma testemunha crucial em vários casos governamentais nunca pode ser localizada.',
-        solution: 'A testemunha era uma identidade falsa criada para manipular processos legais. Nunca existiu de fato.',
-        difficulty: 'easy',
-        theme: 'conspiracy',
-        icon: '👻'
-      },
-      {
-        id: 'dc13',
-        order: 13,
-        name: 'Orçamento Secreto',
-        mystery: 'Milhões de dólares desaparecem do orçamento sem deixar rastro contábil.',
-        solution: 'O dinheiro estava sendo usado para financiar uma operação negra legítima, mas off-the-books para proteger agentes infiltrados.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '💰'
-      },
-      {
-        id: 'dc14',
-        order: 14,
-        name: 'Comunicação Interceptada',
-        mystery: 'Todas as comunicações de um departamento são interceptadas, mas não há equipamento de espionagem.',
-        solution: 'Um funcionário tinha implante auditivo médico que captava e transmitia conversas involuntariamente para uma empresa de tecnologia.',
-        difficulty: 'medium',
-        theme: 'conspiracy',
-        icon: '📡'
-      },
-      {
-        id: 'dc15',
-        order: 15,
-        name: 'Decisão Previsível',
-        mystery: 'Decisões governamentais importantes são previstas com precisão por analistas externos.',
-        solution: 'Os analistas tinham acesso a inteligência artificial que processava padrões comportamentais dos políticos baseado em dados públicos.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '🔮'
-      },
-      {
-        id: 'dc16',
-        order: 16,
-        name: 'Dossiê Pessoal',
-        mystery: 'Arquivos pessoais detalhados de cidadãos comuns são encontrados em computadores governamentais.',
-        solution: 'Era um programa de monitoramento de redes sociais que compilava perfis psicológicos para prever comportamentos em massa.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '📋'
-      },
-      {
-        id: 'dc17',
-        order: 17,
-        name: 'Acidente Programado',
-        mystery: 'Acidentes convenientes acontecem sempre que alguém está prestes a expor corrupção.',
-        solution: 'Uma empresa de segurança privada estava sendo contratada para criar "acidentes" realísticos que apenas assustavam, não matavam.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🚗'
-      },
-      {
-        id: 'dc18',
-        order: 18,
-        name: 'Rede Fantasma',
-        mystery: 'Uma rede de comunicação criptografada opera dentro do governo sem autorização oficial.',
-        solution: 'Era uma rede de apoio psicológico criada por funcionários para lidar com o estresse de trabalhar com informações classificadas.',
-        difficulty: 'easy',
-        theme: 'investigation',
-        icon: '🕸️'
-      },
-      {
-        id: 'dc19',
-        order: 19,
-        name: 'Memória Apagada',
-        mystery: 'Funcionários governamentais relatam lapsos de memória após participarem de reuniões específicas.',
-        solution: 'Eles estavam sendo hipnotizados durante as reuniões para esquecer informações sensíveis como medida de segurança.',
-        difficulty: 'hard',
-        theme: 'mystery',
-        icon: '🧠'
-      },
-      {
-        id: 'dc20',
-        order: 20,
-        name: 'Último Segredo',
-        mystery: 'Um político morre deixando uma mensagem: "O último segredo está onde tudo começou".',
-        solution: 'A mensagem se referia ao primeiro escritório onde ele trabalhou. Lá estava escondido um pen-drive com evidências de uma conspiração de décadas.',
-        difficulty: 'hard',
-        theme: 'mystery',
-        icon: '🔐'
-      }
-    ]
-  },
-  {
-    id: 'fim-de-jogo',
-    name: 'Fim de Jogo',
-    description: 'Crimes estratégicos que exigem raciocínio lógico como uma partida de xadrez.',
-    price: 14.80,
-    difficulty: 'hard',
-    image: '/lovable-uploads/04b458ab-f733-4133-8907-18c2d01f7f71.png',
-    category: 'strategic',
-    cases: [
-      {
-        id: 'fj1',
-        order: 1,
-        name: 'Xeque-Mate Mortal',
-        mystery: 'Um assassinato é planejado como uma partida de xadrez, com cada movimento previsto e documentado.',
-        solution: 'O assassino era um grande mestre de xadrez que planejou cada etapa como jogadas. A vítima era seu oponente em um campeonato que ele perdeu décadas atrás.',
-        difficulty: 'hard',
-        isFree: true,
-        theme: 'murder',
-        icon: '♟️'
-      },
-      {
-        id: 'fj2',
-        order: 2,
-        name: 'Gambit da Rainha',
-        mystery: 'Uma série de roubos segue o padrão de movimento da rainha no xadrez.',
-        solution: 'O ladrão usava os movimentos da rainha para escolher seus alvos em um mapa da cidade, criando um padrão previsível apenas para quem conhece xadrez.',
-        difficulty: 'hard',
-        theme: 'theft',
-        icon: '👑'
-      },
-      {
-        id: 'fj3',
-        order: 3,
-        name: 'Sacrifício do Peão',
-        mystery: 'Várias pessoas são manipuladas para cometer pequenos crimes, todas desconhecendo o plano maior.',
-        solution: 'Eram "peões" em um esquema maior. Um criminoso mestre os usava para distrair a polícia enquanto executava o crime principal.',
-        difficulty: 'medium',
-        theme: 'conspiracy',
-        icon: '♟️'
-      },
-      {
-        id: 'fj4',
-        order: 4,
-        name: 'Torre Solitária',
-        mystery: 'Um prédio de apartamentos é isolado por uma série de eventos aparentemente aleatórios.',
-        solution: 'O criminoso criou situações para evacuar o prédio metodicamente, como uma torre no xadrez controlando colunas e fileiras.',
-        difficulty: 'hard',
-        theme: 'strategy',
-        icon: '🏰'
-      },
-      {
-        id: 'fj5',
-        order: 5,
-        name: 'Bispo Diagonal',
-        mystery: 'Crimes acontecem apenas em estabelecimentos localizados diagonalmente uns aos outros.',
-        solution: 'O criminoso seguia as rotas diagonais do bispo no xadrez, aproveitando que a polícia não patrulhava essas conexões específicas.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '⛪'
-      },
-      {
-        id: 'fj6',
-        order: 6,
-        name: 'Cavalo Saltador',
-        mystery: 'Um ladrão aparece em locais impossíveis, como se tivesse saltado por cima de obstáculos.',
-        solution: 'Ele usava o movimento em L do cavalo do xadrez para planejar rotas através de telhados e túneis, "saltando" sobre a segurança.',
-        difficulty: 'hard',
-        theme: 'theft',
-        icon: '🐴'
-      },
-      {
-        id: 'fj7',
-        order: 7,
-        name: 'Abertura Siciliana',
-        mystery: 'Uma série de eventos criminosos segue exatamente os movimentos de uma abertura famosa de xadrez.',
-        solution: 'O criminoso estava recriando sua partida favorita de xadrez na vida real, com cada crime representando um movimento específico.',
-        difficulty: 'hard',
-        theme: 'strategy',
-        icon: '📖'
-      },
-      {
-        id: 'fj8',
-        order: 8,
-        name: 'Roque Impossível',
-        mystery: 'Dois crimes acontecem simultaneamente em locais distantes, executados pela mesma pessoa.',
-        solution: 'Como no roque do xadrez, ele usou um substituto (sócia) para um dos crimes enquanto executava o outro, trocando de posição rapidamente.',
-        difficulty: 'medium',
-        theme: 'strategy',
-        icon: '🔄'
-      },
-      {
-        id: 'fj9',
-        order: 9,
-        name: 'En Passant Fatal',
-        mystery: 'Uma vítima é morta em um momento específico quando passa por um local aparentemente seguro.',
-        solution: 'Como a captura en passant no xadrez, o assassino esperou o momento exato quando a vítima passaria pelo ponto vulnerável.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '⚡'
-      },
-      {
-        id: 'fj10',
-        order: 10,
-        name: 'Promoção do Peão',
-        mystery: 'Um criminoso pequeno subitamente se torna um mastermind do crime organizado.',
-        solution: 'Como um peão que vira rainha, ele foi secretamente treinado e financiado para assumir o controle quando chegasse ao "fim do tabuleiro".',
-        difficulty: 'medium',
-        theme: 'power',
-        icon: '⬆️'
-      },
-      {
-        id: 'fj11',
-        order: 11,
-        name: 'Tempo Perdido',
-        mystery: 'Crimes são cometidos sempre que o criminoso está com álibi perfeito.',
-        solution: 'Ele usava a estratégia do tempo no xadrez, planejando crimes com antecedência e usando temporizadores para executá-los enquanto estava visível em outro lugar.',
-        difficulty: 'easy',
-        theme: 'strategy',
-        icon: '⏰'
-      },
-      {
-        id: 'fj12',
-        order: 12,
-        name: 'Zugzwang Criminal',
-        mystery: 'A polícia é forçada a fazer movimentos que sempre beneficiam o criminoso.',
-        solution: 'Como no zugzwang do xadrez, qualquer ação policial levava a uma situação pior. O criminoso criou um dilema onde todas as opções eram ruins.',
-        difficulty: 'hard',
-        theme: 'strategy',
-        icon: '🤔'
-      },
-      {
-        id: 'fj13',
-        order: 13,
-        name: 'Mate Pastor',
-        mystery: 'Vítimas experientes caem em armadilhas aparentemente óbvias.',
-        solution: 'Como o mate pastor no xadrez, o criminoso usava táticas básicas que funcionavam porque as vítimas subestimavam a simplicidade.',
-        difficulty: 'easy',
-        theme: 'strategy',
-        icon: '🎯'
-      },
-      {
-        id: 'fj14',
-        order: 14,
-        name: 'Defesa Francesa',
-        mystery: 'Um suspeito sempre tem uma defesa perfeita para cada acusação.',
-        solution: 'Ele estudou a "Defesa Francesa" do xadrez e aplicou seus princípios: desenvolver uma estrutura defensiva sólida antes de qualquer ataque.',
-        difficulty: 'medium',
-        theme: 'strategy',
-        icon: '🛡️'
-      },
-      {
-        id: 'fj15',
-        order: 15,
-        name: 'Centro Controlado',
-        mystery: 'Todos os crimes giram em torno de um local central específico.',
-        solution: 'Como controlar o centro no xadrez, ele estabeleceu domínio sobre uma área chave da cidade para coordenar todas as operações.',
-        difficulty: 'medium',
-        theme: 'strategy',
-        icon: '🎯'
-      },
-      {
-        id: 'fj16',
-        order: 16,
-        name: 'Peças Desenvolvidas',
-        mystery: 'Vários criminosos pequenos começam a trabalhar em perfeita coordenação.',
-        solution: 'Como desenvolver peças no xadrez, um mentor estava treinando e posicionando cada "peça" humana para um ataque coordenado.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '⚔️'
-      },
-      {
-        id: 'fj17',
-        order: 17,
-        name: 'Rei Exposto',
-        mystery: 'Uma figura poderosa fica vulnerável após perder toda sua proteção.',
-        solution: 'Seus "peões" (seguranças e aliados) foram sistematicamente removidos, deixando-o exposto como um rei no xadrez sem proteção.',
-        difficulty: 'medium',
-        theme: 'power',
-        icon: '👑'
-      },
-      {
-        id: 'fj18',
-        order: 18,
-        name: 'Ataque Duplo',
-        mystery: 'Um criminoso ameaça dois alvos simultaneamente, forçando uma escolha impossível.',
-        solution: 'Como no ataque duplo do xadrez, ele criou uma situação onde proteger um alvo deixava automaticamente o outro vulnerável.',
-        difficulty: 'hard',
-        theme: 'strategy',
-        icon: '⚔️'
-      },
-      {
-        id: 'fj19',
-        order: 19,
-        name: 'Partida Imortal',
-        mystery: 'Uma série de crimes recria perfeitamente uma partida histórica de xadrez.',
-        solution: 'O criminoso estava homenageando a "Partida Imortal" de Anderssen, recriando cada movimento em crimes reais como sua obra-prima.',
-        difficulty: 'hard',
-        theme: 'strategy',
-        icon: '📜'
-      },
-      {
-        id: 'fj20',
-        order: 20,
-        name: 'Grande Mestre Final',
-        mystery: 'O último crime é anunciado com antecedência, mas ninguém consegue impedi-lo.',
-        solution: 'Como um grande mestre de xadrez, ele calculou todas as variantes possíveis. Mesmo revelando seu plano, havia criado uma situação de mate inevitável.',
-        difficulty: 'hard',
-        theme: 'strategy',
-        icon: '🏆'
-      }
-    ]
-  },
-  {
-    id: 'ironias-do-destino',
-    name: 'Ironias do Destino',
-    description: 'Fragmente os mistérios e reconstrua a verdade através dos cacos da evidência.',
-    price: 14.80,
-    difficulty: 'medium',
-    image: '/lovable-uploads/f3128054-35d3-474f-be84-575857ba985a.png',
-    category: 'evidence',
-    cases: [
-      {
-        id: 'id1',
-        order: 1,
-        name: 'Círculo Vicioso',
-        mystery: 'Um detetive investiga um crime que ele mesmo cometeu sem saber, devido à perda de memória.',
-        solution: 'Ele havia sido hipnotizado para cometer o crime e depois ter a memória apagada. O verdadeiro criminoso era seu próprio psiquiatra.',
-        difficulty: 'medium',
-        isFree: true,
-        theme: 'mystery',
-        icon: '🔄'
-      },
-      {
-        id: 'id2',
-        order: 2,
-        name: 'Salvando o Assassino',
-        mystery: 'Um médico salva a vida de um homem, que depois mata a esposa do médico.',
-        solution: 'O homem era um hitman contratado pelo próprio médico para matar sua esposa. O médico não esperava que o assassino se machucasse no processo.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '💔'
-      },
-      {
-        id: 'id3',
-        order: 3,
-        name: 'Testemunha Cega',
-        mystery: 'Uma pessoa cega é a única testemunha de um assassinato.',
-        solution: 'Ela reconheceu o assassino pelo som de sua respiração - era seu ex-marido que ela pensava estar morto há anos.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '👁️'
-      },
-      {
-        id: 'id4',
-        order: 4,
-        name: 'Herança Maldita',
-        mystery: 'Todos que herdam uma fortuna específica morrem em acidentes dentro de um ano.',
-        solution: 'O testamenteiro estava matando os herdeiros para que a herança sempre retornasse ao estado, onde ele tinha controle sobre os fundos.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '💰'
-      },
-      {
-        id: 'id5',
-        order: 5,
-        name: 'Carta do Futuro',
-        mystery: 'Uma pessoa recebe uma carta detalhando sua própria morte, que acontece exatamente como descrito.',
-        solution: 'A carta foi escrita por ela mesma em um episódio psicótico. Sua mente subconsciente planejou o suicídio de forma elaborada.',
-        difficulty: 'medium',
-        theme: 'mystery',
-        icon: '📮'
-      },
-      {
-        id: 'id6',
-        order: 6,
-        name: 'Anjo da Guarda',
-        mystery: 'Uma pessoa sempre escapa da morte por coincidências impossíveis.',
-        solution: 'Seu irmão gêmeo separado no nascimento estava secretamente protegendo-o, interferindo em situações perigosas sem ele saber.',
-        difficulty: 'easy',
-        theme: 'protection',
-        icon: '👼'
-      },
-      {
-        id: 'id7',
-        order: 7,
-        name: 'Vingança Tardia',
-        mystery: 'Um homem mata seu melhor amigo 30 anos depois de serem separados.',
-        solution: 'Ele descobriu que o amigo havia se passado por ele durante a guerra, vivendo a vida que deveria ter sido sua.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '⚔️'
-      },
-      {
-        id: 'id8',
-        order: 8,
-        name: 'Profecia Cumprida',
-        mystery: 'Uma cartomante prevê a própria morte e tenta evitá-la, mas cada tentativa a aproxima do destino.',
-        solution: 'Suas tentativas de evitar a morte estavam sendo monitoradas por alguém que usava as informações para planejar seu assassinato.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🔮'
-      },
-      {
-        id: 'id9',
-        order: 9,
-        name: 'Doação Fatal',
-        mystery: 'Todas as pessoas que recebem órgãos de um doador específico começam a ter pesadelos idênticos.',
-        solution: 'O doador estava vivo e usando implantes para se comunicar com os receptores, planejando usar seus corpos para crimes.',
-        difficulty: 'hard',
-        theme: 'supernatural',
-        icon: '💉'
-      },
-      {
-        id: 'id10',
-        order: 10,
-        name: 'Espelho do Crime',
-        mystery: 'Crimes idênticos acontecem simultaneamente em cidades diferentes, cometidos por pessoas que nunca se conheceram.',
-        solution: 'Ambos estavam seguindo instruções de um livro que encontraram, escrito por um serial killer que queria criar copycats.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🪞'
-      },
-      {
-        id: 'id11',
-        order: 11,
-        name: 'Último Desejo',
-        mystery: 'Um homem moribundo pede para ver seu pior inimigo, que morre misteriosamente logo após a visita.',
-        solution: 'O moribundo tinha uma doença contagiosa rara. Ele infectou propositalmente seu inimigo durante o encontro.',
-        difficulty: 'easy',
-        theme: 'murder',
-        icon: '💀'
-      },
-      {
-        id: 'id12',
-        order: 12,
-        name: 'Coincidência Mortal',
-        mystery: 'Duas pessoas com o mesmo nome morrem no mesmo dia, em cidades diferentes, da mesma forma.',
-        solution: 'Era o mesmo assassino contratado. Ele confundiu os alvos e matou ambos para garantir que havia eliminado o correto.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '🎯'
-      },
-      {
-        id: 'id13',
-        order: 13,
-        name: 'Protetor Letal',
-        mystery: 'Um guarda-costas mata seu cliente para "protegê-lo".',
-        solution: 'O cliente estava sendo chantageado para cometer um atentado terrorista. O guarda-costas o matou para salvar centenas de vidas.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🛡️'
-      },
-      {
-        id: 'id14',
-        order: 14,
-        name: 'Verdade Mentirosa',
-        mystery: 'Um patologista mente sobre a causa da morte para proteger o assassino.',
-        solution: 'O "assassino" era na verdade um médico que fez eutanásia em seu próprio pai terminal. O patologista era seu irmão.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '🩺'
-      },
-      {
-        id: 'id15',
-        order: 15,
-        name: 'Sonho Premonitório',
-        mystery: 'Uma mulher sonha com crimes antes deles acontecerem.',
-        solution: 'Ela era sonâmbula e estava cometendo os crimes durante o sono, depois sonhando com eles como se fossem premonições.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '💤'
-      },
-      {
-        id: 'id16',
-        order: 16,
-        name: 'Justiça Cega',
-        mystery: 'Um juiz corrompe processos para libertar criminosos que depois são mortos misteriosamente.',
-        solution: 'Ele estava trabalhando com um vigilante. Libertava os criminosos para que pudessem ser eliminados fora do sistema legal.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '⚖️'
-      },
-      {
-        id: 'id17',
-        order: 17,
-        name: 'Amor Impossível',
-        mystery: 'Dois amantes de famílias rivais planejam fugir juntos, mas um mata o outro.',
-        solution: 'Eles descobriram que eram irmãos separados na infância. O assassinato foi um pacto suicida disfarçado para proteger a honra das famílias.',
-        difficulty: 'medium',
-        theme: 'love',
-        icon: '💔'
-      },
-      {
-        id: 'id18',
-        order: 18,
-        name: 'Presente Envenenado',
-        mystery: 'Uma pessoa dá um presente que acidentalmente mata quem recebe.',
-        solution: 'O presente continha um perfume com substância à qual apenas a pessoa específica era alergica. Era um assassinato muito bem planejado.',
-        difficulty: 'easy',
-        theme: 'murder',
-        icon: '🎁'
-      },
-      {
-        id: 'id19',
-        order: 19,
-        name: 'Memória Falsa',
-        mystery: 'Várias pessoas têm a mesma lembrança de um evento que nunca aconteceu.',
-        solution: 'Elas foram expostas a um experimento de implantação de memórias falsas para encobrir um crime real que todas testemunharam.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🧠'
-      },
-      {
-        id: 'id20',
-        order: 20,
-        name: 'Destino Selado',
-        mystery: 'Um homem mata a pessoa que salvou sua vida, exatamente como uma cigana havia previsto.',
-        solution: 'A cigana era sua mãe adotiva que orquestrou toda a situação. Ela programou psicologicamente ambos para cumprir a "profecia".',
-        difficulty: 'hard',
-        theme: 'destiny',
-        icon: '🔮'
-      }
-    ]
-  },
-  {
-    id: 'paxarodos-mortais',
-    name: 'Paxarodos Mortais',
-    description: 'Mistérios sombrios em cenários urbanos cheios de perigos e segredos.',
-    price: 14.80,
-    difficulty: 'hard',
-    image: '/lovable-uploads/34c251ba-c4c2-4172-bfb8-70d72411b3b0.png',
-    category: 'urban',
-    cases: [
-      {
-        id: 'pm1',
-        order: 1,
-        name: 'Metrô da Meia-Noite',
-        mystery: 'Passageiros do último trem do metrô desaparecem um por um durante o trajeto.',
-        solution: 'O maquinista estava druggando o ar do vagão. Era parte de um esquema de tráfico de órgãos usando pessoas sem família.',
-        difficulty: 'hard',
-        isFree: true,
-        theme: 'disappearance',
-        icon: '🚇'
-      },
-      {
-        id: 'pm2',
-        order: 2,
-        name: 'Arranha-Céu Assassino',
-        mystery: 'Pessoas que trabalham no 13º andar de um prédio começam a se suicidar.',
-        solution: 'Gases tóxicos estavam sendo bombeados pelo sistema de ventilação, causando depressão severa e pensamentos suicidas.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🏢'
-      },
-      {
-        id: 'pm3',
-        order: 3,
-        name: 'Semáforo da Morte',
-        mystery: 'Acidentes fatais acontecem sempre no mesmo cruzamento, mesmo com o semáforo funcionando.',
-        solution: 'Alguém estava hackeando o sistema de semáforos, criando conflitos de sinal para causar acidentes propositais.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '🚦'
-      },
-      {
-        id: 'pm4',
-        order: 4,
-        name: 'Elevador Fantasma',
-        mystery: 'Um elevador vai para andares que não existem no prédio.',
-        solution: 'Era um esconderijo secreto para um laboratório de drogas. O elevador tinha programação especial ativada por códigos específicos.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '🛗'
-      },
-      {
-        id: 'pm5',
-        order: 5,
-        name: 'Ponte dos Sussurros',
-        mystery: 'Pessoas que passam por uma ponte específica ouvem vozes que as fazem pular.',
-        solution: 'Alto-falantes ocultos reproduziam frequências que causavam alucinações auditivas. Era um experimento psicológico ilegal.',
-        difficulty: 'medium',
-        theme: 'supernatural',
-        icon: '🌉'
-      },
-      {
-        id: 'pm6',
-        order: 6,
-        name: 'Lixo Radioativo',
-        mystery: 'Moradores de um bairro desenvolvem doenças misteriosas após a instalação de novas lixeiras.',
-        solution: 'As lixeiras continham material radioativo disfarçado. Era um descarte ilegal de resíduos hospitalares perigosos.',
-        difficulty: 'easy',
-        theme: 'danger',
-        icon: '🗑️'
-      },
-      {
-        id: 'pm7',
-        order: 7,
-        name: 'Táxi Desaparecido',
-        mystery: 'Táxis de uma empresa específica desaparecem com os passageiros.',
-        solution: 'Os táxis eram usados para sequestros. A empresa era uma fachada para um esquema de tráfico humano internacional.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '🚕'
-      },
-      {
-        id: 'pm8',
-        order: 8,
-        name: 'Parque dos Mortos',
-        mystery: 'Animais e pessoas morrem misteriosamente após visitarem um parque recém-reformado.',
-        solution: 'O solo estava contaminado com produtos químicos industriais que a empresa de reforma tentou encobrir com grama nova.',
-        difficulty: 'medium',
-        theme: 'danger',
-        icon: '🏞️'
-      },
-      {
-        id: 'pm9',
-        order: 9,
-        name: 'Ônibus Fantasma',
-        mystery: 'Um ônibus aparece em horários não programados, levando passageiros para destinos desconhecidos.',
-        solution: 'Era usado por um culto para recrutar novos membros. Eles drogavam passageiros solitários e os levavam para a seita.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '🚌'
-      },
-      {
-        id: 'pm10',
-        order: 10,
-        name: 'Catacumbas Urbanas',
-        mystery: 'Pessoas entram nos esgotos da cidade e nunca mais são vistas.',
-        solution: 'Uma comunidade subterrânea de criminosos havia criado uma cidade paralela nos túneis abandonados.',
-        difficulty: 'medium',
-        theme: 'disappearance',
-        icon: '🕳️'
-      },
-      {
-        id: 'pm11',
-        order: 11,
-        name: 'Antena Mortal',
-        mystery: 'Moradores próximos a uma torre de celular desenvolvem comportamentos violentos.',
-        solution: 'A torre estava sendo usada para transmitir frequências que afetavam o comportamento humano em um experimento militar secreto.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '📡'
-      },
-      {
-        id: 'pm12',
-        order: 12,
-        name: 'Estacionamento Amaldiçoado',
-        mystery: 'Carros estacionados em um local específico têm problemas mecânicos fatais.',
-        solution: 'Alguém estava sabotando os carros para causar acidentes. Era um mecânico corrupto criando clientes forçados.',
-        difficulty: 'easy',
-        theme: 'crime',
-        icon: '🅿️'
-      },
-      {
-        id: 'pm13',
-        order: 13,
-        name: 'Hospital Fantasma',
-        mystery: 'Pacientes entram em um hospital abandonado mas ainda recebem tratamento médico.',
-        solution: 'Médicos cassados estavam operando ilegalmente no prédio abandonado, realizando cirurgias não autorizadas.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '🏥'
-      },
-      {
-        id: 'pm14',
-        order: 14,
-        name: 'Escola da Noite',
-        mystery: 'Uma escola fechada tem luzes acesas durante a madrugada.',
-        solution: 'Era usada como centro de treinamento para criminosos menores de idade. Eles "estudavam" técnicas de roubo e fraude.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🏫'
-      },
-      {
-        id: 'pm15',
-        order: 15,
-        name: 'Biblioteca Silenciosa',
-        mystery: 'Pessoas que entram numa biblioteca específica nunca mais falam.',
-        solution: 'Eram expostas a um gás experimental que danificava as cordas vocais. Era um teste para criar soldados silenciosos.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '📚'
-      },
-      {
-        id: 'pm16',
-        order: 16,
-        name: 'Supermercado 24h',
-        mystery: 'Clientes que fazem compras após meia-noite desaparecem.',
-        solution: 'O supermercado era uma fachada para lavagem de dinheiro. Clientes noturnos eram eliminados para manter o segredo.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🛒'
-      },
-      {
-        id: 'pm17',
-        order: 17,
-        name: 'Cinema Maldito',
-        mystery: 'Espectadores de um cinema específico saem com amnésia.',
-        solution: 'Gases amnésicos eram liberados durante os filmes. Era um experimento para apagar memórias de testemunhas de crimes.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🎬'
-      },
-      {
-        id: 'pm18',
-        order: 18,
-        name: 'ATM Assassino',
-        mystery: 'Pessoas que usam um caixa eletrônico específico morrem em 24 horas.',
-        solution: 'O ATM estava infectado com agulhas microscópicas que injetavam veneno. Era um método de assassinato seletivo.',
-        difficulty: 'easy',
-        theme: 'murder',
-        icon: '🏧'
-      },
-      {
-        id: 'pm19',
-        order: 19,
-        name: 'Praça dos Desaparecidos',
-        mystery: 'Uma praça pública sempre está vazia, mesmo em horários movimentados.',
-        solution: 'Substâncias químicas no ar causavam extremo desconforto psicológico. Era para afastar pessoas de evidências enterradas no local.',
-        difficulty: 'medium',
-        theme: 'conspiracy',
-        icon: '🏛️'
-      },
-      {
-        id: 'pm20',
-        order: 20,
-        name: 'Cidade Fantasma',
-        mystery: 'Um bairro inteiro é evacuado misteriosamente durante a noite.',
-        solution: 'Era uma operação militar para encobrir um acidente com armas químicas. Todos os moradores foram realocados secretamente.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🏘️'
-      }
-    ]
-  },
-  {
-    id: 'absurdamente-real',
-    name: 'Absurdamente Real',
-    description: 'Casos que desafiam a lógica e parecem impossíveis, mas têm explicações surpreendentes.',
-    price: 14.80,
-    difficulty: 'hard',
-    image: '/lovable-uploads/ce660aa4-1ed1-4019-bef2-65d5dd86c0e6.png',
-    category: 'surreal',
-    cases: [
-      {
-        id: 'ar1',
-        order: 1,
-        name: 'Homem Voador',
-        mystery: 'Testemunhas veem consistentemente um homem voando sobre a cidade durante as noites.',
-        solution: 'Era um dublê usando equipamento de jetpack experimental roubado de uma empresa militar. Ele voava para escapar de perseguições.',
-        difficulty: 'hard',
-        isFree: true,
-        theme: 'mystery',
-        icon: '🛸'
-      },
-      {
-        id: 'ar2',
-        order: 2,
-        name: 'Chuva de Peixes',
-        mystery: 'Peixes caem do céu em uma cidade do interior durante um dia ensolarado.',
-        solution: 'Um avião transportando peixes ilegais teve uma falha no compartimento de carga. O piloto despejou a carga para evitar ser preso.',
-        difficulty: 'medium',
-        theme: 'mystery',
-        icon: '🐟'
-      },
-      {
-        id: 'ar3',
-        order: 3,
-        name: 'Casa que Sangra',
-        mystery: 'Sangue escorre das paredes de uma casa abandonada todos os dias às 3h da manhã.',
-        solution: 'Canos antigos com resíduos de matadouro se expandiam com o calor noturno, fazendo o sangue seco se liquefazer e vazar.',
-        difficulty: 'easy',
-        theme: 'supernatural',
-        icon: '🏚️'
-      },
-      {
-        id: 'ar4',
-        order: 4,
-        name: 'Pessoa Invisível',
-        mystery: 'Pegadas aparecem na areia, mas não há ninguém visível caminhando.',
-        solution: 'Era um criminoso usando um traje de camuflagem óptica experimental roubado de um laboratório militar.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '👻'
-      },
-      {
-        id: 'ar5',
-        order: 5,
-        name: 'Árvore que Grita',
-        mystery: 'Uma árvore emite gritos humanos durante as noites de lua cheia.',
-        solution: 'Havia uma pessoa enterrada viva na base da árvore. Os gritos saíam através das raízes ocas quando a pessoa ainda estava consciente.',
-        difficulty: 'hard',
-        theme: 'murder',
-        icon: '🌳'
-      },
-      {
-        id: 'ar6',
-        order: 6,
-        name: 'Espelhos Mentirosos',
-        mystery: 'Espelhos em uma casa mostram reflexos de pessoas que não estão no cômodo.',
-        solution: 'Eram espelhos unidirecionais conectados a câmeras e telas. Alguém estava projetando imagens gravadas para assustar os moradores.',
-        difficulty: 'medium',
-        theme: 'mystery',
-        icon: '🪞'
-      },
-      {
-        id: 'ar7',
-        order: 7,
-        name: 'Gravidade Reversa',
-        mystery: 'Objetos caem para cima em um quarto específico de uma casa.',
-        solution: 'Um campo magnético poderoso estava instalado no teto, atraindo objetos metálicos. Era para esconder um cofre magnético no forro.',
-        difficulty: 'medium',
-        theme: 'mystery',
-        icon: '⬆️'
-      },
-      {
-        id: 'ar8',
-        order: 8,
-        name: 'Telefone dos Mortos',
-        mystery: 'Um telefone antigo recebe ligações de pessoas que morreram há décadas.',
-        solution: 'Era um sistema automatizado usando inteligência artificial treinada com gravações das vozes dos falecidos para chantagear herdeiros.',
-        difficulty: 'hard',
-        theme: 'fraud',
-        icon: '☎️'
-      },
-      {
-        id: 'ar9',
-        order: 9,
-        name: 'Sombras Independentes',
-        mystery: 'Sombras de pessoas se movem independentemente de seus donos.',
-        solution: 'Projetores ocultos criavam sombras falsas controladas remotamente. Era um método de intimidação psicológica.',
-        difficulty: 'easy',
-        theme: 'psychological',
-        icon: '👤'
-      },
-      {
-        id: 'ar10',
-        order: 10,
-        name: 'Água que Queima',
-        mystery: 'A água de uma fonte pública queima a pele de quem toca.',
-        solution: 'Alguém estava despejando ácido diluído na fonte durante a madrugada. Era uma tentativa de envenenar uma pessoa específica.',
-        difficulty: 'medium',
-        theme: 'murder',
-        icon: '💧'
-      },
-      {
-        id: 'ar11',
-        order: 11,
-        name: 'Livro que se Escreve',
-        mystery: 'Páginas de um livro aparecem escritas durante a noite, prevendo eventos futuros.',
-        solution: 'Era um código entre criminosos. Eles usavam tinta invisível que aparecia com o calor noturno para comunicar planos.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '📖'
-      },
-      {
-        id: 'ar12',
-        order: 12,
-        name: 'Cachorro Falante',
-        mystery: 'Um cachorro fala perfeitamente e resolve crimes complexos.',
-        solution: 'O dono era ventrílogo e usava o cachorro como disfarce para suas investigações particulares sem levantar suspeitas.',
-        difficulty: 'easy',
-        theme: 'investigation',
-        icon: '🐕'
-      },
-      {
-        id: 'ar13',
-        order: 13,
-        name: 'Relógio do Tempo',
-        mystery: 'Um relógio antigo para o tempo ao seu redor quando soa.',
-        solution: 'Era um dispositivo que liberava gás paralítico no ar. Quando tocava, todos ao redor ficavam temporariamente paralisados.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '⏰'
-      },
-      {
-        id: 'ar14',
-        order: 14,
-        name: 'Retrato Envelhecendo',
-        mystery: 'Um retrato em uma casa envelhece enquanto a pessoa fotografada permanece jovem.',
-        solution: 'Eram gêmeos idênticos. Um envelhecia normalmente enquanto o outro usava cirurgias plásticas para manter a aparência jovem.',
-        difficulty: 'medium',
-        theme: 'identity',
-        icon: '🖼️'
-      },
-      {
-        id: 'ar15',
-        order: 15,
-        name: 'Música dos Espíritos',
-        mystery: 'Piano toca sozinho todas as noites, sempre a mesma música melancólica.',
-        solution: 'Um mecanismo automático foi instalado no piano. Era ativado por um timer para mascarar os sons de escavação no porão.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🎹'
-      },
-      {
-        id: 'ar16',
-        order: 16,
-        name: 'Duplo Impossível',
-        mystery: 'Uma pessoa aparece em dois lugares ao mesmo tempo, com testemunhas confiáveis.',
-        solution: 'Era um clone criado ilegalmente em laboratório clandestino. Ambos compartilhavam memórias através de implantes cerebrais.',
-        difficulty: 'hard',
-        theme: 'science',
-        icon: '👥'
-      },
-      {
-        id: 'ar17',
-        order: 17,
-        name: 'Jardim Mortal',
-        mystery: 'Plantas de um jardim crescem instantaneamente e depois morrem no mesmo dia.',
-        solution: 'Fertilizantes radioativos eram injetados nas plantas para acelerar crescimento. Era um experimento para criar alimentos de crescimento rápido.',
-        difficulty: 'medium',
-        theme: 'science',
-        icon: '🌱'
-      },
-      {
-        id: 'ar18',
-        order: 18,
-        name: 'Carro Fantasma',
-        mystery: 'Um carro dirige sozinho pelas ruas, sempre respeitando o trânsito.',
-        solution: 'Era um protótipo de carro autônomo sendo testado ilegalmente. O "fantasma" era um sistema de IA avançado.',
-        difficulty: 'easy',
-        theme: 'technology',
-        icon: '🚗'
-      },
-      {
-        id: 'ar19',
-        order: 19,
-        name: 'Neve Vermelha',
-        mystery: 'Neve vermelha como sangue cai em pleno verão.',
-        solution: 'Era pó de óxido de ferro liberado de uma fábrica próxima. A empresa tentava encobrir um acidente industrial.',
-        difficulty: 'medium',
-        theme: 'conspiracy',
-        icon: '❄️'
-      },
-      {
-        id: 'ar20',
-        order: 20,
-        name: 'Realidade Impossível',
-        mystery: 'Uma cidade inteira testemunha eventos que contradizem as leis da física.',
-        solution: 'Era um experimento de realidade virtual em massa. Toda a população foi exposta a alucinógenos através do suprimento de água.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '🌀'
-      }
-    ]
-  },
-  {
-    id: 'lendas-urbanas',
-    name: 'Lendas Urbanas',
-    description: 'Explore mitos e lendas urbanas que se revelam mais reais do que imagina.',
-    price: 14.80,
-    difficulty: 'medium',
-    image: '/lovable-uploads/7f82fdbc-9be2-4751-a7f4-24a48e8b73fe.png',
-    category: 'folklore',
-    cases: [
-      {
-        id: 'lu1',
-        order: 1,
-        name: 'Trem Fantasma',
-        mystery: 'Um trem abandonado aparece misteriosamente nos trilhos à meia-noite.',
-        solution: 'Contrabandistas usam um trem reformado para transporte ilegal.',
-        difficulty: 'medium',
-        isFree: true,
-        theme: 'mystery',
-        icon: '🚂'
-      },
-      {
-        id: 'lu2',
-        order: 2,
-        name: 'Trilhos do Destino',
-        mystery: 'Pessoas desaparecem ao caminhar pelos trilhos abandonados.',
-        solution: 'Uma gangue sequestra pessoas para trabalho forçado.',
-        difficulty: 'medium',
-        theme: 'crime',
-        icon: '🛤️'
-      },
-      {
-        id: 'lu3',
-        order: 3,
-        name: 'Última Estação',
-        mystery: 'Uma estação fantasma aparece em mapas antigos mas não existe mais.',
-        solution: 'A estação foi encoberta para esconder um crime histórico.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '🚉'
-      }
-    ]
-  },
-  {
-    id: 'viagem-sem-volta',
-    name: 'Viagem sem Volta',
-    description: 'Jornadas perigosas onde nem todos chegam ao destino final.',
-    price: 14.80,
-    difficulty: 'hard',
-    image: '/lovable-uploads/42e039ab-0b70-4f72-a06e-b9c5bf02fe46.png',
-    category: 'journey',
-    cases: [
-      {
-        id: 'vsv1',
-        order: 1,
-        name: 'Destino Final',
-        mystery: 'Passageiros de um trem desaparecem antes de chegar ao destino.',
-        solution: 'O condutor estava vendendo passageiros para traficantes.',
-        difficulty: 'hard',
-        isFree: true,
-        theme: 'danger',
-        icon: '🎫'
-      },
-      {
-        id: 'vsv2',
-        order: 2,
-        name: 'Trilha Perdida',
-        mystery: 'Um grupo de turistas se perde em uma trilha bem marcada.',
-        solution: 'Alguém alterou as placas para desviar os turistas.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '🥾'
-      },
-      {
-        id: 'vsv3',
-        order: 3,
-        name: 'Retorno Impossível',
-        mystery: 'Pessoas que fazem uma viagem específica nunca conseguem voltar.',
-        solution: 'É uma operação de sequestro disfarçada de turismo.',
-        difficulty: 'hard',
-        theme: 'conspiracy',
-        icon: '↩️'
-      }
-    ]
-  },
-  {
-    id: 'sombras-da-noite',
-    name: 'Sombras da Noite',
-    description: 'Mistérios que só se revelam quando a escuridão toma conta da cidade.',
-    price: 14.80,
-    difficulty: 'hard',
-    image: '/lovable-uploads/34c251ba-c4c2-4172-bfb8-70d72411b3b0.png',
-    category: 'nocturnal',
-    cases: [
-      {
-        id: 'sn1',
-        order: 1,
-        name: 'Vigilante Noturno',
-        mystery: 'Um vigilante misterioso aparece apenas durante a madrugada.',
-        solution: 'É um policial aposentado que investiga casos arquivados.',
-        difficulty: 'hard',
-        isFree: true,
-        theme: 'investigation',
-        icon: '🌙'
-      },
-      {
-        id: 'sn2',
-        order: 2,
-        name: 'Crimes Noturnos',
-        mystery: 'Uma série de crimes acontece sempre no mesmo horário da madrugada.',
-        solution: 'O criminoso trabalhava no turno da noite e conhecia as rotas de patrulha.',
-        difficulty: 'hard',
-        theme: 'crime',
-        icon: '🕛'
-      },
-      {
-        id: 'sn3',
-        order: 3,
-        name: 'Testemunha das Sombras',
-        mystery: 'Uma testemunha afirma ter visto algo impossível durante a noite.',
-        solution: 'Ela viu um crime sendo encenado para criar um álibi falso.',
-        difficulty: 'hard',
-        theme: 'mystery',
-        icon: '👁️'
-      }
-    ]
-  },
-  {
-    id: 'sussurros-do-alem',
-    name: 'Sussurros do Além',
-    description: 'Vozes do passado que trazem segredos enterrados há muito tempo.',
-    price: 14.80,
-    difficulty: 'medium',
-    image: '/lovable-uploads/ce660aa4-1ed1-4019-bef2-65d5dd86c0e6.png',
-    category: 'supernatural',
-    cases: [
-      {
-        id: 'sa1',
-        order: 1,
-        name: 'Vozes Antigas',
-        mystery: 'Vozes misteriosas são ouvidas em um local histórico abandonado.',
-        solution: 'Gravações foram escondidas para revelar um crime antigo.',
-        difficulty: 'medium',
-        isFree: true,
-        theme: 'mystery',
-        icon: '🗣️'
-      },
-      {
-        id: 'sa2',
-        order: 2,
-        name: 'Mensagens Cifradas',
-        mystery: 'Mensagens aparecem escritas nas paredes de forma misteriosa.',
-        solution: 'Um morador em segredo está deixando pistas sobre um crime.',
-        difficulty: 'medium',
-        theme: 'investigation',
-        icon: '✍️'
-      },
-      {
-        id: 'sa3',
-        order: 3,
-        name: 'Segredos Revelados',
-        mystery: 'Segredos de família são revelados através de pistas sobrenaturais.',
-        solution: 'Um parente está expondo verdades escondidas anonimamente.',
-        difficulty: 'medium',
-        theme: 'conspiracy',
-        icon: '🔮'
+        id: 1,
+        title: "A Carta do Além",
+        description: "Uma mulher recebe cartas manuscritas de seu marido morto, revelando detalhes sobre seu assassinato que apenas o assassino poderia saber. A caligrafia é idêntica.",
+        difficulty: "easy",
+        category: "murder",
+        isFree: true
+      },
+      {
+        id: 2,
+        title: "O Telefone dos Mortos",
+        description: "Um antigo telefone de linha fixa recebe ligações de pessoas falecidas, sempre com informações sobre crimes não resolvidos. As vozes são reconhecidas por familiares.",
+        difficulty: "medium",
+        category: "crime",
+        isFree: false
+      },
+      {
+        id: 3,
+        title: "Mensagens no Espelho",
+        description: "Mensagens aparecem escritas no vapor de espelhos de banheiro, sempre após banhos quentes. As mensagens revelam localizações de corpos desaparecidos.",
+        difficulty: "medium",
+        category: "investigation",
+        isFree: false
+      },
+      {
+        id: 4,
+        title: "A Ouija Que Acusa",
+        description: "Um tabuleiro Ouija usado em uma festa começa a acusar pessoas presentes de crimes específicos. Investigações posteriores confirmam as acusações.",
+        difficulty: "hard",
+        category: "crime",
+        isFree: false
+      },
+      {
+        id: 5,
+        title: "O Gravador de Vozes Fantasmas",
+        description: "Um investigador paranormal encontra gravações de EVPs (Eletronic Voice Phenomena) que descrevem crimes em andamento em tempo real.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 6,
+        title: "Sonhos Compartilhados com Mortos",
+        description: "Múltiplas pessoas têm o mesmo sonho com uma vítima de assassinato, que revela detalhes sobre sua morte e pede justiça.",
+        difficulty: "hard",
+        category: "murder",
+        isFree: false
+      },
+      {
+        id: 7,
+        title: "A Médium Relutante",
+        description: "Uma cética em fenômenos paranormais começa a receber visões de mortos que a guiam para resolver casos arquivados pela polícia.",
+        difficulty: "medium",
+        category: "investigation",
+        isFree: false
+      },
+      {
+        id: 8,
+        title: "O Diário Que Escreve Sozinho",
+        description: "Um diário antigo continua sendo escrito por mãos invisíveis, documentando crimes que aconteceram décadas atrás com detalhes precisos.",
+        difficulty: "hard",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 9,
+        title: "Fotografias do Além",
+        description: "Câmeras digitais capturam imagens de pessoas mortas apontando para evidências de crimes que a polícia não conseguiu encontrar.",
+        difficulty: "medium",
+        category: "crime",
+        isFree: false
+      },
+      {
+        id: 10,
+        title: "A Sessão Espírita Criminal",
+        description: "Durante sessões espíritas, os mortos revelam não apenas como morreram, mas também segredos sobre outros crimes relacionados.",
+        difficulty: "hard",
+        category: "murder",
+        isFree: false
+      },
+      {
+        id: 11,
+        title: "O Computador Assombrado",
+        description: "Um computador antigo liga sozinho durante a madrugada e digita mensagens de pessoas mortas, revelando localização de tesouros roubados.",
+        difficulty: "medium",
+        category: "theft",
+        isFree: false
+      },
+      {
+        id: 12,
+        title: "Avisos do Futuro Mortal",
+        description: "Espíritos de pessoas que ainda estão vivas aparecem avisando sobre suas próprias mortes futuras, criando paradoxos temporais.",
+        difficulty: "hard",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 13,
+        title: "A Radio Frequency dos Mortos",
+        description: "Uma frequência de rádio específica transmite vozes de soldados mortos em guerra, revelando crimes de guerra que foram encobertos.",
+        difficulty: "hard",
+        category: "conspiracy",
+        isFree: false
+      },
+      {
+        id: 14,
+        title: "O Chat Room do Além",
+        description: "Um antigo chat online é invadido por usuários que morreram anos atrás, mas continuam conversando e revelando segredos sobre suas mortes.",
+        difficulty: "medium",
+        category: "crime",
+        isFree: false
+      },
+      {
+        id: 15,
+        title: "A TV que Mostra o Passado",
+        description: "Uma televisão antiga sintoniza programas que mostram crimes reais acontecendo no passado, como se fossem gravações ao vivo.",
+        difficulty: "hard",
+        category: "investigation",
+        isFree: false
+      },
+      {
+        id: 16,
+        title: "O Email dos Arrependidos",
+        description: "Pessoas recebem emails de criminosos mortos pedindo perdão e revelando onde esconderam evidências de seus crimes.",
+        difficulty: "medium",
+        category: "crime",
+        isFree: false
+      },
+      {
+        id: 17,
+        title: "A Plancheta Acusatória",
+        description: "Uma plancheta de Ouija começa a se mover sozinha, escrevendo nomes de assassinos ainda vivos e descrevendo seus métodos em detalhes.",
+        difficulty: "hard",
+        category: "murder",
+        isFree: false
+      },
+      {
+        id: 18,
+        title: "O Aplicativo dos Mortos",
+        description: "Um aplicativo de mensagens recebe mensagens de perfis de pessoas mortas, sempre com informações sobre crimes relacionados às suas mortes.",
+        difficulty: "medium",
+        category: "mystery",
+        isFree: false
+      },
+      {
+        id: 19,
+        title: "A Máquina de Escrever Fantasma",
+        description: "Uma máquina de escrever vintage digita sozinha durante as madrugadas, produzindo confissões detalhadas de crimes nunca solucionados.",
+        difficulty: "hard",
+        category: "crime",
+        isFree: false
+      },
+      {
+        id: 20,
+        title: "O Último Testemunho",
+        description: "Vítimas de assassinato aparecem em sonhos de investigadores, fornecendo testemunhos completos sobre seus últimos momentos e identificando seus assassinos.",
+        difficulty: "hard",
+        category: "murder",
+        isFree: false
       }
     ]
   }
 ];
-
-export const MERCADOPAGO_LINKS = {
-  individual: '184163814-ebfc1885-acbb-4a9f-89d9-481e569b15b6',
-  combo: '184163814-186d6326-c239-4676-b240-fac644c29f0e',
-  complete: '184163814-b6e81aba-f60e-4256-8a73-2658243e4259'
-};
-
-// Utility functions
-export const getUserPacks = (userId: string): string[] => {
-  const purchases = JSON.parse(localStorage.getItem(`purchases_${userId}`) || '[]');
-  return purchases.map((p: Purchase) => p.packId);
-};
-
-export const getPackById = (id: string): Pack | undefined => {
-  return packs.find(pack => pack.id === id);
-};
-
-export const purchasePack = (userId: string, packId: string, price: number, transactionId: string) => {
-  const purchases = JSON.parse(localStorage.getItem(`purchases_${userId}`) || '[]');
-  const newPurchase: Purchase = {
-    id: `purchase_${Date.now()}`,
-    userId,
-    packId,
-    price,
-    price_paid: price,
-    purchased_at: new Date().toISOString(),
-    transactionId
-  };
-  purchases.push(newPurchase);
-  localStorage.setItem(`purchases_${userId}`, JSON.stringify(purchases));
-};
-
-export const getUserPurchases = (userId: string): Purchase[] => {
-  return JSON.parse(localStorage.getItem(`purchases_${userId}`) || '[]');
-};
-
-// Export types
-export type { Pack, Case, Purchase };
