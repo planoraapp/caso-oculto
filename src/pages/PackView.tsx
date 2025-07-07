@@ -73,7 +73,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   const handleToggleSolved = () => {
     if (!selectedCard || !user) return;
 
-    const cardId = selectedCard.id;
+    const cardId = String(selectedCard.id); // Convert to string
     const newSolvedCards = solvedCards.includes(cardId)
       ? solvedCards.filter(id => id !== cardId)
       : [...solvedCards, cardId];
@@ -188,7 +188,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
                 key={caseData.id}
                 case={caseData}
                 isLocked={!caseData.isFree && !hasAccess}
-                isSolved={user && solvedCards.includes(caseData.id)}
+                isSolved={user && solvedCards.includes(String(caseData.id))}
                 onClick={() => handleCardClick(caseData)}
               />
             ))}
@@ -239,7 +239,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
         card={selectedCard!}
         isOpen={isCardOpen}
         onClose={() => setIsCardOpen(false)}
-        isSolved={selectedCard ? solvedCards.includes(selectedCard.id) : false}
+        isSolved={selectedCard ? solvedCards.includes(String(selectedCard.id)) : false}
         onToggleSolved={handleToggleSolved}
       />
     </div>
