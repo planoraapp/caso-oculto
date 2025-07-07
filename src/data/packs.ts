@@ -1,4 +1,5 @@
-import { Pack } from "../types";
+
+import { Pack, Case } from "./types";
 
 export const packs: Pack[] = [
   {
@@ -686,3 +687,30 @@ export const packs: Pack[] = [
     ]
   }
 ];
+
+// Export types for other components to use
+export type { Pack, Case } from "./types";
+
+// Mock functions for demo purposes - in a real app these would connect to a backend
+export const getUserPacks = (userId: string): string[] => {
+  // Return pack IDs that the user owns from localStorage
+  const ownedPacks = JSON.parse(localStorage.getItem(`userPacks_${userId}`) || '[]');
+  return ownedPacks;
+};
+
+export const getPackById = (packId: string): Pack | undefined => {
+  return packs.find(pack => pack.id === packId);
+};
+
+export const getUserPurchases = (userId: string) => {
+  // Return user purchases from localStorage for demo
+  const purchases = JSON.parse(localStorage.getItem(`userPurchases_${userId}`) || '[]');
+  return purchases;
+};
+
+// Mercado Pago demo links
+export const MERCADOPAGO_LINKS = {
+  individual: 'https://www.mercadopago.com.br/checkout/demo',
+  combo: 'https://www.mercadopago.com.br/checkout/combo-demo',
+  complete: 'https://www.mercadopago.com.br/checkout/complete-demo'
+};
