@@ -904,8 +904,8 @@ export const packs: Pack[] = [
         id: 'ci1',
         order: 1,
         name: 'Tempestade Fatal',
-        mystery: 'Um assassinato ocorre durante uma tempestade, sem testemunhas.',
-        solution: 'O assassino usou a chuva para escapar sem ser visto.',
+        mystery: 'Durante uma tempestade violenta, um homem é encontrado morto em sua casa trancada por dentro. Não há sinais de arrombamento.',
+        solution: 'O assassino entrou pela chaminé durante a tempestade, matou a vítima e saiu da mesma forma. A chuva apagou todas as pegadas no telhado.',
         difficulty: 'hard',
         isFree: true,
         theme: 'murder',
@@ -915,8 +915,8 @@ export const packs: Pack[] = [
         id: 'ci2',
         order: 2,
         name: 'Neblina Traíçoeira',
-        mystery: 'Um carro desaparece na neblina da noite chuvosa.',
-        solution: 'Foi roubado para encobrir outro crime.',
+        mystery: 'Um carro desaparece completamente na neblina da madrugada. Apenas marcas de pneu até a metade da ponte.',
+        solution: 'O carro foi içado por um guindaste escondido na neblina. Era um plano para simular um acidente e coletar o seguro.',
         difficulty: 'hard',
         theme: 'theft',
         icon: '🌫️'
@@ -924,12 +924,182 @@ export const packs: Pack[] = [
       {
         id: 'ci3',
         order: 3,
-        name: 'Mensagem Molhada',
-        mystery: 'Uma mensagem codificada é encontrada em uma garrafa na chuva.',
-        solution: 'A mensagem revela a localização de um esconderijo.',
+        name: 'Chuva de Sangue',
+        mystery: 'Moradores relatam gotas de sangue caindo do céu durante uma chuva intensa.',
+        solution: 'Um assassino havia escondido o corpo no reservatório de água da torre. A chuva fez o sangue vazar pelo sistema de distribuição.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '💧'
+      },
+      {
+        id: 'ci4',
+        order: 4,
+        name: 'Relâmpago Mortal',
+        mystery: 'Uma mulher morre eletrocutada em casa durante uma tempestade, mas não havia equipamentos ligados.',
+        solution: 'O marido instalou fios de cobre conectados ao para-raios. Durante a tempestade, direcionou a descarga elétrica para a banheira onde ela estava.',
         difficulty: 'hard',
+        theme: 'murder',
+        icon: '⚡'
+      },
+      {
+        id: 'ci5',
+        order: 5,
+        name: 'Pegadas na Lama',
+        mystery: 'Pegadas na lama levam a um beco sem saída, mas não há ninguém lá.',
+        solution: 'O criminoso usou sapatos com sola falsa que se destacavam, deixando pegadas falsas enquanto caminhava descalço por outro caminho.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '👣'
+      },
+      {
+        id: 'ci6',
+        order: 6,
+        name: 'Trovão Silencioso',
+        mystery: 'Durante uma tempestade, testemunhas ouvem um trovão, mas não veem relâmpago. Minutos depois, encontram um corpo.',
+        solution: 'O som foi de um tiro disfarçado durante o barulho da tempestade. O assassino cronometrou perfeitamente o momento.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🔫'
+      },
+      {
+        id: 'ci7',
+        order: 7,
+        name: 'Janela Quebrada',
+        mystery: 'Uma janela se quebra de dentro para fora durante a tempestade, mas não há vento forte o suficiente.',
+        solution: 'Alguém quebrou a janela por dentro para simular uma invasão, mas estava tentando sair sem ser visto.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '🪟'
+      },
+      {
+        id: 'ci8',
+        order: 8,
+        name: 'Guarda-Chuva Perdido',
+        mystery: 'Dezenas de guarda-chuvas são encontrados abandonados após uma tempestade.',
+        solution: 'Era uma distração. Enquanto todos pegavam os guarda-chuvas, ladrões roubavam as casas vazias na chuva.',
+        difficulty: 'medium',
+        theme: 'theft',
+        icon: '☂️'
+      },
+      {
+        id: 'ci9',
+        order: 9,
+        name: 'Poça Vermelha',
+        mystery: 'Uma poça de líquido vermelho se forma durante a chuva, mas não há fonte aparente.',
+        solution: 'Tinta vermelha foi plantada em um buraco no asfalto. Era um sinal para cúmplices indicando que a operação havia dado errado.',
+        difficulty: 'easy',
+        theme: 'investigation',
+        icon: '🔴'
+      },
+      {
+        id: 'ci10',
+        order: 10,
+        name: 'Carro Fantasma',
+        mystery: 'Um carro é visto dirigindo sem motorista durante uma tempestade.',
+        solution: 'O carro foi programado para dirigir sozinho usando um sistema de piloto automático improvisado. Era para criar um álibi para o verdadeiro motorista.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '👻'
+      },
+      {
+        id: 'ci11',
+        order: 11,
+        name: 'Mensagem Molhada',
+        mystery: 'Uma mensagem aparece escrita na condensação de uma janela durante a chuva.',
+        solution: 'A mensagem foi escrita com gordura invisível. Só aparecia quando o vidro embaçava com a umidade. Era um pedido de socorro.',
+        difficulty: 'medium',
         theme: 'mystery',
         icon: '💌'
+      },
+      {
+        id: 'ci12',
+        order: 12,
+        name: 'Raio Duplo',
+        mystery: 'Dois raios atingem o mesmo local com segundos de diferença.',
+        solution: 'O primeiro "raio" foi um dispositivo explosivo. O segundo foi um raio real atraído pela estrutura metálica plantada no local.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '⚡'
+      },
+      {
+        id: 'ci13',
+        order: 13,
+        name: 'Chuva Seca',
+        mystery: 'Durante uma tempestade, uma área específica permanece completamente seca.',
+        solution: 'Uma lona transparente foi estendida sobre o local para proteger evidências de um crime que seria investigado no dia seguinte.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🌧️'
+      },
+      {
+        id: 'ci14',
+        order: 14,
+        name: 'Vento Suspeito',
+        mystery: 'O vento da tempestade sopra apenas em uma direção específica, contrariando a meteorologia.',
+        solution: 'Ventiladores industriais escondidos criavam corrente de ar artificial para dispersar gases tóxicos de um laboratório clandestino.',
+        difficulty: 'hard',
+        theme: 'danger',
+        icon: '💨'
+      },
+      {
+        id: 'ci15',
+        order: 15,
+        name: 'Eco na Chuva',
+        mystery: 'Durante a tempestade, um eco estranho ressoa entre os prédios.',
+        solution: 'O som vinha de um sistema de alto-falantes escondido. Era usado para mascarar os gritos de uma vítima de sequestro.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🔊'
+      },
+      {
+        id: 'ci16',
+        order: 16,
+        name: 'Luz na Tempestade',
+        mystery: 'Uma luz estranha pisca em padrão específico durante toda a tempestade.',
+        solution: 'Era um sinal de código Morse para comunicação entre criminosos. A tempestade mascarava a transmissão de rádio.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '💡'
+      },
+      {
+        id: 'ci17',
+        order: 17,
+        name: 'Árvore Caída',
+        mystery: 'Uma árvore cai exatamente sobre um carro específico durante a tempestade.',
+        solution: 'A árvore foi parcialmente cortada dias antes. O vento da tempestade apenas finalizou o que já estava planejado.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🌳'
+      },
+      {
+        id: 'ci18',
+        order: 18,
+        name: 'Telefone Molhado',
+        mystery: 'Um telefone público toca incessantemente durante a tempestade, mas ninguém atende.',
+        solution: 'Era um sistema automático ativado pela chuva. O telefone estava programado para tocar quando detectasse umidade - era o sinal para início de uma operação.',
+        difficulty: 'easy',
+        theme: 'mystery',
+        icon: '📞'
+      },
+      {
+        id: 'ci19',
+        order: 19,
+        name: 'Sombra na Chuva',
+        mystery: 'Uma sombra humana aparece projetada em uma parede durante a tempestade, mas não há ninguém por perto.',
+        solution: 'A projeção vinha de uma fotografia iluminada por um projetor ativado pela chuva. Era uma mensagem póstuma de uma vítima.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '👤'
+      },
+      {
+        id: 'ci20',
+        order: 20,
+        name: 'Última Gota',
+        mystery: 'A tempestade para abruptamente no momento exato em que um crime é descoberto.',
+        solution: 'O criminoso controlava o sistema de irrigação da cidade. Ele criou a "tempestade" artificial para lavar as evidências e a desligou quando terminou.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '💧'
       }
     ]
   },
@@ -945,9 +1115,9 @@ export const packs: Pack[] = [
       {
         id: 'dc1',
         order: 1,
-        name: 'Arquivos Roubados',
-        mystery: 'Documentos secretos desaparecem de um arquivo governamental.',
-        solution: 'Um agente duplo roubou os documentos.',
+        name: 'Arquivo Fantasma',
+        mystery: 'Documentos ultra-secretos desaparecem de um cofre governamental sem deixar rastros. O sistema de segurança não registrou nenhuma entrada.',
+        solution: 'Um funcionário da limpeza teve acesso durante anos. Ele memorizava os documentos e os reescrevia em casa, vendendo cópias para outros países.',
         difficulty: 'hard',
         isFree: true,
         theme: 'conspiracy',
@@ -956,22 +1126,192 @@ export const packs: Pack[] = [
       {
         id: 'dc2',
         order: 2,
-        name: 'Corrupção Exposta',
-        mystery: 'Uma investigação revela corrupção em altos cargos públicos.',
-        solution: 'Os envolvidos tentam encobrir as evidências.',
+        name: 'Operação Sombra',
+        mystery: 'Agentes governamentais começam a desaparecer um por um, sempre após receberem uma ligação anônima.',
+        solution: 'Um ex-agente desonrado estava usando informações internas para chantagear e depois eliminar seus antigos colegas.',
         difficulty: 'hard',
-        theme: 'crime',
-        icon: '🏛️'
+        theme: 'murder',
+        icon: '☎️'
       },
       {
         id: 'dc3',
         order: 3,
-        name: 'Denunciante Silenciado',
-        mystery: 'Um whistleblower desaparece após denunciar irregularidades.',
-        solution: 'Foi silenciado por uma organização secreta.',
+        name: 'Código Vermelho',
+        mystery: 'Uma sequência numérica aparece rabiscada em documentos confidenciais de diferentes departamentos.',
+        solution: 'Os números eram coordenadas de locais onde evidências de corrupção estavam escondidas. Um whistleblower estava deixando pistas.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🔢'
+      },
+      {
+        id: 'dc4',
+        order: 4,
+        name: 'Reunião Secreta',
+        mystery: 'Políticos de partidos opostos são vistos se encontrando secretamente em locais diversos.',
+        solution: 'Eles estavam sendo chantageados pelo mesmo criminoso que tinha informações comprometedoras sobre todos.',
         difficulty: 'hard',
-        theme: 'danger',
-        icon: '🤐'
+        theme: 'conspiracy',
+        icon: '🤝'
+      },
+      {
+        id: 'dc5',
+        order: 5,
+        name: 'Vazamento Controlado',
+        mystery: 'Informações confidenciais vazam para a imprensa, mas sempre beneficiando o governo.',
+        solution: 'O próprio governo estava vazando informações falsas para confundir inimigos e testar a lealdade de seus funcionários.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '📰'
+      },
+      {
+        id: 'dc6',
+        order: 6,
+        name: 'Identidade Dupla',
+        mystery: 'Um alto funcionário do governo é visto em dois lugares diferentes ao mesmo tempo.',
+        solution: 'Eram gêmeos idênticos compartilhando a mesma identidade há décadas, alternando posições para criar álibis perfeitos.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '👥'
+      },
+      {
+        id: 'dc7',
+        order: 7,
+        name: 'Projeto Apagado',
+        mystery: 'Todos os registros de um projeto militar ultra-secreto desaparecem simultaneamente de múltiplos servidores.',
+        solution: 'Um vírus programado para ativar em data específica foi implantado pelo próprio criador do projeto, arrependido de sua criação.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '💻'
+      },
+      {
+        id: 'dc8',
+        order: 8,
+        name: 'Morte Anunciada',
+        mystery: 'Um informante é encontrado morto exatamente como havia previsto em uma carta selada.',
+        solution: 'Ele próprio planejou sua morte e escreveu a carta. Estava com doença terminal e queria que sua morte parecesse assassinato para proteger sua família.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '📜'
+      },
+      {
+        id: 'dc9',
+        order: 9,
+        name: 'Espião Interno',
+        mystery: 'Operações secretas são sabotadas sempre antes de começar, sugerindo espionagem interna.',
+        solution: 'Não havia espião. O próprio sistema de segurança estava comprometido por um hack externo há meses.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🕵️'
+      },
+      {
+        id: 'dc10',
+        order: 10,
+        name: 'Chave Mestra',
+        mystery: 'Uma única pessoa tem acesso a todos os sistemas governamentais, mas oficialmente não existe.',
+        solution: 'Era uma identidade criada coletivamente por um grupo de hackers que se passavam por funcionário fantasma há anos.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🗝️'
+      },
+      {
+        id: 'dc11',
+        order: 11,
+        name: 'Relatório Falso',
+        mystery: 'Relatórios oficiais contradizem completamente evidências físicas de uma investigação.',
+        solution: 'Os relatórios eram verdadeiros, mas as evidências físicas foram plantadas para desacreditar a investigação oficial.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '📊'
+      },
+      {
+        id: 'dc12',
+        order: 12,
+        name: 'Testemunha Fantasma',
+        mystery: 'Uma testemunha crucial em vários casos governamentais nunca pode ser localizada.',
+        solution: 'A testemunha era uma identidade falsa criada para manipular processos legais. Nunca existiu de fato.',
+        difficulty: 'easy',
+        theme: 'conspiracy',
+        icon: '👻'
+      },
+      {
+        id: 'dc13',
+        order: 13,
+        name: 'Orçamento Secreto',
+        mystery: 'Milhões de dólares desaparecem do orçamento sem deixar rastro contábil.',
+        solution: 'O dinheiro estava sendo usado para financiar uma operação negra legítima, mas off-the-books para proteger agentes infiltrados.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '💰'
+      },
+      {
+        id: 'dc14',
+        order: 14,
+        name: 'Comunicação Interceptada',
+        mystery: 'Todas as comunicações de um departamento são interceptadas, mas não há equipamento de espionagem.',
+        solution: 'Um funcionário tinha implante auditivo médico que captava e transmitia conversas involuntariamente para uma empresa de tecnologia.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '📡'
+      },
+      {
+        id: 'dc15',
+        order: 15,
+        name: 'Decisão Previsível',
+        mystery: 'Decisões governamentais importantes são previstas com precisão por analistas externos.',
+        solution: 'Os analistas tinham acesso a inteligência artificial que processava padrões comportamentais dos políticos baseado em dados públicos.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🔮'
+      },
+      {
+        id: 'dc16',
+        order: 16,
+        name: 'Dossiê Pessoal',
+        mystery: 'Arquivos pessoais detalhados de cidadãos comuns são encontrados em computadores governamentais.',
+        solution: 'Era um programa de monitoramento de redes sociais que compilava perfis psicológicos para prever comportamentos em massa.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '📋'
+      },
+      {
+        id: 'dc17',
+        order: 17,
+        name: 'Acidente Programado',
+        mystery: 'Acidentes convenientes acontecem sempre que alguém está prestes a expor corrupção.',
+        solution: 'Uma empresa de segurança privada estava sendo contratada para criar "acidentes" realísticos que apenas assustavam, não matavam.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🚗'
+      },
+      {
+        id: 'dc18',
+        order: 18,
+        name: 'Rede Fantasma',
+        mystery: 'Uma rede de comunicação criptografada opera dentro do governo sem autorização oficial.',
+        solution: 'Era uma rede de apoio psicológico criada por funcionários para lidar com o estresse de trabalhar com informações classificadas.',
+        difficulty: 'easy',
+        theme: 'investigation',
+        icon: '🕸️'
+      },
+      {
+        id: 'dc19',
+        order: 19,
+        name: 'Memória Apagada',
+        mystery: 'Funcionários governamentais relatam lapsos de memória após participarem de reuniões específicas.',
+        solution: 'Eles estavam sendo hipnotizados durante as reuniões para esquecer informações sensíveis como medida de segurança.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '🧠'
+      },
+      {
+        id: 'dc20',
+        order: 20,
+        name: 'Último Segredo',
+        mystery: 'Um político morre deixando uma mensagem: "O último segredo está onde tudo começou".',
+        solution: 'A mensagem se referia ao primeiro escritório onde ele trabalhou. Lá estava escondido um pen-drive com evidências de uma conspiração de décadas.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '🔐'
       }
     ]
   },
@@ -987,33 +1327,203 @@ export const packs: Pack[] = [
       {
         id: 'fj1',
         order: 1,
-        name: 'Jogo Mortal',
-        mystery: 'Um assassinato planejado como um jogo de xadrez, com pistas em cada movimento.',
-        solution: 'O assassino é um mestre em estratégia que deixou um padrão.',
+        name: 'Xeque-Mate Mortal',
+        mystery: 'Um assassinato é planejado como uma partida de xadrez, com cada movimento previsto e documentado.',
+        solution: 'O assassino era um grande mestre de xadrez que planejou cada etapa como jogadas. A vítima era seu oponente em um campeonato que ele perdeu décadas atrás.',
         difficulty: 'hard',
         isFree: true,
-        theme: 'power',
+        theme: 'murder',
         icon: '♟️'
       },
       {
         id: 'fj2',
         order: 2,
-        name: 'Plano Complexo',
-        mystery: 'Um roubo complexo que envolve múltiplos cúmplices e distrações.',
-        solution: 'Cada cúmplice tinha um papel específico para o sucesso do plano.',
+        name: 'Gambit da Rainha',
+        mystery: 'Uma série de roubos segue o padrão de movimento da rainha no xadrez.',
+        solution: 'O ladrão usava os movimentos da rainha para escolher seus alvos em um mapa da cidade, criando um padrão previsível apenas para quem conhece xadrez.',
         difficulty: 'hard',
         theme: 'theft',
-        icon: '🎯'
+        icon: '👑'
       },
       {
         id: 'fj3',
         order: 3,
-        name: 'Enigma Lógico',
-        mystery: 'Um enigma que desafia a lógica para encontrar o culpado.',
-        solution: 'A solução está em decifrar o padrão dos eventos.',
+        name: 'Sacrifício do Peão',
+        mystery: 'Várias pessoas são manipuladas para cometer pequenos crimes, todas desconhecendo o plano maior.',
+        solution: 'Eram "peões" em um esquema maior. Um criminoso mestre os usava para distrair a polícia enquanto executava o crime principal.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '♟️'
+      },
+      {
+        id: 'fj4',
+        order: 4,
+        name: 'Torre Solitária',
+        mystery: 'Um prédio de apartamentos é isolado por uma série de eventos aparentemente aleatórios.',
+        solution: 'O criminoso criou situações para evacuar o prédio metodicamente, como uma torre no xadrez controlando colunas e fileiras.',
         difficulty: 'hard',
-        theme: 'mystery',
-        icon: '🧩'
+        theme: 'strategy',
+        icon: '🏰'
+      },
+      {
+        id: 'fj5',
+        order: 5,
+        name: 'Bispo Diagonal',
+        mystery: 'Crimes acontecem apenas em estabelecimentos localizados diagonalmente uns aos outros.',
+        solution: 'O criminoso seguia as rotas diagonais do bispo no xadrez, aproveitando que a polícia não patrulhava essas conexões específicas.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '⛪'
+      },
+      {
+        id: 'fj6',
+        order: 6,
+        name: 'Cavalo Saltador',
+        mystery: 'Um ladrão aparece em locais impossíveis, como se tivesse saltado por cima de obstáculos.',
+        solution: 'Ele usava o movimento em L do cavalo do xadrez para planejar rotas através de telhados e túneis, "saltando" sobre a segurança.',
+        difficulty: 'hard',
+        theme: 'theft',
+        icon: '🐴'
+      },
+      {
+        id: 'fj7',
+        order: 7,
+        name: 'Abertura Siciliana',
+        mystery: 'Uma série de eventos criminosos segue exatamente os movimentos de uma abertura famosa de xadrez.',
+        solution: 'O criminoso estava recriando sua partida favorita de xadrez na vida real, com cada crime representando um movimento específico.',
+        difficulty: 'hard',
+        theme: 'strategy',
+        icon: '📖'
+      },
+      {
+        id: 'fj8',
+        order: 8,
+        name: 'Roque Impossível',
+        mystery: 'Dois crimes acontecem simultaneamente em locais distantes, executados pela mesma pessoa.',
+        solution: 'Como no roque do xadrez, ele usou um substituto (sócia) para um dos crimes enquanto executava o outro, trocando de posição rapidamente.',
+        difficulty: 'medium',
+        theme: 'strategy',
+        icon: '🔄'
+      },
+      {
+        id: 'fj9',
+        order: 9,
+        name: 'En Passant Fatal',
+        mystery: 'Uma vítima é morta em um momento específico quando passa por um local aparentemente seguro.',
+        solution: 'Como a captura en passant no xadrez, o assassino esperou o momento exato quando a vítima passaria pelo ponto vulnerável.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '⚡'
+      },
+      {
+        id: 'fj10',
+        order: 10,
+        name: 'Promoção do Peão',
+        mystery: 'Um criminoso pequeno subitamente se torna um mastermind do crime organizado.',
+        solution: 'Como um peão que vira rainha, ele foi secretamente treinado e financiado para assumir o controle quando chegasse ao "fim do tabuleiro".',
+        difficulty: 'medium',
+        theme: 'power',
+        icon: '⬆️'
+      },
+      {
+        id: 'fj11',
+        order: 11,
+        name: 'Tempo Perdido',
+        mystery: 'Crimes são cometidos sempre que o criminoso está com álibi perfeito.',
+        solution: 'Ele usava a estratégia do tempo no xadrez, planejando crimes com antecedência e usando temporizadores para executá-los enquanto estava visível em outro lugar.',
+        difficulty: 'easy',
+        theme: 'strategy',
+        icon: '⏰'
+      },
+      {
+        id: 'fj12',
+        order: 12,
+        name: 'Zugzwang Criminal',
+        mystery: 'A polícia é forçada a fazer movimentos que sempre beneficiam o criminoso.',
+        solution: 'Como no zugzwang do xadrez, qualquer ação policial levava a uma situação pior. O criminoso criou um dilema onde todas as opções eram ruins.',
+        difficulty: 'hard',
+        theme: 'strategy',
+        icon: '🤔'
+      },
+      {
+        id: 'fj13',
+        order: 13,
+        name: 'Mate Pastor',
+        mystery: 'Vítimas experientes caem em armadilhas aparentemente óbvias.',
+        solution: 'Como o mate pastor no xadrez, o criminoso usava táticas básicas que funcionavam porque as vítimas subestimavam a simplicidade.',
+        difficulty: 'easy',
+        theme: 'strategy',
+        icon: '🎯'
+      },
+      {
+        id: 'fj14',
+        order: 14,
+        name: 'Defesa Francesa',
+        mystery: 'Um suspeito sempre tem uma defesa perfeita para cada acusação.',
+        solution: 'Ele estudou a "Defesa Francesa" do xadrez e aplicou seus princípios: desenvolver uma estrutura defensiva sólida antes de qualquer ataque.',
+        difficulty: 'medium',
+        theme: 'strategy',
+        icon: '🛡️'
+      },
+      {
+        id: 'fj15',
+        order: 15,
+        name: 'Centro Controlado',
+        mystery: 'Todos os crimes giram em torno de um local central específico.',
+        solution: 'Como controlar o centro no xadrez, ele estabeleceu domínio sobre uma área chave da cidade para coordenar todas as operações.',
+        difficulty: 'medium',
+        theme: 'strategy',
+        icon: '🎯'
+      },
+      {
+        id: 'fj16',
+        order: 16,
+        name: 'Peças Desenvolvidas',
+        mystery: 'Vários criminosos pequenos começam a trabalhar em perfeita coordenação.',
+        solution: 'Como desenvolver peças no xadrez, um mentor estava treinando e posicionando cada "peça" humana para um ataque coordenado.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '⚔️'
+      },
+      {
+        id: 'fj17',
+        order: 17,
+        name: 'Rei Exposto',
+        mystery: 'Uma figura poderosa fica vulnerável após perder toda sua proteção.',
+        solution: 'Seus "peões" (seguranças e aliados) foram sistematicamente removidos, deixando-o exposto como um rei no xadrez sem proteção.',
+        difficulty: 'medium',
+        theme: 'power',
+        icon: '👑'
+      },
+      {
+        id: 'fj18',
+        order: 18,
+        name: 'Ataque Duplo',
+        mystery: 'Um criminoso ameaça dois alvos simultaneamente, forçando uma escolha impossível.',
+        solution: 'Como no ataque duplo do xadrez, ele criou uma situação onde proteger um alvo deixava automaticamente o outro vulnerável.',
+        difficulty: 'hard',
+        theme: 'strategy',
+        icon: '⚔️'
+      },
+      {
+        id: 'fj19',
+        order: 19,
+        name: 'Partida Imortal',
+        mystery: 'Uma série de crimes recria perfeitamente uma partida histórica de xadrez.',
+        solution: 'O criminoso estava homenageando a "Partida Imortal" de Anderssen, recriando cada movimento em crimes reais como sua obra-prima.',
+        difficulty: 'hard',
+        theme: 'strategy',
+        icon: '📜'
+      },
+      {
+        id: 'fj20',
+        order: 20,
+        name: 'Grande Mestre Final',
+        mystery: 'O último crime é anunciado com antecedência, mas ninguém consegue impedi-lo.',
+        solution: 'Como um grande mestre de xadrez, ele calculou todas as variantes possíveis. Mesmo revelando seu plano, havia criado uma situação de mate inevitável.',
+        difficulty: 'hard',
+        theme: 'strategy',
+        icon: '🏆'
       }
     ]
   },
@@ -1252,7 +1762,7 @@ export const packs: Pack[] = [
         order: 2,
         name: 'Crimes Noturnos',
         mystery: 'Uma série de crimes acontece sempre no mesmo horário da madrugada.',
-        solution: 'O criminoso trabalha no turno da noite e conhece as rotas de patrulha.',
+        solution: 'O criminoso trabalhava no turno da noite e conhecia as rotas de patrulha.',
         difficulty: 'hard',
         theme: 'crime',
         icon: '🕛'
