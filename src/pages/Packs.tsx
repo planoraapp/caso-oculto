@@ -16,6 +16,7 @@ import HowToPlayModal from '../components/HowToPlayModal';
 import { packs } from '../data/packs';
 import { getUserPacks } from '../data/packs';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
+import { useIsMobile } from '../hooks/use-mobile';
 
 interface PacksProps {
   user: any;
@@ -28,6 +29,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   const [selectedPack, setSelectedPack] = useState<any>(null);
   const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const isMobile = useIsMobile();
   const ownedPackIds = getUserPacks(user?.id || '');
   const {
     paymentStatus,
@@ -232,15 +234,15 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
               </Card>
             </div>
 
-            {/* Mercado Pago Security Message - Updated Layout */}
-            <div className="flex items-center justify-center mt-8 gap-4">
-              <p className="text-case-white text-base font-medium">
+            {/* Mercado Pago Security Message - Updated Layout for Mobile */}
+            <div className={`mt-8 ${isMobile ? 'text-center' : 'flex items-center justify-center gap-4'}`}>
+              <p className={`text-case-white text-base font-medium ${isMobile ? 'mb-3' : ''}`}>
                 Sua compra é segura com a
               </p>
               <img 
                 src="/lovable-uploads/c6a6bf1f-4108-4b06-80c7-3e109ecb7f5f.png" 
                 alt="Mercado Pago" 
-                className="h-12 object-contain"
+                className={`h-12 object-contain ${isMobile ? 'mx-auto' : ''}`}
               />
             </div>
           </motion.div>

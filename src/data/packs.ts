@@ -1,13 +1,14 @@
+
 import { Pack, Case, Purchase } from './types';
 
 export const packs: Pack[] = [
   {
     id: 'labirintos-mentais',
     name: 'Labirintos Mentais', 
-    description: 'Mergulhe nos enigmas da mente humana e desvenda mistérios psicológicos complexos.',
+    description: 'Mergulhe nos enigmas da mente humana e desvende mistérios psicológicos complexos.',
     price: 14.80,
     difficulty: 'medium',
-    image: '/lovable-uploads/af996bb5-0bb4-4d14-9a21-4c7a1cc9bcf7.png',
+    image: '/lovable-uploads/0c624752-27c9-4965-949c-119f01c03679.png',
     category: 'psychological',
     cases: [
       {
@@ -49,7 +50,7 @@ export const packs: Pack[] = [
     description: 'Explore os cantos mais escuros da cidade onde os crimes mais terríveis acontecem.',
     price: 14.80,
     difficulty: 'hard',
-    image: '/lovable-uploads/634e666b-9558-4557-8ee2-37c18130c9c5.png',
+    image: '/lovable-uploads/f761b836-5d49-4501-8289-4e1d9800ddf8.png',
     category: 'thriller',
     cases: [
       {
@@ -133,7 +134,7 @@ export const packs: Pack[] = [
     description: 'Volte ao passado e resolva crimes clássicos no estilo dos grandes detetives.',
     price: 14.80,
     difficulty: 'medium',
-    image: '/lovable-uploads/4db6c6f5-3e02-4242-8bf1-74c6dbebd08c.png',
+    image: '/lovable-uploads/23f912c3-cc63-42df-b864-7a3ca8800506.png',
     category: 'classic',
     cases: [
       {
@@ -380,12 +381,12 @@ export const packs: Pack[] = [
     ]
   },
   {
-    id: 'paxarodos-mortais',
-    name: 'Paxarodos Mortais',
+    id: 'paradoxos-mortais',
+    name: 'Paradoxos Mortais',
     description: 'Mistérios sombrios em cenários urbanos cheios de perigos e segredos.',
     price: 14.80,
     difficulty: 'hard',
-    image: '/lovable-uploads/34c251ba-c4c2-4172-bfb8-70d72411b3b0.png',
+    image: '/lovable-uploads/9670a496-6047-4797-8881-53708d7cf69f.png',
     category: 'urban',
     cases: [
       {
@@ -427,7 +428,7 @@ export const packs: Pack[] = [
     description: 'Casos que desafiam a lógica e parecem impossíveis, mas têm explicações surpreendentes.',
     price: 14.80,
     difficulty: 'hard',
-    image: '/lovable-uploads/ce660aa4-1ed1-4019-bef2-65d5dd86c0e6.png',
+    image: '/lovable-uploads/49d3890a-5154-4a90-b145-8b78afe84713.png',
     category: 'surreal',
     cases: [
       {
@@ -469,7 +470,7 @@ export const packs: Pack[] = [
     description: 'Explore mitos e lendas urbanas que se revelam mais reais do que imagina.',
     price: 14.80,
     difficulty: 'medium',
-    image: '/lovable-uploads/42e039ab-0b70-4f72-a06e-b9c5bf02fe46.png',
+    image: '/lovable-uploads/7f82fdbc-9be2-4751-a7f4-24a48e8b73fe.png',
     category: 'folklore',
     cases: [
       {
