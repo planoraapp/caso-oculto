@@ -40,6 +40,176 @@ export const packs: Pack[] = [
         difficulty: 'hard',
         theme: 'thriller',
         icon: '🔍'
+      },
+      {
+        id: 'lm4',
+        order: 4,
+        name: 'Reflexo Distorcido',
+        mystery: 'Ela vê pessoas diferentes quando olha no espelho, mas todos veem ela normalmente.',
+        solution: 'Sofre de prosopagnosia (cegueira facial) e não reconhece o próprio rosto. Vê estranhos no espelho porque não consegue processar feições faciais corretamente.',
+        difficulty: 'medium',
+        theme: 'mystery',
+        icon: '🪞'
+      },
+      {
+        id: 'lm5',
+        order: 5,
+        name: 'Memórias Emprestadas',
+        mystery: 'Um homem tem lembranças vívidas de uma vida que nunca viveu.',
+        solution: 'Sua irmã gêmea morreu na infância e ele internalizou as histórias dela como próprias. O trauma criou falsas memórias para preencher o vazio emocional.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '👥'
+      },
+      {
+        id: 'lm6',
+        order: 6,
+        name: 'Cores Proibidas',
+        mystery: 'Uma mulher enxerga cores que mais ninguém vê e isso a está deixando louca.',
+        solution: 'Ela tem tetracromacia (quatro tipos de cones na retina) e vê milhões de cores a mais que pessoas normais. O excesso sensorial causa sobrecarga neurológica.',
+        difficulty: 'easy',
+        theme: 'investigation',
+        icon: '🌈'
+      },
+      {
+        id: 'lm7',
+        order: 7,
+        name: 'Dupla Personalidade',
+        mystery: 'Um paciente afirma ser duas pessoas diferentes e ambas sabem coisas que ele não deveria saber.',
+        solution: 'Ele tem transtorno dissociativo de identidade. Uma personalidade testemunhou um crime que a personalidade principal reprimiu da memória.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '🎭'
+      },
+      {
+        id: 'lm8',
+        order: 8,
+        name: 'Tempo Perdido',
+        mystery: 'Ele sempre perde exatamente 3 horas e 27 minutos todos os dias.',
+        solution: 'Sofre de fuga dissociativa relacionada ao trauma. Inconsciente, visita o túmulo da filha morta no mesmo horário do acidente que ele reprimiu.',
+        difficulty: 'medium',
+        theme: 'mystery',
+        icon: '⏰'
+      },
+      {
+        id: 'lm9',
+        order: 9,
+        name: 'Vozes Familiares',
+        mystery: 'Uma mulher ouve a voz de sua mãe morta, mas apenas quando está sozinha.',
+        solution: 'Desenvolveu alucinações auditivas após culpa extrema. A "voz da mãe" é sua própria consciência punindo-a por não ter visitado antes da morte.',
+        difficulty: 'medium',
+        theme: 'thriller',
+        icon: '👻'
+      },
+      {
+        id: 'lm10',
+        order: 10,
+        name: 'Matemática Impossível',
+        mystery: 'Um gênio matemático não consegue mais resolver problemas simples, mas resolve equações complexas dormindo.',
+        solution: 'Desenvolveu savantismo pós-traumático após acidente. O trauma bloqueou funções básicas mas liberou habilidades extraordinárias no subconsciente.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '🔢'
+      },
+      {
+        id: 'lm11',
+        order: 11,
+        name: 'Medo do Espelho',
+        mystery: 'Toda vez que ele olha no espelho, vê alguém atacando pelas costas.',
+        solution: 'Testemunhou o próprio pai ser esfaqueado pelas costas na infância. O cérebro projeta a memória traumática em todos os reflexos como mecanismo de proteção.',
+        difficulty: 'medium',
+        theme: 'thriller',
+        icon: '😱'
+      },
+      {
+        id: 'lm12',
+        order: 12,
+        name: 'Língua Perdida',
+        mystery: 'Uma poliglota esquece completamente uma língua que falava fluentemente.',
+        solution: 'Sofreu trauma emocional severo associado àquela língua. O cérebro bloqueou completamente o idioma para protegê-la das memórias dolorosas conectadas a ele.',
+        difficulty: 'easy',
+        theme: 'mystery',
+        icon: '🗣️'
+      },
+      {
+        id: 'lm13',
+        order: 13,
+        name: 'Cegueira Seletiva',
+        mystery: 'Ele não consegue ver objetos vermelhos, mas sua visão é perfeita para tudo mais.',
+        solution: 'Desenvolveu cegueira histérica para a cor vermelha após ver sangue em acidente traumático. É um bloqueio psicológico, não físico.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '👁️'
+      },
+      {
+        id: 'lm14',
+        order: 14,
+        name: 'Escrita Automática',
+        mystery: 'Suas mãos escrevem mensagens sozinhas enquanto ela dorme.',
+        solution: 'Tem sonambulismo complexo e transtorno dissociativo. Durante o sono, sua mente processa traumas através da escrita automática como terapia inconsciente.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '✍️'
+      },
+      {
+        id: 'lm15',
+        order: 15,
+        name: 'Paralisia do Medo',
+        mystery: 'Ele fica completamente paralisado sempre que ouve música clássica.',
+        solution: 'Vivenciou abuso na infância sempre acompanhado de música clássica. O som serve como gatilho que ativa resposta de congelamento traumático.',
+        difficulty: 'easy',
+        theme: 'investigation',
+        icon: '🎵'
+      },
+      {
+        id: 'lm16',
+        order: 16,
+        name: 'Envelhecimento Mental',
+        mystery: 'Uma jovem de 20 anos tem memórias e comportamentos de uma idosa de 80.',
+        solution: 'Cuidou da avó com Alzheimer por anos, internalizando suas histórias e maneirismos. Após a morte da avó, assumiu sua identidade como mecanismo de luto.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '👵'
+      },
+      {
+        id: 'lm17',
+        order: 17,
+        name: 'Dor Fantasma',
+        mystery: 'Ela sente dor intensa em um braço que nunca perdeu.',
+        solution: 'Sua irmã gêmea perdeu o braço em acidente. Devido à conexão emocional extrema, ela desenvolveu dor psicossomática no mesmo local do membro amputado.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '💔'
+      },
+      {
+        id: 'lm18',
+        order: 18,
+        name: 'Sinestesia Mortal',
+        mystery: 'Ele vê cores quando ouve sons, mas certas cores o fazem desmaiar.',
+        solution: 'Tem sinestesia cromestésica e PTSD. Cores específicas ativam memórias traumáticas de um incêndio, causando ataques de pânico e perda de consciência.',
+        difficulty: 'hard',
+        theme: 'danger',
+        icon: '🎨'
+      },
+      {
+        id: 'lm19',
+        order: 19,
+        name: 'Pesadelo Acordado',
+        mystery: 'Ela tem pesadelos horríveis, mas apenas quando está acordada.',
+        solution: 'Sofre de alucinações hipnagógicas invertidas causadas por trauma. Seu cérebro projeta pesadelos durante a vigília como punição por culpa reprimida.',
+        difficulty: 'hard',
+        theme: 'thriller',
+        icon: '😴'
+      },
+      {
+        id: 'lm20',
+        order: 20,
+        name: 'Identidade Fragmentada',
+        mystery: 'Ele é cinco pessoas diferentes, mas apenas uma delas sabe a verdade sobre sua família.',
+        solution: 'Desenvolveu transtorno dissociativo após descobrir que foi adotado e seus "pais" eram sequestradores. Cada personalidade protege um pedaço da verdade traumática.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🧩'
       }
     ]
   },
@@ -930,6 +1100,176 @@ export const packs: Pack[] = [
         difficulty: 'hard',
         theme: 'mystery',
         icon: '💌'
+      },
+      {
+        id: 'ci4',
+        order: 4,
+        name: 'Pegadas na Lama',
+        mystery: 'O criminoso deixou pegadas perfeitas na lama, mas elas levam ao nada.',
+        solution: 'Ele usou sapatos maiores e caminhou de costas, criando pegadas falsas. As verdadeiras pegadas estavam sob uma lona impermeável que removeu depois.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '👟'
+      },
+      {
+        id: 'ci5',
+        order: 5,
+        name: 'Álibi Perfeito',
+        mystery: 'Ele estava sendo filmado em um local público durante o crime.',
+        solution: 'Usou um sósia e uma gravação pré-programada em seu celular. Enquanto o sósia mantinha o álibi, ele cometeu o crime e voltou para trocar de lugar.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '📱'
+      },
+      {
+        id: 'ci6',
+        order: 6,
+        name: 'Arma Desaparecida',
+        mystery: 'A arma do crime sumiu da cena, mas ninguém saiu do local.',
+        solution: 'O assassino engoliu a arma: uma agulha de tricô retrátil feita de gelo. A "arma" derreteu dentro do estômago da vítima.',
+        difficulty: 'easy',
+        theme: 'murder',
+        icon: '🧊'
+      },
+      {
+        id: 'ci7',
+        order: 7,
+        name: 'Confissão Gravada',
+        mystery: 'Ele confessou o crime em áudio, mas estava provadamente em outro país.',
+        solution: 'Gravou a confissão antes de viajar usando IA para alterar a voz. Programou o envio automático para criar um álibi falso e despistar a investigação.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🎙️'
+      },
+      {
+        id: 'ci8',
+        order: 8,
+        name: 'Impressão Digital Falsa',
+        mystery: 'As impressões digitais do criminoso estavam por toda a cena, mas ele nunca esteve lá.',
+        solution: 'Sua ex-esposa coletou suas impressões de objetos pessoais e as transferiu para a cena usando fita adesiva especial e silicone.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '👆'
+      },
+      {
+        id: 'ci9',
+        order: 9,
+        name: 'Hora da Morte',
+        mystery: 'O corpo parecia morto há horas, mas testemunhas o viram vivo depois.',
+        solution: 'Foi envenenado com uma substância que simula morte temporária. "Morreu" publicamente, foi enterrado vivo e sufocou no caixão - o assassino ganhou tempo para escapar.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '⏱️'
+      },
+      {
+        id: 'ci10',
+        order: 10,
+        name: 'DNA Plantado',
+        mystery: 'O DNA do suspeito estava na vítima, mas eles nunca se encontraram.',
+        solution: 'Um técnico forense corrupto plantou amostras antigas de DNA coletadas em outro caso. Ele foi pago para incriminar o suspeito inocente.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '🧬'
+      },
+      {
+        id: 'ci11',
+        order: 11,
+        name: 'Câmera Cega',
+        mystery: 'A câmera de segurança funcionava perfeitamente, mas não gravou o crime.',
+        solution: 'O criminoso projetou uma imagem estática do local vazio diretamente na lente da câmera. Cometeu o crime atrás da projeção.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '📹'
+      },
+      {
+        id: 'ci12',
+        order: 12,
+        name: 'Testemunha Cega',
+        mystery: 'A única testemunha viu tudo claramente, mas sua descrição não bate com ninguém.',
+        solution: 'A testemunha foi hipnotizada antes do crime e implantaram memórias falsas. Ela acredita ter visto um crime diferente do que realmente aconteceu.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '👁️'
+      },
+      {
+        id: 'ci13',
+        order: 13,
+        name: 'Motivo Inexistente',
+        mystery: 'O assassino não tinha motivo algum para matar a vítima.',
+        solution: 'Era um assassino de aluguel contratado por app criptografado. Não conhecia nem o cliente nem a vítima - apenas recebeu coordenadas e pagamento.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '📍'
+      },
+      {
+        id: 'ci14',
+        order: 14,
+        name: 'Suicídio Forjado',
+        mystery: 'Tudo indicava suicídio, mas a vítima era canhota e a arma estava na mão direita.',
+        solution: 'O assassino não sabia que ela era canhota. Essa pequena falha no staging revelou que foi homicídio disfarçado de suicídio.',
+        difficulty: 'easy',
+        theme: 'murder',
+        icon: '🔫'
+      },
+      {
+        id: 'ci15',
+        order: 15,
+        name: 'Rastro Eletrônico',
+        mystery: 'O celular do criminoso mostrava que ele estava em casa durante o crime.',
+        solution: 'Deixou o celular em casa ligado no Netflix para criar rastro digital falso. Usou transporte público pagando em dinheiro para não deixar rastros.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '📶'
+      },
+      {
+        id: 'ci16',
+        order: 16,
+        name: 'Veneno Invisível',
+        mystery: 'A vítima foi envenenada, mas não havia veneno em seu organismo.',
+        solution: 'Foi envenenada com insulina em excesso. Para um diabético, causa morte natural. O assassino não sabia que ela não tinha diabetes - a autópsia revelou a farsa.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '💉'
+      },
+      {
+        id: 'ci17',
+        order: 17,
+        name: 'Carta de Despedida',
+        mystery: 'A carta de suicídio estava escrita à mão, mas a letra não conferia.',
+        solution: 'O assassino treinou a caligrafia da vítima por meses, mas sob pressão não conseguiu replicar perfeitamente. A análise grafológica expôs a falsificação.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '✍️'
+      },
+      {
+        id: 'ci18',
+        order: 18,
+        name: 'Acidente Programado',
+        mystery: 'O acidente de carro parecia natural, mas foi muito conveniente.',
+        solution: 'Hackeou o sistema do carro autônomo e programou a falha. Não previu que o software teria logs detalhados que revelariam a interferência externa.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🚗'
+      },
+      {
+        id: 'ci19',
+        order: 19,
+        name: 'Testemunho Contraditório',
+        mystery: 'Duas testemunhas viram a mesma cena, mas relataram crimes diferentes.',
+        solution: 'Uma testemunha foi subornada para mentir, mas não sabia os detalhes reais. Suas mentiras não bateram com o depoimento da testemunha honesta.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '👥'
+      },
+      {
+        id: 'ci20',
+        order: 20,
+        name: 'Crime Perfeito',
+        mystery: 'O criminoso planejou tudo perfeitamente, mas foi pego por um detalhe ínfimo.',
+        solution: 'Esqueceu de trocar a pilha do relógio da vítima. O relógio parou na hora exata da morte, contradizendo seu álibi que dependia de um horário diferente.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '⌚'
       }
     ]
   },
@@ -972,6 +1312,176 @@ export const packs: Pack[] = [
         difficulty: 'hard',
         theme: 'danger',
         icon: '🤐'
+      },
+      {
+        id: 'dc4',
+        order: 4,
+        name: 'Operação Fantasma',
+        mystery: 'Uma operação militar oficial nunca existiu nos registros.',
+        solution: 'Era uma operação não-oficial financiada por fundos paralelos. Todos os registros foram destruídos para negar qualquer envolvimento governamental.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '👻'
+      },
+      {
+        id: 'dc5',
+        order: 5,
+        name: 'Identidade Apagada',
+        mystery: 'Um agente existe fisicamente, mas não há registros de sua existência.',
+        solution: 'Sua identidade foi completamente fabricada por uma agência de inteligência. Ele acredita ser real, mas toda sua vida é uma construção para uma missão profunda.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '👤'
+      },
+      {
+        id: 'dc6',
+        order: 6,
+        name: 'Código Indecifrado',
+        mystery: 'Uma mensagem interceptada usa um código que ninguém consegue quebrar.',
+        solution: 'O código é baseado em um livro específico que foi queimado propositalmente. Apenas três pessoas no mundo conheciam a chave - todas foram eliminadas.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🔐'
+      },
+      {
+        id: 'dc7',
+        order: 7,
+        name: 'Projeto Cancelado',
+        mystery: 'Um projeto de pesquisa foi cancelado abruptamente sem explicação.',
+        solution: 'Os cientistas descobriram algo que não deviam saber. O projeto foi cancelado e todos os pesquisadores foram transferidos para locais diferentes para evitar comunicação.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🧪'
+      },
+      {
+        id: 'dc8',
+        order: 8,
+        name: 'Diplomata Morto',
+        mystery: 'Um diplomata morre em um acidente suspeito antes de uma reunião importante.',
+        solution: 'Ele ia revelar acordos secretos que prejudicariam vários países. Foi eliminado por uma organização internacional que protege esses segredos.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🌍'
+      },
+      {
+        id: 'dc9',
+        order: 9,
+        name: 'Satélite Silencioso',
+        mystery: 'Um satélite militar para de transmitir dados sem explicação.',
+        solution: 'Foi hackeado por uma potência estrangeira que está usando suas câmeras para espionagem. O governo prefere fingir que está quebrado a admitir a violação.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🛰️'
+      },
+      {
+        id: 'dc10',
+        order: 10,
+        name: 'Testemunha Protegida',
+        mystery: 'Uma testemunha em proteção desaparece do programa oficial.',
+        solution: 'Foi transferida para um programa ainda mais secreto após descobrir que havia infiltrados no primeiro programa. Sua "morte" foi encenada.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🥸'
+      },
+      {
+        id: 'dc11',
+        order: 11,
+        name: 'Eleição Hackeada',
+        mystery: 'Resultados eleitorais são alterados, mas não há evidência digital.',
+        solution: 'A alteração foi física: técnicos substituíram componentes das urnas por peças idênticas programadas. Os chips originais foram destruídos.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '🗳️'
+      },
+      {
+        id: 'dc12',
+        order: 12,
+        name: 'Fundo Fantasma',
+        mystery: 'Milhões desaparecem de um fundo governamental que oficialmente não existe.',
+        solution: 'O fundo era usado para financiar operações ilegais. O dinheiro foi desviado por um funcionário que descobriu sua existência e chantageou seus superiores.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '💰'
+      },
+      {
+        id: 'dc13',
+        order: 13,
+        name: 'Experimento Humano',
+        mystery: 'Centenas de pessoas relatam os mesmos sintomas sem causa aparente.',
+        solution: 'Foram expostas involuntariamente a um experimento químico através do fornecimento de água. O governo testava uma substância de controle mental.',
+        difficulty: 'hard',
+        theme: 'danger',
+        icon: '🧠'
+      },
+      {
+        id: 'dc14',
+        order: 14,
+        name: 'Jornalista Acidentado',
+        mystery: 'Um jornalista investigativo morre em um acidente de carro suspeito.',
+        solution: 'Suas freadas foram sabotadas após ele descobrir documentos sobre corrupção em alto escalão. O acidente foi programado para parecer falha mecânica.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '📰'
+      },
+      {
+        id: 'dc15',
+        order: 15,
+        name: 'Arquivo Inexistente',
+        mystery: 'Referências apontam para um arquivo que nunca foi criado.',
+        solution: 'O arquivo foi criado, mas imediatamente classificado em um nível tão alto que foi removido de todos os sistemas. Existe apenas uma cópia física em local ultrassecreto.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '📂'
+      },
+      {
+        id: 'dc16',
+        order: 16,
+        name: 'Rede de Contatos',
+        mystery: 'Vários funcionários públicos se conhecem, mas negam qualquer conexão.',
+        solution: 'Fazem parte de uma sociedade secreta que influencia decisões governamentais. Comunicam-se através de códigos em redes sociais aparentemente normais.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🕸️'
+      },
+      {
+        id: 'dc17',
+        order: 17,
+        name: 'Orçamento Secreto',
+        mystery: 'Uma verba pública é aprovada para um projeto que ninguém consegue localizar.',
+        solution: 'O projeto existe, mas é camuflado como manutenção urbana. Na verdade, financia uma rede de vigilância massiva através de câmeras "decorativas".',
+        difficulty: 'easy',
+        theme: 'investigation',
+        icon: '💳'
+      },
+      {
+        id: 'dc18',
+        order: 18,
+        name: 'Chamada Interceptada',
+        mystery: 'Uma ligação entre dois ministros é gravada, mas eles negam ter se falado.',
+        solution: 'A conversa aconteceu, mas ambos usavam tecnologia que deveria impedir interceptação. A gravação prova que até sistemas ultrassecretos podem ser violados.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '📞'
+      },
+      {
+        id: 'dc19',
+        order: 19,
+        name: 'Cientista Desaparecido',
+        mystery: 'Um pesquisador nuclear some após descobrir uma anomalia em testes.',
+        solution: 'Descobriu que testes "defensivos" eram na verdade desenvolvimento de armas proibidas. Foi relocado com nova identidade para evitar vazamento internacional.',
+        difficulty: 'medium',
+        theme: 'danger',
+        icon: '☢️'
+      },
+      {
+        id: 'dc20',
+        order: 20,
+        name: 'Operação Encerrada',
+        mystery: 'Uma investigação de anos é encerrada abruptamente sem explicação.',
+        solution: 'A investigação chegou muito perto de revelar que o próprio chefe da operação estava envolvido no esquema. Ele encerrou tudo para proteger a si mesmo.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🚫'
       }
     ]
   },
@@ -1014,6 +1524,176 @@ export const packs: Pack[] = [
         difficulty: 'hard',
         theme: 'mystery',
         icon: '🧩'
+      },
+      {
+        id: 'fj4',
+        order: 4,
+        name: 'Último Movimento',
+        mystery: 'Ele tinha apenas um movimento para salvar sua vida, mas escolheu errado.',
+        solution: 'Era um teste psicológico. O "erro" foi escolher salvar-se em vez de salvar o refém. Isso revelou sua verdadeira natureza e selou seu destino.',
+        difficulty: 'hard',
+        theme: 'power',
+        icon: '⚡'
+      },
+      {
+        id: 'fj5',
+        order: 5,
+        name: 'Sequência Fatal',
+        mystery: 'Três pessoas morrem seguindo uma sequência matemática perfeita.',
+        solution: 'O assassino seguia a sequência de Fibonacci para escolher as vítimas. A próxima vítima seria alguém com 13 letras no nome - era uma armadilha para o próprio assassino.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '🔢'
+      },
+      {
+        id: 'fj6',
+        order: 6,
+        name: 'Paradoxo Temporal',
+        mystery: 'A vítima morreu antes de encontrar o assassino, mas ele só decidiu matá-la depois.',
+        solution: 'O assassino programou um dispositivo para matar se certas condições fossem atendidas. Quando decidiu matá-la, as condições já estavam ativas há horas.',
+        difficulty: 'medium',
+        theme: 'mystery',
+        icon: '⏳'
+      },
+      {
+        id: 'fj7',
+        order: 7,
+        name: 'Escolha Impossível',
+        mystery: 'Ele teve que escolher entre salvar sua esposa ou cem desconhecidos.',
+        solution: 'Era um dilema falso. Ambas as situações eram simulações. O teste real era ver se ele descobriria que estava sendo manipulado psicologicamente.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '⚖️'
+      },
+      {
+        id: 'fj8',
+        order: 8,
+        name: 'Estratégia Suicida',
+        mystery: 'O plano perfeito exigia que o criminoso morresse no final.',
+        solution: 'Ele estava com câncer terminal e queria proteger sua família de sua dívida com criminosos. Sua morte "acidental" acionou um seguro que pagou tudo.',
+        difficulty: 'medium',
+        theme: 'power',
+        icon: '🎭'
+      },
+      {
+        id: 'fj9',
+        order: 9,
+        name: 'Traição Calculada',
+        mystery: 'Ele traiu seu melhor amigo exatamente quando isso seria mais devastador.',
+        solution: 'Descobriu que o "amigo" estava planejando trair ele primeiro. A traição foi preventiva - uma jogada de mestre baseada em informações privilegiadas.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🗡️'
+      },
+      {
+        id: 'fj10',
+        order: 10,
+        name: 'Vitória Pírrica',
+        mystery: 'Ele venceu o jogo, mas perdeu tudo que importava.',
+        solution: 'O "jogo" era um teste de personalidade disfarçado. Vencer exigia abandonar seus valores morais. Ao vencer, provou ser exatamente o tipo de pessoa que a empresa não queria.',
+        difficulty: 'medium',
+        theme: 'power',
+        icon: '👑'
+      },
+      {
+        id: 'fj11',
+        order: 11,
+        name: 'Xeque-Mate Duplo',
+        mystery: 'Dois jogadores deram xeque-mate simultaneamente no mesmo tabuleiro.',
+        solution: 'Estavam jogando dois jogos diferentes no mesmo tabuleiro. Cada um via apenas suas próprias peças devido a lentes especiais. O "impossível" aconteceu por ilusão óptica.',
+        difficulty: 'easy',
+        theme: 'investigation',
+        icon: '👁️'
+      },
+      {
+        id: 'fj12',
+        order: 12,
+        name: 'Profecia Autorrealizável',
+        mystery: 'A previsão da morte se cumpriu exatamente como previsto.',
+        solution: 'A própria previsão causou os eventos que levaram à morte. A vítima tentou evitar seu destino, mas cada ação para escapar a levou mais perto do final previsto.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '🔮'
+      },
+      {
+        id: 'fj13',
+        order: 13,
+        name: 'Jogo Infinito',
+        mystery: 'Uma partida que nunca poderia terminar, mas terminou.',
+        solution: 'Os jogadores descobriram que estavam presos em um loop temporal. A única forma de escapar era um dos jogadores desistir voluntariamente - quebrando o padrão infinito.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '♾️'
+      },
+      {
+        id: 'fj14',
+        order: 14,
+        name: 'Sacrifício Calculado',
+        mystery: 'Ele sacrificou sua peça mais valiosa sem motivo aparente.',
+        solution: 'O sacrifício não era no jogo de xadrez, mas na vida real. Perdeu propositalmente a partida para ganhar a confiança do oponente e depois roubou seus segredos.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '♛'
+      },
+      {
+        id: 'fj15',
+        order: 15,
+        name: 'Regras Quebradas',
+        mystery: 'O movimento era impossível pelas regras, mas aconteceu.',
+        solution: 'Estavam jogando com regras secretas que apenas um conhecia. O "movimento impossível" era válido nas regras verdadeiras - uma trapaça sofisticada.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '📜'
+      },
+      {
+        id: 'fj16',
+        order: 16,
+        name: 'Estratégia Emergente',
+        mystery: 'A estratégia vencedora surgiu do que parecia ser uma série de erros.',
+        solution: 'Cada "erro" era intencional. O jogador fingiu incompetência para que o adversário baixasse a guarda, então executou uma sequência letal de movimentos.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '🧠'
+      },
+      {
+        id: 'fj17',
+        order: 17,
+        name: 'Tempo Esgotado',
+        mystery: 'O relógio parou exatamente quando ele ia fazer o movimento vencedor.',
+        solution: 'O adversário havia programado um dispositivo para interferir no relógio. Mas não sabia que isso também invalidaria sua própria vitória pelas regras do torneio.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '⏰'
+      },
+      {
+        id: 'fj18',
+        order: 18,
+        name: 'Peão Coroado',
+        mystery: 'O peão mais fraco se tornou a peça decisiva.',
+        solution: 'Era uma metáfora da vida real. O "peão" era um funcionário subalterno que coletou informações sobre corrupção. Quando promovido, usou tudo para derrubar o sistema.',
+        difficulty: 'medium',
+        theme: 'power',
+        icon: '♟️'
+      },
+      {
+        id: 'fj19',
+        order: 19,
+        name: 'Partida Fantasma',
+        mystery: 'Dois grandes mestres jogaram uma partida que não foi registrada em lugar nenhum.',
+        solution: 'A partida decidiu quem seria morto e quem sobreviveria. Ambos eram espiões rivais - o perdedor cumpriria uma missão suicida. O jogo foi sua forma "civilizada" de decidir.',
+        difficulty: 'hard',
+        theme: 'danger',
+        icon: '👻'
+      },
+      {
+        id: 'fj20',
+        order: 20,
+        name: 'Mate do Pastor',
+        mystery: 'O movimento mais básico derrotou o campeão mundial.',
+        solution: 'O campeão estava dopado com substâncias que afetavam sua cognição, mas potencializavam reflexos básicos. Contra estratégias simples, ficou vulnerável - sua sofisticação virou fraqueza.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '🏆'
       }
     ]
   },
@@ -1056,6 +1736,176 @@ export const packs: Pack[] = [
         difficulty: 'medium',
         theme: 'mystery',
         icon: '👂'
+      },
+      {
+        id: 'id4',
+        order: 4,
+        name: 'Carta Devolvida',
+        mystery: 'Uma carta de amor volta 30 anos depois para destruir um casamento.',
+        solution: 'Foi escrita por um jovem apaixonado que virou carteiro. Guardou a carta décadas, esperando o momento certo para arruinar a vida de quem rejeitou seu amor.',
+        difficulty: 'medium',
+        theme: 'mystery',
+        icon: '💌'
+      },
+      {
+        id: 'id5',
+        order: 5,
+        name: 'Herança Maldita',
+        mystery: 'Cada herdeiro da fortuna morre exatamente um ano após recebê-la.',
+        solution: 'O patriarca envenenou as moedas de ouro da herança com uma substância que causa morte lenta. Queria se vingar da família que o abandonou na velhice.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '💰'
+      },
+      {
+        id: 'id6',
+        order: 6,
+        name: 'Foto Reveladora',
+        mystery: 'Uma foto de família revela um crime após 20 anos.',
+        solution: 'No fundo da foto, quase imperceptível, está uma criança que deveria estar morta. A família fingiu sua morte para esconder abuso - ela cresceu escondida no sótão.',
+        difficulty: 'easy',
+        theme: 'investigation',
+        icon: '📸'
+      },
+      {
+        id: 'id7',
+        order: 7,
+        name: 'Remédio Fatal',
+        mystery: 'O remédio que salvou sua vida na juventude a matou na velhice.',
+        solution: 'O medicamento experimental criou dependência química única. Décadas depois, quando parou de ser produzido, seu corpo entrou em colapso fatal por abstinência.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '💊'
+      },
+      {
+        id: 'id8',
+        order: 8,
+        name: 'Vingança Tardia',
+        mystery: 'Um homem se vinga de uma ofensa após 40 anos de planejamento.',
+        solution: 'Esperou que o inimigo tivesse filhos e netos. Sua vingança foi destruir três gerações simultaneamente revelando segredos familiares cuidadosamente coletados por décadas.',
+        difficulty: 'medium',
+        theme: 'conspiracy',
+        icon: '⏳'
+      },
+      {
+        id: 'id9',
+        order: 9,
+        name: 'Sorte Azarada',
+        mystery: 'Ganhar na loteria foi a pior coisa que aconteceu em sua vida.',
+        solution: 'O bilhete premiado foi roubado de um criminoso perigoso. Quando os números saíram, o ladrão se tornou alvo de uma organização criminosa que rastreava o bilhete.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🎰'
+      },
+      {
+        id: 'id10',
+        order: 10,
+        name: 'Mentira Salvadora',
+        mystery: 'Uma mentira que deveria arruinar sua vida acabou salvando-a.',
+        solution: 'Mentiu sobre estar doente para não viajar de avião. O avião caiu. Anos depois, descobriu que o pai sabia da tragédia antecipadamente e plantou a "mentira" para salvá-la.',
+        difficulty: 'medium',
+        theme: 'mystery',
+        icon: '✈️'
+      },
+      {
+        id: 'id11',
+        order: 11,
+        name: 'Troca de Bebês',
+        mystery: 'Duas famílias descobrem que criaram os filhos errados por 18 anos.',
+        solution: 'A troca foi intencional. Uma enfermeira vingativa trocou os bebês de famílias ricas e pobres para "equilibrar" as injustiças sociais. O tempo revelou sua experiência social.',
+        difficulty: 'easy',
+        theme: 'investigation',
+        icon: '👶'
+      },
+      {
+        id: 'id12',
+        order: 12,
+        name: 'Conselho Mortal',
+        mystery: 'Seguir o conselho de um estranho levou à morte.',
+        solution: 'O "estranho" era um assassino que estudava suas vítimas. Dava conselhos aparentemente úteis que levavam as pessoas a situações fatais. Cada conselho era uma armadilha disfarçada.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '💀'
+      },
+      {
+        id: 'id13',
+        order: 13,
+        name: 'Presente Envenenado',
+        mystery: 'O presente de aniversário mais desejado se tornou uma maldição.',
+        solution: 'Era um relógio antigo radioativo. O doador não sabia, mas um relojoeiro descobriu que era feito com rádio luminoso. Décadas de uso causaram câncer lento e doloroso.',
+        difficulty: 'medium',
+        theme: 'danger',
+        icon: '🎁'
+      },
+      {
+        id: 'id14',
+        order: 14,
+        name: 'Amor Cego',
+        mystery: 'Ela se apaixonou pela voz ao telefone, mas nunca se encontraram.',
+        solution: 'Era um sequestrador que ligava para suas vítimas antes dos crimes. Desenvolveu obsessão por uma delas e mantinha contato. Quando se encontraram, ela descobriu a verdade terrível.',
+        difficulty: 'hard',
+        theme: 'thriller',
+        icon: '📞'
+      },
+      {
+        id: 'id15',
+        order: 15,
+        name: 'Segredo de Família',
+        mystery: 'Descobrir a verdade sobre sua origem destruiu três gerações.',
+        solution: 'Descobriu que foi adotada após seus pais "verdadeiros" assassinarem sua família biológica. A busca pelas origens revelou que vivia com os próprios assassinos há décadas.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '🧬'
+      },
+      {
+        id: 'id16',
+        order: 16,
+        name: 'Destino Trocado',
+        mystery: 'Duas pessoas trocaram de vida completamente por acaso.',
+        solution: 'Um erro no hospital trocou suas pulseiras de identificação. Uma estava marcada para cirurgia simples, outra para procedimento arriscado. A troca mudou seus destinos para sempre.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🏥'
+      },
+      {
+        id: 'id17',
+        order: 17,
+        name: 'Profecia Cumprida',
+        mystery: 'Uma cigana previu sua morte e ela aconteceu exatamente como previsto.',
+        solution: 'A "cigana" era uma assassina que estudava suas vítimas e planejava suas mortes. As "previsões" eram na verdade planos de assassinato disfarçados de misticismo.',
+        difficulty: 'easy',
+        theme: 'murder',
+        icon: '🔮'
+      },
+      {
+        id: 'id18',
+        order: 18,
+        name: 'Erro Médico',
+        mystery: 'O erro médico que quase a matou acabou curando uma doença fatal.',
+        solution: 'A medicação errada reagiu quimicamente com um tumor que os médicos não haviam detectado. O "erro" criou uma reação que destruiu o câncer antes que fosse descoberto.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '💉'
+      },
+      {
+        id: 'id19',
+        order: 19,
+        name: 'Último Desejo',
+        mystery: 'Cumprir o último desejo de um moribundo trouxe consequências terríveis.',
+        solution: 'O "moribundo" era um criminoso fingindo estar à morte. Seu "último desejo" foi entregar uma carta que na verdade era um código para ativar uma célula terrorista.',
+        difficulty: 'hard',
+        theme: 'danger',
+        icon: '📝'
+      },
+      {
+        id: 'id20',
+        order: 20,
+        name: 'Círculo Fechado',
+        mystery: 'Após 50 anos, ela descobriu que estava no mesmo lugar onde tudo começou.',
+        solution: 'Fugiu de casa criança para escapar de abuso. Após décadas, comprou uma casa para viver seus últimos anos. Era a mesma casa de onde fugiu - agora herdada do próprio abusador.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '🔄'
       }
     ]
   },
@@ -1098,6 +1948,176 @@ export const packs: Pack[] = [
         difficulty: 'hard',
         theme: 'crime',
         icon: '🌃'
+      },
+      {
+        id: 'pm4',
+        order: 4,
+        name: 'Elevador Infinito',
+        mystery: 'O elevador sobe infinitamente, mas o prédio tem apenas 20 andares.',
+        solution: 'Foi reprogramado por um engenheiro louco que criou um loop nos sensores. As pessoas ficavam presas em movimento perpétuo entre os andares 19 e 20.',
+        difficulty: 'hard',
+        theme: 'mystery',
+        icon: '🛗'
+      },
+      {
+        id: 'pm5',
+        order: 5,
+        name: 'Sombra Sem Dono',
+        mystery: 'Uma sombra caminha pelas ruas, mas não há ninguém projetando-a.',
+        solution: 'Um assassino usa um projetor portátil de sombras para distrair vítimas. Enquanto olham a "sombra impossível", ele ataca pelas costas.',
+        difficulty: 'hard',
+        theme: 'murder',
+        icon: '👤'
+      },
+      {
+        id: 'pm6',
+        order: 6,
+        name: 'Espelho Temporal',
+        mystery: 'Um espelho mostra o que aconteceu 5 minutos no passado.',
+        solution: 'É um monitor disfarçado reproduzindo gravações com delay. Alguém instalou câmeras ocultas e usa o truque para prever movimentos das vítimas.',
+        difficulty: 'medium',
+        theme: 'investigation',
+        icon: '🪞'
+      },
+      {
+        id: 'pm7',
+        order: 7,
+        name: 'Porta Que Some',
+        mystery: 'Uma porta existe durante o dia, mas desaparece à noite.',
+        solution: 'É uma parede móvel controlada remotamente. Durante o dia, criminosos usam o acesso secreto. À noite, fecham a passagem para esconder evidências.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '🚪'
+      },
+      {
+        id: 'pm8',
+        order: 8,
+        name: 'Telefone do Além',
+        mystery: 'Um telefone público recebe ligações de pessoas mortas há anos.',
+        solution: 'Um hacker descobriu como acessar gravações antigas de conversas telefônicas e as reproduz no telefone. Usa isso para chantagear famílias das vítimas.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '☎️'
+      },
+      {
+        id: 'pm9',
+        order: 9,
+        name: 'Escada Paradoxal',
+        mystery: 'Subindo sempre pela mesma escada, você chega onde começou.',
+        solution: 'É uma escada rolante circular oculta. Arquitetos criminosos criaram uma ilusão arquitetônica para desorientar testemunhas e facilitar fugas.',
+        difficulty: 'hard',
+        theme: 'investigation',
+        icon: '🪜'
+      },
+      {
+        id: 'pm10',
+        order: 10,
+        name: 'Chuva Seletiva',
+        mystery: 'Chove apenas em uma pessoa específica, mesmo em dia ensolarado.',
+        solution: 'Um perseguidor usa drones microscópicos para borrifar água na vítima. É uma forma de tortura psicológica antes do ataque final.',
+        difficulty: 'medium',
+        theme: 'thriller',
+        icon: '🌧️'
+      },
+      {
+        id: 'pm11',
+        order: 11,
+        name: 'Multidão Fantasma',
+        mystery: 'Centenas de pessoas aparecem em uma rua vazia e somem em segundos.',
+        solution: 'É um holograma projetado por criminosos para criar confusão durante um assalto próximo. A "multidão" distrai testemunhas e polícia.',
+        difficulty: 'easy',
+        theme: 'crime',
+        icon: '👥'
+      },
+      {
+        id: 'pm12',
+        order: 12,
+        name: 'Tempo Congelado',
+        mystery: 'Por 10 minutos, todos os relógios da cidade param simultaneamente.',
+        solution: 'Hackers atacaram a rede de sincronização de horário para criar uma janela temporal perfeita para um crime. Durante o "tempo congelado", ninguém sabia a hora exata.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '⏰'
+      },
+      {
+        id: 'pm13',
+        order: 13,
+        name: 'Voz Eterna',
+        mystery: 'Uma voz ecoa pelas ruas pedindo ajuda, mas nunca encontram a fonte.',
+        solution: 'É uma gravação de uma vítima já morta, reproduzida em alto-falantes ocultos. O assassino usa isso para atrair mais vítimas ao local do primeiro crime.',
+        difficulty: 'medium',
+        theme: 'murder',
+        icon: '🔊'
+      },
+      {
+        id: 'pm14',
+        order: 14,
+        name: 'Gravidade Invertida',
+        mystery: 'Objetos caem para cima em um quarteirão específico da cidade.',
+        solution: 'Magnetos industriais ocultos sob o asfalto foram instalados por ladrões. Atraem objetos metálicos "para cima" criando distração para roubar pessoas confusas.',
+        difficulty: 'hard',
+        theme: 'crime',
+        icon: '🧲'
+      },
+      {
+        id: 'pm15',
+        order: 15,
+        name: 'Labirinto Urbano',
+        mystery: 'As ruas de um bairro mudam de configuração toda noite.',
+        solution: 'Placas de rua são trocadas por uma gangue que controla o território. Modificam sinalizações para confundir rivais e facilitar suas operações ilegais.',
+        difficulty: 'medium',
+        theme: 'crime',
+        icon: '🗺️'
+      },
+      {
+        id: 'pm16',
+        order: 16,
+        name: 'Pessoa Transparente',
+        mystery: 'Câmeras de segurança mostram uma pessoa completamente transparente cometendo crimes.',
+        solution: 'É um criminoso usando um traje experimental de camuflagem óptica. A tecnologia militar vazada permite invisibilidade quase perfeita.',
+        difficulty: 'hard',
+        theme: 'theft',
+        icon: '👻'
+      },
+      {
+        id: 'pm17',
+        order: 17,
+        name: 'Eco Infinito',
+        mystery: 'Um grito ecoa para sempre em um túnel, mesmo depois que a pessoa se foi.',
+        solution: 'O túnel foi modificado com tecnologia de cancelamento de ruído invertida. Amplifica e perpetua sons específicos para torturar psicologicamente inimigos.',
+        difficulty: 'easy',
+        theme: 'investigation',
+        icon: '🔄'
+      },
+      {
+        id: 'pm18',
+        order: 18,
+        name: 'Idade Reversa',
+        mystery: 'Uma pessoa envelhece ao contrário: fica mais jovem a cada dia.',
+        solution: 'É uma cobaia de experimentos médicos ilegais com células-tronco. O tratamento experimental reverteu o envelhecimento, mas está matando-a lentamente.',
+        difficulty: 'hard',
+        theme: 'danger',
+        icon: '🧬'
+      },
+      {
+        id: 'pm19',
+        order: 19,
+        name: 'Memória Coletiva',
+        mystery: 'Toda uma cidade lembra de eventos que nunca aconteceram.',
+        solution: 'Experimento de controle mental através da água potável. Uma substância química implanta falsas memórias coletivas para encobrir crimes reais do passado.',
+        difficulty: 'hard',
+        theme: 'conspiracy',
+        icon: '🧠'
+      },
+      {
+        id: 'pm20',
+        order: 20,
+        name: 'Realidade Duplicada',
+        mystery: 'Duas versões da mesma cidade existem simultaneamente no mesmo espaço.',
+        solution: 'Realidade virtual avançada projetada em lentes de contato especiais. Criminosos criaram uma "cidade fantasma" para confundir vítimas e executar crimes perfeitos na confusão entre real e virtual.',
+        difficulty: 'hard',
+        theme: 'thriller',
+        icon: '🌍'
       }
     ]
   },
