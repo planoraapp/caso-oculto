@@ -47,20 +47,31 @@ const ComboModal: React.FC<ComboModalProps> = ({
     });
   };
 
-  const originalPrice = selectedPacks.length * 14.80;
-  const discountedPrice = originalPrice * 0.8;
-  const savings = originalPrice - discountedPrice;
+  // Preço fixo do combo conforme definido
+  const comboPrice = 61.40;
+  const originalPrice = 74.00;
+  const savings = originalPrice - comboPrice;
 
   const canPurchase = selectedPacks.length === 5;
 
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+      <div 
+        className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4"
+        onClick={handleBackdropClick}
+      >
         <motion.div 
           className="bg-gray-900 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
+          onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
           <div className="p-6 border-b border-gray-700">
@@ -92,7 +103,7 @@ const ComboModal: React.FC<ComboModalProps> = ({
                       R$ {originalPrice.toFixed(2).replace('.', ',')}
                     </p>
                     <p className="text-2xl font-bold text-case-red">
-                      R$ {discountedPrice.toFixed(2).replace('.', ',')}
+                      R$ {comboPrice.toFixed(2).replace('.', ',')}
                     </p>
                     <p className="text-green-400 text-sm">
                       Economia: R$ {savings.toFixed(2).replace('.', ',')}
@@ -167,7 +178,7 @@ const ComboModal: React.FC<ComboModalProps> = ({
                 <Button
                   variant="outline"
                   onClick={onClose}
-                  className="border-gray-600 text-case-white hover:bg-gray-800"
+                  className="border-gray-600 text-case-white hover:bg-gray-800 bg-white text-black hover:text-white"
                 >
                   Cancelar
                 </Button>

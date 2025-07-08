@@ -7,6 +7,7 @@ import PaymentOptionsModal from '../components/PaymentOptionsModal';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
 import MercadoPagoCheckout from '../components/MercadoPagoCheckout';
+import HowToPlayModal from '../components/HowToPlayModal';
 import PackHeader from '../components/pack-view/PackHeader';
 import CasesGrid from '../components/pack-view/CasesGrid';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
@@ -24,6 +25,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isComboModalOpen, setIsComboModalOpen] = useState(false);
+  const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
 
   const {
@@ -105,6 +107,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
         solvedCards={solvedCards}
         user={user}
         onPurchaseClick={() => setIsPaymentModalOpen(true)}
+        onHowToPlayClick={() => setIsHowToPlayOpen(true)}
       />
 
       {/* Cases Grid */}
@@ -117,6 +120,11 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
       />
 
       {/* Modals */}
+      <HowToPlayModal 
+        isOpen={isHowToPlayOpen} 
+        onClose={() => setIsHowToPlayOpen(false)} 
+      />
+
       {pack && (
         <PaymentOptionsModal
           isOpen={isPaymentModalOpen}

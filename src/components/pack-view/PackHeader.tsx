@@ -1,19 +1,10 @@
 
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Lock, CheckCircle, HelpCircle } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-
-interface Pack {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  image: string;
-  cases: any[];
-}
+import { Pack } from '../../data/packs';
 
 interface PackHeaderProps {
   pack: Pack;
@@ -21,6 +12,7 @@ interface PackHeaderProps {
   solvedCards: string[];
   user: any;
   onPurchaseClick: () => void;
+  onHowToPlayClick: () => void;
 }
 
 const PackHeader: React.FC<PackHeaderProps> = ({
@@ -28,82 +20,115 @@ const PackHeader: React.FC<PackHeaderProps> = ({
   hasAccess,
   solvedCards,
   user,
-  onPurchaseClick
+  onPurchaseClick,
+  onHowToPlayClick
 }) => {
-  const navigate = useNavigate();
+  const solvedCount = solvedCards.length;
+  const totalCards = pack.cases.length;
+  const progress = totalCards > 0 ? (solvedCount / totalCards) * 100 : 0;
+
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'easy':
+        return 'bg-green-500';
+      case 'medium':
+        return 'bg-yellow-500';
+      case 'hard':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
+  const getDifficultyText = (difficulty: string) => {
+    switch (difficulty) {
+      case 'easy':
+        return 'Fácil';
+      case 'medium':
+        return 'Médio';
+      case 'hard':
+        return 'Difícil';
+      default:
+        return 'Médio';
+    }
+  };
 
   return (
-    <div 
-      className="relative h-96 bg-cover bg-center"
-      style={{ backgroundImage: `url(${pack.image})` }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
-      
-      <div className="container mx-auto px-4 relative z-10 h-full flex flex-col justify-between">
-        {/* Header */}
-        <div className="flex items-center pt-8">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/packs')}
-            className="text-case-white hover:text-case-red"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar aos Packs
-          </Button>
-        </div>
+    <div className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${pack.image})` }}
+      />
+      <div className="absolute inset-0 bg-black/60" />
 
-        {/* Pack Info Overlay */}
-        <div className="pb-8">
-          <h1 className="font-anton text-4xl md:text-5xl lg:text-6xl text-case-white mb-4">
+      {/* Content */}
+      <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <Badge className={`${getDifficultyColor(pack.difficulty)} text-white mb-4`}>
+            {getDifficultyText(pack.difficulty)}
+          </Badge>
+          
+          <h1 className="text-4xl md:text-6xl font-bold text-case-white mb-6">
             {pack.name}
           </h1>
-          <p className="text-case-white/90 text-xl max-w-3xl mb-6">
+          
+          <p className="text-xl text-case-white/90 mb-8 max-w-2xl mx-auto">
             {pack.description}
           </p>
-          <div className="flex items-center gap-4 mb-4">
-            <Badge className="bg-case-red text-white text-base px-4 py-2">
-              {pack.category}
-            </Badge>
-            <Badge variant="outline" className="border-case-white text-case-white text-base px-4 py-2">
-              {pack.cases.length} Casos
-            </Badge>
-            {user && (
-              <Badge variant="outline" className="border-green-500 text-green-500 text-base px-4 py-2">
-                {solvedCards.length} Resolvidos
-              </Badge>
+
+          {/* Progress Bar (only show if user has access) */}
+          {hasAccess && user && (
+            <div className="mb-6">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <CheckCircle className="h-5 w-5 text-green-400" />
+                <span className="text-case-white">
+                  {solvedCount} de {totalCards} casos resolvidos
+                </span>
+              </div>
+              <div className="w-full max-w-md mx-auto bg-gray-700 rounded-full h-2">
+                <div 
+                  className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            {!hasAccess && (
+              <Button 
+                onClick={onPurchaseClick}
+                size="lg"
+                className="bg-case-red hover:bg-red-600 text-white px-8 py-3 text-lg"
+              >
+                <Lock className="h-5 w-5 mr-2" />
+                Desbloquear Pack
+              </Button>
             )}
+            
+            <Button
+              onClick={onHowToPlayClick}
+              variant="outline"
+              size="lg"
+              className="bg-white text-black border-white hover:bg-gray-100 px-8 py-3 text-lg"
+            >
+              <HelpCircle className="h-5 w-5 mr-2" />
+              Como Jogar
+            </Button>
           </div>
 
-          {/* Purchase Button */}
-          {!hasAccess && user && (
-            <div className="mb-6">
-              <Button
-                onClick={onPurchaseClick}
-                className="bg-case-red hover:bg-red-600 text-white text-lg px-8 py-3"
-              >
-                Desbloquear Pack - R$ {pack.price.toFixed(2).replace('.', ',')}
-              </Button>
-            </div>
+          {!hasAccess && (
+            <p className="text-case-white/70 mt-4 text-sm">
+              Desbloqueie este pack para ter acesso a todos os {totalCards} mistérios
+            </p>
           )}
-          
-          {/* Progress Bar */}
-          {user && hasAccess && (
-            <div className="max-w-md">
-              <div className="flex justify-between text-case-white/80 text-sm mb-2">
-                <span>Progresso</span>
-                <span>{Math.round((solvedCards.length / pack.cases.length) * 100)}%</span>
-              </div>
-              <div className="w-full bg-gray-700 rounded-full h-3">
-                <div 
-                  className="bg-case-red h-3 rounded-full transition-all duration-300"
-                  style={{ 
-                    width: `${(solvedCards.length / pack.cases.length) * 100}%` 
-                  }}
-                ></div>
-              </div>
-            </div>
-          )}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
