@@ -6,12 +6,12 @@ import { Badge } from '../ui/badge';
 import { ShoppingCart, Users, Star, Zap } from 'lucide-react';
 
 interface ComboPackCardProps {
-  onPurchase: () => void;
+  onOpenComboModal: () => void;
   isLoading: boolean;
 }
 
 const ComboPackCard: React.FC<ComboPackCardProps> = ({
-  onPurchase,
+  onOpenComboModal,
   isLoading
 }) => {
   return (
@@ -46,7 +46,7 @@ const ComboPackCard: React.FC<ComboPackCardProps> = ({
             <span className="text-2xl font-bold text-yellow-500 ml-2">R$ 61,40</span>
           </div>
           <Button 
-            onClick={onPurchase} 
+            onClick={onOpenComboModal} 
             disabled={isLoading}
             className="bg-yellow-500 hover:bg-yellow-600 text-black"
           >

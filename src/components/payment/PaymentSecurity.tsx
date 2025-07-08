@@ -8,7 +8,7 @@ const PaymentSecurity: React.FC = () => {
         Pagamento 100% seguro com:
       </p>
       <img 
-        src="/lovable-uploads/8a513714-34eb-49ec-b837-6e3bb5e273e1.png" 
+        src="/lovable-uploads/c2157e73-9a7d-4368-84fd-8a1c3931996a.png" 
         alt="Mercado Pago" 
         className="mx-auto h-12 object-contain"
       />
