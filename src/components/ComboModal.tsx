@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check, Star, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
@@ -198,27 +199,30 @@ const ComboModal: React.FC<ComboModalProps> = ({
             </AnimatePresence>
           </div>
 
-          {/* Footer */}
+          {/* Footer - Reorganizado para mobile */}
           <div className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-col space-y-4">
+              {/* Status Info */}
+              <div className="flex items-center justify-center gap-2">
                 <Star className="h-5 w-5 text-yellow-500" />
-                <span className="text-case-white/80">
+                <span className="text-case-white/80 text-center">
                   {canPurchase ? 'Pronto para comprar!' : `Selecione ${5 - selectedPacks.length} pack(s) para continuar`}
                 </span>
               </div>
-              <div className="flex gap-3">
+              
+              {/* Buttons - Melhor layout para mobile */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:justify-center">
                 <Button
                   variant="outline"
                   onClick={onClose}
-                  className="border-gray-600 text-case-white hover:bg-gray-800 bg-white text-black hover:text-white"
+                  className="border-gray-600 text-case-white hover:bg-gray-700 hover:text-case-white order-2 sm:order-1"
                 >
                   Cancelar
                 </Button>
                 <Button
                   onClick={() => canPurchase && onPurchaseCombo(selectedPacks)}
                   disabled={!canPurchase}
-                  className="bg-white hover:bg-gray-100 text-black font-semibold disabled:opacity-50"
+                  className="bg-case-red hover:bg-red-600 text-white font-semibold disabled:opacity-50 order-1 sm:order-2"
                 >
                   <ShoppingCart className="h-4 w-4 mr-2" />
                   Comprar Combo

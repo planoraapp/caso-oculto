@@ -54,81 +54,87 @@ const PackHeader: React.FC<PackHeaderProps> = ({
   };
 
   return (
-    <div className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+    <div className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${pack.image})` }}
       />
       <div className="absolute inset-0 bg-black/60" />
+      
+      {/* Gradient overlay for better text visibility at the bottom */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
-      {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <Badge className={`${getDifficultyColor(pack.difficulty)} text-white mb-4`}>
-            {getDifficultyText(pack.difficulty)}
-          </Badge>
-          
-          <h1 className="text-4xl md:text-6xl font-bold text-case-white mb-6">
-            {pack.name}
-          </h1>
-          
-          <p className="text-xl text-case-white/90 mb-8 max-w-2xl mx-auto">
-            {pack.description}
-          </p>
-
-          {/* Progress Bar (only show if user has access) */}
-          {hasAccess && user && (
-            <div className="mb-6">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <CheckCircle className="h-5 w-5 text-green-400" />
-                <span className="text-case-white">
-                  {solvedCount} de {totalCards} casos resolvidos
-                </span>
-              </div>
-              <div className="w-full max-w-md mx-auto bg-gray-700 rounded-full h-2">
-                <div 
-                  className="bg-green-500 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            {!hasAccess && (
-              <Button 
-                onClick={onPurchaseClick}
-                size="lg"
-                className="bg-case-red hover:bg-red-600 text-white px-8 py-3 text-lg"
-              >
-                <Lock className="h-5 w-5 mr-2" />
-                Desbloquear Pack
-              </Button>
-            )}
+      {/* Pack Info - Positioned at bottom left */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+        <div className="container mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-2xl"
+          >
+            <Badge className={`${getDifficultyColor(pack.difficulty)} text-white mb-3`}>
+              {getDifficultyText(pack.difficulty)}
+            </Badge>
             
-            <Button
-              onClick={onHowToPlayClick}
-              variant="outline"
-              size="lg"
-              className="bg-white text-black border-white hover:bg-gray-100 px-8 py-3 text-lg"
-            >
-              <HelpCircle className="h-5 w-5 mr-2" />
-              Como Jogar
-            </Button>
-          </div>
-
-          {!hasAccess && (
-            <p className="text-case-white/70 mt-4 text-sm">
-              Desbloqueie este pack para ter acesso a todos os {totalCards} mistérios
+            <h1 className="text-3xl md:text-5xl font-bold text-case-white mb-4">
+              {pack.name}
+            </h1>
+            
+            <p className="text-lg text-case-white/90 mb-6 max-w-xl">
+              {pack.description}
             </p>
-          )}
-        </motion.div>
+
+            {/* Progress Bar (only show if user has access) */}
+            {hasAccess && user && (
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <CheckCircle className="h-5 w-5 text-green-400" />
+                  <span className="text-case-white">
+                    {solvedCount} de {totalCards} casos resolvidos
+                  </span>
+                </div>
+                <div className="w-full max-w-md bg-gray-700 rounded-full h-2">
+                  <div 
+                    className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              {!hasAccess && (
+                <Button 
+                  onClick={onPurchaseClick}
+                  size="lg"
+                  className="bg-case-red hover:bg-red-600 text-white px-8 py-3 text-lg"
+                >
+                  <Lock className="h-5 w-5 mr-2" />
+                  Desbloquear Pack
+                </Button>
+              )}
+              
+              <Button
+                onClick={onHowToPlayClick}
+                variant="outline"
+                size="lg"
+                className="bg-white text-black border-white hover:bg-gray-100 px-8 py-3 text-lg"
+              >
+                <HelpCircle className="h-5 w-5 mr-2" />
+                Como Jogar
+              </Button>
+            </div>
+
+            {!hasAccess && (
+              <p className="text-case-white/70 mt-4 text-sm">
+                Desbloqueie este pack para ter acesso a todos os {totalCards} mistérios
+              </p>
+            )}
+          </motion.div>
+        </div>
       </div>
     </div>
   );
