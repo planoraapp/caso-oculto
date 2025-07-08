@@ -1,11 +1,7 @@
 
 import React from 'react';
 import CaseCard from '../CaseCard';
-
-interface Case {
-  id: string;
-  isFree?: boolean;
-}
+import { Case } from '../../data/types';
 
 interface CasesGridProps {
   cases: Case[];
