@@ -9,13 +9,7 @@ import { Trash2, Edit, Plus, X } from 'lucide-react';
 import { supabase } from '../integrations/supabase/client';
 import { useToast } from '../hooks/use-toast';
 import { packs } from '../data/packs';
-
-interface User {
-  id: string;
-  email: string;
-  created_at: string;
-  last_sign_in_at: string;
-}
+import { User as SupabaseUser } from '@supabase/supabase-js';
 
 interface UserPackAccess {
   id: string;
@@ -26,7 +20,7 @@ interface UserPackAccess {
 }
 
 const UserManager: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<SupabaseUser[]>([]);
   const [packAccesses, setPackAccesses] = useState<UserPackAccess[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingUser, setEditingUser] = useState<string | null>(null);
@@ -184,7 +178,7 @@ const UserManager: React.FC = () => {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-case-white">{user.email}</CardTitle>
+                    <CardTitle className="text-case-white">{user.email || 'Email não disponível'}</CardTitle>
                     <p className="text-case-white/60 text-sm">
                       Criado em: {new Date(user.created_at).toLocaleDateString('pt-BR')}
                     </p>
