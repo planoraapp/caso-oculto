@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check, Star, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
@@ -35,7 +34,7 @@ const ComboModal: React.FC<ComboModalProps> = ({
       !['combo', 'complete'].includes(pack.category) && 
       !ownedPackIds.includes(pack.id)
     );
-  }, [packs, ownedPackids]);
+  }, [packs, ownedPackIds]);
 
   const togglePack = (packId: string) => {
     setSelectedPacks(prev => {
