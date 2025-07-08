@@ -28,7 +28,7 @@ const CasesGrid: React.FC<CasesGridProps> = ({
           {cases.map((caseData) => (
             <CaseCard
               key={caseData.id}
-              caseData={caseData}
+              case={caseData}
               isLocked={!caseData.isFree && !hasAccess}
               isSolved={user && solvedCards.includes(caseData.id)}
               onClick={() => onCardClick(caseData)}
