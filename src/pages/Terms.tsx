@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import SiteFooter from '../components/SiteFooter';
 
 const Terms: React.FC = () => {
   return (
@@ -153,8 +152,6 @@ const Terms: React.FC = () => {
           </div>
         </div>
       </motion.div>
-      
-      <SiteFooter />
     </div>
   );
 };

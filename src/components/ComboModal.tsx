@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, Star, ShoppingCart } from 'lucide-react';
+import { X, Check, Star, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 
@@ -28,22 +28,32 @@ const ComboModal: React.FC<ComboModalProps> = ({
   onPurchaseCombo
 }) => {
   const [selectedPacks, setSelectedPacks] = useState<string[]>([]);
+  const [isPacksExpanded, setIsPacksExpanded] = useState(true);
 
   const availablePacks = useMemo(() => {
     return packs.filter(pack => 
       !['combo', 'complete'].includes(pack.category) && 
       !ownedPackIds.includes(pack.id)
     );
-  }, [packs, ownedPackIds]);
+  }, [packs, ownedPackids]);
 
   const togglePack = (packId: string) => {
     setSelectedPacks(prev => {
+      let newSelected;
       if (prev.includes(packId)) {
-        return prev.filter(id => id !== packId);
+        newSelected = prev.filter(id => id !== packId);
       } else if (prev.length < 5) {
-        return [...prev, packId];
+        newSelected = [...prev, packId];
+      } else {
+        return prev;
       }
-      return prev;
+
+      // Auto-collapse when 5 packs are selected
+      if (newSelected.length === 5) {
+        setIsPacksExpanded(false);
+      }
+
+      return newSelected;
     });
   };
 
@@ -115,58 +125,82 @@ const ComboModal: React.FC<ComboModalProps> = ({
             )}
           </div>
 
-          {/* Packs Grid */}
-          <div className="p-6 overflow-y-auto max-h-[60vh]">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {availablePacks.map((pack) => {
-                const isSelected = selectedPacks.includes(pack.id);
-                const isDisabled = !isSelected && selectedPacks.length >= 5;
+          {/* Packs Selection Section */}
+          <div className="border-b border-gray-700">
+            <button
+              onClick={() => setIsPacksExpanded(!isPacksExpanded)}
+              className="w-full p-4 flex items-center justify-between text-case-white hover:bg-gray-800 transition-colors"
+            >
+              <span className="font-semibold">
+                Selecionar Packs {selectedPacks.length === 5 && '(Completo)'}
+              </span>
+              {isPacksExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+            </button>
 
-                return (
-                  <motion.div
-                    key={pack.id}
-                    className={`relative rounded-lg overflow-hidden cursor-pointer transition-all ${
-                      isSelected 
-                        ? 'ring-2 ring-case-red' 
-                        : isDisabled 
-                        ? 'opacity-50 cursor-not-allowed' 
-                        : 'hover:scale-105'
-                    }`}
-                    onClick={() => !isDisabled && togglePack(pack.id)}
-                    whileHover={!isDisabled ? { scale: 1.02 } : {}}
-                    whileTap={!isDisabled ? { scale: 0.98 } : {}}
-                  >
-                    <img
-                      src={pack.image}
-                      alt={pack.name}
-                      className="w-full h-32 object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                    
-                    {/* Selection Indicator */}
-                    {isSelected && (
-                      <div className="absolute top-2 right-2 bg-case-red rounded-full p-1">
-                        <Check className="h-4 w-4 text-white" />
-                      </div>
-                    )}
+            <AnimatePresence>
+              {isPacksExpanded && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="p-6 overflow-y-auto max-h-[50vh]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {availablePacks.map((pack) => {
+                        const isSelected = selectedPacks.includes(pack.id);
+                        const isDisabled = !isSelected && selectedPacks.length >= 5;
 
-                    {/* Pack Info */}
-                    <div className="absolute bottom-2 left-2 right-2">
-                      <h3 className="text-case-white text-sm font-semibold mb-1">
-                        {pack.name}
-                      </h3>
-                      <p className="text-case-white/80 text-xs">
-                        R$ {pack.price.toFixed(2).replace('.', ',')}
-                      </p>
+                        return (
+                          <motion.div
+                            key={pack.id}
+                            className={`relative rounded-lg overflow-hidden cursor-pointer transition-all ${
+                              isSelected 
+                                ? 'ring-2 ring-case-red' 
+                                : isDisabled 
+                                ? 'opacity-50 cursor-not-allowed' 
+                                : 'hover:scale-105'
+                            }`}
+                            onClick={() => !isDisabled && togglePack(pack.id)}
+                            whileHover={!isDisabled ? { scale: 1.02 } : {}}
+                            whileTap={!isDisabled ? { scale: 0.98 } : {}}
+                          >
+                            <img
+                              src={pack.image}
+                              alt={pack.name}
+                              className="w-full h-32 object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                            
+                            {/* Selection Indicator */}
+                            {isSelected && (
+                              <div className="absolute top-2 right-2 bg-case-red rounded-full p-1">
+                                <Check className="h-4 w-4 text-white" />
+                              </div>
+                            )}
+
+                            {/* Pack Info */}
+                            <div className="absolute bottom-2 left-2 right-2">
+                              <h3 className="text-case-white text-sm font-semibold mb-1">
+                                {pack.name}
+                              </h3>
+                              <p className="text-case-white/80 text-xs">
+                                R$ {pack.price.toFixed(2).replace('.', ',')}
+                              </p>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
                     </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Footer */}
-          <div className="p-6 border-t border-gray-700">
+          <div className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Star className="h-5 w-5 text-yellow-500" />
