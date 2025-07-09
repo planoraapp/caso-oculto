@@ -1,17 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Label } from './ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Badge } from './ui/badge';
+import { Card, CardContent } from './ui/card';
 import { supabase } from '../integrations/supabase/client';
 import { useToast } from '../hooks/use-toast';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import PackManagerHeader from './pack-manager/PackManagerHeader';
+import PackTable from './pack-manager/PackTable';
+import PackFormDialog from './pack-manager/PackFormDialog';
 
 interface Pack {
   id: string;
@@ -25,6 +19,16 @@ interface Pack {
   updated_at: string;
 }
 
+interface PackFormData {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  difficulty: string;
+  image: string;
+  category: string;
+}
+
 const PackManager: React.FC = () => {
   const [packs, setPacks] = useState<Pack[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,7 +37,7 @@ const PackManager: React.FC = () => {
   const [isCreating, setIsCreating] = useState(false);
   const { toast } = useToast();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<PackFormData>({
     id: '',
     name: '',
     description: '',
@@ -181,177 +185,33 @@ const PackManager: React.FC = () => {
     }
   };
 
+  const handleCancel = () => {
+    setIsDialogOpen(false);
+    resetForm();
+  };
+
   if (loading) {
     return <div className="text-case-white text-center">Carregando packs...</div>;
   }
 
   return (
     <Card className="bg-noir-dark border-noir-medium">
-      <CardHeader>
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-case-white">Gerenciar Packs</CardTitle>
-          <Button onClick={handleCreate} className="bg-case-red hover:bg-red-600">
-            <Plus className="h-4 w-4 mr-2" />
-            Novo Pack
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-case-white">ID</TableHead>
-              <TableHead className="text-case-white">Nome</TableHead>
-              <TableHead className="text-case-white">Descrição</TableHead>
-              <TableHead className="text-case-white">Preço</TableHead>
-              <TableHead className="text-case-white">Dificuldade</TableHead>
-              <TableHead className="text-case-white">Categoria</TableHead>
-              <TableHead className="text-case-white">Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {packs.map((pack) => (
-              <TableRow key={pack.id}>
-                <TableCell className="text-case-white font-mono text-xs">{pack.id}</TableCell>
-                <TableCell className="text-case-white">{pack.name}</TableCell>
-                <TableCell className="text-case-white max-w-xs truncate">{pack.description}</TableCell>
-                <TableCell className="text-case-white">R$ {pack.price.toFixed(2)}</TableCell>
-                <TableCell>
-                  <Badge variant={
-                    pack.difficulty === 'easy' ? 'secondary' :
-                    pack.difficulty === 'medium' ? 'default' : 'destructive'
-                  }>
-                    {pack.difficulty}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-case-white">{pack.category}</TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      onClick={() => handleEdit(pack)}
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleDelete(pack.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="bg-noir-dark border-noir-medium max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="text-case-white">
-                {isCreating ? 'Criar Novo Pack' : 'Editar Pack'}
-              </DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="id" className="text-case-white">ID</Label>
-                  <Input
-                    id="id"
-                    value={formData.id}
-                    onChange={(e) => setFormData({...formData, id: e.target.value})}
-                    placeholder="ex: meu-pack"
-                    className="bg-noir-medium border-noir-light text-case-white"
-                    disabled={!isCreating}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="name" className="text-case-white">Nome</Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="bg-noir-medium border-noir-light text-case-white"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="description" className="text-case-white">Descrição</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  className="bg-noir-medium border-noir-light text-case-white"
-                  rows={3}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="image" className="text-case-white">URL da Imagem</Label>
-                <Input
-                  id="image"
-                  value={formData.image}
-                  onChange={(e) => setFormData({...formData, image: e.target.value})}
-                  placeholder="/lovable-uploads/image.png"
-                  className="bg-noir-medium border-noir-light text-case-white"
-                />
-              </div>
-
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <Label htmlFor="price" className="text-case-white">Preço</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    step="0.01"
-                    value={formData.price}
-                    onChange={(e) => setFormData({...formData, price: parseFloat(e.target.value)})}
-                    className="bg-noir-medium border-noir-light text-case-white"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="difficulty" className="text-case-white">Dificuldade</Label>
-                  <Select value={formData.difficulty} onValueChange={(value) => setFormData({...formData, difficulty: value})}>
-                    <SelectTrigger className="bg-noir-medium border-noir-light text-case-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="easy">Fácil</SelectItem>
-                      <SelectItem value="medium">Médio</SelectItem>
-                      <SelectItem value="hard">Difícil</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="category" className="text-case-white">Categoria</Label>
-                  <Input
-                    id="category"
-                    value={formData.category}
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    className="bg-noir-medium border-noir-light text-case-white"
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-2 pt-4">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setIsDialogOpen(false)}
-                  className="border-noir-light text-case-white hover:bg-noir-medium"
-                >
-                  Cancelar
-                </Button>
-                <Button onClick={handleSave} className="bg-case-red hover:bg-red-600">
-                  {isCreating ? 'Criar' : 'Salvar'}
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+      <PackManagerHeader onCreateNew={handleCreate} />
+      <CardContent>
+        <PackTable 
+          packs={packs} 
+          onEdit={handleEdit} 
+          onDelete={handleDelete} 
+        />
+        <PackFormDialog
+          isOpen={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          isCreating={isCreating}
+          formData={formData}
+          onFormDataChange={setFormData}
+          onSave={handleSave}
+          onCancel={handleCancel}
+        />
       </CardContent>
     </Card>
   );
