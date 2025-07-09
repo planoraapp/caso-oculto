@@ -1,14 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Badge } from './ui/badge';
-import { Trash2, Edit, Plus, X } from 'lucide-react';
 import { supabase } from '../integrations/supabase/client';
 import { useToast } from '../hooks/use-toast';
-import { packs } from '../data/packs';
+import UserCard from './user-manager/UserCard';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 
 interface UserPackAccess {
@@ -174,104 +169,18 @@ const UserManager: React.FC = () => {
           const isEditing = editingUser === user.id;
 
           return (
-            <Card key={user.id} className="bg-noir-dark border-noir-medium">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-case-white">{user.email || 'Email não disponível'}</CardTitle>
-                    <p className="text-case-white/60 text-sm">
-                      Criado em: {new Date(user.created_at).toLocaleDateString('pt-BR')}
-                    </p>
-                    {user.last_sign_in_at && (
-                      <p className="text-case-white/60 text-sm">
-                        Último login: {new Date(user.last_sign_in_at).toLocaleDateString('pt-BR')}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setEditingUser(isEditing ? null : user.id)}
-                      className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
-                    >
-                      {isEditing ? <X className="h-4 w-4" /> : <Edit className="h-4 w-4" />}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => deleteUser(user.id)}
-                      className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {/* User Packs */}
-                  <div>
-                    <h4 className="text-case-white font-semibold mb-2">Packs do Usuário:</h4>
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {userPacks.length > 0 ? (
-                        userPacks.map((access) => {
-                          const pack = packs.find(p => p.id === access.pack_id);
-                          return (
-                            <Badge 
-                              key={access.id} 
-                              variant="secondary" 
-                              className="bg-green-600 text-white flex items-center gap-1"
-                            >
-                              {pack?.name || access.pack_id}
-                              <button
-                                onClick={() => removePackFromUser(access.id)}
-                                className="ml-1 hover:text-red-300"
-                              >
-                                <X className="h-3 w-3" />
-                              </button>
-                            </Badge>
-                          );
-                        })
-                      ) : (
-                        <span className="text-case-white/60">Nenhum pack</span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Add Pack Form */}
-                  {isEditing && (
-                    <div className="p-4 bg-noir-medium rounded-lg">
-                      <Label className="text-case-white mb-2">Adicionar Pack:</Label>
-                      <div className="flex gap-2">
-                        <select
-                          value={newPackId}
-                          onChange={(e) => setNewPackId(e.target.value)}
-                          className="flex-1 bg-noir-dark border border-noir-light text-case-white rounded px-3 py-2"
-                        >
-                          <option value="">Selecione um pack</option>
-                          {packs
-                            .filter(pack => !['combo', 'complete'].includes(pack.category))
-                            .filter(pack => !userPacks.some(access => access.pack_id === pack.id))
-                            .map(pack => (
-                              <option key={pack.id} value={pack.id}>
-                                {pack.name}
-                              </option>
-                            ))}
-                        </select>
-                        <Button
-                          onClick={() => newPackId && addPackToUser(user.id, newPackId)}
-                          disabled={!newPackId}
-                          className="bg-case-red hover:bg-red-600"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <UserCard
+              key={user.id}
+              user={user}
+              userPacks={userPacks}
+              isEditing={isEditing}
+              newPackId={newPackId}
+              onToggleEdit={() => setEditingUser(isEditing ? null : user.id)}
+              onDeleteUser={() => deleteUser(user.id)}
+              onRemovePackFromUser={removePackFromUser}
+              onNewPackIdChange={setNewPackId}
+              onAddPackToUser={() => newPackId && addPackToUser(user.id, newPackId)}
+            />
           );
         })}
       </div>
