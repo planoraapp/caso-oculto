@@ -7,7 +7,7 @@ import Carousel3D from '../components/Carousel3D';
 const Home: React.FC = () => {
   return <div className="min-h-screen bg-gray-900">
       {/* Hero Section with fade-in - Moved up */}
-      <motion.div className="relative min-h-[80vh] flex items-center justify-center overflow-hidden" initial={{
+      <motion.div initial={{
       opacity: 0,
       y: 20
     }} animate={{
@@ -16,7 +16,7 @@ const Home: React.FC = () => {
     }} transition={{
       duration: 0.8,
       ease: "easeOut"
-    }}>
+    }} className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="container mx-auto relative z-20 px-0">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-anton text-4xl md:text-6xl lg:text-7xl text-case-white mb-6 leading-tight">
