@@ -18,47 +18,90 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    if (!email || !password || (!isLogin && !name)) {
+  const validateForm = () => {
+    if (!email.trim()) {
       toast({
         title: 'Erro',
-        description: 'Por favor, preencha todos os campos.',
+        description: 'Por favor, insira um email válido.',
         variant: 'destructive'
       });
-      setLoading(false);
+      return false;
+    }
+
+    if (!password.trim() || password.length < 6) {
+      toast({
+        title: 'Erro',
+        description: 'A senha deve ter pelo menos 6 caracteres.',
+        variant: 'destructive'
+      });
+      return false;
+    }
+
+    if (!isLogin && !name.trim()) {
+      toast({
+        title: 'Erro',
+        description: 'Por favor, insira seu nome.',
+        variant: 'destructive'
+      });
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
       return;
     }
 
+    setLoading(true);
+
     try {
       if (isLogin) {
-        // Mock login
-        const userData = {
-          id: 'user_' + Date.now(),
-          email,
-          name: name || 'Detetive',
-          isAdmin: email.startsWith('admin')
-        };
-        onLogin(userData);
-        toast({
-          title: 'Login realizado com sucesso!',
-          description: `Bem-vindo, ${userData.name}!`,
-        });
+        // Mock login com validação básica
+        if (email === 'admin@test.com' && password === '123456') {
+          const userData = {
+            id: 'user_admin',
+            email,
+            name: 'Admin',
+            isAdmin: true
+          };
+          onLogin(userData);
+          toast({
+            title: 'Login realizado com sucesso!',
+            description: `Bem-vindo, ${userData.name}!`,
+          });
+        } else if (email.includes('@') && password.length >= 6) {
+          const userData = {
+            id: 'user_' + Date.now(),
+            email,
+            name: name || 'Detetive',
+            isAdmin: email === 'conectawebapps@outlook.com'
+          };
+          onLogin(userData);
+          toast({
+            title: 'Login realizado com sucesso!',
+            description: `Bem-vindo, ${userData.name}!`,
+          });
+        } else {
+          throw new Error('Credenciais inválidas');
+        }
       } else {
         // Mock signup
         toast({
           title: 'Registo realizado com sucesso!',
-          description: 'Por favor, verifique o seu e-mail para ativar a conta. (Funcionalidade simulada)',
+          description: 'Por favor, faça login com suas credenciais.',
         });
         setIsLogin(true);
         setName('');
+        setPassword('');
       }
     } catch (error) {
       toast({
         title: 'Erro',
-        description: 'Falha na autenticação. Tente novamente.',
+        description: 'Credenciais inválidas. Tente novamente.',
         variant: 'destructive'
       });
     } finally {
@@ -126,6 +169,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               placeholder="Digite sua senha"
               className="bg-noir-medium border-noir-light text-case-white mt-1"
               required
+              minLength={6}
             />
           </div>
 
@@ -147,6 +191,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             {isLogin ? 'Não tem uma conta? Registe-se' : 'Já tem uma conta? Entre'}
           </Button>
         </div>
+
+        {isLogin && (
+          <div className="mt-4 p-4 bg-noir-medium rounded text-case-white/70 text-sm">
+            <p><strong>Conta de teste:</strong></p>
+            <p>Email: admin@test.com</p>
+            <p>Senha: 123456</p>
+          </div>
+        )}
       </Card>
     </div>
   );

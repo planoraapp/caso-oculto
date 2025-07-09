@@ -7,13 +7,24 @@ interface NeonLogoProps {
 
 const NeonLogo: React.FC<NeonLogoProps> = ({ onClick }) => {
   const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     if (onClick) {
       onClick(e);
     }
   };
 
   return (
-    <a href="#" onClick={handleClick} className="logo-neon text-2xl md:text-3xl">
+    <div 
+      onClick={handleClick} 
+      className="logo-neon text-2xl md:text-3xl cursor-pointer"
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleClick(e as any);
+        }
+      }}
+    >
       <span>C</span>
       <span>A</span>
       <span>S</span>
@@ -25,7 +36,7 @@ const NeonLogo: React.FC<NeonLogoProps> = ({ onClick }) => {
       <span>L</span>
       <span>T</span>
       <span className="flicker-fast">O</span>
-    </a>
+    </div>
   );
 };
 

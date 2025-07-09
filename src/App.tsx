@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Navigation from "./components/Navigation";
 import SiteFooter from "./components/SiteFooter";
 import Home from "./pages/Home";
@@ -16,7 +18,14 @@ import AdminPanel from "./pages/AdminPanel";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      staleTime: 5 * 60 * 1000, // 5 minutos
+    },
+  },
+});
 
 const AppContent = () => {
   const location = useLocation();
@@ -25,16 +34,25 @@ const AppContent = () => {
 
   useEffect(() => {
     // Check for existing session
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    try {
+      const savedUser = localStorage.getItem('currentUser');
+      if (savedUser) {
+        const userData = JSON.parse(savedUser);
+        setUser(userData);
+      }
+    } catch (error) {
+      localStorage.removeItem('currentUser');
     }
     setLoading(false);
   }, []);
 
   const handleLogin = (userData: any) => {
     setUser(userData);
-    localStorage.setItem('currentUser', JSON.stringify(userData));
+    try {
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+    } catch (error) {
+      console.error('Error saving user data:', error);
+    }
   };
 
   const handleLogout = () => {
@@ -43,6 +61,7 @@ const AppContent = () => {
   };
 
   const showFooter = ['/', '/packs', '/library', '/terms'].includes(location.pathname);
+  const isAdmin = user?.email === 'conectawebapps@outlook.com' || user?.isAdmin;
 
   if (loading) {
     return (
@@ -81,7 +100,7 @@ const AppContent = () => {
         <Route 
           path="/admin" 
           element={
-            user && user.email === 'conectawebapps@outlook.com' ? 
+            user && isAdmin ? 
             <AdminPanel user={user} /> : 
             <Navigate to="/" replace />
           } 
@@ -95,15 +114,17 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 
