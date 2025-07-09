@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { packs } from '../data/packs';
@@ -10,7 +9,6 @@ import LoadingSpinner from './LoadingSpinner';
 import CarouselControls from './carousel/CarouselControls';
 import CarouselIndicators from './carousel/CarouselIndicators';
 import { usePaymentManager } from '../hooks/usePaymentManager';
-import { useComboManager } from '../hooks/useComboManager';
 import { getUserPacks } from '../data/packs';
 
 const Carousel3D: React.FC = () => {
@@ -30,8 +28,6 @@ const Carousel3D: React.FC = () => {
     closePaymentStatus,
     setCheckoutPreferenceId
   } = usePaymentManager(currentUser.id);
-
-  const { handlePurchaseCombo: onPurchaseCombo } = useComboManager(packs, ownedPackIds);
 
   const featuredPacks = useMemo(() => 
     packs.filter(p => !['combo', 'complete'].includes(p.category)).slice(0, 6), 
