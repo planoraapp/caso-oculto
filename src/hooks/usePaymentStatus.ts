@@ -1,6 +1,7 @@
 
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { usePaymentValidation } from './usePaymentValidation';
 
 export interface PaymentStatus {
   isOpen: boolean;
@@ -15,6 +16,8 @@ export const usePaymentStatus = (userId: string) => {
     packName: ''
   });
 
+  const { validatePaymentType, clearErrors } = usePaymentValidation();
+
   const createPaymentSession = useCallback(async (
     packId: string | null, 
     paymentType: 'individual' | 'combo' | 'complete',
@@ -22,6 +25,11 @@ export const usePaymentStatus = (userId: string) => {
   ) => {
     console.log('Creating payment session:', { packId, paymentType, selectedPackIds, userId });
     
+    // Validar entrada antes de processar
+    if (!validatePaymentType(paymentType, packId, selectedPackIds)) {
+      throw new Error('Dados de pagamento inválidos');
+    }
+
     try {
       const { data, error } = await supabase.functions.invoke('create-payment', {
         body: {
@@ -41,13 +49,15 @@ export const usePaymentStatus = (userId: string) => {
       return {
         id: `session_${Date.now()}`,
         mercadopago_preference_id: data.preference_id,
-        status: 'pending'
+        status: 'pending' as const
       };
     } catch (error) {
       console.error('Error in createPaymentSession:', error);
       throw error;
+    } finally {
+      clearErrors();
     }
-  }, [userId]);
+  }, [userId, validatePaymentType, clearErrors]);
 
   const simulatePaymentConfirmation = useCallback(async (sessionId: string, success: boolean) => {
     console.log('Simulating payment confirmation:', { sessionId, success });

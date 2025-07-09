@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Lock, CheckCircle, HelpCircle } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { Pack } from '../../data/packs';
+import { Pack } from '../../data/types';
 
 interface PackHeaderProps {
   pack: Pack;
@@ -24,7 +24,7 @@ const PackHeader: React.FC<PackHeaderProps> = ({
   onHowToPlayClick
 }) => {
   const solvedCount = solvedCards.length;
-  const totalCards = pack.cases.length;
+  const totalCards = pack.cases?.length || 0;
   const progress = totalCards > 0 ? (solvedCount / totalCards) * 100 : 0;
 
   const getDifficultyColor = (difficulty: string) => {
@@ -53,12 +53,20 @@ const PackHeader: React.FC<PackHeaderProps> = ({
     }
   };
 
+  if (!pack) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center bg-gray-900">
+        <div className="text-case-white text-xl">Carregando pack...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${pack.image})` }}
+        style={{ backgroundImage: `url(${pack.image || '/placeholder-pack.jpg'})` }}
       />
       <div className="absolute inset-0 bg-black/60" />
       
@@ -87,7 +95,7 @@ const PackHeader: React.FC<PackHeaderProps> = ({
             </p>
 
             {/* Progress Bar (only show if user has access) */}
-            {hasAccess && user && (
+            {hasAccess && user && totalCards > 0 && (
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className="h-5 w-5 text-green-400" />
@@ -128,7 +136,7 @@ const PackHeader: React.FC<PackHeaderProps> = ({
               </Button>
             </div>
 
-            {!hasAccess && (
+            {!hasAccess && totalCards > 0 && (
               <p className="text-case-white/70 mt-4 text-sm">
                 Desbloqueie este pack para ter acesso a todos os {totalCards} mistérios
               </p>

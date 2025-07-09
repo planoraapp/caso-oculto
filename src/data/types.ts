@@ -9,6 +9,9 @@ export interface Case {
   theme: 'mystery' | 'murder' | 'theft' | 'investigation' | 'thriller' | 'crime' | 'conspiracy' | 'danger' | 'power';
   name?: string;
   icon?: string;
+  title?: string;
+  description?: string;
+  image?: string;
 }
 
 export interface Pack {
@@ -47,4 +50,28 @@ export interface Coupon {
   max_uses?: number;
   current_uses: number;
   min_purchase_amount?: number;
+}
+
+// Tipos para sessões de pagamento
+export interface PaymentSession {
+  id: string;
+  user_id: string;
+  pack_id?: string;
+  selected_pack_ids?: string[];
+  payment_type: 'individual' | 'combo' | 'complete';
+  mercadopago_preference_id: string;
+  status: 'pending' | 'approved' | 'rejected' | 'cancelled';
+  created_at: string;
+  updated_at: string;
+}
+
+// Tipos para acesso de usuário aos packs
+export interface UserPackAccess {
+  id: string;
+  user_id: string;
+  pack_id: string;
+  granted_at: string;
+  revoked_at?: string;
+  is_active: boolean;
+  granted_by?: string;
 }

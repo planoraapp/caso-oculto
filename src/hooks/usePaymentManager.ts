@@ -1,6 +1,7 @@
 
 import { useState, useCallback } from 'react';
 import { usePaymentStatus } from './usePaymentStatus';
+import { usePaymentValidation } from './usePaymentValidation';
 
 export interface PaymentManagerState {
   isLoading: boolean;
@@ -26,6 +27,8 @@ export const usePaymentManager = (userId: string) => {
     closePaymentStatus
   } = usePaymentStatus(userId);
 
+  const { errors, clearErrors } = usePaymentValidation();
+
   const setLoading = useCallback((loading: boolean) => {
     setState(prev => ({ ...prev, isLoading: loading }));
   }, []);
@@ -48,7 +51,8 @@ export const usePaymentManager = (userId: string) => {
       isPaymentModalOpen: false,
       selectedPack: null
     }));
-  }, []);
+    clearErrors();
+  }, [clearErrors]);
 
   const openComboModal = useCallback(() => {
     setState(prev => ({ ...prev, isComboModalOpen: true }));
@@ -56,7 +60,8 @@ export const usePaymentManager = (userId: string) => {
 
   const closeComboModal = useCallback(() => {
     setState(prev => ({ ...prev, isComboModalOpen: false }));
-  }, []);
+    clearErrors();
+  }, [clearErrors]);
 
   const handlePaymentCreated = useCallback((preferenceId: string) => {
     setCheckoutPreferenceId(preferenceId);
@@ -65,6 +70,12 @@ export const usePaymentManager = (userId: string) => {
 
   const handlePurchaseCombo = useCallback(async (selectedPackIds: string[]) => {
     if (state.isLoading || !userId) return;
+    
+    if (selectedPackIds.length < 2) {
+      console.error('Combo deve ter pelo menos 2 packs');
+      return;
+    }
+
     setLoading(true);
     
     try {
@@ -78,7 +89,7 @@ export const usePaymentManager = (userId: string) => {
     } finally {
       setLoading(false);
     }
-  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus]);
+  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, closeComboModal, setCheckoutPreferenceId]);
 
   const handleCompletePurchase = useCallback(async () => {
     if (state.isLoading || !userId) return;
@@ -94,12 +105,29 @@ export const usePaymentManager = (userId: string) => {
     } finally {
       setLoading(false);
     }
-  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus]);
+  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, setCheckoutPreferenceId]);
+
+  const handleIndividualPurchase = useCallback(async (packId: string, packName: string) => {
+    if (state.isLoading || !userId) return;
+    setLoading(true);
+    
+    try {
+      console.log('Starting individual purchase for pack:', packId);
+      const session = await createPaymentSession(packId, 'individual');
+      setCheckoutPreferenceId(session.mercadopago_preference_id);
+    } catch (error) {
+      console.error('Erro ao processar pagamento individual:', error);
+      showPaymentStatus('rejected', packName);
+    } finally {
+      setLoading(false);
+    }
+  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, setCheckoutPreferenceId]);
 
   return {
     // State
     ...state,
     paymentStatus,
+    errors,
     
     // Actions
     setLoading,
@@ -111,6 +139,7 @@ export const usePaymentManager = (userId: string) => {
     handlePaymentCreated,
     handlePurchaseCombo,
     handleCompletePurchase,
+    handleIndividualPurchase,
     closePaymentStatus,
     
     // Services
