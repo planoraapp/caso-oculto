@@ -6,7 +6,6 @@ import { Button } from '../components/ui/button';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
 import PaymentOptionsModal from '../components/PaymentOptionsModal';
-import StripeCheckout from '../components/StripeCheckout';
 import LoadingSpinner from '../components/LoadingSpinner';
 import HowToPlayModal from '../components/HowToPlayModal';
 import SpecialOffersSection from '../components/packs/SpecialOffersSection';
@@ -24,7 +23,6 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   
   const {
     isLoading,
-    stripeSessionId,
     isPaymentModalOpen,
     isComboModalOpen,
     selectedPack,
@@ -51,6 +49,13 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     if (!user) return;
     openPaymentModal(pack);
   }, [user, openPaymentModal]);
+
+  const handlePaymentSuccess = () => {
+    // Refresh the page after successful payment to update pack access
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  };
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -140,7 +145,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
           packName={selectedPack.name}
           packId={selectedPack.id}
           user={user}
-          onPaymentCreated={handlePaymentCreated}
+          onPaymentCreated={handlePaymentSuccess}
         />
       )}
 
@@ -150,22 +155,6 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
         status={paymentStatus.status} 
         packName={paymentStatus.packName} 
       />
-
-      {stripeSessionId && (
-        <StripeCheckout 
-          type="individual"
-          packId={selectedPack?.id}
-          userId={user?.id || ''}
-          sessionId={stripeSessionId}
-          onSuccess={() => {
-            console.log('Payment successful');
-            // Reset checkout preference handled by payment manager
-          }}
-          onError={(error) => {
-            console.error('Payment error:', error);
-          }}
-        />
-      )}
     </div>
   );
 };

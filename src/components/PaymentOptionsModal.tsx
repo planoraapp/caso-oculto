@@ -11,10 +11,15 @@ import {
   Crown, 
   CheckCircle, 
   X,
-  Loader2 
+  ArrowLeft 
 } from 'lucide-react';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import StripePaymentForm from './StripePaymentForm';
 import { useToast } from '../hooks/use-toast';
-import { supabase } from '../integrations/supabase/client';
+
+// Chave pública live da Stripe
+const stripePromise = loadStripe('pk_live_51RhgpgLtmJkjKIDB5HIRkSFixyXL4Nsv884yLSWfiy02vbsYYuXw7eX29gkQnWISxycMvrNdObsLLVUERDyUptyH00xXh7fdHL');
 
 interface PaymentOptionsModalProps {
   isOpen: boolean;
@@ -41,7 +46,7 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   discountAmount = 0,
   onPaymentCreated
 }) => {
-  const [loading, setLoading] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
   const { toast } = useToast();
 
   const getPaymentInfo = () => {
@@ -52,7 +57,8 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
           subtitle: packName || 'Pack selecionado',
           description: 'Acesso completo ao pack escolhido',
           icon: Package,
-          features: ['Todos os casos do pack', 'Progresso salvo', 'Acesso vitalício']
+          features: ['Todos os casos do pack', 'Progresso salvo', 'Acesso vitalício'],
+          price: 1480 // R$ 14,80 em centavos
         };
       case 'combo':
         return {
@@ -60,7 +66,8 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
           subtitle: `${selectedPackIds?.length || 0} packs selecionados`,
           description: 'Economia especial para múltiplos packs',
           icon: Star,
-          features: ['5 packs de sua escolha', 'Desconto especial', 'Todos os recursos', 'Acesso vitalício']
+          features: ['5 packs de sua escolha', 'Desconto especial', 'Todos os recursos', 'Acesso vitalício'],
+          price: 6140 // R$ 61,40 em centavos
         };
       case 'complete':
         return {
@@ -68,7 +75,8 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
           subtitle: 'Todos os packs disponíveis',
           description: 'Acesso completo a toda a plataforma',
           icon: Crown,
-          features: ['Todos os packs', 'Futuros lançamentos', 'Prioridade no suporte', 'Acesso vitalício']
+          features: ['Todos os packs', 'Futuros lançamentos', 'Prioridade no suporte', 'Acesso vitalício'],
+          price: 11090 // R$ 110,90 em centavos
         };
       default:
         return {
@@ -76,68 +84,38 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
           subtitle: '',
           description: '',
           icon: Package,
-          features: []
+          features: [],
+          price: 0
         };
     }
   };
 
-  const handleStripePayment = async () => {
-    if (!user) {
-      toast({
-        title: "Erro",
-        description: "Você precisa estar logado para fazer uma compra",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setLoading(true);
+  const handlePaymentSuccess = () => {
+    toast({
+      title: "Pagamento Aprovado!",
+      description: "Seu acesso foi liberado com sucesso.",
+    });
     
-    try {
-      console.log('Initiating Stripe payment:', { type, packId, selectedPackIds, userId: user.id });
-
-      const { data, error } = await supabase.functions.invoke('create-stripe-session', {
-        body: {
-          type,
-          packId,
-          selectedPackIds,
-          userId: user.id
-        }
-      });
-
-      if (error) {
-        console.error('Stripe session error:', error);
-        throw new Error(error.message || 'Erro ao criar sessão de pagamento');
-      }
-
-      if (!data || !data.url) {
-        throw new Error('URL de checkout não recebida');
-      }
-
-      console.log('Stripe session created, redirecting to:', data.url);
-      
-      // Redirecionar para o Stripe Checkout
-      window.location.href = data.url;
-      
-      if (onPaymentCreated && data.sessionId) {
-        onPaymentCreated(data.sessionId);
-      }
-      
-    } catch (error) {
-      console.error('Payment error:', error);
-      toast({
-        title: "Erro no Pagamento",
-        description: error instanceof Error ? error.message : "Erro desconhecido ao processar pagamento",
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
+    if (onPaymentCreated) {
+      onPaymentCreated('payment_completed');
     }
+    
+    // Fechar modal após um breve delay para mostrar o sucesso
+    setTimeout(() => {
+      onClose();
+      setShowPaymentForm(false);
+    }, 2000);
+  };
+
+  const handlePaymentError = (error: string) => {
+    console.error('Payment error:', error);
+    // Manter o modal aberto para permitir nova tentativa
   };
 
   const paymentInfo = getPaymentInfo();
   const IconComponent = paymentInfo.icon;
-  const finalPrice = totalPrice - discountAmount;
+  const finalPrice = totalPrice > 0 ? totalPrice - discountAmount : paymentInfo.price / 100;
+  const amountInCents = totalPrice > 0 ? Math.round((totalPrice - discountAmount) * 100) : paymentInfo.price;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -145,8 +123,18 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-case-white flex items-center gap-2">
+              {showPaymentForm && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowPaymentForm(false)}
+                  className="text-case-white hover:text-case-red mr-2 p-1"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              )}
               <IconComponent className="h-6 w-6 text-case-red" />
-              Finalizar Compra
+              {showPaymentForm ? 'Finalizar Pagamento' : 'Finalizar Compra'}
             </DialogTitle>
             <Button
               variant="ghost"
@@ -160,84 +148,110 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Resumo do Produto */}
-          <Card className="bg-noir-medium border-noir-light">
-            <CardHeader>
-              <CardTitle className="text-case-white flex items-center gap-2">
-                <IconComponent className="h-5 w-5 text-case-red" />
-                {paymentInfo.title}
-              </CardTitle>
-              <p className="text-case-white/80">{paymentInfo.subtitle}</p>
-            </CardHeader>
-            <CardContent>
-              <p className="text-case-white/60 mb-4">{paymentInfo.description}</p>
-              
-              {/* Recursos Inclusos */}
-              <div className="space-y-2">
-                <h4 className="text-case-white font-medium">Incluído:</h4>
-                {paymentInfo.features.map((feature, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span className="text-case-white/80 text-sm">{feature}</span>
+          {!showPaymentForm ? (
+            <>
+              {/* Resumo do Produto */}
+              <Card className="bg-noir-medium border-noir-light">
+                <CardHeader>
+                  <CardTitle className="text-case-white flex items-center gap-2">
+                    <IconComponent className="h-5 w-5 text-case-red" />
+                    {paymentInfo.title}
+                  </CardTitle>
+                  <p className="text-case-white/80">{paymentInfo.subtitle}</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-case-white/60 mb-4">{paymentInfo.description}</p>
+                  
+                  {/* Recursos Inclusos */}
+                  <div className="space-y-2">
+                    <h4 className="text-case-white font-medium">Incluído:</h4>
+                    {paymentInfo.features.map((feature, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-case-white/80 text-sm">{feature}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
 
-          {/* Resumo de Preços */}
-          {totalPrice > 0 && (
-            <Card className="bg-noir-medium border-noir-light">
-              <CardContent className="pt-6">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-case-white/80">Subtotal:</span>
-                    <span className="text-case-white">R$ {totalPrice.toFixed(2)}</span>
-                  </div>
-                  
-                  {discountAmount > 0 && (
+              {/* Resumo de Preços */}
+              <Card className="bg-noir-medium border-noir-light">
+                <CardContent className="pt-6">
+                  <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-green-500">Desconto:</span>
-                      <span className="text-green-500">-R$ {discountAmount.toFixed(2)}</span>
+                      <span className="text-case-white/80">Subtotal:</span>
+                      <span className="text-case-white">R$ {finalPrice.toFixed(2)}</span>
                     </div>
-                  )}
-                  
-                  <div className="border-t border-noir-light pt-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-case-white font-semibold">Total:</span>
-                      <span className="text-case-white font-semibold text-lg">
-                        R$ {finalPrice.toFixed(2)}
-                      </span>
+                    
+                    {discountAmount > 0 && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-green-500">Desconto:</span>
+                        <span className="text-green-500">-R$ {discountAmount.toFixed(2)}</span>
+                      </div>
+                    )}
+                    
+                    <div className="border-t border-noir-light pt-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-case-white font-semibold">Total:</span>
+                        <span className="text-case-white font-semibold text-lg">
+                          R$ {finalPrice.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Botão para ir ao pagamento */}
+              <div className="space-y-4">
+                <Button
+                  onClick={() => setShowPaymentForm(true)}
+                  disabled={!user}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 h-auto"
+                >
+                  <CreditCard className="h-5 w-5 mr-2" />
+                  Pagar com Cartão
+                </Button>
+
+                <div className="text-center">
+                  <Badge variant="secondary" className="bg-green-600 text-white">
+                    Pagamento Seguro SSL
+                  </Badge>
+                </div>
+              </div>
+            </>
+          ) : (
+            /* Formulário de Pagamento Integrado */
+            <Elements stripe={stripePromise}>
+              <div className="space-y-6">
+                {/* Resumo do pedido */}
+                <div className="bg-noir-medium border border-noir-light rounded-lg p-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-case-white font-medium">{paymentInfo.title}</p>
+                      <p className="text-case-white/60 text-sm">{paymentInfo.subtitle}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-case-white font-semibold">R$ {finalPrice.toFixed(2)}</p>
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+
+                {/* Formulário de Pagamento */}
+                <StripePaymentForm
+                  amount={amountInCents}
+                  currency="brl"
+                  onSuccess={handlePaymentSuccess}
+                  onError={handlePaymentError}
+                  type={type}
+                  packId={packId}
+                  selectedPackIds={selectedPackIds}
+                  userId={user?.id || ''}
+                />
+              </div>
+            </Elements>
           )}
-
-          {/* Opções de Pagamento */}
-          <div className="space-y-4">
-            <h3 className="text-case-white font-semibold">Escolha a forma de pagamento:</h3>
-            
-            <Button
-              onClick={handleStripePayment}
-              disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 h-auto"
-            >
-              {loading ? (
-                <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-              ) : (
-                <CreditCard className="h-5 w-5 mr-2" />
-              )}
-              {loading ? 'Processando...' : 'Pagar com Cartão (Stripe)'}
-            </Button>
-
-            <div className="text-center">
-              <Badge variant="secondary" className="bg-green-600 text-white">
-                Pagamento Seguro SSL
-              </Badge>
-            </div>
-          </div>
 
           {/* Informações de Segurança */}
           <div className="text-center text-case-white/60 text-xs space-y-1">

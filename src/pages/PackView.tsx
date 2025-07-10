@@ -6,7 +6,6 @@ import FloatingFlipCard from '../components/FloatingFlipCard';
 import PaymentOptionsModal from '../components/PaymentOptionsModal';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
-import StripeCheckout from '../components/StripeCheckout';
 import HowToPlayModal from '../components/HowToPlayModal';
 import PackHeader from '../components/pack-view/PackHeader';
 import CasesGrid from '../components/pack-view/CasesGrid';
@@ -26,7 +25,6 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isComboModalOpen, setIsComboModalOpen] = useState(false);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
-  const [stripeSessionId, setStripeSessionId] = useState<string | null>(null);
 
   const {
     paymentStatus,
@@ -82,7 +80,10 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   };
 
   const handlePaymentCreated = (sessionId: string) => {
-    setStripeSessionId(sessionId);
+    // Refresh the page or update pack access after successful payment
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   const handlePurchaseCombo = async (selectedPackIds: string[]) => {
@@ -90,7 +91,6 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     
     try {
       const session = await createPaymentSession(null, 'combo', selectedPackIds);
-      setStripeSessionId(session.stripe_session_id);
       setIsComboModalOpen(false);
     } catch (error) {
       console.error('Erro ao processar pagamento do combo:', error);
@@ -152,23 +152,6 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
         status={paymentStatus.status}
         packName={paymentStatus.packName}
       />
-
-      {stripeSessionId && (
-        <StripeCheckout
-          type="individual"
-          packId={pack.id}
-          userId={user?.id || ''}
-          sessionId={stripeSessionId}
-          onSuccess={() => {
-            console.log('Payment successful');
-            setStripeSessionId(null);
-          }}
-          onError={(error) => {
-            console.error('Payment error:', error);
-            setStripeSessionId(null);
-          }}
-        />
-      )}
 
       {/* Floating Card Modal */}
       <FloatingFlipCard
