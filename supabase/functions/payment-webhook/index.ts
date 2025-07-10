@@ -8,6 +8,8 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
+  console.log('Payment webhook called:', req.method)
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -15,7 +17,7 @@ serve(async (req) => {
 
   try {
     const body = await req.json()
-    console.log('Webhook received:', body)
+    console.log('Webhook received:', JSON.stringify(body, null, 2))
 
     if (body.type === 'payment') {
       const paymentId = body.data.id
@@ -23,6 +25,7 @@ serve(async (req) => {
 
       const accessToken = Deno.env.get('MERCADO_PAGO_ACCESS_TOKEN')
       if (!accessToken) {
+        console.error('Mercado Pago access token not configured')
         throw new Error('Mercado Pago access token not configured')
       }
 
@@ -34,37 +37,69 @@ serve(async (req) => {
       })
 
       if (!paymentResponse.ok) {
+        console.error('Failed to get payment details:', paymentResponse.status, await paymentResponse.text())
         throw new Error(`Failed to get payment details: ${paymentResponse.status}`)
       }
 
       const payment = await paymentResponse.json()
-      console.log('Payment details:', payment)
+      console.log('Payment details received:', JSON.stringify({
+        id: payment.id,
+        status: payment.status,
+        status_detail: payment.status_detail,
+        external_reference: payment.external_reference,
+        preference_id: payment.additional_info?.items?.[0]?.id
+      }, null, 2))
 
-      const supabase = createClient(
-        Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-      )
+      const supabaseUrl = Deno.env.get('SUPABASE_URL')
+      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+      
+      if (!supabaseUrl || !supabaseKey) {
+        console.error('Supabase configuration missing')
+        throw new Error('Supabase configuration missing')
+      }
+
+      const supabase = createClient(supabaseUrl, supabaseKey)
 
       // Find payment session by preference ID
-      const { data: session } = await supabase
+      const { data: session, error: sessionError } = await supabase
         .from('payment_sessions')
         .select('*')
-        .eq('mercadopago_preference_id', payment.metadata?.preference_id)
+        .eq('mercadopago_preference_id', payment.external_reference || payment.preference_id)
         .single()
 
-      if (!session) {
-        console.error('Payment session not found for preference:', payment.metadata?.preference_id)
-        return new Response('Session not found', { status: 404 })
+      if (sessionError || !session) {
+        console.error('Payment session not found for preference:', payment.external_reference || payment.preference_id, sessionError)
+        
+        // Try to find by any preference ID in the payment data
+        const { data: sessions } = await supabase
+          .from('payment_sessions')
+          .select('*')
+          .eq('status', 'pending')
+        
+        console.log('Available pending sessions:', sessions?.map(s => s.mercadopago_preference_id))
+        
+        return new Response('Session not found', { 
+          status: 404,
+          headers: corsHeaders 
+        })
       }
+
+      console.log('Found payment session:', session.id)
 
       // Update payment session status
       const newStatus = payment.status === 'approved' ? 'approved' : 
                        payment.status === 'rejected' ? 'rejected' : 'pending'
 
-      await supabase
+      const { error: updateError } = await supabase
         .from('payment_sessions')
         .update({ status: newStatus })
         .eq('id', session.id)
+
+      if (updateError) {
+        console.error('Error updating payment session:', updateError)
+      } else {
+        console.log('Payment session updated to status:', newStatus)
+      }
 
       // If payment approved, grant access to packs
       if (payment.status === 'approved') {
@@ -83,18 +118,26 @@ serve(async (req) => {
           packIds = allPacks?.map(p => p.id) || []
         }
 
+        console.log('Granting access to packs:', packIds)
+
         // Grant access to packs
         for (const packId of packIds) {
-          await supabase
+          const { error: accessError } = await supabase
             .from('user_pack_access')
             .upsert({
               user_id: session.user_id,
               pack_id: packId,
               is_active: true
             })
+
+          if (accessError) {
+            console.error('Error granting access to pack:', packId, accessError)
+          } else {
+            console.log('Access granted to pack:', packId)
+          }
         }
 
-        console.log('Access granted to packs:', packIds)
+        console.log('Access granted to all packs for user:', session.user_id)
       }
     }
 

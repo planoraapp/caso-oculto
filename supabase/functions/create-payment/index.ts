@@ -8,6 +8,8 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
+  console.log('Create payment function called:', req.method)
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -15,8 +17,10 @@ serve(async (req) => {
 
   try {
     const { type, packId, selectedPackIds, userId, couponCode } = await req.json()
+    console.log('Payment request data:', { type, packId, selectedPackIds, userId, couponCode })
 
     if (!userId) {
+      console.error('User ID is required')
       return new Response(
         JSON.stringify({ error: 'User ID is required' }),
         { 
@@ -26,9 +30,20 @@ serve(async (req) => {
       )
     }
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    const mercadoPagoToken = Deno.env.get('MERCADO_PAGO_ACCESS_TOKEN')!
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+    const mercadoPagoToken = Deno.env.get('MERCADO_PAGO_ACCESS_TOKEN')
+
+    if (!supabaseUrl || !supabaseKey || !mercadoPagoToken) {
+      console.error('Missing environment variables')
+      return new Response(
+        JSON.stringify({ error: 'Server configuration error' }),
+        { 
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
 
     const supabase = createClient(supabaseUrl, supabaseKey)
 
@@ -39,6 +54,7 @@ serve(async (req) => {
 
     // Validate and apply coupon if provided
     if (couponCode) {
+      console.log('Processing coupon:', couponCode)
       const { data: coupon, error: couponError } = await supabase
         .from('discount_coupons')
         .select('*')
@@ -47,6 +63,7 @@ serve(async (req) => {
         .single()
 
       if (couponError || !coupon) {
+        console.error('Invalid coupon:', couponError)
         return new Response(
           JSON.stringify({ error: 'Cupom inválido ou expirado' }),
           { 
@@ -62,6 +79,7 @@ serve(async (req) => {
       const validUntil = coupon.valid_until ? new Date(coupon.valid_until) : null
 
       if (now < validFrom || (validUntil && now > validUntil)) {
+        console.error('Coupon expired')
         return new Response(
           JSON.stringify({ error: 'Cupom expirado' }),
           { 
@@ -73,6 +91,7 @@ serve(async (req) => {
 
       // Check usage limits
       if (coupon.max_uses && coupon.current_uses >= coupon.max_uses) {
+        console.error('Coupon usage limit reached')
         return new Response(
           JSON.stringify({ error: 'Cupom esgotado' }),
           { 
@@ -101,6 +120,7 @@ serve(async (req) => {
 
       case 'combo':
         if (!selectedPackIds || selectedPackIds.length !== 5) {
+          console.error('Combo must have exactly 5 packs')
           return new Response(
             JSON.stringify({ error: 'Combo deve ter exatamente 5 packs' }),
             { 
@@ -133,6 +153,7 @@ serve(async (req) => {
         break
 
       default:
+        console.error('Invalid payment type:', type)
         return new Response(
           JSON.stringify({ error: 'Tipo de pagamento inválido' }),
           { 
@@ -163,6 +184,9 @@ serve(async (req) => {
       }
     }
 
+    // Get current domain for URLs
+    const origin = req.headers.get('origin') || 'https://fad68a7a-e342-48e7-8997-93ab1e2fd98a.lovableproject.com'
+
     // Create MercadoPago preference
     const preferenceData = {
       items: items.map(item => ({
@@ -173,12 +197,12 @@ serve(async (req) => {
         email: userId + '@blackstories.com' // Placeholder email
       },
       back_urls: {
-        success: `${req.url.split('/functions')[0]}/packs`,
-        failure: `${req.url.split('/functions')[0]}/packs`,
-        pending: `${req.url.split('/functions')[0]}/packs`
+        success: `${origin}/packs`,
+        failure: `${origin}/packs`,
+        pending: `${origin}/packs`
       },
       auto_return: 'approved',
-      notification_url: `${req.url.split('/functions')[0]}/functions/v1/payment-webhook`,
+      notification_url: `https://oxeccsmxqymvxycnaszo.supabase.co/functions/v1/payment-webhook`,
       metadata: {
         user_id: userId,
         payment_type: type,
@@ -188,6 +212,8 @@ serve(async (req) => {
         discount_applied: discountAmount
       }
     }
+
+    console.log('Creating MercadoPago preference with data:', JSON.stringify(preferenceData, null, 2))
 
     const mpResponse = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
@@ -200,11 +226,13 @@ serve(async (req) => {
 
     if (!mpResponse.ok) {
       const errorText = await mpResponse.text()
-      console.error('MercadoPago error:', errorText)
+      console.error('MercadoPago error response:', errorText)
+      console.error('MercadoPago status:', mpResponse.status)
       throw new Error('Erro ao criar preferência no MercadoPago')
     }
 
     const preference = await mpResponse.json()
+    console.log('MercadoPago preference created successfully:', preference.id)
 
     // Save payment session
     const { error: sessionError } = await supabase
@@ -225,13 +253,19 @@ serve(async (req) => {
 
     // Update coupon usage if applied
     if (couponId) {
-      await supabase
+      const { error: couponUpdateError } = await supabase
         .from('discount_coupons')
         .update({ 
-          current_uses: coupon.current_uses + 1 
+          current_uses: (coupon?.current_uses || 0) + 1 
         })
         .eq('id', couponId)
+
+      if (couponUpdateError) {
+        console.error('Error updating coupon usage:', couponUpdateError)
+      }
     }
+
+    console.log('Payment session created successfully')
 
     return new Response(
       JSON.stringify({ 
@@ -249,7 +283,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error creating payment:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error.message || 'Erro interno do servidor' }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
