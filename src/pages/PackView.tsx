@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { supabase } from '../integrations/supabase/client';
 import { Pack, Case } from '../data/types';
 import FloatingFlipCard from '../components/FloatingFlipCard';
 import PaymentOptionsModal from '../components/PaymentOptionsModal';
@@ -11,6 +10,7 @@ import HowToPlayModal from '../components/HowToPlayModal';
 import PackHeader from '../components/pack-view/PackHeader';
 import CasesGrid from '../components/pack-view/CasesGrid';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
+import { getPackById, getAllPacks, getUserPacks } from '../utils/packUtils';
 
 interface PackViewProps {
   user: any;
@@ -36,46 +36,19 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     closePaymentStatus
   } = usePaymentStatus(user?.id || '');
 
-  // Generate cases for each pack dynamically
-  const generateCasesForPack = (packId: string, packName: string): Case[] => {
-    const themes = ['mystery', 'murder', 'theft', 'investigation', 'thriller', 'crime', 'conspiracy', 'danger', 'power'];
-    const difficulties = ['easy', 'medium', 'hard'];
-    
-    return Array.from({ length: 10 }, (_, index) => ({
-      id: `${packId}-case-${index + 1}`,
-      order: index + 1,
-      mystery: `Mistério ${index + 1} de ${packName}`,
-      solution: `Solução do mistério ${index + 1}`,
-      difficulty: difficulties[index % 3] as 'easy' | 'medium' | 'hard',
-      theme: themes[index % themes.length] as any,
-      name: `Caso ${index + 1}`,
-      icon: 'mystery',
-      title: `O Enigma ${index + 1}`,
-      description: `Um mistério intrigante para ser desvendado em ${packName}`,
-      image: `/lovable-uploads/pack${(index % 5) + 1}/case${index + 1}.png`,
-      isFree: index === 0 // First case is always free
-    }));
-  };
-
   useEffect(() => {
     const fetchPack = async () => {
       if (!id) return;
       
       try {
-        const { data, error } = await supabase
-          .from('packs')
-          .select('*')
-          .eq('id', id)
-          .single();
+        const packData = await getPackById(id);
         
-        if (error) throw error;
+        if (!packData) {
+          navigate('/packs');
+          return;
+        }
         
-        const packWithCases = {
-          ...data,
-          cases: generateCasesForPack(data.id, data.name)
-        };
-        
-        setPack(packWithCases);
+        setPack(packData);
         
         // Load solved cards from localStorage
         const solved = JSON.parse(localStorage.getItem(`solved_${user?.id || 'anonymous'}_${id}`) || '[]');
@@ -92,19 +65,8 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   useEffect(() => {
     const fetchAllPacks = async () => {
       try {
-        const { data, error } = await supabase
-          .from('packs')
-          .select('*')
-          .order('name');
-        
-        if (error) throw error;
-        
-        const packsWithCases = data.map(packData => ({
-          ...packData,
-          cases: generateCasesForPack(packData.id, packData.name)
-        }));
-        
-        setAllPacks(packsWithCases);
+        const packsData = await getAllPacks();
+        setAllPacks(packsData);
       } catch (error) {
         console.error('Error fetching all packs:', error);
       }
@@ -118,15 +80,8 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
       if (!user?.id) return;
       
       try {
-        const { data, error } = await supabase
-          .from('user_pack_access')
-          .select('pack_id')
-          .eq('user_id', user.id)
-          .eq('is_active', true);
-        
-        if (error) throw error;
-        
-        setUserPackIds(data.map(item => item.pack_id));
+        const userPackIds = await getUserPacks(user.id);
+        setUserPackIds(userPackIds);
       } catch (error) {
         console.error('Error fetching user packs:', error);
       }
@@ -201,7 +156,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
 
       {/* Cases Grid */}
       <CasesGrid
-        cases={pack.cases}
+        cases={pack.cases || []}
         hasAccess={hasAccess}
         solvedCards={solvedCards}
         user={user}

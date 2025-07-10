@@ -10,20 +10,10 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import HowToPlayModal from '../components/HowToPlayModal';
 import SpecialOffersSection from '../components/packs/SpecialOffersSection';
 import RegularPacksSection from '../components/packs/RegularPacksSection';
-import { supabase } from '../integrations/supabase/client';
 import { usePaymentManager } from '../hooks/usePaymentManager';
 import { useModalManager } from '../hooks/useModalManager';
-
-interface Pack {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  difficulty: string;
-  image: string;
-  category: string;
-  cases?: any[];
-}
+import { getAllPacks, getUserPacks } from '../utils/packUtils';
+import { Pack } from '../data/types';
 
 interface PacksProps {
   user: any;
@@ -56,20 +46,8 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   useEffect(() => {
     const fetchPacks = async () => {
       try {
-        const { data, error } = await supabase
-          .from('packs')
-          .select('*')
-          .order('name');
-        
-        if (error) throw error;
-        
-        // Transform database packs to include cases
-        const packsWithCases = data.map(pack => ({
-          ...pack,
-          cases: generateCasesForPack(pack.id, pack.name)
-        }));
-        
-        setPacks(packsWithCases);
+        const packsData = await getAllPacks();
+        setPacks(packsData);
       } catch (error) {
         console.error('Error fetching packs:', error);
       } finally {
@@ -86,15 +64,8 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
       if (!user?.id) return;
       
       try {
-        const { data, error } = await supabase
-          .from('user_pack_access')
-          .select('pack_id')
-          .eq('user_id', user.id)
-          .eq('is_active', true);
-        
-        if (error) throw error;
-        
-        setOwnedPackIds(data.map(item => item.pack_id));
+        const userPackIds = await getUserPacks(user.id);
+        setOwnedPackIds(userPackIds);
       } catch (error) {
         console.error('Error fetching user packs:', error);
       }
@@ -102,27 +73,6 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
 
     fetchUserPacks();
   }, [user?.id]);
-
-  // Generate cases for each pack dynamically
-  const generateCasesForPack = (packId: string, packName: string) => {
-    const themes = ['mystery', 'murder', 'theft', 'investigation', 'thriller', 'crime', 'conspiracy', 'danger', 'power'];
-    const difficulties = ['easy', 'medium', 'hard'];
-    
-    return Array.from({ length: 10 }, (_, index) => ({
-      id: `${packId}-case-${index + 1}`,
-      order: index + 1,
-      mystery: `Mistério ${index + 1} de ${packName}`,
-      solution: `Solução do mistério ${index + 1}`,
-      difficulty: difficulties[index % 3] as 'easy' | 'medium' | 'hard',
-      theme: themes[index % themes.length] as any,
-      name: `Caso ${index + 1}`,
-      icon: 'mystery',
-      title: `O Enigma ${index + 1}`,
-      description: `Um mistério intrigante para ser desvendado em ${packName}`,
-      image: `/lovable-uploads/pack${(index % 5) + 1}/case${index + 1}.png`,
-      isFree: index === 0 // First case is always free
-    }));
-  };
 
   const regularPacks = useMemo(() => 
     packs.filter(p => !['combo', 'complete'].includes(p.category)), 

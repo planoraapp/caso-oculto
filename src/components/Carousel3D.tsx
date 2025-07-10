@@ -1,7 +1,6 @@
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { supabase } from '../integrations/supabase/client';
 import PackCard from './PackCard';
 import ComboModal from './ComboModal';
 import PaymentStatusModal from './PaymentStatusModal';
@@ -10,17 +9,8 @@ import LoadingSpinner from './LoadingSpinner';
 import CarouselControls from './carousel/CarouselControls';
 import CarouselIndicators from './carousel/CarouselIndicators';
 import { usePaymentManager } from '../hooks/usePaymentManager';
-
-interface Pack {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  difficulty: string;
-  image: string;
-  category: string;
-  cases?: any[];
-}
+import { getAllPacks, getUserPacks } from '../utils/packUtils';
+import { Pack } from '../data/types';
 
 const Carousel3D: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -47,17 +37,13 @@ const Carousel3D: React.FC = () => {
   useEffect(() => {
     const fetchPacks = async () => {
       try {
-        const { data, error } = await supabase
-          .from('packs')
-          .select('*')
-          .neq('category', 'combo')
-          .neq('category', 'complete')
-          .order('name')
-          .limit(6);
+        const packsData = await getAllPacks();
+        // Filter for featured packs (exclude combo and complete categories)
+        const featuredPacks = packsData.filter(pack => 
+          !['combo', 'complete'].includes(pack.category)
+        ).slice(0, 6); // Limit to first 6 packs for carousel
         
-        if (error) throw error;
-        
-        setPacks(data);
+        setPacks(featuredPacks);
       } catch (error) {
         console.error('Error fetching packs:', error);
       } finally {
@@ -74,15 +60,8 @@ const Carousel3D: React.FC = () => {
       if (!currentUser?.id) return;
       
       try {
-        const { data, error } = await supabase
-          .from('user_pack_access')
-          .select('pack_id')
-          .eq('user_id', currentUser.id)
-          .eq('is_active', true);
-        
-        if (error) throw error;
-        
-        setOwnedPackIds(data.map(item => item.pack_id));
+        const userPackIds = await getUserPacks(currentUser.id);
+        setOwnedPackIds(userPackIds);
       } catch (error) {
         console.error('Error fetching user packs:', error);
       }
