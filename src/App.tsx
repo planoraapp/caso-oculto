@@ -14,6 +14,7 @@ import Login from './pages/Login';
 import Terms from './pages/Terms';
 import AdminPanel from './pages/AdminPanel';
 import PaymentSuccess from './pages/PaymentSuccess';
+import EmailConfirmed from './pages/EmailConfirmed';
 import NotFound from './pages/NotFound';
 import SiteFooter from './components/SiteFooter';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -47,6 +48,7 @@ const AppContent: React.FC = () => {
           <Route path="/terms" element={<Terms />} />
           <Route path="/admin" element={user && isAdmin ? <AdminPanel user={user} /> : <NotFound />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/email-confirmed" element={<EmailConfirmed />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

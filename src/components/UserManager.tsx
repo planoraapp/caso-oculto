@@ -29,10 +29,14 @@ const UserManager: React.FC = () => {
 
   const loadUsers = async () => {
     try {
-      const { data, error } = await supabase.auth.admin.listUsers();
+      setLoading(true);
+      const { data, error } = await supabase.functions.invoke('admin-list-users');
       
       if (error) throw error;
-      setUsers(data.users);
+      
+      if (data.error) throw new Error(data.error);
+      
+      setUsers(data.users || []);
     } catch (error) {
       console.error('Error loading users:', error);
       toast({
@@ -40,6 +44,8 @@ const UserManager: React.FC = () => {
         description: "Erro ao carregar usuários",
         variant: "destructive"
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,8 +65,6 @@ const UserManager: React.FC = () => {
         description: "Erro ao carregar acessos aos packs",
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -126,9 +130,12 @@ const UserManager: React.FC = () => {
     if (!confirm('Tem certeza que deseja excluir este usuário?')) return;
 
     try {
-      const { error } = await supabase.auth.admin.deleteUser(userId);
+      const { data, error } = await supabase.functions.invoke('admin-delete-user', {
+        body: { userId }
+      });
 
       if (error) throw error;
+      if (data.error) throw new Error(data.error);
       
       toast({
         title: "Sucesso",

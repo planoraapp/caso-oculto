@@ -1,112 +1,211 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { User, Mail, Calendar, ShoppingBag, LogOut } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { LogOut, Calendar, ShoppingBag, RotateCcw, Mail } from 'lucide-react';
-import { getUserPurchases } from '../data/packs';
+import { Separator } from '../components/ui/separator';
 import { supabase } from '../integrations/supabase/client';
 import { useToast } from '../hooks/use-toast';
-import ContactForm from '../components/ContactForm';
 
 interface AccountProps {
   user: any;
   onLogout: () => void;
 }
 
+interface Purchase {
+  id: string;
+  pack_id: string;
+  payment_type: string;
+  status: string;
+  created_at: string;
+  selected_pack_ids?: string[];
+}
+
 const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [showContactForm, setShowContactForm] = useState(false);
+  const [purchases, setPurchases] = useState<Purchase[]>([]);
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  
-  // Add a sample purchase for demonstration
-  const samplePurchases = [
-    {
-      id: 'sample_1',
-      packId: 'sombras-da-noite',
-      packName: 'Sombras da Noite',
-      price: 14.80,
-      price_paid: 14.80,
-      purchased_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
-      transactionId: 'mp_sample_123',
-      type: 'individual'
+
+  useEffect(() => {
+    if (user) {
+      loadUserData();
     }
-  ];
-  
-  const purchases = [...getUserPurchases(user.id), ...samplePurchases];
-  const totalPurchases = purchases.length;
+  }, [user]);
 
-  const handleRefundRequest = async (purchase: any) => {
-    if (isLoading) return;
-    
-    setIsLoading(true);
+  const loadUserData = async () => {
     try {
-      const { error } = await supabase.functions.invoke('send-refund-notification', {
-        body: {
-          userEmail: user.email,
-          packId: purchase.packId,
-          reason: 'Solicitação de devolução via conta do usuário'
-        }
-      });
+      setLoading(true);
+      
+      // Load profile data
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
 
-      if (error) throw error;
+      if (profileError && profileError.code !== 'PGRST116') {
+        console.error('Error loading profile:', profileError);
+      } else {
+        setProfile(profileData);
+      }
 
-      toast({
-        title: "Solicitação Enviada!",
-        description: "Sua solicitação de devolução foi enviada ao administrador. O pack ficará indisponível após a aprovação.",
-      });
+      // Load purchase history
+      const { data: purchaseData, error: purchaseError } = await supabase
+        .from('payment_sessions')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('status', 'approved')
+        .order('created_at', { ascending: false });
+
+      if (purchaseError) {
+        console.error('Error loading purchases:', purchaseError);
+      } else {
+        setPurchases(purchaseData || []);
+      }
+
     } catch (error) {
-      console.error('Erro ao solicitar devolução:', error);
+      console.error('Error loading user data:', error);
       toast({
         title: "Erro",
-        description: "Erro ao enviar solicitação de devolução",
+        description: "Erro ao carregar dados do usuário",
         variant: "destructive"
       });
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const canRequestRefund = (purchaseDate: string) => {
-    const daysSincePurchase = Math.floor((Date.now() - new Date(purchaseDate).getTime()) / (1000 * 60 * 60 * 24));
-    return daysSincePurchase <= 7;
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
   };
 
+  const getPaymentTypeLabel = (type: string) => {
+    switch (type) {
+      case 'individual':
+        return 'Pack Individual';
+      case 'combo':
+        return 'Combo 5 Packs';
+      case 'complete':
+        return 'Acesso Total';
+      default:
+        return type;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 pt-20">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center">
+            <div className="text-case-white">Carregando...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-900 pt-20 px-4">
-      <div className="container mx-auto max-w-4xl">
+    <div className="min-h-screen bg-gray-900 pt-20">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-case-white mb-2">Minha Conta</h1>
-          <p className="text-case-white/60">Gerencie suas informações e histórico de compras</p>
+          <p className="text-case-white/80">Gerencie suas informações e histórico de compras</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Informações do Perfil */}
-          <div className="lg:col-span-1">
-            <Card className="bg-noir-dark border-noir-medium">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Profile Information */}
+          <div className="lg:col-span-2">
+            <Card className="bg-noir-dark border-noir-medium mb-6">
               <CardHeader>
-                <CardTitle className="text-case-white">Informações Pessoais</CardTitle>
+                <CardTitle className="text-case-white flex items-center gap-2">
+                  <User className="h-5 w-5" />
+                  Informações Pessoais
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <p className="text-sm text-case-white/60">Email</p>
-                  <p className="text-case-white">{user.email}</p>
+                <div className="flex items-center gap-3">
+                  <Mail className="h-4 w-4 text-case-white/60" />
+                  <div>
+                    <p className="text-sm text-case-white/60">Email</p>
+                    <p className="text-case-white">{user?.email || 'Não informado'}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-case-white/60">Nome</p>
-                  <p className="text-case-white">{user.name || 'Não informado'}</p>
+                <div className="flex items-center gap-3">
+                  <User className="h-4 w-4 text-case-white/60" />
+                  <div>
+                    <p className="text-sm text-case-white/60">Nome</p>
+                    <p className="text-case-white">{profile?.name || user?.email || 'Não informado'}</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <Calendar className="h-4 w-4 text-case-white/60" />
                   <div>
                     <p className="text-sm text-case-white/60">Membro desde</p>
-                    <p className="text-case-white">Janeiro 2024</p>
+                    <p className="text-case-white">
+                      {user?.created_at ? formatDate(user.created_at) : 'Não informado'}
+                    </p>
                   </div>
                 </div>
-                <Button 
+              </CardContent>
+            </Card>
+
+            {/* Purchase History */}
+            <Card className="bg-noir-dark border-noir-medium">
+              <CardHeader>
+                <CardTitle className="text-case-white flex items-center gap-2">
+                  <ShoppingBag className="h-5 w-5" />
+                  Histórico de Compras
+                </CardTitle>
+                <CardDescription className="text-case-white/60">
+                  Suas compras realizadas
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {purchases.length === 0 ? (
+                  <p className="text-case-white/60 text-center py-8">
+                    Nenhuma compra realizada ainda.
+                  </p>
+                ) : (
+                  <div className="space-y-4">
+                    {purchases.map((purchase) => (
+                      <div key={purchase.id} className="flex items-center justify-between p-4 bg-noir-medium rounded-lg">
+                        <div>
+                          <p className="text-case-white font-medium">
+                            {getPaymentTypeLabel(purchase.payment_type)}
+                          </p>
+                          <p className="text-case-white/60 text-sm">
+                            {formatDate(purchase.created_at)}
+                          </p>
+                        </div>
+                        <Badge variant="secondary" className="bg-green-600 text-white">
+                          Aprovado
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Actions */}
+          <div>
+            <Card className="bg-noir-dark border-noir-medium">
+              <CardHeader>
+                <CardTitle className="text-case-white">Ações</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Separator className="bg-noir-medium" />
+                <Button
                   onClick={onLogout}
-                  variant="outline" 
-                  className="w-full border-case-red text-case-red hover:bg-case-red hover:text-white"
+                  variant="destructive"
+                  className="w-full"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
                   Sair da Conta
@@ -114,95 +213,8 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
               </CardContent>
             </Card>
           </div>
-
-          {/* Histórico de Compras */}
-          <div className="lg:col-span-2">
-            <Card className="bg-noir-dark border-noir-medium">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-case-white">Histórico de Compras</CardTitle>
-                    <CardDescription className="text-case-white/60">
-                      Seus packs adquiridos recentemente
-                    </CardDescription>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <ShoppingBag className="h-8 w-8 text-case-red" />
-                    <div className="text-right">
-                      <p className="text-2xl font-bold text-case-white">{totalPurchases}</p>
-                      <p className="text-sm text-case-white/60">Total de Compras</p>
-                    </div>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {purchases.length === 0 ? (
-                  <div className="text-center py-8">
-                    <ShoppingBag className="h-12 w-12 text-case-white/30 mx-auto mb-4" />
-                    <p className="text-case-white/60">Nenhuma compra realizada ainda</p>
-                    <p className="text-sm text-case-white/40 mt-2">
-                      Explore nossos packs de mistérios para começar sua jornada
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {purchases.map((purchase) => (
-                      <div key={purchase.id} className="flex items-center justify-between p-4 bg-noir-medium rounded-lg">
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-case-white">
-                            {purchase.packName || `Pack ${purchase.packId}`}
-                          </h4>
-                          <p className="text-sm text-case-white/60">
-                            {new Date(purchase.purchased_at).toLocaleDateString('pt-BR')}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <div className="text-right">
-                            <Badge variant="outline" className="border-green-500 text-green-500">
-                              Pago
-                            </Badge>
-                            <p className="text-sm text-case-white/60 mt-1">
-                              R$ {purchase.price_paid.toFixed(2)}
-                            </p>
-                          </div>
-                          {canRequestRefund(purchase.purchased_at) && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleRefundRequest(purchase)}
-                              disabled={isLoading}
-                              className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white"
-                            >
-                              <RotateCcw className="h-4 w-4 mr-1" />
-                              Devolver
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                    
-                    <div className="mt-6 pt-4 border-t border-noir-medium">
-                      <Button
-                        onClick={() => setShowContactForm(true)}
-                        variant="outline"
-                        className="w-full border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
-                      >
-                        <Mail className="h-4 w-4 mr-2" />
-                        Dúvidas sobre compras? Entre em contato
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </div>
-
-      <ContactForm 
-        isOpen={showContactForm}
-        onClose={() => setShowContactForm(false)}
-      />
     </div>
   );
 };

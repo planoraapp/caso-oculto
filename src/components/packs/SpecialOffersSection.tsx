@@ -22,6 +22,16 @@ const SpecialOffersSection: React.FC<SpecialOffersSectionProps> = ({
 }) => {
   const isMobile = useIsMobile();
 
+  const handleComboClick = () => {
+    if (!user || isLoading) return;
+    onComboClick();
+  };
+
+  const handleCompleteClick = () => {
+    if (!user || isLoading) return;
+    onCompletePurchase();
+  };
+
   return (
     <motion.div 
       className="mb-12 md:mb-16" 
@@ -59,10 +69,10 @@ const SpecialOffersSection: React.FC<SpecialOffersSectionProps> = ({
               <div className="pt-4 border-t border-gray-700">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-case-white/60 line-through text-sm md:text-base">R$ 74,00</span>
-                  <span className="text-xl md:text-2xl font-bold text-case-red">R$ 61,40</span>
+                  <span className="text-xl md:text-2xl font-bold text-case-red">R$ 59,20</span>
                 </div>
                 <Button 
-                  onClick={onComboClick} 
+                  onClick={handleComboClick} 
                   disabled={isLoading || !user} 
                   className="w-full bg-case-red hover:bg-red-600 text-white disabled:opacity-50 text-sm md:text-base"
                 >
@@ -96,10 +106,10 @@ const SpecialOffersSection: React.FC<SpecialOffersSectionProps> = ({
               <div className="pt-4 border-t border-gray-700">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-case-white/60 text-sm md:text-base">Valor total</span>
-                  <span className="text-xl md:text-2xl font-bold text-yellow-500">R$ 110,90</span>
+                  <span className="text-xl md:text-2xl font-bold text-yellow-500">R$ 99,90</span>
                 </div>
                 <Button 
-                  onClick={onCompletePurchase} 
+                  onClick={handleCompleteClick} 
                   disabled={isLoading || !user} 
                   className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold disabled:opacity-50 text-sm md:text-base"
                 >
