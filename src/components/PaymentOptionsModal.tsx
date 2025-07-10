@@ -26,6 +26,7 @@ interface PaymentOptionsModalProps {
   packName?: string;
   totalPrice?: number;
   discountAmount?: number;
+  onPaymentCreated?: (sessionId: string) => void;
 }
 
 const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
@@ -37,7 +38,8 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   user,
   packName,
   totalPrice = 0,
-  discountAmount = 0
+  discountAmount = 0,
+  onPaymentCreated
 }) => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -116,6 +118,10 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
       
       // Redirecionar para o Stripe Checkout
       window.location.href = data.url;
+      
+      if (onPaymentCreated && data.sessionId) {
+        onPaymentCreated(data.sessionId);
+      }
       
     } catch (error) {
       console.error('Payment error:', error);

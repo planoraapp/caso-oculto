@@ -136,9 +136,10 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
         <PaymentOptionsModal
           isOpen={isPaymentModalOpen}
           onClose={closePaymentModal}
+          type="individual"
           packName={selectedPack.name}
           packId={selectedPack.id}
-          userId={user?.id || ''}
+          user={user}
           onPaymentCreated={handlePaymentCreated}
         />
       )}
@@ -152,11 +153,17 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
 
       {stripeSessionId && (
         <StripeCheckout 
-          preferenceId={stripeSessionId} 
-          onPaymentResult={(result) => {
-            console.log('Payment result:', result);
+          type="individual"
+          packId={selectedPack?.id}
+          userId={user?.id || ''}
+          sessionId={stripeSessionId}
+          onSuccess={() => {
+            console.log('Payment successful');
             // Reset checkout preference handled by payment manager
-          }} 
+          }}
+          onError={(error) => {
+            console.error('Payment error:', error);
+          }}
         />
       )}
     </div>

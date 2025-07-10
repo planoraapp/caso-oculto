@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -10,6 +9,7 @@ interface StripeCheckoutProps {
   packId?: string;
   selectedPackIds?: string[];
   userId: string;
+  sessionId?: string;
   onSuccess?: () => void;
   onError?: (error: string) => void;
 }
@@ -19,6 +19,7 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
   packId,
   selectedPackIds,
   userId,
+  sessionId,
   onSuccess,
   onError
 }) => {
@@ -32,6 +33,23 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
 
       console.log('Creating Stripe session:', { type, packId, selectedPackIds, userId });
 
+      // If we have a sessionId, redirect directly
+      if (sessionId) {
+        const result = await stripe.redirectToCheckout({
+          sessionId: sessionId
+        });
+        
+        if (result.error) {
+          throw new Error(result.error.message);
+        }
+        
+        if (onSuccess) {
+          onSuccess();
+        }
+        return;
+      }
+
+      // Otherwise, create a new session via our edge function
       const response = await fetch('/api/create-stripe-session', {
         method: 'POST',
         headers: {

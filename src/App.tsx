@@ -42,7 +42,7 @@ const AppContent: React.FC = () => {
           <Route path="/packs" element={<Packs user={user} />} />
           <Route path="/pack/:id" element={<PackView user={user} />} />
           <Route path="/library" element={user ? <Library user={user} /> : <Login />} />
-          <Route path="/account" element={user ? <Account user={user} /> : <Login />} />
+          <Route path="/account" element={user ? <Account user={user} onLogout={signOut} /> : <Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/admin" element={user && isAdmin ? <AdminPanel user={user} /> : <NotFound />} />

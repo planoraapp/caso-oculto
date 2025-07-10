@@ -129,9 +129,10 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
         <PaymentOptionsModal
           isOpen={isPaymentModalOpen}
           onClose={() => setIsPaymentModalOpen(false)}
+          type="individual"
           packName={pack.name}
           packId={pack.id}
-          userId={user?.id || ''}
+          user={user}
           onPaymentCreated={handlePaymentCreated}
         />
       )}
@@ -154,9 +155,16 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
 
       {stripeSessionId && (
         <StripeCheckout
-          preferenceId={stripeSessionId}
-          onPaymentResult={(result) => {
-            console.log('Payment result:', result);
+          type="individual"
+          packId={pack.id}
+          userId={user?.id || ''}
+          sessionId={stripeSessionId}
+          onSuccess={() => {
+            console.log('Payment successful');
+            setStripeSessionId(null);
+          }}
+          onError={(error) => {
+            console.error('Payment error:', error);
             setStripeSessionId(null);
           }}
         />
