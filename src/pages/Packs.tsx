@@ -23,20 +23,18 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   const [packs, setPacks] = useState<Pack[]>([]);
   const [ownedPackIds, setOwnedPackIds] = useState<string[]>([]);
   const [isLoadingPacks, setIsLoadingPacks] = useState(true);
+  const [isComboModalOpen, setIsComboModalOpen] = useState(false);
+  const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
   
   const {
     isLoading,
     isPaymentModalOpen,
-    isComboModalOpen,
     selectedPack,
     paymentStatus,
     openPaymentModal,
     closePaymentModal,
-    openComboModal,
-    closeComboModal,
     handlePaymentCreated,
     handlePurchaseCombo,
-    handleCompletePurchase,
     closePaymentStatus
   } = usePaymentManager(user?.id || '');
 
@@ -87,6 +85,16 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     if (!user) return;
     openPaymentModal(pack);
   }, [user, openPaymentModal]);
+
+  const handleComboClick = useCallback(() => {
+    if (!user || isLoading) return;
+    setIsComboModalOpen(true);
+  }, [user, isLoading]);
+
+  const handleCompleteClick = useCallback(() => {
+    if (!user || isLoading) return;
+    setIsCompleteModalOpen(true);
+  }, [user, isLoading]);
 
   const handlePaymentSuccess = () => {
     // Refresh the page after successful payment to update pack access
@@ -154,8 +162,8 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
           <SpecialOffersSection
             user={user}
             isLoading={isLoading}
-            onComboClick={openComboModal}
-            onCompletePurchase={handleCompletePurchase}
+            onComboClick={handleComboClick}
+            onCompletePurchase={handleCompleteClick}
           />
 
           {/* Regular Packs Section */}
@@ -174,15 +182,27 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
         onClose={() => closeHowToPlay('howToPlay')} 
       />
 
+      {/* Combo Modal - Modal de seleção de packs */}
       {isComboModalOpen && (
         <ComboModal 
           packs={packs} 
           ownedPackIds={ownedPackIds} 
-          onClose={closeComboModal} 
+          onClose={() => setIsComboModalOpen(false)} 
           onPurchaseCombo={handlePurchaseCombo}
         />
       )}
 
+      {/* Modal de pagamento para Acesso Total */}
+      <PaymentOptionsModal
+        isOpen={isCompleteModalOpen}
+        onClose={() => setIsCompleteModalOpen(false)}
+        type="complete"
+        user={user}
+        packName="Acesso Total"
+        onPaymentCreated={handlePaymentSuccess}
+      />
+
+      {/* Modal de pagamento para Pack Individual */}
       {selectedPack && (
         <PaymentOptionsModal
           isOpen={isPaymentModalOpen}

@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Pack } from '../data/types';
+import PaymentOptionsModal from './PaymentOptionsModal';
 
 interface ComboModalProps {
   packs: Pack[];
@@ -21,6 +22,7 @@ const ComboModal: React.FC<ComboModalProps> = ({
   onPurchaseCombo
 }) => {
   const [selectedPacks, setSelectedPacks] = useState<string[]>([]);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const availablePacks = packs.filter(pack => 
     !['combo', 'complete'].includes(pack.category) && 
@@ -39,8 +41,16 @@ const ComboModal: React.FC<ComboModalProps> = ({
 
   const handlePurchase = () => {
     if (selectedPacks.length === 5) {
-      onPurchaseCombo(selectedPacks);
+      setIsPaymentModalOpen(true);
     }
+  };
+
+  const handlePaymentSuccess = () => {
+    onClose();
+    // Refresh the page after successful payment to update pack access
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   const originalPrice = 5 * 14.80;
@@ -148,6 +158,17 @@ const ComboModal: React.FC<ComboModalProps> = ({
             </div>
           </div>
         </motion.div>
+
+        {/* Modal de Pagamento para Combo */}
+        <PaymentOptionsModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+          type="combo"
+          selectedPackIds={selectedPacks}
+          user={{ id: 'user' }} // This will be passed from parent
+          packName="Combo 5 Packs"
+          onPaymentCreated={handlePaymentSuccess}
+        />
       </div>
     </AnimatePresence>
   );
