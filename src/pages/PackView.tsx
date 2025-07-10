@@ -6,7 +6,7 @@ import FloatingFlipCard from '../components/FloatingFlipCard';
 import PaymentOptionsModal from '../components/PaymentOptionsModal';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
-import MercadoPagoCheckout from '../components/MercadoPagoCheckout';
+import StripeCheckout from '../components/StripeCheckout';
 import HowToPlayModal from '../components/HowToPlayModal';
 import PackHeader from '../components/pack-view/PackHeader';
 import CasesGrid from '../components/pack-view/CasesGrid';
@@ -26,7 +26,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isComboModalOpen, setIsComboModalOpen] = useState(false);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
-  const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
+  const [stripeSessionId, setStripeSessionId] = useState<string | null>(null);
 
   const {
     paymentStatus,
@@ -81,8 +81,8 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     localStorage.setItem(`solved_${user.id}_${pack.id}`, JSON.stringify(newSolvedCards));
   };
 
-  const handlePaymentCreated = (preferenceId: string) => {
-    setCheckoutPreferenceId(preferenceId);
+  const handlePaymentCreated = (sessionId: string) => {
+    setStripeSessionId(sessionId);
   };
 
   const handlePurchaseCombo = async (selectedPackIds: string[]) => {
@@ -90,7 +90,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     
     try {
       const session = await createPaymentSession(null, 'combo', selectedPackIds);
-      setCheckoutPreferenceId(session.mercadopago_preference_id);
+      setStripeSessionId(session.stripe_session_id);
       setIsComboModalOpen(false);
     } catch (error) {
       console.error('Erro ao processar pagamento do combo:', error);
@@ -152,12 +152,12 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
         packName={paymentStatus.packName}
       />
 
-      {checkoutPreferenceId && (
-        <MercadoPagoCheckout
-          preferenceId={checkoutPreferenceId}
+      {stripeSessionId && (
+        <StripeCheckout
+          preferenceId={stripeSessionId}
           onPaymentResult={(result) => {
             console.log('Payment result:', result);
-            setCheckoutPreferenceId(null);
+            setStripeSessionId(null);
           }}
         />
       )}

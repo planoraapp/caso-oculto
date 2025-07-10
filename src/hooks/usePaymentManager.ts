@@ -5,7 +5,7 @@ import { usePaymentValidation } from './usePaymentValidation';
 
 export interface PaymentManagerState {
   isLoading: boolean;
-  checkoutPreferenceId: string | null;
+  stripeSessionId: string | null;
   isPaymentModalOpen: boolean;
   isComboModalOpen: boolean;
   selectedPack: any;
@@ -14,7 +14,7 @@ export interface PaymentManagerState {
 export const usePaymentManager = (userId: string) => {
   const [state, setState] = useState<PaymentManagerState>({
     isLoading: false,
-    checkoutPreferenceId: null,
+    stripeSessionId: null,
     isPaymentModalOpen: false,
     isComboModalOpen: false,
     selectedPack: null
@@ -33,8 +33,8 @@ export const usePaymentManager = (userId: string) => {
     setState(prev => ({ ...prev, isLoading: loading }));
   }, []);
 
-  const setCheckoutPreferenceId = useCallback((id: string | null) => {
-    setState(prev => ({ ...prev, checkoutPreferenceId: id }));
+  const setStripeSessionId = useCallback((id: string | null) => {
+    setState(prev => ({ ...prev, stripeSessionId: id }));
   }, []);
 
   const openPaymentModal = useCallback((pack?: any) => {
@@ -63,8 +63,8 @@ export const usePaymentManager = (userId: string) => {
     clearErrors();
   }, [clearErrors]);
 
-  const handlePaymentCreated = useCallback((preferenceId: string) => {
-    setCheckoutPreferenceId(preferenceId);
+  const handlePaymentCreated = useCallback((sessionId: string) => {
+    setStripeSessionId(sessionId);
     closePaymentModal();
   }, []);
 
@@ -81,7 +81,7 @@ export const usePaymentManager = (userId: string) => {
     try {
       console.log('Starting combo purchase for packs:', selectedPackIds);
       const session = await createPaymentSession(null, 'combo', selectedPackIds);
-      setCheckoutPreferenceId(session.mercadopago_preference_id);
+      setStripeSessionId(session.stripe_session_id);
       closeComboModal();
     } catch (error) {
       console.error('Erro ao processar pagamento do combo:', error);
@@ -89,7 +89,7 @@ export const usePaymentManager = (userId: string) => {
     } finally {
       setLoading(false);
     }
-  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, closeComboModal, setCheckoutPreferenceId]);
+  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, closeComboModal, setStripeSessionId]);
 
   const handleCompletePurchase = useCallback(async () => {
     if (state.isLoading || !userId) return;
@@ -98,14 +98,14 @@ export const usePaymentManager = (userId: string) => {
     try {
       console.log('Starting complete access purchase');
       const session = await createPaymentSession(null, 'complete');
-      setCheckoutPreferenceId(session.mercadopago_preference_id);
+      setStripeSessionId(session.stripe_session_id);
     } catch (error) {
       console.error('Erro ao processar pagamento completo:', error);
       showPaymentStatus('rejected', 'Acesso Total');
     } finally {
       setLoading(false);
     }
-  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, setCheckoutPreferenceId]);
+  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, setStripeSessionId]);
 
   const handleIndividualPurchase = useCallback(async (packId: string, packName: string) => {
     if (state.isLoading || !userId) return;
@@ -114,14 +114,14 @@ export const usePaymentManager = (userId: string) => {
     try {
       console.log('Starting individual purchase for pack:', packId);
       const session = await createPaymentSession(packId, 'individual');
-      setCheckoutPreferenceId(session.mercadopago_preference_id);
+      setStripeSessionId(session.stripe_session_id);
     } catch (error) {
       console.error('Erro ao processar pagamento individual:', error);
       showPaymentStatus('rejected', packName);
     } finally {
       setLoading(false);
     }
-  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, setCheckoutPreferenceId]);
+  }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, setStripeSessionId]);
 
   return {
     // State
@@ -129,9 +129,13 @@ export const usePaymentManager = (userId: string) => {
     paymentStatus,
     errors,
     
+    // Backwards compatibility
+    checkoutPreferenceId: state.stripeSessionId,
+    setCheckoutPreferenceId: setStripeSessionId,
+    
     // Actions
     setLoading,
-    setCheckoutPreferenceId,
+    setStripeSessionId,
     openPaymentModal,
     closePaymentModal,
     openComboModal,

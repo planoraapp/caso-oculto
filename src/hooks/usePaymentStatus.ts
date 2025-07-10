@@ -31,7 +31,7 @@ export const usePaymentStatus = (userId: string) => {
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke('create-payment', {
+      const { data, error } = await supabase.functions.invoke('create-stripe-session', {
         body: {
           type: paymentType,
           packId,
@@ -45,15 +45,15 @@ export const usePaymentStatus = (userId: string) => {
         throw new Error(error.message || 'Erro ao criar pagamento');
       }
 
-      if (!data || !data.preference_id) {
-        console.error('Invalid response from create-payment:', data);
+      if (!data || !data.session_id) {
+        console.error('Invalid response from create-stripe-session:', data);
         throw new Error('Resposta inválida do servidor');
       }
 
-      console.log('Payment preference created:', data);
+      console.log('Stripe session created:', data);
       return {
         id: `session_${Date.now()}`,
-        mercadopago_preference_id: data.preference_id,
+        stripe_session_id: data.session_id,
         status: 'pending' as const,
         init_point: data.init_point
       };

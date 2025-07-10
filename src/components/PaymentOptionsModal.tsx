@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
-import MercadoPagoCheckout from './MercadoPagoCheckout';
+import StripeCheckout from './StripeCheckout';
 import IndividualPackCard from './payment/IndividualPackCard';
 import ComboPackCard from './payment/ComboPackCard';
 import CompletePackCard from './payment/CompletePackCard';
@@ -28,7 +28,7 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   onPaymentCreated
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
+  const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
 
   const handleIndividualPurchase = async () => {
     if (isLoading || !userId) return;
@@ -36,7 +36,7 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
     
     try {
       console.log('Starting individual purchase for pack:', packId);
-      const { data, error } = await supabase.functions.invoke('create-payment', {
+      const { data, error } = await supabase.functions.invoke('create-stripe-session', {
         body: {
           type: 'individual',
           packId,
@@ -49,9 +49,9 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
         throw error;
       }
 
-      console.log('Payment preference created:', data);
-      setCheckoutPreferenceId(data.preference_id);
-      onPaymentCreated(data.preference_id);
+      console.log('Stripe session created:', data);
+      setCheckoutSessionId(data.session_id);
+      onPaymentCreated(data.session_id);
     } catch (error) {
       console.error('Erro ao processar pagamento individual:', error);
     } finally {
@@ -65,7 +65,7 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
     
     try {
       console.log('Starting complete access purchase');
-      const { data, error } = await supabase.functions.invoke('create-payment', {
+      const { data, error } = await supabase.functions.invoke('create-stripe-session', {
         body: {
           type: 'complete',
           userId
@@ -77,9 +77,9 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
         throw error;
       }
 
-      console.log('Payment preference created:', data);
-      setCheckoutPreferenceId(data.preference_id);
-      onPaymentCreated(data.preference_id);
+      console.log('Stripe session created:', data);
+      setCheckoutSessionId(data.session_id);
+      onPaymentCreated(data.session_id);
     } catch (error) {
       console.error('Erro ao processar pagamento completo:', error);
     } finally {
@@ -101,11 +101,11 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
           </DialogTitle>
         </DialogHeader>
 
-        {checkoutPreferenceId ? (
+        {checkoutSessionId ? (
           <div className="text-center">
             <h3 className="text-lg font-semibold mb-4">Finalize seu pagamento</h3>
-            <MercadoPagoCheckout 
-              preferenceId={checkoutPreferenceId}
+            <StripeCheckout 
+              preferenceId={checkoutSessionId}
               onPaymentResult={(result) => {
                 console.log('Payment result:', result);
                 if (result.status === 'approved') {

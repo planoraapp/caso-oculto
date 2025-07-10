@@ -187,6 +187,7 @@ export type Database = {
           payment_type: string
           selected_pack_ids: string[] | null
           status: string
+          stripe_session_id: string | null
           updated_at: string
           user_id: string
         }
@@ -198,6 +199,7 @@ export type Database = {
           payment_type: string
           selected_pack_ids?: string[] | null
           status?: string
+          stripe_session_id?: string | null
           updated_at?: string
           user_id: string
         }
@@ -209,6 +211,7 @@ export type Database = {
           payment_type?: string
           selected_pack_ids?: string[] | null
           status?: string
+          stripe_session_id?: string | null
           updated_at?: string
           user_id?: string
         }

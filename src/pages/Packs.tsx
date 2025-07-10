@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
 import PaymentOptionsModal from '../components/PaymentOptionsModal';
-import MercadoPagoCheckout from '../components/MercadoPagoCheckout';
+import StripeCheckout from '../components/StripeCheckout';
 import LoadingSpinner from '../components/LoadingSpinner';
 import HowToPlayModal from '../components/HowToPlayModal';
 import SpecialOffersSection from '../components/packs/SpecialOffersSection';
@@ -24,7 +24,7 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   
   const {
     isLoading,
-    checkoutPreferenceId,
+    stripeSessionId,
     isPaymentModalOpen,
     isComboModalOpen,
     selectedPack,
@@ -150,9 +150,9 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
         packName={paymentStatus.packName} 
       />
 
-      {checkoutPreferenceId && (
-        <MercadoPagoCheckout 
-          preferenceId={checkoutPreferenceId} 
+      {stripeSessionId && (
+        <StripeCheckout 
+          preferenceId={stripeSessionId} 
           onPaymentResult={(result) => {
             console.log('Payment result:', result);
             // Reset checkout preference handled by payment manager
