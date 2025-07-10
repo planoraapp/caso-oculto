@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { X, ShoppingCart, Star, Users } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
-import { MERCADOPAGO_LINKS } from '../data/packs';
 
 interface PurchaseModalProps {
   isOpen: boolean;

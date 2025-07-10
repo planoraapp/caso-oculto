@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { X, RotateCcw } from 'lucide-react';
 import { t } from '../data/translations';
-import { Case } from '../data/packs';
+import { Case } from '../data/types';
 
 interface FloatingFlipCardProps {
   card: Case;

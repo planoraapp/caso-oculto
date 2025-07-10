@@ -1,3 +1,4 @@
+
 import { Case, Pack } from './types';
 
 const casesPack1: Case[] = [
@@ -738,10 +739,25 @@ export const packs: Pack[] = [
   }
 ];
 
+// Export helper functions that other components need
+export const getPackById = (id: string): Pack | undefined => {
+  return packs.find(pack => pack.id === id);
+};
+
 // Updated getUserPacks function to properly query the database
 export const getUserPacks = (userId: string): string[] => {
   // This function now returns an empty array by default
   // The actual pack access should be checked via Supabase queries
   // in the components that need this information
   return [];
+};
+
+// Export types for backward compatibility
+export type { Case, Pack } from './types';
+
+// MercadoPago links placeholder (if needed by PurchaseModal)
+export const MERCADOPAGO_LINKS = {
+  individual: '#',
+  combo: '#',
+  complete: '#'
 };
