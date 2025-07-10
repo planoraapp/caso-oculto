@@ -203,14 +203,7 @@ serve(async (req) => {
       },
       auto_return: 'approved',
       notification_url: `https://oxeccsmxqymvxycnaszo.supabase.co/functions/v1/payment-webhook`,
-      metadata: {
-        user_id: userId,
-        payment_type: type,
-        pack_id: packId || null,
-        selected_pack_ids: selectedPackIds || null,
-        coupon_id: couponId,
-        discount_applied: discountAmount
-      }
+      external_reference: `${userId}_${type}_${Date.now()}` // Unique reference
     }
 
     console.log('Creating MercadoPago preference with data:', JSON.stringify(preferenceData, null, 2))

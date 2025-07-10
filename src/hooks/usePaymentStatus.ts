@@ -42,14 +42,20 @@ export const usePaymentStatus = (userId: string) => {
 
       if (error) {
         console.error('Error creating payment:', error);
-        throw error;
+        throw new Error(error.message || 'Erro ao criar pagamento');
+      }
+
+      if (!data || !data.preference_id) {
+        console.error('Invalid response from create-payment:', data);
+        throw new Error('Resposta inválida do servidor');
       }
 
       console.log('Payment preference created:', data);
       return {
         id: `session_${Date.now()}`,
         mercadopago_preference_id: data.preference_id,
-        status: 'pending' as const
+        status: 'pending' as const,
+        init_point: data.init_point
       };
     } catch (error) {
       console.error('Error in createPaymentSession:', error);

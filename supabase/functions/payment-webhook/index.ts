@@ -46,8 +46,7 @@ serve(async (req) => {
         id: payment.id,
         status: payment.status,
         status_detail: payment.status_detail,
-        external_reference: payment.external_reference,
-        preference_id: payment.additional_info?.items?.[0]?.id
+        external_reference: payment.external_reference
       }, null, 2))
 
       const supabaseUrl = Deno.env.get('SUPABASE_URL')
@@ -60,24 +59,46 @@ serve(async (req) => {
 
       const supabase = createClient(supabaseUrl, supabaseKey)
 
-      // Find payment session by preference ID
-      const { data: session, error: sessionError } = await supabase
-        .from('payment_sessions')
-        .select('*')
-        .eq('mercadopago_preference_id', payment.external_reference || payment.preference_id)
-        .single()
-
-      if (sessionError || !session) {
-        console.error('Payment session not found for preference:', payment.external_reference || payment.preference_id, sessionError)
-        
-        // Try to find by any preference ID in the payment data
-        const { data: sessions } = await supabase
+      // Find payment session by external reference
+      let session = null
+      if (payment.external_reference) {
+        const { data: sessionData, error: sessionError } = await supabase
           .from('payment_sessions')
           .select('*')
-          .eq('status', 'pending')
-        
-        console.log('Available pending sessions:', sessions?.map(s => s.mercadopago_preference_id))
-        
+          .like('external_reference', `%${payment.external_reference}%`)
+          .single()
+
+        if (!sessionError && sessionData) {
+          session = sessionData
+        }
+      }
+
+      // If not found by external reference, try by preference ID
+      if (!session) {
+        // Get preference details to find our session
+        const preferenceResponse = await fetch(`https://api.mercadopago.com/checkout/preferences/${payment.preference_id}`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        })
+
+        if (preferenceResponse.ok) {
+          const preference = await preferenceResponse.json()
+          
+          const { data: sessionData, error: sessionError } = await supabase
+            .from('payment_sessions')
+            .select('*')
+            .eq('mercadopago_preference_id', payment.preference_id)
+            .single()
+
+          if (!sessionError && sessionData) {
+            session = sessionData
+          }
+        }
+      }
+
+      if (!session) {
+        console.error('Payment session not found for payment:', paymentId)
         return new Response('Session not found', { 
           status: 404,
           headers: corsHeaders 
@@ -122,18 +143,20 @@ serve(async (req) => {
 
         // Grant access to packs
         for (const packId of packIds) {
-          const { error: accessError } = await supabase
-            .from('user_pack_access')
-            .upsert({
-              user_id: session.user_id,
-              pack_id: packId,
-              is_active: true
-            })
+          if (packId) {  // Ensure packId is not null/undefined
+            const { error: accessError } = await supabase
+              .from('user_pack_access')
+              .upsert({
+                user_id: session.user_id,
+                pack_id: packId,
+                is_active: true
+              })
 
-          if (accessError) {
-            console.error('Error granting access to pack:', packId, accessError)
-          } else {
-            console.log('Access granted to pack:', packId)
+            if (accessError) {
+              console.error('Error granting access to pack:', packId, accessError)
+            } else {
+              console.log('Access granted to pack:', packId)
+            }
           }
         }
 
