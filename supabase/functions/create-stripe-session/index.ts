@@ -8,164 +8,136 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+interface CreateSessionRequest {
+  type: 'individual' | 'combo' | 'complete'
+  packId?: string
+  selectedPackIds?: string[]
+  userId: string
+}
+
+// Mapeamento de tipos para Product IDs específicos do Stripe
+const STRIPE_PRODUCTS = {
+  individual: 'prod_SeldT3rlYho8CM',   // Pack avulso
+  combo: 'prod_SelesxylB4MY0d',        // Combo de 5 Packs
+  complete: 'prod_Selfa5NcnENffo'      // Acesso Total
+}
+
 serve(async (req) => {
-  console.log('Create Stripe session called:', req.method)
+  console.log('create-stripe-session called:', req.method)
   
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const body = await req.json()
-    console.log('Request body:', body)
-
-    const { type, packId, selectedPackIds, userId, couponCode } = body
+    const { type, packId, selectedPackIds, userId }: CreateSessionRequest = await req.json()
+    console.log('Request data:', { type, packId, selectedPackIds, userId })
 
     if (!userId) {
       throw new Error('User ID is required')
     }
 
+    if (!['individual', 'combo', 'complete'].includes(type)) {
+      throw new Error('Invalid payment type')
+    }
+
+    const stripeSecretKey = Deno.env.get('STRIPE_SECRET_KEY')
+    if (!stripeSecretKey) {
+      throw new Error('Stripe secret key not configured')
+    }
+
+    const stripe = new Stripe(stripeSecretKey, { apiVersion: '2023-10-16' })
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL')
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
-    const stripeSecretKey = Deno.env.get('STRIPE_SECRET_KEY')
     
-    if (!supabaseUrl || !supabaseKey || !stripeSecretKey) {
-      throw new Error('Missing required environment variables')
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Supabase configuration missing')
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey)
-    const stripe = new Stripe(stripeSecretKey, { apiVersion: '2023-10-16' })
 
-    // Define prices in cents
-    const prices = {
-      individual: 1480, // R$ 14,80
-      combo: 6140,      // R$ 61,40
-      complete: 11090   // R$ 110,90
+    // Buscar o produto e seu preço no Stripe
+    const productId = STRIPE_PRODUCTS[type]
+    console.log('Using Stripe product ID:', productId)
+
+    const product = await stripe.products.retrieve(productId)
+    const prices = await stripe.prices.list({ product: productId, active: true, limit: 1 })
+    
+    if (prices.data.length === 0) {
+      throw new Error(`No active price found for product ${productId}`)
     }
 
-    let amount = 0
-    let description = ''
+    const price = prices.data[0]
+    console.log('Found price:', price.id, 'Amount:', price.unit_amount)
 
-    switch (type) {
-      case 'individual':
-        amount = prices.individual
-        description = `Pack Individual - ${packId}`
-        break
-      case 'combo':
-        amount = prices.combo
-        description = `Combo 5 Packs - ${selectedPackIds?.length || 0} packs selecionados`
-        break
-      case 'complete':
-        amount = prices.complete
-        description = 'Acesso Total - Todos os packs'
-        break
-      default:
-        throw new Error('Invalid payment type')
+    // Preparar metadata para tracking
+    const metadata: Record<string, string> = {
+      user_id: userId,
+      payment_type: type,
+      product_id: productId
     }
 
-    // Apply coupon if provided
-    let discountAmount = 0
-    if (couponCode) {
-      const { data: coupon } = await supabase
-        .from('discount_coupons')
-        .select('*')
-        .eq('code', couponCode)
-        .eq('is_active', true)
-        .single()
-
-      if (coupon) {
-        const now = new Date()
-        const validFrom = new Date(coupon.valid_from)
-        const validUntil = coupon.valid_until ? new Date(coupon.valid_until) : null
-
-        if (now >= validFrom && (!validUntil || now <= validUntil)) {
-          if (!coupon.max_uses || coupon.current_uses < coupon.max_uses) {
-            if (!coupon.min_purchase_amount || amount >= (coupon.min_purchase_amount * 100)) {
-              if (coupon.discount_type === 'percentage') {
-                discountAmount = Math.round((amount * coupon.discount_value) / 100)
-              } else {
-                discountAmount = coupon.discount_value * 100 // Convert to cents
-              }
-              amount = Math.max(0, amount - discountAmount)
-            }
-          }
-        }
-      }
+    if (type === 'individual' && packId) {
+      metadata.pack_id = packId
+    } else if (type === 'combo' && selectedPackIds) {
+      metadata.selected_pack_ids = JSON.stringify(selectedPackIds)
     }
 
-    // Create external reference for webhook identification
-    const externalReference = `${type}_${userId}_${Date.now()}`
-
-    // Create Stripe checkout session
+    // Criar sessão de checkout do Stripe
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [{
-        price_data: {
-          currency: 'brl',
-          product_data: {
-            name: description,
-          },
-          unit_amount: amount,
+      line_items: [
+        {
+          price: price.id,
+          quantity: 1,
         },
-        quantity: 1,
-      }],
+      ],
       mode: 'payment',
       success_url: `${req.headers.get('origin')}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get('origin')}/packs`,
-      metadata: {
-        external_reference: externalReference,
-        payment_type: type,
-        user_id: userId,
-        pack_id: packId || '',
-        selected_pack_ids: selectedPackIds ? selectedPackIds.join(',') : '',
-        coupon_code: couponCode || '',
-        discount_amount: discountAmount.toString()
-      }
+      metadata,
+      client_reference_id: userId,
     })
 
-    // Create payment session record
-    const { data: paymentSession, error: sessionError } = await supabase
+    console.log('Stripe session created:', session.id)
+
+    // Salvar sessão de pagamento no banco
+    const { error: insertError } = await supabase
       .from('payment_sessions')
       .insert({
         user_id: userId,
-        pack_id: packId,
-        selected_pack_ids: selectedPackIds,
+        pack_id: type === 'individual' ? packId : null,
+        selected_pack_ids: type === 'combo' ? selectedPackIds : null,
         payment_type: type,
         stripe_session_id: session.id,
-        mercadopago_preference_id: '', // Keep for compatibility
-        status: 'pending',
-        external_reference: externalReference
+        external_reference: session.id,
+        mercadopago_preference_id: '', // Manter compatibilidade
+        status: 'pending'
       })
-      .select()
-      .single()
 
-    if (sessionError) {
-      console.error('Error creating payment session:', sessionError)
-      throw new Error('Failed to create payment session')
+    if (insertError) {
+      console.error('Error saving payment session:', insertError)
+      throw new Error('Failed to save payment session')
     }
 
-    console.log('Stripe session created:', session.id)
-    console.log('Payment session created:', paymentSession.id)
-
-    return new Response(
-      JSON.stringify({
-        preference_id: session.id,
-        init_point: session.url,
-        session_id: session.id
-      }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 
-      }
-    )
+    return new Response(JSON.stringify({
+      session_id: session.id,
+      url: session.url,
+      product_name: product.name,
+      amount: price.unit_amount,
+      currency: price.currency
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 200
+    })
 
   } catch (error) {
-    console.error('Error in create-stripe-session:', error)
+    console.error('create-stripe-session error:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
-      { 
+      {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500 
+        status: 500
       }
     )
   }

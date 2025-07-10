@@ -181,6 +181,7 @@ export type Database = {
       payment_sessions: {
         Row: {
           created_at: string
+          external_reference: string | null
           id: string
           mercadopago_preference_id: string
           pack_id: string | null
@@ -193,6 +194,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          external_reference?: string | null
           id?: string
           mercadopago_preference_id: string
           pack_id?: string | null
@@ -205,6 +207,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          external_reference?: string | null
           id?: string
           mercadopago_preference_id?: string
           pack_id?: string | null

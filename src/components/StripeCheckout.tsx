@@ -1,82 +1,79 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 
+// Chave pública live da Stripe fornecida
+const stripePromise = loadStripe('pk_live_51RhgpgLtmJkjKIDB5HIRkSFixyXL4Nsv884yLSWfiy02vbsYYuXw7eX29gkQnWISxycMvrNdObsLLVUERDyUptyH00xXh7fdHL');
+
 interface StripeCheckoutProps {
-  preferenceId: string;
-  onPaymentResult: (result: { status: string }) => void;
+  type: 'individual' | 'combo' | 'complete';
+  packId?: string;
+  selectedPackIds?: string[];
+  userId: string;
+  onSuccess?: () => void;
+  onError?: (error: string) => void;
 }
 
 const StripeCheckout: React.FC<StripeCheckoutProps> = ({
-  preferenceId,
-  onPaymentResult
+  type,
+  packId,
+  selectedPackIds,
+  userId,
+  onSuccess,
+  onError
 }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const initializeStripe = async () => {
-      try {
-        setIsLoading(true);
-        
-        const stripePublishableKey = 'pk_test_51RhgpgLtmJkjKIDBINSae6uoX4gPvVvAzHWSiwNOvcc0ZHvbJTN0XgjCXZiiT3BW5F58nxpelgCPBoFxvSV8MzKv00MbqmZdTA';
-        const stripe = await loadStripe(stripePublishableKey);
-        
-        if (!stripe) {
-          throw new Error('Failed to load Stripe');
-        }
-
-        // Redirect to Stripe Checkout
-        const result = await stripe.redirectToCheckout({
-          sessionId: preferenceId
-        });
-
-        if (result.error) {
-          console.error('Stripe checkout error:', result.error);
-          setError(result.error.message || 'Erro no checkout');
-          onPaymentResult({ status: 'error' });
-        }
-      } catch (err) {
-        console.error('Error initializing Stripe:', err);
-        setError('Erro ao inicializar pagamento');
-        onPaymentResult({ status: 'error' });
-      } finally {
-        setIsLoading(false);
+  const handleCheckout = async () => {
+    try {
+      const stripe = await stripePromise;
+      
+      if (!stripe) {
+        throw new Error('Stripe failed to load');
       }
-    };
 
-    if (preferenceId) {
-      initializeStripe();
+      console.log('Creating Stripe session:', { type, packId, selectedPackIds, userId });
+
+      const response = await fetch('/api/create-stripe-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type,
+          packId,
+          selectedPackIds,
+          userId
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create checkout session');
+      }
+
+      const { url } = await response.json();
+      
+      // Redirecionar para o Stripe Checkout
+      window.location.href = url;
+      
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (error) {
+      console.error('Stripe checkout error:', error);
+      if (onError) {
+        onError(error instanceof Error ? error.message : 'Erro desconhecido');
+      }
     }
-  }, [preferenceId, onPaymentResult]);
+  };
 
-  if (error) {
-    return (
-      <div className="text-center p-6">
-        <div className="text-red-500 mb-4">
-          <p className="font-semibold">Erro no Pagamento</p>
-          <p className="text-sm">{error}</p>
-        </div>
-        <button
-          onClick={() => window.location.reload()}
-          className="bg-case-red text-white px-4 py-2 rounded hover:bg-red-600"
-        >
-          Tentar Novamente
-        </button>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="text-center p-6">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-case-red mx-auto mb-4"></div>
-        <p className="text-case-white">Redirecionando para o pagamento...</p>
-      </div>
-    );
-  }
-
-  return null;
+  return (
+    <button
+      onClick={handleCheckout}
+      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+    >
+      Pagar com Stripe
+    </button>
+  );
 };
 
 export default StripeCheckout;

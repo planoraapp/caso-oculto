@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
-import { LogIn, LogOut, User, Library, Package, Settings, Menu, X } from 'lucide-react';
+import { LogIn, LogOut, User, Library, Package, Settings, Menu, X, Shield } from 'lucide-react';
 import NeonLogo from './NeonLogo';
 
 interface NavigationProps {
@@ -24,6 +24,9 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout, isAdmin }) => {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
+
+  // Verificar se o usuário é especificamente o admin conectawebapps@outlook.com
+  const isConnectaAdmin = user && user.email === 'conectawebapps@outlook.com';
 
   return (
     <>
@@ -89,14 +92,15 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout, isAdmin }) => {
                     </Button>
                   </Link>
                   
-                  {isAdmin && (
+                  {/* Botão Admin - visível apenas para conectawebapps@outlook.com */}
+                  {isConnectaAdmin && (
                     <Link to="/admin">
                       <Button 
                         variant="ghost" 
                         size="sm"
-                        className="text-case-white hover:text-case-red hover:bg-noir-medium"
+                        className="text-orange-400 hover:text-orange-300 hover:bg-noir-medium border border-orange-400/30"
                       >
-                        <Settings className="h-4 w-4 mr-2" />
+                        <Shield className="h-4 w-4 mr-2" />
                         Admin
                       </Button>
                     </Link>
@@ -203,20 +207,21 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout, isAdmin }) => {
                       isActive('/account') ? 'bg-case-red text-white' : 'text-case-white hover:bg-noir-medium'
                     }`}
                   >
-                    <Settings className="h-5 w-5" />
+                    <User className="h-5 w-5" />
                     Configurações
                   </Link>
                   
-                  {isAdmin && (
+                  {/* Botão Admin Mobile */}
+                  {isConnectaAdmin && (
                     <Link 
                       to="/admin" 
                       onClick={closeMobileMenu}
-                      className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
-                        isActive('/admin') ? 'bg-case-red text-white' : 'text-case-white hover:bg-noir-medium'
+                      className={`flex items-center gap-3 p-3 rounded-lg transition-colors border border-orange-400/30 ${
+                        isActive('/admin') ? 'bg-orange-600 text-white' : 'text-orange-400 hover:bg-noir-medium'
                       }`}
                     >
-                      <Settings className="h-5 w-5" />
-                      Admin
+                      <Shield className="h-5 w-5" />
+                      Admin Panel
                     </Link>
                   )}
                   
