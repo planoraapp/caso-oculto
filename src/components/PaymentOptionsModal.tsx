@@ -1,14 +1,14 @@
 
 import React, { useState } from 'react';
-import { Button } from './ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
+import MercadoPagoCheckout from './MercadoPagoCheckout';
 import IndividualPackCard from './payment/IndividualPackCard';
 import ComboPackCard from './payment/ComboPackCard';
 import CompletePackCard from './payment/CompletePackCard';
 import PaymentSecurity from './payment/PaymentSecurity';
-import ComboModal from './ComboModal';
-import { packs, getUserPacks } from '../data/packs';
 
 interface PaymentOptionsModalProps {
   isOpen: boolean;
@@ -28,22 +28,18 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   onPaymentCreated
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isComboModalOpen, setIsComboModalOpen] = useState(false);
+  const [checkoutPreferenceId, setCheckoutPreferenceId] = useState<string | null>(null);
 
-  const userPackIds = getUserPacks(userId);
-
-  const createPayment = async (type: 'individual' | 'combo' | 'complete', selectedPackIds?: string[]) => {
-    if (!userId) return;
-    
+  const handleIndividualPurchase = async () => {
+    if (isLoading || !userId) return;
     setIsLoading(true);
+    
     try {
-      console.log('Creating payment:', { type, packId, selectedPackIds, userId });
-      
+      console.log('Starting individual purchase for pack:', packId);
       const { data, error } = await supabase.functions.invoke('create-payment', {
         body: {
-          type,
-          packId: type === 'individual' ? packId : null,
-          selectedPackIds,
+          type: 'individual',
+          packId,
           userId
         }
       });
@@ -53,85 +49,97 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
         throw error;
       }
 
-      console.log('Payment created:', data.preference_id);
+      console.log('Payment preference created:', data);
+      setCheckoutPreferenceId(data.preference_id);
       onPaymentCreated(data.preference_id);
-      onClose();
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Erro ao processar pagamento individual:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handlePurchaseCombo = async (selectedPackIds: string[]) => {
-    setIsComboModalOpen(false);
-    await createPayment('combo', selectedPackIds);
-  };
+  const handleCompletePurchase = async () => {
+    if (isLoading || !userId) return;
+    setIsLoading(true);
+    
+    try {
+      console.log('Starting complete access purchase');
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          type: 'complete',
+          userId
+        }
+      });
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
+      if (error) {
+        console.error('Error creating payment:', error);
+        throw error;
+      }
+
+      console.log('Payment preference created:', data);
+      setCheckoutPreferenceId(data.preference_id);
+      onPaymentCreated(data.preference_id);
+    } catch (error) {
+      console.error('Erro ao processar pagamento completo:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  if (!isOpen) return null;
+  const handleOpenComboModal = () => {
+    // This will be handled by parent component
+    onClose();
+  };
 
   return (
-    <>
-      <div 
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-        onClick={handleBackdropClick}
-      >
-        <div className="bg-gray-900 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-          <div className="p-6">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-case-white">
-                Desbloquear: {packName}
-              </h2>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                className="text-case-white hover:text-case-red"
-              >
-                <X className="h-6 w-6" />
-              </Button>
-            </div>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="bg-gray-800 border-gray-700 text-case-white max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-center mb-6">
+            Opções de Pagamento
+          </DialogTitle>
+        </DialogHeader>
 
-            {/* Payment Options */}
-            <div className="space-y-4">
-              <IndividualPackCard 
-                onPurchase={() => createPayment('individual')}
-                isLoading={isLoading}
-              />
-              
-              <ComboPackCard 
-                onOpenComboModal={() => setIsComboModalOpen(true)}
-                isLoading={isLoading}
-              />
-              
-              <CompletePackCard 
-                onPurchase={() => createPayment('complete')}
-                isLoading={isLoading}
-              />
-            </div>
+        {checkoutPreferenceId ? (
+          <div className="text-center">
+            <h3 className="text-lg font-semibold mb-4">Finalize seu pagamento</h3>
+            <MercadoPagoCheckout 
+              preferenceId={checkoutPreferenceId}
+              onPaymentResult={(result) => {
+                console.log('Payment result:', result);
+                if (result.status === 'approved') {
+                  onClose();
+                }
+              }}
+            />
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {/* Individual Pack Option */}
+            <IndividualPackCard
+              onPurchase={handleIndividualPurchase}
+              isLoading={isLoading}
+            />
 
+            {/* Combo Pack Option */}
+            <ComboPackCard
+              onOpenComboModal={handleOpenComboModal}
+              isLoading={isLoading}
+            />
+
+            {/* Complete Pack Option */}
+            <CompletePackCard
+              onPurchase={handleCompletePurchase}
+              isLoading={isLoading}
+            />
+
+            {/* Payment Security */}
             <PaymentSecurity />
           </div>
-        </div>
-      </div>
-
-      {/* Combo Modal */}
-      {isComboModalOpen && (
-        <ComboModal
-          packs={packs}
-          ownedPackIds={userPackIds}
-          onClose={() => setIsComboModalOpen(false)}
-          onPurchaseCombo={handlePurchaseCombo}
-        />
-      )}
-    </>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
 
