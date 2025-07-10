@@ -1,6 +1,9 @@
+
 import React from 'react';
+
 const SiteFooter: React.FC = () => {
-  return <footer className="site-footer">
+  return (
+    <footer className="site-footer mt-auto">
       <style>{`
         .site-footer {
           position: relative;
@@ -9,6 +12,8 @@ const SiteFooter: React.FC = () => {
           background-size: cover;
           background-position: center top;
           overflow: hidden;
+          flex-shrink: 0;
+          width: 100%;
         }
 
         .site-footer::before {
@@ -75,6 +80,8 @@ const SiteFooter: React.FC = () => {
       `}</style>
       
       <div className="copyright-text">2025 - CASO OCULTO. Todos os direitos reservados.</div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default SiteFooter;

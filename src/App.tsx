@@ -35,9 +35,9 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-900 flex flex-col w-full">
       <Navigation user={user} onLogout={signOut} isAdmin={isAdmin} />
-      <main className="flex-1">
+      <main className="flex-1 w-full">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/packs" element={<Packs user={user} />} />

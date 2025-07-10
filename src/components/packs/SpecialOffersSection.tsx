@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
@@ -5,12 +6,14 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { ShoppingCart, Star, Users, Zap } from 'lucide-react';
 import { useIsMobile } from '../../hooks/use-mobile';
+
 interface SpecialOffersSectionProps {
   user: any;
   isLoading: boolean;
   onComboClick: () => void;
   onCompletePurchase: () => void;
 }
+
 const SpecialOffersSection: React.FC<SpecialOffersSectionProps> = ({
   user,
   isLoading,
@@ -18,23 +21,24 @@ const SpecialOffersSection: React.FC<SpecialOffersSectionProps> = ({
   onCompletePurchase
 }) => {
   const isMobile = useIsMobile();
+
   const handleComboClick = () => {
     if (!user || isLoading) return;
     onComboClick();
   };
+
   const handleCompleteClick = () => {
     if (!user || isLoading) return;
     onCompletePurchase();
   };
-  return <motion.div className="mb-12 md:mb-16" initial={{
-    opacity: 0,
-    y: 30
-  }} animate={{
-    opacity: 1,
-    y: 0
-  }} transition={{
-    delay: 0.2
-  }}>
+
+  return (
+    <motion.div 
+      className="mb-12 md:mb-16" 
+      initial={{ opacity: 0, y: 30 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ delay: 0.2 }}
+    >
       <h2 className="text-xl md:text-2xl font-bold text-case-white mb-6 md:mb-8 text-center">Ofertas Especiais</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
         {/* Combo Pack */}
@@ -65,9 +69,13 @@ const SpecialOffersSection: React.FC<SpecialOffersSectionProps> = ({
               <div className="pt-4 border-t border-gray-700">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-case-white/60 line-through text-sm md:text-base">R$ 74,00</span>
-                  <span className="text-xl md:text-2xl font-bold text-case-red">R$ 59,20</span>
+                  <span className="text-xl md:text-2xl font-bold text-case-red">R$ 61,40</span>
                 </div>
-                <Button onClick={handleComboClick} disabled={isLoading || !user} className="w-full bg-case-red hover:bg-red-600 text-white disabled:opacity-50 text-sm md:text-base">
+                <Button 
+                  onClick={handleComboClick} 
+                  disabled={isLoading || !user} 
+                  className="w-full bg-case-red hover:bg-red-600 text-white disabled:opacity-50 text-sm md:text-base"
+                >
                   <ShoppingCart className="h-4 w-4 mr-2" />
                   {!user ? 'Faça login para comprar' : 'Montar Combo'}
                 </Button>
@@ -98,9 +106,13 @@ const SpecialOffersSection: React.FC<SpecialOffersSectionProps> = ({
               <div className="pt-4 border-t border-gray-700">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-case-white/60 text-sm md:text-base">Valor total</span>
-                  <span className="text-xl md:text-2xl font-bold text-yellow-500">R$ 99,90</span>
+                  <span className="text-xl md:text-2xl font-bold text-yellow-500">R$ 110,90</span>
                 </div>
-                <Button onClick={handleCompleteClick} disabled={isLoading || !user} className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold disabled:opacity-50 text-sm md:text-base">
+                <Button 
+                  onClick={handleCompleteClick} 
+                  disabled={isLoading || !user} 
+                  className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold disabled:opacity-50 text-sm md:text-base"
+                >
                   <ShoppingCart className="h-4 w-4 mr-2" />
                   {!user ? 'Faça login para comprar' : 'Comprar Acesso Total'}
                 </Button>
@@ -109,9 +121,8 @@ const SpecialOffersSection: React.FC<SpecialOffersSectionProps> = ({
           </CardContent>
         </Card>
       </div>
-
-      {/* Mercado Pago Security Message */}
-      
-    </motion.div>;
+    </motion.div>
+  );
 };
+
 export default SpecialOffersSection;
