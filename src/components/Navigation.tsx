@@ -8,9 +8,10 @@ import NeonLogo from './NeonLogo';
 interface NavigationProps {
   user: any;
   onLogout: () => void;
+  isAdmin?: boolean;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
+const Navigation: React.FC<NavigationProps> = ({ user, onLogout, isAdmin }) => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -88,7 +89,7 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
                     </Button>
                   </Link>
                   
-                  {user.email === 'conectawebapps@outlook.com' && (
+                  {isAdmin && (
                     <Link to="/admin">
                       <Button 
                         variant="ghost" 
@@ -205,6 +206,19 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
                     <Settings className="h-5 w-5" />
                     Configurações
                   </Link>
+                  
+                  {isAdmin && (
+                    <Link 
+                      to="/admin" 
+                      onClick={closeMobileMenu}
+                      className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                        isActive('/admin') ? 'bg-case-red text-white' : 'text-case-white hover:bg-noir-medium'
+                      }`}
+                    >
+                      <Settings className="h-5 w-5" />
+                      Admin
+                    </Link>
+                  )}
                   
                   <button 
                     onClick={() => { onLogout(); closeMobileMenu(); }}

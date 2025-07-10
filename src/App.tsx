@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +17,7 @@ import Account from "./pages/Account";
 import AdminPanel from "./pages/AdminPanel";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
+import { AuthProvider, useAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,39 +30,9 @@ const queryClient = new QueryClient({
 
 const AppContent = () => {
   const location = useLocation();
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Check for existing session
-    try {
-      const savedUser = localStorage.getItem('currentUser');
-      if (savedUser) {
-        const userData = JSON.parse(savedUser);
-        setUser(userData);
-      }
-    } catch (error) {
-      localStorage.removeItem('currentUser');
-    }
-    setLoading(false);
-  }, []);
-
-  const handleLogin = (userData: any) => {
-    setUser(userData);
-    try {
-      localStorage.setItem('currentUser', JSON.stringify(userData));
-    } catch (error) {
-      console.error('Error saving user data:', error);
-    }
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('currentUser');
-  };
+  const { user, loading, signOut, isAdmin } = useAuth();
 
   const showFooter = ['/', '/packs', '/library', '/terms'].includes(location.pathname);
-  const isAdmin = user?.email === 'conectawebapps@outlook.com' || user?.isAdmin;
 
   if (loading) {
     return (
@@ -73,13 +44,13 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Navigation user={user} onLogout={handleLogout} />
+      <Navigation user={user} onLogout={signOut} isAdmin={isAdmin} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route 
           path="/login" 
           element={
-            user ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />
+            user ? <Navigate to="/" replace /> : <Login />
           } 
         />
         <Route path="/packs" element={<Packs user={user} />} />
@@ -94,7 +65,7 @@ const AppContent = () => {
         <Route 
           path="/account" 
           element={
-            user ? <Account user={user} onLogout={handleLogout} /> : <Navigate to="/login" replace />
+            user ? <Account user={user} onLogout={signOut} /> : <Navigate to="/login" replace />
           } 
         />
         <Route 
@@ -120,7 +91,9 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <AppContent />
+            <AuthProvider>
+              <AppContent />
+            </AuthProvider>
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>

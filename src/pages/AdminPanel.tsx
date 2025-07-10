@@ -9,12 +9,14 @@ import PackManager from '../components/PackManager';
 import CouponManager from '../components/CouponManager';
 import AffiliateManager from '../components/AffiliateManager';
 import { supabase } from '../integrations/supabase/client';
+import { useAuth } from '../hooks/useAuth';
 
 interface AdminPanelProps {
   user: any;
 }
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ user }) => {
+  const { isAdmin } = useAuth();
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalPacks: 0,
@@ -23,13 +25,17 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ user }) => {
   });
 
   useEffect(() => {
-    loadStats();
-  }, []);
+    if (isAdmin) {
+      loadStats();
+    }
+  }, [isAdmin]);
 
   const loadStats = async () => {
     try {
-      // Load users count
-      const { data: usersData } = await supabase.auth.admin.listUsers();
+      // Load profiles count (represents users)
+      const { count: usersCount } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true });
       
       // Load packs count
       const { count: packsCount } = await supabase
@@ -47,7 +53,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ user }) => {
         .select('*', { count: 'exact', head: true });
 
       setStats({
-        totalUsers: usersData?.users?.length || 0,
+        totalUsers: usersCount || 0,
         totalPacks: packsCount || 0,
         totalCoupons: couponsCount || 0,
         totalPayments: paymentsCount || 0
@@ -58,7 +64,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ user }) => {
   };
 
   // Check if user is admin
-  if (!user || user.email !== 'conectawebapps@outlook.com') {
+  if (!user || !isAdmin) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
