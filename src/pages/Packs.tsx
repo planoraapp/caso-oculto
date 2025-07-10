@@ -1,5 +1,5 @@
 
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { HelpCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
@@ -10,16 +10,29 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import HowToPlayModal from '../components/HowToPlayModal';
 import SpecialOffersSection from '../components/packs/SpecialOffersSection';
 import RegularPacksSection from '../components/packs/RegularPacksSection';
-import { packs, getUserPacks } from '../data/packs';
+import { supabase } from '../integrations/supabase/client';
 import { usePaymentManager } from '../hooks/usePaymentManager';
 import { useModalManager } from '../hooks/useModalManager';
+
+interface Pack {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  difficulty: string;
+  image: string;
+  category: string;
+  cases?: any[];
+}
 
 interface PacksProps {
   user: any;
 }
 
 const Packs: React.FC<PacksProps> = ({ user }) => {
-  const ownedPackIds = getUserPacks(user?.id || '');
+  const [packs, setPacks] = useState<Pack[]>([]);
+  const [ownedPackIds, setOwnedPackIds] = useState<string[]>([]);
+  const [isLoadingPacks, setIsLoadingPacks] = useState(true);
   
   const {
     isLoading,
@@ -39,7 +52,82 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
 
   const { isOpen: isHowToPlayOpen, openModal: openHowToPlay, closeModal: closeHowToPlay } = useModalManager();
 
-  const regularPacks = useMemo(() => packs.filter(p => !['combo', 'complete'].includes(p.category)), []);
+  // Fetch packs from Supabase
+  useEffect(() => {
+    const fetchPacks = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('packs')
+          .select('*')
+          .order('name');
+        
+        if (error) throw error;
+        
+        // Transform database packs to include cases
+        const packsWithCases = data.map(pack => ({
+          ...pack,
+          cases: generateCasesForPack(pack.id, pack.name)
+        }));
+        
+        setPacks(packsWithCases);
+      } catch (error) {
+        console.error('Error fetching packs:', error);
+      } finally {
+        setIsLoadingPacks(false);
+      }
+    };
+
+    fetchPacks();
+  }, []);
+
+  // Fetch user's owned packs
+  useEffect(() => {
+    const fetchUserPacks = async () => {
+      if (!user?.id) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('user_pack_access')
+          .select('pack_id')
+          .eq('user_id', user.id)
+          .eq('is_active', true);
+        
+        if (error) throw error;
+        
+        setOwnedPackIds(data.map(item => item.pack_id));
+      } catch (error) {
+        console.error('Error fetching user packs:', error);
+      }
+    };
+
+    fetchUserPacks();
+  }, [user?.id]);
+
+  // Generate cases for each pack dynamically
+  const generateCasesForPack = (packId: string, packName: string) => {
+    const themes = ['mystery', 'murder', 'theft', 'investigation', 'thriller', 'crime', 'conspiracy', 'danger', 'power'];
+    const difficulties = ['easy', 'medium', 'hard'];
+    
+    return Array.from({ length: 10 }, (_, index) => ({
+      id: `${packId}-case-${index + 1}`,
+      order: index + 1,
+      mystery: `Mistério ${index + 1} de ${packName}`,
+      solution: `Solução do mistério ${index + 1}`,
+      difficulty: difficulties[index % 3] as 'easy' | 'medium' | 'hard',
+      theme: themes[index % themes.length] as any,
+      name: `Caso ${index + 1}`,
+      icon: 'mystery',
+      title: `O Enigma ${index + 1}`,
+      description: `Um mistério intrigante para ser desvendado em ${packName}`,
+      image: `/lovable-uploads/pack${(index % 5) + 1}/case${index + 1}.png`,
+      isFree: index === 0 // First case is always free
+    }));
+  };
+
+  const regularPacks = useMemo(() => 
+    packs.filter(p => !['combo', 'complete'].includes(p.category)), 
+    [packs]
+  );
 
   const handlePackClick = useCallback((pack: any) => {
     // Navigation is handled by Link in PackCard
@@ -56,6 +144,14 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
       window.location.reload();
     }, 2000);
   };
+
+  if (isLoadingPacks) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900">

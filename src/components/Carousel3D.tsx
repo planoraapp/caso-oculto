@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useMemo } from 'react';
+
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { packs } from '../data/packs';
+import { supabase } from '../integrations/supabase/client';
 import PackCard from './PackCard';
 import ComboModal from './ComboModal';
 import PaymentStatusModal from './PaymentStatusModal';
@@ -9,12 +10,25 @@ import LoadingSpinner from './LoadingSpinner';
 import CarouselControls from './carousel/CarouselControls';
 import CarouselIndicators from './carousel/CarouselIndicators';
 import { usePaymentManager } from '../hooks/usePaymentManager';
-import { getUserPacks } from '../data/packs';
+
+interface Pack {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  difficulty: string;
+  image: string;
+  category: string;
+  cases?: any[];
+}
 
 const Carousel3D: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [packs, setPacks] = useState<Pack[]>([]);
+  const [ownedPackIds, setOwnedPackIds] = useState<string[]>([]);
+  const [isLoadingPacks, setIsLoadingPacks] = useState(true);
+  
   const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{"id": "demo-user"}');
-  const ownedPackIds = getUserPacks(currentUser.id);
 
   const {
     isLoading,
@@ -29,10 +43,55 @@ const Carousel3D: React.FC = () => {
     setCheckoutPreferenceId
   } = usePaymentManager(currentUser.id);
 
-  const featuredPacks = useMemo(() => 
-    packs.filter(p => !['combo', 'complete'].includes(p.category)).slice(0, 6), 
-    []
-  );
+  // Fetch packs from Supabase
+  useEffect(() => {
+    const fetchPacks = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('packs')
+          .select('*')
+          .neq('category', 'combo')
+          .neq('category', 'complete')
+          .order('name')
+          .limit(6);
+        
+        if (error) throw error;
+        
+        setPacks(data);
+      } catch (error) {
+        console.error('Error fetching packs:', error);
+      } finally {
+        setIsLoadingPacks(false);
+      }
+    };
+
+    fetchPacks();
+  }, []);
+
+  // Fetch user's owned packs
+  useEffect(() => {
+    const fetchUserPacks = async () => {
+      if (!currentUser?.id) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('user_pack_access')
+          .select('pack_id')
+          .eq('user_id', currentUser.id)
+          .eq('is_active', true);
+        
+        if (error) throw error;
+        
+        setOwnedPackIds(data.map(item => item.pack_id));
+      } catch (error) {
+        console.error('Error fetching user packs:', error);
+      }
+    };
+
+    fetchUserPacks();
+  }, [currentUser?.id]);
+
+  const featuredPacks = useMemo(() => packs, [packs]);
 
   const nextSlide = useCallback(() => {
     setCurrentIndex(prev => (prev + 1) % featuredPacks.length);
@@ -67,6 +126,8 @@ const Carousel3D: React.FC = () => {
   }, [handlePurchaseCombo]);
 
   const getVisiblePacks = useCallback(() => {
+    if (featuredPacks.length === 0) return [];
+    
     const visible = [];
     for (let i = 0; i < 3; i++) {
       const index = (currentIndex + i) % featuredPacks.length;
@@ -77,6 +138,22 @@ const Carousel3D: React.FC = () => {
     }
     return visible;
   }, [currentIndex, featuredPacks]);
+
+  if (isLoadingPacks) {
+    return (
+      <div className="relative w-full max-w-6xl mx-auto mb-6 md:mb-8 flex justify-center items-center h-64 md:h-80">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
+  if (featuredPacks.length === 0) {
+    return (
+      <div className="relative w-full max-w-6xl mx-auto mb-6 md:mb-8 flex justify-center items-center h-64 md:h-80">
+        <div className="text-case-white text-xl">Nenhum pack disponível</div>
+      </div>
+    );
+  }
 
   const visiblePacks = getVisiblePacks();
 

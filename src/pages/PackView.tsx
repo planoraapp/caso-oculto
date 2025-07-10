@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { packs, getUserPacks, Pack, Case } from '../data/packs';
+import { supabase } from '../integrations/supabase/client';
+import { Pack, Case } from '../data/types';
 import FloatingFlipCard from '../components/FloatingFlipCard';
 import PaymentOptionsModal from '../components/PaymentOptionsModal';
 import ComboModal from '../components/ComboModal';
@@ -19,12 +20,14 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [pack, setPack] = useState<Pack | null>(null);
+  const [allPacks, setAllPacks] = useState<Pack[]>([]);
   const [selectedCard, setSelectedCard] = useState<Case | null>(null);
   const [solvedCards, setSolvedCards] = useState<string[]>([]);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isComboModalOpen, setIsComboModalOpen] = useState(false);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
+  const [userPackIds, setUserPackIds] = useState<string[]>([]);
 
   const {
     paymentStatus,
@@ -33,17 +36,104 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     closePaymentStatus
   } = usePaymentStatus(user?.id || '');
 
+  // Generate cases for each pack dynamically
+  const generateCasesForPack = (packId: string, packName: string): Case[] => {
+    const themes = ['mystery', 'murder', 'theft', 'investigation', 'thriller', 'crime', 'conspiracy', 'danger', 'power'];
+    const difficulties = ['easy', 'medium', 'hard'];
+    
+    return Array.from({ length: 10 }, (_, index) => ({
+      id: `${packId}-case-${index + 1}`,
+      order: index + 1,
+      mystery: `Mistério ${index + 1} de ${packName}`,
+      solution: `Solução do mistério ${index + 1}`,
+      difficulty: difficulties[index % 3] as 'easy' | 'medium' | 'hard',
+      theme: themes[index % themes.length] as any,
+      name: `Caso ${index + 1}`,
+      icon: 'mystery',
+      title: `O Enigma ${index + 1}`,
+      description: `Um mistério intrigante para ser desvendado em ${packName}`,
+      image: `/lovable-uploads/pack${(index % 5) + 1}/case${index + 1}.png`,
+      isFree: index === 0 // First case is always free
+    }));
+  };
+
   useEffect(() => {
-    const foundPack = packs.find(p => p.id === id);
-    if (foundPack) {
-      setPack(foundPack);
-      // Load solved cards from localStorage
-      const solved = JSON.parse(localStorage.getItem(`solved_${user?.id || 'anonymous'}_${id}`) || '[]');
-      setSolvedCards(solved);
-    } else {
-      navigate('/packs');
-    }
+    const fetchPack = async () => {
+      if (!id) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('packs')
+          .select('*')
+          .eq('id', id)
+          .single();
+        
+        if (error) throw error;
+        
+        const packWithCases = {
+          ...data,
+          cases: generateCasesForPack(data.id, data.name)
+        };
+        
+        setPack(packWithCases);
+        
+        // Load solved cards from localStorage
+        const solved = JSON.parse(localStorage.getItem(`solved_${user?.id || 'anonymous'}_${id}`) || '[]');
+        setSolvedCards(solved);
+      } catch (error) {
+        console.error('Error fetching pack:', error);
+        navigate('/packs');
+      }
+    };
+
+    fetchPack();
   }, [id, navigate, user]);
+
+  useEffect(() => {
+    const fetchAllPacks = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('packs')
+          .select('*')
+          .order('name');
+        
+        if (error) throw error;
+        
+        const packsWithCases = data.map(packData => ({
+          ...packData,
+          cases: generateCasesForPack(packData.id, packData.name)
+        }));
+        
+        setAllPacks(packsWithCases);
+      } catch (error) {
+        console.error('Error fetching all packs:', error);
+      }
+    };
+
+    fetchAllPacks();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserPacks = async () => {
+      if (!user?.id) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('user_pack_access')
+          .select('pack_id')
+          .eq('user_id', user.id)
+          .eq('is_active', true);
+        
+        if (error) throw error;
+        
+        setUserPackIds(data.map(item => item.pack_id));
+      } catch (error) {
+        console.error('Error fetching user packs:', error);
+      }
+    };
+
+    fetchUserPacks();
+  }, [user?.id]);
 
   if (!pack) {
     return (
@@ -53,7 +143,6 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     );
   }
 
-  const userPackIds = user ? getUserPacks(user.id) : [];
   const hasAccess = userPackIds.includes(pack.id) || (user && user.email === 'conectawebapps@outlook.com');
 
   const handleCardClick = (card: Case) => {
@@ -139,7 +228,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
 
       {isComboModalOpen && (
         <ComboModal
-          packs={packs}
+          packs={allPacks}
           ownedPackIds={userPackIds}
           onClose={() => setIsComboModalOpen(false)}
           onPurchaseCombo={handlePurchaseCombo}
