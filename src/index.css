@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Audiowide:wght@400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -145,8 +147,6 @@
 }
 
 /* Logo Neon Effects - Subtle version */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Audiowide:wght@400&display=swap');
-
 .logo-neon {
   font-family: 'Century Gothic', 'Orbitron', 'Audiowide', sans-serif;
   font-weight: 700;

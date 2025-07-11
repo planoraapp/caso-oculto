@@ -1,100 +1,29 @@
-import case01Image from '../assets/cases/case-01.png';
-import case02Image from '../assets/cases/case-02.png';
-import case03Image from '../assets/cases/case-03.png';
-import case04Image from '../assets/cases/case-04.png';
-
-import case1 from '../assets/cases/cards/case-1.png';
-import case2 from '../assets/cases/cards/case-2.png';
-import case3 from '../assets/cases/cards/case-3.png';
-import case4 from '../assets/cases/cards/case-4.png';
-import case5 from '../assets/cases/cards/case-5.png';
-import case6 from '../assets/cases/cards/case-6.png';
-import case7 from '../assets/cases/cards/case-7.png';
-import case8 from '../assets/cases/cards/case-8.png';
-import case9 from '../assets/cases/cards/case-9.png';
-import case10 from '../assets/cases/cards/case-10.png';
-import case11 from '../assets/cases/cards/case-11.png';
-import case12 from '../assets/cases/cards/case-12.png';
-import case13 from '../assets/cases/cards/case-13.png';
-import case14 from '../assets/cases/cards/case-14.png';
-import case15 from '../assets/cases/cards/case-15.png';
-import case16 from '../assets/cases/cards/case-16.png';
-import case17 from '../assets/cases/cards/case-17.png';
-import case18 from '../assets/cases/cards/case-18.png';
-import case19 from '../assets/cases/cards/case-19.png';
-import case20 from '../assets/cases/cards/case-20.png';
-import case21 from '../assets/cases/cards/case-21.png';
-import case22 from '../assets/cases/cards/case-22.png';
-import case23 from '../assets/cases/cards/case-23.png';
-import case24 from '../assets/cases/cards/case-24.png';
-import case25 from '../assets/cases/cards/case-25.png';
-import case26 from '../assets/cases/cards/case-26.png';
-import case27 from '../assets/cases/cards/case-27.png';
-import case28 from '../assets/cases/cards/case-28.png';
-import case29 from '../assets/cases/cards/case-29.png';
-import case30 from '../assets/cases/cards/case-30.png';
-import case31 from '../assets/cases/cards/case-31.png';
-import case32 from '../assets/cases/cards/case-32.png';
-import case33 from '../assets/cases/cards/case-33.png';
-import case34 from '../assets/cases/cards/case-34.png';
-import case35 from '../assets/cases/cards/case-35.png';
-import case36 from '../assets/cases/cards/case-36.png';
-import case37 from '../assets/cases/cards/case-37.png';
-import case38 from '../assets/cases/cards/case-38.png';
-import case39 from '../assets/cases/cards/case-39.png';
-import case40 from '../assets/cases/cards/case-40.png';
-import case41 from '../assets/cases/cards/case-41.png';
-import case42 from '../assets/cases/cards/case-42.png';
-import case43 from '../assets/cases/cards/case-43.png';
-import case44 from '../assets/cases/cards/case-44.png';
-import case45 from '../assets/cases/cards/case-45.png';
-import case46 from '../assets/cases/cards/case-46.png';
-import case47 from '../assets/cases/cards/case-47.png';
-import case48 from '../assets/cases/cards/case-48.png';
-import case49 from '../assets/cases/cards/case-49.png';
-import case50 from '../assets/cases/cards/case-50.png';
-import case51 from '../assets/cases/cards/case-51.png';
-import case52 from '../assets/cases/cards/case-52.png';
-import case53 from '../assets/cases/cards/case-53.png';
-import case54 from '../assets/cases/cards/case-54.png';
-import case55 from '../assets/cases/cards/case-55.png';
-import case56 from '../assets/cases/cards/case-56.png';
-import case57 from '../assets/cases/cards/case-57.png';
-import case58 from '../assets/cases/cards/case-58.png';
-import case59 from '../assets/cases/cards/case-59.png';
-import case60 from '../assets/cases/cards/case-60.png';
-import case61 from '../assets/cases/cards/case-61.png';
-import case62 from '../assets/cases/cards/case-62.png';
-import case63 from '../assets/cases/cards/case-63.png';
-import case64 from '../assets/cases/cards/case-64.png';
-import case65 from '../assets/cases/cards/case-65.png';
-import case66 from '../assets/cases/cards/case-66.png';
-import case67 from '../assets/cases/cards/case-67.png';
-import case68 from '../assets/cases/cards/case-68.png';
-import case69 from '../assets/cases/cards/case-69.png';
-import case70 from '../assets/cases/cards/case-70.png';
-import case71 from '../assets/cases/cards/case-71.png';
-import case72 from '../assets/cases/cards/case-72.png';
-import case73 from '../assets/cases/cards/case-73.png';
-import case74 from '../assets/cases/cards/case-74.png';
-import case75 from '../assets/cases/cards/case-75.png';
-import case76 from '../assets/cases/cards/case-76.png';
-import case77 from '../assets/cases/cards/case-77.png';
-import case78 from '../assets/cases/cards/case-78.png';
-import case79 from '../assets/cases/cards/case-79.png';
-import case80 from '../assets/cases/cards/case-80.png';
-import case81 from '../assets/cases/cards/case-81.png';
-import case82 from '../assets/cases/cards/case-82.png';
-import case83 from '../assets/cases/cards/case-83.png';
-import case84 from '../assets/cases/cards/case-84.png';
-import case85 from '../assets/cases/cards/case-85.png';
-import case86 from '../assets/cases/cards/case-86.png';
-import case87 from '../assets/cases/cards/case-87.png';
-import case88 from '../assets/cases/cards/case-88.png';
-import case89 from '../assets/cases/cards/case-89.png';
-import case90 from '../assets/cases/cards/case-90.png';
-
 import { Pack } from './types';
+
+// Using placeholder images from Unsplash for pack covers
+const case01Image = 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=300&fit=crop';
+const case02Image = 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=300&fit=crop';
+const case03Image = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=300&fit=crop';
+const case04Image = 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop';
+
+// Using placeholder images for individual case cards
+const generateCaseImage = (index: number) => {
+  const imageIds = [
+    'photo-1526374965328-7f61d4dc18c5', // Matrix
+    'photo-1485827404703-89b55fcc595e', // Robot
+    'photo-1488590528505-98d2b5aba04b', // Circuit board
+    'photo-1461749280684-dccba630e2f6', // Java code
+    'photo-1486312338219-ce68d2c6f44d', // MacBook
+    'photo-1581091226825-a6a2a5aee158', // Laptop
+    'photo-1531297484001-80022131f5a1', // Laptop surface
+    'photo-1487058792275-0ad4aaf24ca7', // Colorful code
+    'photo-1518770660439-4636190af475', // Circuit macro
+    'photo-1649972904349-6e44c42644a7'  // Woman laptop
+  ];
+  
+  const imageId = imageIds[index % imageIds.length];
+  return `https://images.unsplash.com/${imageId}?w=300&h=200&fit=crop`;
+};
 
 export const packs: Pack[] = [
   {
@@ -117,7 +46,7 @@ export const packs: Pack[] = [
         name: 'A Herança Envenenada',
         title: '🏰 A Herança Envenenada',
         description: 'Uma mansão vitoriana, um testamento polêmico e uma morte suspeita durante o chá da tarde.',
-        image: case1
+        image: generateCaseImage(0)
       },
       {
         id: 'case-002',
@@ -129,7 +58,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Quadro Roubado',
         title: '🖼️ O Mistério do Quadro Roubado',
         description: 'Um quadro valioso desaparece durante uma exposição. Quem está por trás do roubo?',
-        image: case2
+        image: generateCaseImage(1)
       },
       {
         id: 'case-003',
@@ -141,7 +70,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Cofre',
         title: '🔐 O Segredo do Cofre',
         description: 'Um cofre misterioso guarda segredos que podem mudar o destino da cidade.',
-        image: case3
+        image: generateCaseImage(2)
       },
       {
         id: 'case-004',
@@ -153,7 +82,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Incêndio',
         title: '🔥 A Noite do Incêndio',
         description: 'Um incêndio destrói uma fábrica. Foi acidente ou sabotagem?',
-        image: case4
+        image: generateCaseImage(3)
       },
       {
         id: 'case-005',
@@ -165,7 +94,7 @@ export const packs: Pack[] = [
         name: 'O Desaparecimento na Floresta',
         title: '🌲 O Desaparecimento na Floresta',
         description: 'Uma pessoa desaparece misteriosamente em uma floresta densa.',
-        image: case5
+        image: generateCaseImage(4)
       },
       {
         id: 'case-006',
@@ -177,7 +106,7 @@ export const packs: Pack[] = [
         name: 'O Enigma do Relógio',
         title: '⏰ O Enigma do Relógio',
         description: 'Um relógio antigo guarda um segredo que pode resolver um crime antigo.',
-        image: case6
+        image: generateCaseImage(5)
       },
       {
         id: 'case-007',
@@ -189,7 +118,7 @@ export const packs: Pack[] = [
         name: 'A Carta Anônima',
         title: '✉️ A Carta Anônima',
         description: 'Uma carta anônima revela pistas sobre um crime não resolvido.',
-        image: case7
+        image: generateCaseImage(6)
       },
       {
         id: 'case-008',
@@ -201,7 +130,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Farol',
         title: '🚨 O Mistério do Farol',
         description: 'Luzes estranhas no farol assustam os moradores da costa.',
-        image: case8
+        image: generateCaseImage(7)
       },
       {
         id: 'case-009',
@@ -213,7 +142,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Jardim',
         title: '🌿 O Segredo do Jardim',
         description: 'Um jardim aparentemente comum guarda um segredo sombrio.',
-        image: case9
+        image: generateCaseImage(8)
       },
       {
         id: 'case-010',
@@ -225,7 +154,7 @@ export const packs: Pack[] = [
         name: 'A Vingança do Fantasma',
         title: '👻 A Vingança do Fantasma',
         description: 'Lendas de um fantasma assombram uma antiga mansão.',
-        image: case10
+        image: generateCaseImage(9)
       },
       {
         id: 'case-011',
@@ -237,7 +166,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Diamante Roubado',
         title: '💎 O Caso do Diamante Roubado',
         description: 'Um diamante valioso desaparece durante uma exposição.',
-        image: case11
+        image: generateCaseImage(0)
       },
       {
         id: 'case-012',
@@ -249,7 +178,7 @@ export const packs: Pack[] = [
         name: 'O Mistério da Biblioteca',
         title: '📚 O Mistério da Biblioteca',
         description: 'Eventos estranhos acontecem em uma biblioteca antiga.',
-        image: case12
+        image: generateCaseImage(1)
       },
       {
         id: 'case-013',
@@ -261,7 +190,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Navio Fantasma',
         title: '🚢 O Segredo do Navio Fantasma',
         description: 'Histórias de um navio fantasma circulam entre os pescadores.',
-        image: case13
+        image: generateCaseImage(2)
       },
       {
         id: 'case-014',
@@ -273,7 +202,7 @@ export const packs: Pack[] = [
         name: 'A Conspiração do Conselho',
         title: '🏛️ A Conspiração do Conselho',
         description: 'Um conselho municipal esconde segredos obscuros.',
-        image: case14
+        image: generateCaseImage(3)
       },
       {
         id: 'case-015',
@@ -285,7 +214,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Relógio de Ouro',
         title: '⏳ O Mistério do Relógio de Ouro',
         description: 'Um relógio de ouro desaparece durante um baile de gala.',
-        image: case15
+        image: generateCaseImage(4)
       },
       {
         id: 'case-016',
@@ -297,7 +226,7 @@ export const packs: Pack[] = [
         name: 'O Caso da Estátua Desaparecida',
         title: '🗿 O Caso da Estátua Desaparecida',
         description: 'Uma estátua valiosa desaparece misteriosamente.',
-        image: case16
+        image: generateCaseImage(5)
       },
       {
         id: 'case-017',
@@ -309,7 +238,7 @@ export const packs: Pack[] = [
         name: 'O Enigma da Sala Trancada',
         title: '🔒 O Enigma da Sala Trancada',
         description: 'Um assassinato em uma sala trancada intriga os detetives.',
-        image: case17
+        image: generateCaseImage(6)
       },
       {
         id: 'case-018',
@@ -321,7 +250,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Cemitério',
         title: '⚰️ O Mistério do Cemitério',
         description: 'Eventos estranhos acontecem em um cemitério antigo.',
-        image: case18
+        image: generateCaseImage(7)
       },
       {
         id: 'case-019',
@@ -333,7 +262,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Roubo na Joalheria',
         title: '💍 A Noite do Roubo na Joalheria',
         description: 'Uma joalheria é roubada durante a noite.',
-        image: case19
+        image: generateCaseImage(8)
       },
       {
         id: 'case-020',
@@ -345,7 +274,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Manuscrito',
         title: '📜 O Segredo do Manuscrito',
         description: 'Um manuscrito antigo é a chave para um grande segredo.',
-        image: case20
+        image: generateCaseImage(9)
       },
       {
         id: 'case-021',
@@ -357,7 +286,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Teatro',
         title: '🎭 O Mistério do Teatro',
         description: 'Um crime acontece nos bastidores de um teatro.',
-        image: case21
+        image: generateCaseImage(0)
       },
       {
         id: 'case-022',
@@ -369,7 +298,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Médico Desaparecido',
         title: '🩺 O Caso do Médico Desaparecido',
         description: 'Um médico desaparece misteriosamente.',
-        image: case22
+        image: generateCaseImage(1)
       },
       {
         id: 'case-023',
@@ -381,7 +310,7 @@ export const packs: Pack[] = [
         name: 'O Enigma do Cofre Antigo',
         title: '🗝️ O Enigma do Cofre Antigo',
         description: 'Um cofre antigo guarda segredos valiosos.',
-        image: case23
+        image: generateCaseImage(2)
       },
       {
         id: 'case-024',
@@ -393,7 +322,7 @@ export const packs: Pack[] = [
         name: 'A Vingança do Ex-Detetive',
         title: '🕵️‍♂️ A Vingança do Ex-Detetive',
         description: 'Um ex-detetive busca justiça com métodos próprios.',
-        image: case24
+        image: generateCaseImage(3)
       },
       {
         id: 'case-025',
@@ -405,7 +334,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Lago Congelado',
         title: '❄️ O Mistério do Lago Congelado',
         description: 'Um corpo é encontrado em um lago congelado.',
-        image: case25
+        image: generateCaseImage(4)
       },
       {
         id: 'case-026',
@@ -417,7 +346,7 @@ export const packs: Pack[] = [
         name: 'O Caso da Joia Desaparecida',
         title: '💎 O Caso da Joia Desaparecida',
         description: 'Uma joia valiosa desaparece sem deixar pistas.',
-        image: case26
+        image: generateCaseImage(5)
       },
       {
         id: 'case-027',
@@ -429,7 +358,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Antigo Diário',
         title: '📖 O Segredo do Antigo Diário',
         description: 'Um diário antigo contém segredos perigosos.',
-        image: case27
+        image: generateCaseImage(6)
       },
       {
         id: 'case-028',
@@ -441,7 +370,7 @@ export const packs: Pack[] = [
         name: 'O Mistério da Casa Abandonada',
         title: '🏚️ O Mistério da Casa Abandonada',
         description: 'Uma casa abandonada esconde segredos obscuros.',
-        image: case28
+        image: generateCaseImage(7)
       },
       {
         id: 'case-029',
@@ -453,7 +382,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Sequestro',
         title: '🚨 A Noite do Sequestro',
         description: 'Um sequestro misterioso abala a cidade.',
-        image: case29
+        image: generateCaseImage(8)
       },
       {
         id: 'case-030',
@@ -465,7 +394,7 @@ export const packs: Pack[] = [
         name: 'O Enigma do Código Secreto',
         title: '🔍 O Enigma do Código Secreto',
         description: 'Um código secreto intriga investigadores.',
-        image: case30
+        image: generateCaseImage(9)
       }
     ]
   },
@@ -488,7 +417,8 @@ export const packs: Pack[] = [
         name: 'O Desaparecimento do Professor',
         title: '🎓 O Desaparecimento do Professor',
         description: 'Um professor desaparece misteriosamente da universidade.',
-        image: case31
+        image: generateCaseImage(0),
+        isFree: true
       },
       {
         id: 'case-032',
@@ -500,7 +430,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Trem Fantasma',
         title: '🚂 O Mistério do Trem Fantasma',
         description: 'Um trem fantasma aparece em trilhos abandonados.',
-        image: case32
+        image: generateCaseImage(1)
       },
       {
         id: 'case-033',
@@ -512,7 +442,7 @@ export const packs: Pack[] = [
         name: 'A Conspiração na Prefeitura',
         title: '🏢 A Conspiração na Prefeitura',
         description: 'Corrupção e segredos na prefeitura da cidade.',
-        image: case33
+        image: generateCaseImage(2)
       },
       {
         id: 'case-034',
@@ -524,7 +454,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Pintor Desaparecido',
         title: '🎨 O Caso do Pintor Desaparecido',
         description: 'Um pintor desaparece sem deixar rastros.',
-        image: case34
+        image: generateCaseImage(3)
       },
       {
         id: 'case-035',
@@ -536,7 +466,7 @@ export const packs: Pack[] = [
         name: 'O Enigma da Chave Perdida',
         title: '🗝️ O Enigma da Chave Perdida',
         description: 'Uma chave perdida leva a um segredo antigo.',
-        image: case35
+        image: generateCaseImage(4)
       },
       {
         id: 'case-036',
@@ -548,7 +478,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Farol Apagado',
         title: '🚨 O Mistério do Farol Apagado',
         description: 'Um farol apaga misteriosamente durante uma tempestade.',
-        image: case36
+        image: generateCaseImage(5)
       },
       {
         id: 'case-037',
@@ -560,7 +490,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Roubo na Mansão',
         title: '🏰 A Noite do Roubo na Mansão',
         description: 'Uma mansão é roubada durante uma festa luxuosa.',
-        image: case37
+        image: generateCaseImage(6)
       },
       {
         id: 'case-038',
@@ -572,7 +502,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Cofre Escondido',
         title: '🔐 O Segredo do Cofre Escondido',
         description: 'Um cofre escondido guarda segredos perigosos.',
-        image: case38
+        image: generateCaseImage(7)
       },
       {
         id: 'case-039',
@@ -584,7 +514,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Assassino Invisível',
         title: '🕵️‍♂️ O Caso do Assassino Invisível',
         description: 'Um assassino deixa poucas pistas para trás.',
-        image: case39
+        image: generateCaseImage(8)
       },
       {
         id: 'case-040',
@@ -596,7 +526,7 @@ export const packs: Pack[] = [
         name: 'O Mistério da Carta Queimada',
         title: '✉️ O Mistério da Carta Queimada',
         description: 'Uma carta queimada pode ser a chave para um crime.',
-        image: case40
+        image: generateCaseImage(9)
       },
       {
         id: 'case-041',
@@ -608,7 +538,7 @@ export const packs: Pack[] = [
         name: 'O Enigma do Relógio Parado',
         title: '⏰ O Enigma do Relógio Parado',
         description: 'Um relógio parado intriga os investigadores.',
-        image: case41
+        image: generateCaseImage(0)
       },
       {
         id: 'case-042',
@@ -620,7 +550,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Tesouro Escondido',
         title: '💰 O Caso do Tesouro Escondido',
         description: 'Um tesouro perdido intriga caçadores de aventuras.',
-        image: case42
+        image: generateCaseImage(1)
       },
       {
         id: 'case-043',
@@ -632,7 +562,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Incêndio Misterioso',
         title: '🔥 A Noite do Incêndio Misterioso',
         description: 'Um incêndio destrói evidências importantes.',
-        image: case43
+        image: generateCaseImage(2)
       },
       {
         id: 'case-044',
@@ -644,7 +574,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Quadro Escondido',
         title: '🖼️ O Mistério do Quadro Escondido',
         description: 'Um quadro antigo guarda um segredo valioso.',
-        image: case44
+        image: generateCaseImage(3)
       },
       {
         id: 'case-045',
@@ -656,7 +586,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Médico Corrupto',
         title: '🩺 O Caso do Médico Corrupto',
         description: 'Um médico é suspeito de corrupção e fraude.',
-        image: case45
+        image: generateCaseImage(4)
       },
       {
         id: 'case-046',
@@ -668,7 +598,7 @@ export const packs: Pack[] = [
         name: 'O Enigma da Sala Secreta',
         title: '🔒 O Enigma da Sala Secreta',
         description: 'Uma sala secreta intriga os investigadores.',
-        image: case46
+        image: generateCaseImage(5)
       },
       {
         id: 'case-047',
@@ -680,7 +610,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Farol Abandonado',
         title: '🚨 O Mistério do Farol Abandonado',
         description: 'Um farol abandonado guarda segredos obscuros.',
-        image: case47
+        image: generateCaseImage(6)
       },
       {
         id: 'case-048',
@@ -692,7 +622,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Sequestro Misterioso',
         title: '🚨 A Noite do Sequestro Misterioso',
         description: 'Um sequestro misterioso intriga a polícia.',
-        image: case48
+        image: generateCaseImage(7)
       },
       {
         id: 'case-049',
@@ -704,7 +634,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Manuscrito Antigo',
         title: '📜 O Segredo do Manuscrito Antigo',
         description: 'Um manuscrito antigo guarda segredos perigosos.',
-        image: case49
+        image: generateCaseImage(8)
       },
       {
         id: 'case-050',
@@ -716,7 +646,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Teatro Assombrado',
         title: '🎭 O Mistério do Teatro Assombrado',
         description: 'Um teatro antigo é palco de eventos estranhos.',
-        image: case50
+        image: generateCaseImage(9)
       },
       {
         id: 'case-051',
@@ -728,7 +658,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Pintor Desaparecido',
         title: '🎨 O Caso do Pintor Desaparecido',
         description: 'Um pintor desaparece sem deixar rastros.',
-        image: case51
+        image: generateCaseImage(0)
       },
       {
         id: 'case-052',
@@ -740,7 +670,7 @@ export const packs: Pack[] = [
         name: 'O Enigma da Chave Perdida',
         title: '🗝️ O Enigma da Chave Perdida',
         description: 'Uma chave perdida leva a um segredo antigo.',
-        image: case52
+        image: generateCaseImage(1)
       },
       {
         id: 'case-053',
@@ -752,7 +682,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Farol Apagado',
         title: '🚨 O Mistério do Farol Apagado',
         description: 'Um farol apaga misteriosamente durante uma tempestade.',
-        image: case53
+        image: generateCaseImage(2)
       },
       {
         id: 'case-054',
@@ -764,7 +694,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Roubo na Mansão',
         title: '🏰 A Noite do Roubo na Mansão',
         description: 'Uma mansão é roubada durante uma festa luxuosa.',
-        image: case54
+        image: generateCaseImage(3)
       },
       {
         id: 'case-055',
@@ -776,7 +706,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Cofre Escondido',
         title: '🔐 O Segredo do Cofre Escondido',
         description: 'Um cofre escondido guarda segredos perigosos.',
-        image: case55
+        image: generateCaseImage(4)
       },
       {
         id: 'case-056',
@@ -788,7 +718,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Assassino Invisível',
         title: '🕵️‍♂️ O Caso do Assassino Invisível',
         description: 'Um assassino deixa poucas pistas para trás.',
-        image: case56
+        image: generateCaseImage(5)
       },
       {
         id: 'case-057',
@@ -800,7 +730,7 @@ export const packs: Pack[] = [
         name: 'O Mistério da Carta Queimada',
         title: '✉️ O Mistério da Carta Queimada',
         description: 'Uma carta queimada pode ser a chave para um crime.',
-        image: case57
+        image: generateCaseImage(6)
       },
       {
         id: 'case-058',
@@ -812,7 +742,7 @@ export const packs: Pack[] = [
         name: 'O Enigma do Relógio Parado',
         title: '⏰ O Enigma do Relógio Parado',
         description: 'Um relógio parado intriga os investigadores.',
-        image: case58
+        image: generateCaseImage(7)
       },
       {
         id: 'case-059',
@@ -824,7 +754,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Tesouro Escondido',
         title: '💰 O Caso do Tesouro Escondido',
         description: 'Um tesouro perdido intriga caçadores de aventuras.',
-        image: case59
+        image: generateCaseImage(8)
       },
       {
         id: 'case-060',
@@ -836,7 +766,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Incêndio Misterioso',
         title: '🔥 A Noite do Incêndio Misterioso',
         description: 'Um incêndio destrói evidências importantes.',
-        image: case60
+        image: generateCaseImage(9)
       }
     ]
   },
@@ -859,7 +789,8 @@ export const packs: Pack[] = [
         name: 'O Segredo do Subterrâneo',
         title: '🏚️ O Segredo do Subterrâneo',
         description: 'Um subterrâneo misterioso intriga os investigadores.',
-        image: case61
+        image: generateCaseImage(0),
+        isFree: true
       },
       {
         id: 'case-062',
@@ -871,7 +802,7 @@ export const packs: Pack[] = [
         name: 'A Vingança do Ex-Policial',
         title: '👮‍♂️ A Vingança do Ex-Policial',
         description: 'Um ex-policial busca justiça com métodos próprios.',
-        image: case62
+        image: generateCaseImage(1)
       },
       {
         id: 'case-063',
@@ -883,7 +814,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Navio Afundado',
         title: '🚢 O Mistério do Navio Afundado',
         description: 'Um navio afundado guarda segredos perigosos.',
-        image: case63
+        image: generateCaseImage(2)
       },
       {
         id: 'case-064',
@@ -895,7 +826,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Cientista Desaparecido',
         title: '🔬 O Caso do Cientista Desaparecido',
         description: 'Um cientista desaparece misteriosamente.',
-        image: case64
+        image: generateCaseImage(3)
       },
       {
         id: 'case-065',
@@ -907,7 +838,7 @@ export const packs: Pack[] = [
         name: 'O Enigma da Sala Trancada',
         title: '🔒 O Enigma da Sala Trancada',
         description: 'Um assassinato em uma sala trancada intriga os detetives.',
-        image: case65
+        image: generateCaseImage(4)
       },
       {
         id: 'case-066',
@@ -919,7 +850,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Código Secreto',
         title: '🔍 O Mistério do Código Secreto',
         description: 'Um código secreto intriga investigadores.',
-        image: case66
+        image: generateCaseImage(5)
       },
       {
         id: 'case-067',
@@ -931,7 +862,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Assassino Invisível',
         title: '🕵️‍♂️ O Caso do Assassino Invisível',
         description: 'Um assassino deixa poucas pistas para trás.',
-        image: case67
+        image: generateCaseImage(6)
       },
       {
         id: 'case-068',
@@ -943,7 +874,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Manuscrito Antigo',
         title: '📜 O Segredo do Manuscrito Antigo',
         description: 'Um manuscrito antigo guarda segredos perigosos.',
-        image: case68
+        image: generateCaseImage(7)
       },
       {
         id: 'case-069',
@@ -955,7 +886,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Teatro Assombrado',
         title: '🎭 O Mistério do Teatro Assombrado',
         description: 'Um teatro antigo é palco de eventos estranhos.',
-        image: case69
+        image: generateCaseImage(8)
       },
       {
         id: 'case-070',
@@ -967,7 +898,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Médico Corrupto',
         title: '🩺 O Caso do Médico Corrupto',
         description: 'Um médico é suspeito de corrupção e fraude.',
-        image: case70
+        image: generateCaseImage(9)
       },
       {
         id: 'case-071',
@@ -979,7 +910,7 @@ export const packs: Pack[] = [
         name: 'O Enigma da Sala Secreta',
         title: '🔒 O Enigma da Sala Secreta',
         description: 'Uma sala secreta intriga os investigadores.',
-        image: case71
+        image: generateCaseImage(0)
       },
       {
         id: 'case-072',
@@ -991,7 +922,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Farol Abandonado',
         title: '🚨 O Mistério do Farol Abandonado',
         description: 'Um farol abandonado guarda segredos obscuros.',
-        image: case72
+        image: generateCaseImage(1)
       },
       {
         id: 'case-073',
@@ -1003,7 +934,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Sequestro Misterioso',
         title: '🚨 A Noite do Sequestro Misterioso',
         description: 'Um sequestro misterioso intriga a polícia.',
-        image: case73
+        image: generateCaseImage(2)
       },
       {
         id: 'case-074',
@@ -1015,7 +946,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Manuscrito Antigo',
         title: '📜 O Segredo do Manuscrito Antigo',
         description: 'Um manuscrito antigo guarda segredos perigosos.',
-        image: case74
+        image: generateCaseImage(3)
       },
       {
         id: 'case-075',
@@ -1027,7 +958,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Teatro Assombrado',
         title: '🎭 O Mistério do Teatro Assombrado',
         description: 'Um teatro antigo é palco de eventos estranhos.',
-        image: case75
+        image: generateCaseImage(4)
       },
       {
         id: 'case-076',
@@ -1039,7 +970,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Médico Corrupto',
         title: '🩺 O Caso do Médico Corrupto',
         description: 'Um médico é suspeito de corrupção e fraude.',
-        image: case76
+        image: generateCaseImage(5)
       },
       {
         id: 'case-077',
@@ -1051,7 +982,7 @@ export const packs: Pack[] = [
         name: 'O Enigma da Sala Secreta',
         title: '🔒 O Enigma da Sala Secreta',
         description: 'Uma sala secreta intriga os investigadores.',
-        image: case77
+        image: generateCaseImage(6)
       },
       {
         id: 'case-078',
@@ -1063,7 +994,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Farol Abandonado',
         title: '🚨 O Mistério do Farol Abandonado',
         description: 'Um farol abandonado guarda segredos obscuros.',
-        image: case78
+        image: generateCaseImage(7)
       },
       {
         id: 'case-079',
@@ -1075,7 +1006,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Sequestro Misterioso',
         title: '🚨 A Noite do Sequestro Misterioso',
         description: 'Um sequestro misterioso intriga a polícia.',
-        image: case79
+        image: generateCaseImage(8)
       },
       {
         id: 'case-080',
@@ -1087,7 +1018,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Manuscrito Antigo',
         title: '📜 O Segredo do Manuscrito Antigo',
         description: 'Um manuscrito antigo guarda segredos perigosos.',
-        image: case80
+        image: generateCaseImage(9)
       },
       {
         id: 'case-081',
@@ -1099,7 +1030,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Teatro Assombrado',
         title: '🎭 O Mistério do Teatro Assombrado',
         description: 'Um teatro antigo é palco de eventos estranhos.',
-        image: case81
+        image: generateCaseImage(0)
       },
       {
         id: 'case-082',
@@ -1111,7 +1042,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Médico Corrupto',
         title: '🩺 O Caso do Médico Corrupto',
         description: 'Um médico é suspeito de corrupção e fraude.',
-        image: case82
+        image: generateCaseImage(1)
       },
       {
         id: 'case-083',
@@ -1123,7 +1054,7 @@ export const packs: Pack[] = [
         name: 'O Enigma da Sala Secreta',
         title: '🔒 O Enigma da Sala Secreta',
         description: 'Uma sala secreta intriga os investigadores.',
-        image: case83
+        image: generateCaseImage(2)
       },
       {
         id: 'case-084',
@@ -1135,7 +1066,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Farol Abandonado',
         title: '🚨 O Mistério do Farol Abandonado',
         description: 'Um farol abandonado guarda segredos obscuros.',
-        image: case84
+        image: generateCaseImage(3)
       },
       {
         id: 'case-085',
@@ -1147,7 +1078,7 @@ export const packs: Pack[] = [
         name: 'A Noite do Sequestro Misterioso',
         title: '🚨 A Noite do Sequestro Misterioso',
         description: 'Um sequestro misterioso intriga a polícia.',
-        image: case85
+        image: generateCaseImage(4)
       },
       {
         id: 'case-086',
@@ -1159,7 +1090,7 @@ export const packs: Pack[] = [
         name: 'O Segredo do Manuscrito Antigo',
         title: '📜 O Segredo do Manuscrito Antigo',
         description: 'Um manuscrito antigo guarda segredos perigosos.',
-        image: case86
+        image: generateCaseImage(5)
       },
       {
         id: 'case-087',
@@ -1171,7 +1102,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Teatro Assombrado',
         title: '🎭 O Mistério do Teatro Assombrado',
         description: 'Um teatro antigo é palco de eventos estranhos.',
-        image: case87
+        image: generateCaseImage(6)
       },
       {
         id: 'case-088',
@@ -1183,7 +1114,7 @@ export const packs: Pack[] = [
         name: 'O Caso do Médico Corrupto',
         title: '🩺 O Caso do Médico Corrupto',
         description: 'Um médico é suspeito de corrupção e fraude.',
-        image: case88
+        image: generateCaseImage(7)
       },
       {
         id: 'case-089',
@@ -1195,7 +1126,7 @@ export const packs: Pack[] = [
         name: 'O Enigma da Sala Secreta',
         title: '🔒 O Enigma da Sala Secreta',
         description: 'Uma sala secreta intriga os investigadores.',
-        image: case89
+        image: generateCaseImage(8)
       },
       {
         id: 'case-090',
@@ -1207,7 +1138,7 @@ export const packs: Pack[] = [
         name: 'O Mistério do Farol Abandonado',
         title: '🚨 O Mistério do Farol Abandonado',
         description: 'Um farol abandonado guarda segredos obscuros.',
-        image: case90
+        image: generateCaseImage(9)
       }
     ]
   },
