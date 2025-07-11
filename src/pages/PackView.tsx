@@ -40,14 +40,18 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
     const fetchPack = async () => {
       if (!id) return;
       
+      console.log(`Fetching pack with ID: ${id}`);
+      
       try {
         const packData = await getPackById(id);
         
         if (!packData) {
+          console.error(`Pack with ID ${id} not found`);
           navigate('/packs');
           return;
         }
         
+        console.log(`Pack loaded: ${packData.name} with ${packData.cases?.length || 0} cases`);
         setPack(packData);
         
         // Load solved cards from localStorage

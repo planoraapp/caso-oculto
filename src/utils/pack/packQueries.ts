@@ -17,11 +17,16 @@ export const getAllPacks = async (): Promise<Pack[]> => {
     }
 
     // Add cases to each pack and properly type the difficulty
-    const packsWithCases = data?.map(pack => ({
-      ...pack,
-      difficulty: pack.difficulty as 'easy' | 'medium' | 'hard',
-      cases: getPackCases(pack.id) || []
-    })) || [];
+    const packsWithCases = data?.map(pack => {
+      const cases = getPackCases(pack.id);
+      console.log(`Pack ${pack.id} (${pack.name}) has ${cases.length} cases`);
+      
+      return {
+        ...pack,
+        difficulty: pack.difficulty as 'easy' | 'medium' | 'hard',
+        cases: cases
+      };
+    }) || [];
 
     return packsWithCases;
   } catch (error) {
@@ -47,10 +52,13 @@ export const getPackById = async (packId: string): Promise<Pack | null> => {
     if (!data) return null;
 
     // Add cases to the pack and properly type the difficulty
+    const cases = getPackCases(data.id);
+    console.log(`Pack ${data.id} (${data.name}) loaded with ${cases.length} cases`);
+
     const packWithCases = {
       ...data,
       difficulty: data.difficulty as 'easy' | 'medium' | 'hard',
-      cases: getPackCases(data.id) || []
+      cases: cases
     };
 
     return packWithCases;
