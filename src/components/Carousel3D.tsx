@@ -10,6 +10,7 @@ import CarouselControls from './carousel/CarouselControls';
 import CarouselIndicators from './carousel/CarouselIndicators';
 import { usePaymentManager } from '../hooks/usePaymentManager';
 import { getAllPacks, getUserPacks } from '../utils/packUtils';
+import { useAuth } from '../hooks/useAuth';
 import { Pack } from '../data/types';
 
 const Carousel3D: React.FC = () => {
@@ -18,7 +19,9 @@ const Carousel3D: React.FC = () => {
   const [ownedPackIds, setOwnedPackIds] = useState<string[]>([]);
   const [isLoadingPacks, setIsLoadingPacks] = useState(true);
   
-  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{"id": "demo-user"}');
+  // Use useAuth hook instead of localStorage to get current user
+  const { user } = useAuth();
+  const currentUserId = user?.id || '';
 
   const {
     isLoading,
@@ -31,7 +34,7 @@ const Carousel3D: React.FC = () => {
     handleIndividualPurchase,
     closePaymentStatus,
     setCheckoutPreferenceId
-  } = usePaymentManager(currentUser.id);
+  } = usePaymentManager(currentUserId);
 
   // Fetch packs from Supabase
   useEffect(() => {
@@ -57,10 +60,10 @@ const Carousel3D: React.FC = () => {
   // Fetch user's owned packs
   useEffect(() => {
     const fetchUserPacks = async () => {
-      if (!currentUser?.id) return;
+      if (!currentUserId) return;
       
       try {
-        const userPackIds = await getUserPacks(currentUser.id);
+        const userPackIds = await getUserPacks(currentUserId);
         setOwnedPackIds(userPackIds);
       } catch (error) {
         console.error('Error fetching user packs:', error);
@@ -68,7 +71,7 @@ const Carousel3D: React.FC = () => {
     };
 
     fetchUserPacks();
-  }, [currentUser?.id]);
+  }, [currentUserId]);
 
   const featuredPacks = useMemo(() => packs, [packs]);
 
