@@ -1,4 +1,6 @@
+
 import { Case, Pack } from '../data/types';
+import { supabase } from '../integrations/supabase/client';
 
 // Helper function to get difficulty from emoji
 const getDifficultyFromEmoji = (emoji: string): 'easy' | 'medium' | 'hard' => {
@@ -9,6 +11,18 @@ const getDifficultyFromEmoji = (emoji: string): 'easy' | 'medium' | 'hard' => {
     default: return 'medium';
   }
 };
+
+// Missing case arrays - these need to be defined but since they're not in the current spec, 
+// I'll create empty arrays as placeholders
+const sussurrosDoAlemCases: Case[] = [];
+const sombrasNoiteCases: Case[] = [];
+const crimesImperfeitosCases: Case[] = [];
+const lendasUrbanasCases: Case[] = [];
+const paradoxosMortaisCases: Case[] = [];
+const absurdamenteRealCases: Case[] = [];
+const dossieConfidencialCases: Case[] = [];
+const doseLetal: Case[] = [];
+const fimDeJogoCases: Case[] = [];
 
 // Ironias do Destino - Mortes e acidentes causados por coincidências trágicas e reviravoltas irônicas
 export const ironiasDosDestinoCases: Case[] = [
@@ -1091,36 +1105,98 @@ export const getPackCases = (packId: string): Case[] => {
   return packCasesMap[packId] || [];
 };
 
-// Updated function to get a specific case
+// Function to get a specific case
 export const getCaseById = (packId: string, caseId: string): Case | undefined => {
   const cases = getPackCases(packId);
   return cases.find(case_ => case_.id === caseId);
 };
 
-// Updated function to get cases by pack ID
+// Function to get cases by pack ID
 export const getCasesByPackId = (packId: string): Case[] => {
   return getPackCases(packId);
 };
 
-// Updated function to get a case by its order in a pack
+// Function to get a case by its order in a pack
 export const getCaseByOrder = (packId: string, order: number): Case | undefined => {
   const cases = getPackCases(packId);
   return cases.find(case_ => case_.order === order);
 };
 
-// Updated function to get total cases count for a pack
+// Function to get total cases count for a pack
 export const getPackCasesCount = (packId: string): number => {
   return getPackCases(packId).length;
 };
 
-// Updated function to get free cases for a pack
+// Function to get free cases for a pack
 export const getFreeCases = (packId: string): Case[] => {
   const cases = getPackCases(packId);
   return cases.filter(case_ => case_.isFree);
 };
 
-// Updated function to get paid cases for a pack
+// Function to get paid cases for a pack
 export const getPaidCases = (packId: string): Case[] => {
   const cases = getPackCases(packId);
   return cases.filter(case_ => !case_.isFree);
+};
+
+// Functions to get packs and user data from Supabase
+export const getAllPacks = async (): Promise<Pack[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('packs')
+      .select('*')
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching packs:', error);
+      throw error;
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Error in getAllPacks:', error);
+    throw error;
+  }
+};
+
+export const getPackById = async (packId: string): Promise<Pack | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('packs')
+      .select('*')
+      .eq('id', packId)
+      .single();
+
+    if (error) {
+      console.error('Error fetching pack:', error);
+      return null;
+    }
+
+    // Add cases to the pack
+    const cases = getPackCases(packId);
+    return { ...data, cases };
+  } catch (error) {
+    console.error('Error in getPackById:', error);
+    return null;
+  }
+};
+
+export const getUserPacks = async (userId: string): Promise<string[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('user_pack_access')
+      .select('pack_id')
+      .eq('user_id', userId)
+      .eq('is_active', true);
+
+    if (error) {
+      console.error('Error fetching user packs:', error);
+      throw error;
+    }
+
+    return data?.map(item => item.pack_id) || [];
+  } catch (error) {
+    console.error('Error in getUserPacks:', error);
+    throw error;
+  }
 };
