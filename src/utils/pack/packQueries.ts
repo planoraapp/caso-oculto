@@ -49,7 +49,10 @@ export const getPackById = async (packId: string): Promise<Pack | null> => {
       throw error;
     }
 
-    if (!data) return null;
+    if (!data) {
+      console.log(`Pack with ID ${packId} not found in database`);
+      return null;
+    }
 
     // Add cases to the pack and properly type the difficulty
     const cases = getPackCases(data.id);
