@@ -1,28 +1,71 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
 import { t } from '../data/translations';
-import { getUserPacks, getPackById } from '../data/packs';
+import { getPackById, packs } from '../data/packs';
+import { supabase } from '../integrations/supabase/client';
 
 interface LibraryProps {
   user: any;
 }
 
 const Library: React.FC<LibraryProps> = ({ user }) => {
-  const userPackIds = getUserPacks(user.id);
-  const userPacks = userPackIds.map(id => getPackById(id)).filter(Boolean);
+  const [userPacks, setUserPacks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserPacks = async () => {
+      if (!user?.id) return;
+
+      try {
+        // Fetch user pack access from Supabase
+        const { data: packAccess, error } = await supabase
+          .from('user_pack_access')
+          .select('pack_id')
+          .eq('user_id', user.id)
+          .eq('is_active', true);
+
+        if (error) {
+          console.error('Error fetching user packs:', error);
+          return;
+        }
+
+        // Get the actual pack data for each pack the user has access to
+        const userPackData = packAccess
+          ?.map(access => getPackById(access.pack_id))
+          .filter(Boolean) || [];
+
+        setUserPacks(userPackData);
+      } catch (error) {
+        console.error('Error fetching user packs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserPacks();
+  }, [user?.id]);
 
   const calculatePackProgress = (pack: any) => {
     if (pack.cases.length === 0) return 0;
-    const solvedCards = pack.cases.filter((card: any) => {
-      const solved = JSON.parse(localStorage.getItem(`solved_${user.id}_${pack.id}`) || '[]');
-      return solved.includes(card.id);
-    });
+    const solved = JSON.parse(localStorage.getItem(`solved_${user.id}_${pack.id}`) || '[]');
+    const solvedCards = pack.cases.filter((card: any) => solved.includes(card.id));
     return (solvedCards.length / pack.cases.length) * 100;
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-case-red mx-auto mb-4"></div>
+          <p className="text-case-white">Carregando biblioteca...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (userPacks.length === 0) {
     return (
@@ -61,10 +104,8 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
             if (!pack) return null;
             
             const progress = calculatePackProgress(pack);
-            const solvedCount = pack.cases.filter((card: any) => {
-              const solved = JSON.parse(localStorage.getItem(`solved_${user.id}_${pack.id}`) || '[]');
-              return solved.includes(card.id);
-            }).length;
+            const solved = JSON.parse(localStorage.getItem(`solved_${user.id}_${pack.id}`) || '[]');
+            const solvedCount = pack.cases.filter((card: any) => solved.includes(card.id)).length;
             
             return (
               <Card
