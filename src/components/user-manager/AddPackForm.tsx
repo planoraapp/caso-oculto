@@ -4,14 +4,7 @@ import { Button } from '../ui/button';
 import { Label } from '../ui/label';
 import { Plus } from 'lucide-react';
 import { packs } from '../../data/packs';
-
-interface UserPackAccess {
-  id: string;
-  user_id: string;
-  pack_id: string;
-  is_active: boolean;
-  granted_at: string;
-}
+import { UserPackAccess } from '../../data/types';
 
 interface AddPackFormProps {
   userPacks: UserPackAccess[];
