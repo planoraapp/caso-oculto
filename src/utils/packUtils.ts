@@ -1185,9 +1185,10 @@ export const getAllPacks = async (): Promise<Pack[]> => {
       throw error;
     }
 
-    // Add cases to each pack
+    // Add cases to each pack and properly type the difficulty
     const packsWithCases = data?.map(pack => ({
       ...pack,
+      difficulty: pack.difficulty as 'easy' | 'medium' | 'hard',
       cases: getPackCases(pack.id) || []
     })) || [];
 
@@ -1214,9 +1215,10 @@ export const getPackById = async (packId: string): Promise<Pack | null> => {
 
     if (!data) return null;
 
-    // Add cases to the pack
+    // Add cases to the pack and properly type the difficulty
     const packWithCases = {
       ...data,
+      difficulty: data.difficulty as 'easy' | 'medium' | 'hard',
       cases: getPackCases(data.id) || []
     };
 
