@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Pack, Case } from '../data/types';
@@ -10,6 +9,7 @@ import HowToPlayModal from '../components/HowToPlayModal';
 import PackHeader from '../components/pack-view/PackHeader';
 import CasesGrid from '../components/pack-view/CasesGrid';
 import LoadingState from '../components/common/LoadingState';
+import SiteFooter from '../components/SiteFooter';
 import { usePaymentStatus } from '../hooks/usePaymentStatus';
 import { useUserPackAccess } from '../hooks/useUserPackAccess';
 import { getPackById, getAllPacks } from '../utils/packUtils';
@@ -104,23 +104,25 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      <PackHeader
-        pack={pack}
-        hasAccess={hasAccess}
-        solvedCards={solvedCards}
-        user={user}
-        onPurchaseClick={() => setIsPaymentModalOpen(true)}
-        onHowToPlayClick={() => setIsHowToPlayOpen(true)}
-      />
+    <div className="min-h-screen bg-gray-900 flex flex-col">
+      <div className="flex-1">
+        <PackHeader
+          pack={pack}
+          hasAccess={hasAccess}
+          solvedCards={solvedCards}
+          user={user}
+          onPurchaseClick={() => setIsPaymentModalOpen(true)}
+          onHowToPlayClick={() => setIsHowToPlayOpen(true)}
+        />
 
-      <CasesGrid
-        cases={pack.cases || []}
-        hasAccess={hasAccess}
-        solvedCards={solvedCards}
-        user={user}
-        onCardClick={handleCardClick}
-      />
+        <CasesGrid
+          cases={pack.cases || []}
+          hasAccess={hasAccess}
+          solvedCards={solvedCards}
+          user={user}
+          onCardClick={handleCardClick}
+        />
+      </div>
 
       {/* Modals */}
       <HowToPlayModal 
@@ -163,6 +165,8 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
         isSolved={selectedCard ? solvedCards.includes(selectedCard.id) : false}
         onToggleSolved={handleToggleSolved}
       />
+
+      <SiteFooter />
     </div>
   );
 };

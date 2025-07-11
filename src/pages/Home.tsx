@@ -1,22 +1,22 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Play } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Carousel3D from '../components/Carousel3D';
+import SiteFooter from '../components/SiteFooter';
+
 const Home: React.FC = () => {
-  return <div className="min-h-screen bg-gray-900">
+  return (
+    <div className="min-h-screen bg-gray-900 flex flex-col">
       {/* Hero Section with fade-in - Moved up */}
-      <motion.div initial={{
-      opacity: 0,
-      y: 20
-    }} animate={{
-      opacity: 1,
-      y: 0
-    }} transition={{
-      duration: 0.8,
-      ease: "easeOut"
-    }} className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.8, ease: "easeOut" }} 
+        className="relative min-h-[60vh] flex items-center justify-center overflow-hidden"
+      >
         <div className="container mx-auto relative z-20 px-0">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-anton text-4xl md:text-6xl lg:text-7xl text-case-white mb-6 leading-tight">
@@ -41,17 +41,12 @@ const Home: React.FC = () => {
       </motion.div>
 
       {/* Featured Packs Section with reduced top spacing */}
-      <motion.div className="py-4" initial={{
-      opacity: 0,
-      y: 30
-    }} animate={{
-      opacity: 1,
-      y: 0
-    }} transition={{
-      duration: 0.8,
-      delay: 0.3,
-      ease: "easeOut"
-    }}>
+      <motion.div 
+        className="py-4" 
+        initial={{ opacity: 0, y: 30 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-14">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-anton text-case-white mb-4">
@@ -73,6 +68,10 @@ const Home: React.FC = () => {
           </div>
         </div>
       </motion.div>
-    </div>;
+
+      <SiteFooter />
+    </div>
+  );
 };
+
 export default Home;

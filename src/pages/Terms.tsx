@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
+import SiteFooter from '../components/SiteFooter';
 
 const Terms: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
       <motion.div 
-        className="pt-20 px-4 pb-8"
+        className="pt-20 px-4 pb-8 flex-1"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -152,6 +152,8 @@ const Terms: React.FC = () => {
           </div>
         </div>
       </motion.div>
+
+      <SiteFooter />
     </div>
   );
 };

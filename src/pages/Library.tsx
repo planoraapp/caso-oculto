@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from '../components/ui/card';
@@ -10,6 +9,7 @@ import { calculatePackProgress, getSolvedCards } from '../utils/progress';
 import LoadingState from '../components/common/LoadingState';
 import EmptyState from '../components/common/EmptyState';
 import ProgressBar from '../components/common/ProgressBar';
+import SiteFooter from '../components/SiteFooter';
 
 interface LibraryProps {
   user: any;
@@ -24,7 +24,6 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
       if (!user?.id) return;
 
       try {
-        // Primeiro verificar se tem acesso total
         const { data: profile } = await supabase
           .from('profiles')
           .select('acesso_total, packs_liberados')
@@ -32,7 +31,6 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
           .single();
 
         if (profile?.acesso_total) {
-          // Se tem acesso total, buscar todos os packs
           const { data: allPacks } = await supabase
             .from('packs')
             .select('*')
@@ -44,7 +42,6 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
 
           setUserPacks(userPackData);
         } else {
-          // Buscar packs específicos do usuário
           const { data: packAccess, error } = await supabase
             .from('user_pack_access')
             .select('pack_id')
@@ -56,7 +53,6 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
             return;
           }
 
-          // Buscar dados dos packs via Supabase
           const packIds = packAccess?.map(access => access.pack_id) || [];
           
           if (packIds.length > 0) {
@@ -86,76 +82,85 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
 
   if (userPacks.length === 0) {
     return (
-      <EmptyState
-        title={t('library.title')}
-        description={t('library.empty')}
-        actionText={t('library.goToShop')}
-        actionPath="/packs"
-      />
+      <div className="min-h-screen bg-gray-900 flex flex-col">
+        <div className="flex-1">
+          <EmptyState
+            title={t('library.title')}
+            description={t('library.empty')}
+            actionText={t('library.goToShop')}
+            actionPath="/packs"
+          />
+        </div>
+        <SiteFooter />
+      </div>
     );
   }
 
   return (
-    <div className="min-h-screen py-8">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h1 className="font-anton text-3xl lg:text-4xl text-case-white mb-4">
-            {t('library.title')}
-          </h1>
-          <p className="text-case-white/80 text-lg max-w-2xl mx-auto">
-            Seus packs adquiridos e progresso de jogo
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-900 flex flex-col">
+      <div className="py-8 flex-1">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h1 className="font-anton text-3xl lg:text-4xl text-case-white mb-4">
+              {t('library.title')}
+            </h1>
+            <p className="text-case-white/80 text-lg max-w-2xl mx-auto">
+              Seus packs adquiridos e progresso de jogo
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {userPacks.map((pack) => {
-            if (!pack) return null;
-            
-            const solved = getSolvedCards(user.id, pack.id);
-            const cases = pack.cases || [];
-            const { progress, solvedCount } = calculatePackProgress(cases, solved);
-            
-            return (
-              <Card
-                key={pack.id}
-                className="bg-noir-dark border-noir-medium overflow-hidden hover:border-case-red transition-all duration-200"
-              >
-                <Link to={`/pack/${pack.id}`} className="block">
-                  <div 
-                    className="h-48 bg-cover bg-center relative"
-                    style={{ backgroundImage: `url(${pack.image})` }}
-                  >
-                    <div className="absolute inset-0 gradient-overlay" />
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="font-anton text-xl text-case-white drop-shadow-lg">
-                        {pack.name}
-                      </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {userPacks.map((pack) => {
+              if (!pack) return null;
+              
+              const solved = getSolvedCards(user.id, pack.id);
+              const cases = pack.cases || [];
+              const { progress, solvedCount } = calculatePackProgress(cases, solved);
+              
+              return (
+                <Card
+                  key={pack.id}
+                  className="bg-noir-dark border-noir-medium overflow-hidden hover:border-case-red transition-all duration-200"
+                >
+                  <Link to={`/pack/${pack.id}`} className="block">
+                    <div 
+                      className="h-48 bg-cover bg-center relative"
+                      style={{ backgroundImage: `url(${pack.image})` }}
+                    >
+                      <div className="absolute inset-0 gradient-overlay" />
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h3 className="font-anton text-xl text-case-white drop-shadow-lg">
+                          {pack.name}
+                        </h3>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-
-                <div className="p-6">
-                  <p className="text-case-white/80 mb-4 line-clamp-2">
-                    {pack.description}
-                  </p>
-                  
-                  <ProgressBar
-                    progress={progress}
-                    solvedCount={solvedCount}
-                    totalCount={cases.length}
-                  />
-                  
-                  <Link to={`/pack/${pack.id}`}>
-                    <Button className="w-full bg-case-red hover:bg-red-600 text-white">
-                      Continuar Jogando
-                    </Button>
                   </Link>
-                </div>
-              </Card>
-            );
-          })}
+
+                  <div className="p-6">
+                    <p className="text-case-white/80 mb-4 line-clamp-2">
+                      {pack.description}
+                    </p>
+                    
+                    <ProgressBar
+                      progress={progress}
+                      solvedCount={solvedCount}
+                      totalCount={cases.length}
+                    />
+                    
+                    <Link to={`/pack/${pack.id}`}>
+                      <Button className="w-full bg-case-red hover:bg-red-600 text-white">
+                        Continuar Jogando
+                      </Button>
+                    </Link>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
         </div>
       </div>
+
+      <SiteFooter />
     </div>
   );
 };

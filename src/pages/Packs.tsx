@@ -1,4 +1,3 @@
-
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { HelpCircle } from 'lucide-react';
@@ -10,6 +9,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import HowToPlayModal from '../components/HowToPlayModal';
 import SpecialOffersSection from '../components/packs/SpecialOffersSection';
 import RegularPacksSection from '../components/packs/RegularPacksSection';
+import SiteFooter from '../components/SiteFooter';
 import { usePaymentManager } from '../hooks/usePaymentManager';
 import { useModalManager } from '../hooks/useModalManager';
 import { getAllPacks, getUserPacks } from '../utils/packUtils';
@@ -97,7 +97,6 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   }, [user, isLoading]);
 
   const handlePaymentSuccess = () => {
-    // Refresh the page after successful payment to update pack access
     setTimeout(() => {
       window.location.reload();
     }, 2000);
@@ -112,8 +111,8 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      <div className="pt-20 px-4 pb-8">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
+      <div className="pt-20 px-4 pb-8 flex-1">
         <div className="container mx-auto max-w-7xl">
           {/* Header */}
           <div className="text-center mb-8 md:mb-12">
@@ -221,6 +220,8 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
         status={paymentStatus.status} 
         packName={paymentStatus.packName} 
       />
+
+      <SiteFooter />
     </div>
   );
 };

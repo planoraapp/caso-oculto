@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
@@ -9,6 +8,7 @@ import { toast } from '../hooks/use-toast';
 import { Lock, Mail, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import ForgotPasswordModal from '../components/ForgotPasswordModal';
+import SiteFooter from '../components/SiteFooter';
 
 const Login: React.FC = () => {
   const { signIn, signUp, user, loading } = useAuth();
@@ -131,108 +131,112 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-gray-900">
-      <Card className="w-full max-w-md bg-noir-dark border-noir-medium p-8">
-        <div className="text-center mb-8">
-          <h2 className="font-anton text-3xl text-case-white mb-2">
-            {isLogin ? 'Acesse sua conta' : 'Criar conta'}
-          </h2>
-          <p className="text-case-white/80">
-            {isLogin ? 'Entre para acessar seus mistérios' : 'Registre-se para começar a desvendar casos'}
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-900 flex flex-col">
+      <div className="flex items-center justify-center py-12 px-4 flex-1">
+        <Card className="w-full max-w-md bg-noir-dark border-noir-medium p-8">
+          <div className="text-center mb-8">
+            <h2 className="font-anton text-3xl text-case-white mb-2">
+              {isLogin ? 'Acesse sua conta' : 'Criar conta'}
+            </h2>
+            <p className="text-case-white/80">
+              {isLogin ? 'Entre para acessar seus mistérios' : 'Registre-se para começar a desvendar casos'}
+            </p>
+          </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {!isLogin && (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {!isLogin && (
+              <div>
+                <Label htmlFor="name" className="text-case-white flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  Nome
+                </Label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Seu nome"
+                  className="bg-noir-medium border-noir-light text-case-white mt-1"
+                  required={!isLogin}
+                  disabled={isSubmitting}
+                />
+              </div>
+            )}
+
             <div>
-              <Label htmlFor="name" className="text-case-white flex items-center gap-2">
-                <User className="h-4 w-4" />
-                Nome
+              <Label htmlFor="email" className="text-case-white flex items-center gap-2">
+                <Mail className="h-4 w-4" />
+                Email
               </Label>
               <Input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Seu nome"
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="seu@email.com"
                 className="bg-noir-medium border-noir-light text-case-white mt-1"
-                required={!isLogin}
+                required
                 disabled={isSubmitting}
               />
             </div>
-          )}
 
-          <div>
-            <Label htmlFor="email" className="text-case-white flex items-center gap-2">
-              <Mail className="h-4 w-4" />
-              Email
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="seu@email.com"
-              className="bg-noir-medium border-noir-light text-case-white mt-1"
-              required
+            <div>
+              <Label htmlFor="password" className="text-case-white flex items-center gap-2">
+                <Lock className="h-4 w-4" />
+                Senha
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Digite sua senha"
+                className="bg-noir-medium border-noir-light text-case-white mt-1"
+                required
+                minLength={6}
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <Button 
+              type="submit" 
               disabled={isSubmitting}
-            />
-          </div>
+              className="w-full bg-case-red hover:bg-red-600 text-white"
+            >
+              {isSubmitting ? 'Processando...' : (isLogin ? 'Entrar' : 'Criar Conta')}
+            </Button>
+          </form>
 
-          <div>
-            <Label htmlFor="password" className="text-case-white flex items-center gap-2">
-              <Lock className="h-4 w-4" />
-              Senha
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Digite sua senha"
-              className="bg-noir-medium border-noir-light text-case-white mt-1"
-              required
-              minLength={6}
-              disabled={isSubmitting}
-            />
-          </div>
-
-          <Button 
-            type="submit" 
-            disabled={isSubmitting}
-            className="w-full bg-case-red hover:bg-red-600 text-white"
-          >
-            {isSubmitting ? 'Processando...' : (isLogin ? 'Entrar' : 'Criar Conta')}
-          </Button>
-        </form>
-
-        <div className="mt-6 space-y-4 text-center">
-          {isLogin && (
+          <div className="mt-6 space-y-4 text-center">
+            {isLogin && (
+              <Button
+                variant="link"
+                onClick={() => setIsForgotPasswordOpen(true)}
+                className="text-case-white/60 hover:text-case-white text-sm"
+                disabled={isSubmitting}
+              >
+                Esqueceu sua senha?
+              </Button>
+            )}
+            
             <Button
               variant="link"
-              onClick={() => setIsForgotPasswordOpen(true)}
-              className="text-case-white/60 hover:text-case-white text-sm"
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-case-red hover:text-red-400"
               disabled={isSubmitting}
             >
-              Esqueceu sua senha?
+              {isLogin ? 'Não tem uma conta? Registe-se' : 'Já tem uma conta? Entre'}
             </Button>
-          )}
-          
-          <Button
-            variant="link"
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-case-red hover:text-red-400"
-            disabled={isSubmitting}
-          >
-            {isLogin ? 'Não tem uma conta? Registe-se' : 'Já tem uma conta? Entre'}
-          </Button>
-        </div>
-      </Card>
+          </div>
+        </Card>
 
-      <ForgotPasswordModal
-        isOpen={isForgotPasswordOpen}
-        onClose={() => setIsForgotPasswordOpen(false)}
-      />
+        <ForgotPasswordModal
+          isOpen={isForgotPasswordOpen}
+          onClose={() => setIsForgotPasswordOpen(false)}
+        />
+      </div>
+
+      <SiteFooter />
     </div>
   );
 };
