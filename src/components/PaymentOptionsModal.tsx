@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -16,7 +16,10 @@ import {
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import StripePaymentForm from './StripePaymentForm';
+import QuickSignUp from './checkout/QuickSignUp';
+import CouponSection from './checkout/CouponSection';
 import { useToast } from '../hooks/use-toast';
+import { useAuth } from '../hooks/useAuth';
 
 // Chave pública live da Stripe
 const stripePromise = loadStripe('pk_live_51RhgpgLtmJkjKIDB5HIRkSFixyXL4Nsv884yLSWfiy02vbsYYuXw7eX29gkQnWISxycMvrNdObsLLVUERDyUptyH00xXh7fdHL');
@@ -47,7 +50,16 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   onPaymentCreated
 }) => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [appliedDiscount, setAppliedDiscount] = useState(0);
+  const [couponCode, setCouponCode] = useState('');
+  const [needsSignUp, setNeedsSignUp] = useState(false);
   const { toast } = useToast();
+  const { user: authUser } = useAuth();
+
+  // Verificar se usuário precisa se cadastrar
+  useEffect(() => {
+    setNeedsSignUp(!authUser);
+  }, [authUser]);
 
   const getPaymentInfo = () => {
     switch (type) {
@@ -90,6 +102,28 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
     }
   };
 
+  const handleSignUpSuccess = () => {
+    setNeedsSignUp(false);
+    toast({
+      title: "Conta criada!",
+      description: "Agora você pode continuar com o pagamento.",
+    });
+  };
+
+  const handleCouponApplied = (discount: number, code: string) => {
+    setAppliedDiscount(discount);
+    setCouponCode(code);
+    toast({
+      title: "Cupom aplicado!",
+      description: `Desconto de R$ ${discount.toFixed(2)} aplicado com sucesso.`,
+    });
+  };
+
+  const handleCouponRemoved = () => {
+    setAppliedDiscount(0);
+    setCouponCode('');
+  };
+
   const handlePaymentSuccess = () => {
     toast({
       title: "Pagamento Aprovado!",
@@ -114,12 +148,13 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
 
   const paymentInfo = getPaymentInfo();
   const IconComponent = paymentInfo.icon;
-  const finalPrice = totalPrice > 0 ? totalPrice - discountAmount : paymentInfo.price / 100;
-  const amountInCents = totalPrice > 0 ? Math.round((totalPrice - discountAmount) * 100) : paymentInfo.price;
+  const originalPrice = totalPrice > 0 ? totalPrice : paymentInfo.price / 100;
+  const finalPrice = originalPrice - appliedDiscount;
+  const amountInCents = Math.round(finalPrice * 100);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-noir-dark border-noir-medium max-w-2xl">
+      <DialogContent className="bg-noir-dark border-noir-medium max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-case-white flex items-center gap-2">
@@ -150,6 +185,11 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
         <div className="space-y-6">
           {!showPaymentForm ? (
             <>
+              {/* Cadastro obrigatório para usuários não logados */}
+              {needsSignUp && (
+                <QuickSignUp onSuccess={handleSignUpSuccess} />
+              )}
+
               {/* Resumo do Produto */}
               <Card className="bg-noir-medium border-noir-light">
                 <CardHeader>
@@ -175,19 +215,28 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
                 </CardContent>
               </Card>
 
+              {/* Seção de Cupom */}
+              {!needsSignUp && (
+                <CouponSection
+                  originalPrice={originalPrice}
+                  onCouponApplied={handleCouponApplied}
+                  onCouponRemoved={handleCouponRemoved}
+                />
+              )}
+
               {/* Resumo de Preços */}
               <Card className="bg-noir-medium border-noir-light">
                 <CardContent className="pt-6">
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="text-case-white/80">Subtotal:</span>
-                      <span className="text-case-white">R$ {finalPrice.toFixed(2)}</span>
+                      <span className="text-case-white">R$ {originalPrice.toFixed(2)}</span>
                     </div>
                     
-                    {discountAmount > 0 && (
+                    {appliedDiscount > 0 && (
                       <div className="flex justify-between items-center">
-                        <span className="text-green-500">Desconto:</span>
-                        <span className="text-green-500">-R$ {discountAmount.toFixed(2)}</span>
+                        <span className="text-green-500">Desconto ({couponCode}):</span>
+                        <span className="text-green-500">-R$ {appliedDiscount.toFixed(2)}</span>
                       </div>
                     )}
                     
@@ -207,11 +256,11 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
               <div className="space-y-4">
                 <Button
                   onClick={() => setShowPaymentForm(true)}
-                  disabled={!user}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 h-auto"
+                  disabled={needsSignUp}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 h-auto disabled:opacity-50"
                 >
                   <CreditCard className="h-5 w-5 mr-2" />
-                  Pagar com Cartão
+                  {needsSignUp ? 'Complete o cadastro para continuar' : 'Pagar com Cartão'}
                 </Button>
 
                 <div className="text-center">
@@ -231,8 +280,14 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
                     <div>
                       <p className="text-case-white font-medium">{paymentInfo.title}</p>
                       <p className="text-case-white/60 text-sm">{paymentInfo.subtitle}</p>
+                      {appliedDiscount > 0 && (
+                        <p className="text-green-400 text-sm">Cupom {couponCode} aplicado</p>
+                      )}
                     </div>
                     <div className="text-right">
+                      {appliedDiscount > 0 && (
+                        <p className="text-case-white/60 line-through text-sm">R$ {originalPrice.toFixed(2)}</p>
+                      )}
                       <p className="text-case-white font-semibold">R$ {finalPrice.toFixed(2)}</p>
                     </div>
                   </div>
@@ -247,7 +302,8 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
                   type={type}
                   packId={packId}
                   selectedPackIds={selectedPackIds}
-                  userId={user?.id || ''}
+                  userId={authUser?.id || ''}
+                  couponCode={couponCode}
                 />
               </div>
             </Elements>

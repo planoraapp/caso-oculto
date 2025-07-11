@@ -13,6 +13,7 @@ interface CreateSessionRequest {
   packId?: string
   selectedPackIds?: string[]
   userId: string
+  couponCode?: string
 }
 
 // Mapeamento de tipos para Product IDs específicos do Stripe
@@ -30,8 +31,8 @@ serve(async (req) => {
   }
 
   try {
-    const { type, packId, selectedPackIds, userId }: CreateSessionRequest = await req.json()
-    console.log('Request data:', { type, packId, selectedPackIds, userId })
+    const { type, packId, selectedPackIds, userId, couponCode }: CreateSessionRequest = await req.json()
+    console.log('Request data:', { type, packId, selectedPackIds, userId, couponCode })
 
     if (!userId) {
       throw new Error('User ID is required')
@@ -56,6 +57,22 @@ serve(async (req) => {
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey)
+
+    // Validar cupom se fornecido
+    let validCoupon = null
+    if (couponCode) {
+      console.log('Validating coupon:', couponCode)
+      const { data: couponData, error: couponError } = await supabase.rpc('validate_coupon', {
+        coupon_code: couponCode
+      })
+
+      if (couponError) {
+        console.error('Error validating coupon:', couponError)
+      } else if (couponData && couponData[0]?.is_valid) {
+        validCoupon = couponData[0]
+        console.log('Valid coupon found:', validCoupon)
+      }
+    }
 
     // Buscar o produto e seu preço no Stripe
     const productId = STRIPE_PRODUCTS[type]
@@ -84,19 +101,48 @@ serve(async (req) => {
       metadata.selected_pack_ids = JSON.stringify(selectedPackIds)
     }
 
+    if (validCoupon) {
+      metadata.coupon_code = validCoupon.code
+      metadata.discount_amount = validCoupon.discount_value.toString()
+    }
+
+    // Preparar line items
+    const lineItems = [
+      {
+        price: price.id,
+        quantity: 1,
+      }
+    ]
+
+    // Aplicar desconto se cupom válido
+    let discounts = undefined
+    if (validCoupon) {
+      // Criar cupom no Stripe se não existir
+      let stripeCouponId = validCoupon.code.toLowerCase()
+      try {
+        await stripe.coupons.retrieve(stripeCouponId)
+      } catch (error) {
+        // Cupom não existe, criar no Stripe
+        await stripe.coupons.create({
+          id: stripeCouponId,
+          percent_off: validCoupon.discount_value,
+          duration: 'once'
+        })
+        console.log('Created Stripe coupon:', stripeCouponId)
+      }
+      
+      discounts = [{ coupon: stripeCouponId }]
+    }
+
     // Criar sessão de checkout do Stripe
     const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price: price.id,
-          quantity: 1,
-        },
-      ],
+      line_items: lineItems,
       mode: 'payment',
       success_url: `${req.headers.get('origin')}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get('origin')}/packs`,
       metadata,
       client_reference_id: userId,
+      discounts
     })
 
     console.log('Stripe session created:', session.id)

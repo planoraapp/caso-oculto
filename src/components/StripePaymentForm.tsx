@@ -3,10 +3,7 @@ import React, { useState } from 'react';
 import {
   useStripe,
   useElements,
-  CardElement,
-  CardNumberElement,
-  CardExpiryElement,
-  CardCvcElement
+  CardElement
 } from '@stripe/react-stripe-js';
 import { Button } from './ui/button';
 import { Loader2, CreditCard, Lock } from 'lucide-react';
@@ -21,6 +18,7 @@ interface StripePaymentFormProps {
   packId?: string;
   selectedPackIds?: string[];
   userId: string;
+  couponCode?: string;
 }
 
 const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
@@ -31,7 +29,8 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
   type,
   packId,
   selectedPackIds,
-  userId
+  userId,
+  couponCode
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -58,7 +57,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !userId) {
       return;
     }
 
@@ -66,54 +65,32 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
 
     try {
       // Criar Payment Intent via nossa edge function
-      const response = await fetch(`https://fad68a7a-e342-48e7-8997-93ab1e2fd98a.supabase.co/functions/v1/create-payment-intent`, {
+      const response = await fetch(`https://oxeccsmxqymvxycnaszo.supabase.co/functions/v1/create-stripe-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('supabase.auth.token')}`,
         },
         body: JSON.stringify({
-          amount,
-          currency,
           type,
           packId,
           selectedPackIds,
-          userId
+          userId,
+          couponCode: couponCode || null
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Erro ao criar intenção de pagamento');
+        throw new Error(errorData.error || 'Erro ao criar sessão de pagamento');
       }
 
-      const { client_secret: clientSecret } = await response.json();
-
-      // Confirmar pagamento com Stripe Elements
-      const cardElement = elements.getElement(CardElement);
-      if (!cardElement) {
-        throw new Error('Elemento do cartão não encontrado');
-      }
-
-      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: cardElement,
-        }
-      });
-
-      if (error) {
-        throw new Error(error.message || 'Erro no pagamento');
-      }
-
-      if (paymentIntent?.status === 'succeeded') {
-        toast({
-          title: "Pagamento Aprovado!",
-          description: "Seu pagamento foi processado com sucesso.",
-        });
-        onSuccess();
-      } else {
-        throw new Error('Pagamento não foi concluído');
-      }
+      const { url } = await response.json();
+      
+      // Redirecionar para o Stripe Checkout
+      window.location.href = url;
+      
+      onSuccess();
 
     } catch (error) {
       console.error('Erro no pagamento:', error);
@@ -152,7 +129,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
       {/* Submit Button */}
       <Button
         type="submit"
-        disabled={!stripe || isProcessing}
+        disabled={!stripe || isProcessing || !userId}
         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 h-auto"
       >
         {isProcessing ? (

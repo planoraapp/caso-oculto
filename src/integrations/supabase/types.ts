@@ -222,24 +222,30 @@ export type Database = {
       }
       profiles: {
         Row: {
+          acesso_total: boolean | null
           created_at: string
           email: string
           id: string
           name: string
+          tag: string | null
           updated_at: string
         }
         Insert: {
+          acesso_total?: boolean | null
           created_at?: string
           email: string
           id: string
           name: string
+          tag?: string | null
           updated_at?: string
         }
         Update: {
+          acesso_total?: boolean | null
           created_at?: string
           email?: string
           id?: string
           name?: string
+          tag?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -357,6 +363,17 @@ export type Database = {
       update_payment_session_status: {
         Args: { session_id: string; new_status: string }
         Returns: boolean
+      }
+      validate_coupon: {
+        Args: { coupon_code: string }
+        Returns: {
+          id: string
+          code: string
+          discount_value: number
+          discount_type: string
+          is_valid: boolean
+          message: string
+        }[]
       }
     }
     Enums: {

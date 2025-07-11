@@ -93,6 +93,18 @@ serve(async (req) => {
           .from('packs')
           .select('id')
         packIds = allPacks?.map(p => p.id) || []
+        
+        // Set acesso_total flag and tag for complete access
+        await supabase
+          .from('profiles')
+          .update({ 
+            acesso_total: true, 
+            tag: 'Mestre Investigador',
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', paymentSession.user_id)
+        
+        console.log('Set complete access for user:', paymentSession.user_id)
       }
 
       console.log('Granting access to packs:', packIds)
@@ -119,29 +131,39 @@ serve(async (req) => {
       // Record coupon usage if applicable
       const couponCode = session.metadata?.coupon_code
       if (couponCode) {
-        const discountAmount = parseInt(session.metadata?.discount_amount || '0')
+        const discountAmount = parseFloat(session.metadata?.discount_amount || '0')
         
-        const { error: couponError } = await supabase
-          .from('coupon_usage')
-          .insert({
-            user_id: paymentSession.user_id,
-            coupon_id: null, // We'll need to fetch this if needed
-            discount_applied: discountAmount / 100, // Convert back to reais
-            used_at: new Date().toISOString()
-          })
-
-        if (couponError) {
-          console.error('Error recording coupon usage:', couponError)
-        }
-
-        // Update coupon usage count
-        await supabase
+        // Increment coupon usage
+        const { error: couponUpdateError } = await supabase
           .from('discount_coupons')
           .update({ 
             current_uses: supabase.raw('current_uses + 1'),
             updated_at: new Date().toISOString()
           })
           .eq('code', couponCode)
+
+        if (couponUpdateError) {
+          console.error('Error updating coupon usage:', couponUpdateError)
+        } else {
+          console.log('Updated coupon usage for:', couponCode)
+        }
+
+        // Record coupon usage
+        const { error: usageError } = await supabase
+          .from('coupon_usage')
+          .insert({
+            user_id: paymentSession.user_id,
+            coupon_id: null, // We could look this up if needed
+            discount_applied: discountAmount,
+            purchase_id: session.id,
+            used_at: new Date().toISOString()
+          })
+
+        if (usageError) {
+          console.error('Error recording coupon usage:', usageError)
+        } else {
+          console.log('Recorded coupon usage for user:', paymentSession.user_id)
+        }
       }
 
       console.log('Access granted successfully for user:', paymentSession.user_id)
