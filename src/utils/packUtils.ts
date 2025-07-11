@@ -1,165 +1,22 @@
 
-import { supabase } from '@/integrations/supabase/client';
-import { Pack } from '@/data/types';
-import { getPackCases } from '@/data/cases';
+// Re-export all pack utilities from the new modular structure
+export {
+  getAllPacks,
+  getPackById,
+  getUserPacks
+} from './pack/packQueries';
 
-// Get all packs from Supabase with their respective cases
-export const getAllPacks = async (): Promise<Pack[]> => {
-  try {
-    const { data, error } = await supabase
-      .from('packs')
-      .select('*')
-      .order('created_at', { ascending: true });
+export {
+  createPack,
+  updatePack,
+  deletePack
+} from './pack/packOperations';
 
-    if (error) {
-      console.error('Error fetching packs:', error);
-      throw error;
-    }
-
-    // Add cases to each pack and properly type the difficulty
-    const packsWithCases = data?.map(pack => ({
-      ...pack,
-      difficulty: pack.difficulty as 'easy' | 'medium' | 'hard',
-      cases: getPackCases(pack.id) || []
-    })) || [];
-
-    return packsWithCases;
-  } catch (error) {
-    console.error('Error in getAllPacks:', error);
-    throw error;
-  }
-};
-
-// Get a specific pack by ID from Supabase with its cases
-export const getPackById = async (packId: string): Promise<Pack | null> => {
-  try {
-    const { data, error } = await supabase
-      .from('packs')
-      .select('*')
-      .eq('id', packId)
-      .single();
-
-    if (error) {
-      console.error('Error fetching pack:', error);
-      throw error;
-    }
-
-    if (!data) return null;
-
-    // Add cases to the pack and properly type the difficulty
-    const packWithCases = {
-      ...data,
-      difficulty: data.difficulty as 'easy' | 'medium' | 'hard',
-      cases: getPackCases(data.id) || []
-    };
-
-    return packWithCases;
-  } catch (error) {
-    console.error('Error in getPackById:', error);
-    return null;
-  }
-};
-
-// Get user's purchased packs
-export const getUserPacks = async (userId: string): Promise<string[]> => {
-  try {
-    const { data, error } = await supabase
-      .from('user_pack_access')
-      .select('pack_id')
-      .eq('user_id', userId)
-      .eq('is_active', true);
-
-    if (error) {
-      console.error('Error fetching user packs:', error);
-      throw error;
-    }
-
-    return data?.map(item => item.pack_id) || [];
-  } catch (error) {
-    console.error('Error in getUserPacks:', error);
-    return [];
-  }
-};
-
-// Create a new pack (admin only)
-export const createPack = async (pack: Omit<Pack, 'cases'>): Promise<Pack | null> => {
-  try {
-    const { data, error } = await supabase
-      .from('packs')
-      .insert([{
-        id: pack.id,
-        name: pack.name,
-        description: pack.description,
-        price: pack.price,
-        difficulty: pack.difficulty,
-        image: pack.image,
-        category: pack.category
-      }])
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error creating pack:', error);
-      throw error;
-    }
-
-    if (!data) return null;
-
-    return {
-      ...data,
-      difficulty: data.difficulty as 'easy' | 'medium' | 'hard',
-      cases: []
-    };
-  } catch (error) {
-    console.error('Error in createPack:', error);
-    return null;
-  }
-};
-
-// Update an existing pack (admin only)
-export const updatePack = async (packId: string, updates: Partial<Omit<Pack, 'cases'>>): Promise<Pack | null> => {
-  try {
-    const { data, error } = await supabase
-      .from('packs')
-      .update(updates)
-      .eq('id', packId)
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error updating pack:', error);
-      throw error;
-    }
-
-    if (!data) return null;
-
-    return {
-      ...data,
-      difficulty: data.difficulty as 'easy' | 'medium' | 'hard',
-      cases: getPackCases(data.id) || []
-    };
-  } catch (error) {
-    console.error('Error in updatePack:', error);
-    return null;
-  }
-};
-
-// Delete a pack (admin only)
-export const deletePack = async (packId: string): Promise<boolean> => {
-  try {
-    const { error } = await supabase
-      .from('packs')
-      .delete()
-      .eq('id', packId);
-
-    if (error) {
-      console.error('Error deleting pack:', error);
-      throw error;
-    }
-
-    return true;
-  } catch (error) {
-    console.error('Error in deletePack:', error);
-    return false;
-  }
-};
+export {
+  validatePackData,
+  formatPackPrice,
+  getDifficultyColor,
+  getDifficultyEmoji,
+  calculatePackProgress,
+  getCategoryColor
+} from './pack/packHelpers';

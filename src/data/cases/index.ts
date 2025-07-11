@@ -1,6 +1,11 @@
 import { Case } from '../types';
 import { labirintosMentaisCases } from './labirintosMentaisCases';
 import { jogosCorporativosCases } from './jogosCorporativosCases';
+import { sussurrosAlemCases } from './sussurrosAlemCases';
+import { sombrasNoiteCases } from './sombrasNoiteCases';
+import { crimesImperfeitosCases } from './crimesImperfeitosCases';
+import { lendasUrbanasCases } from './lendasUrbanasCases';
+import { paradoxosMortaisCases } from './paradoxosMortaisCases';
 
 // Map of pack IDs to their respective cases
 export const packCasesMap: Record<string, Case[]> = {
@@ -14,7 +19,7 @@ export const packCasesMap: Record<string, Case[]> = {
       isFree: true,
       theme: 'murder',
       name: 'A Herança Envenenada',
-      title: '🟢 A Herança Envenenada',
+      title: 'A Herança Envenenada',
       description: 'Uma mansão vitoriana, um testamento polêmico e uma morte suspeita.',
       image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&h=200&fit=crop'
     },
@@ -26,7 +31,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'theft',
       name: 'O Mistério do Quadro Roubado',
-      title: '🟡 O Mistério do Quadro Roubado',
+      title: 'O Mistério do Quadro Roubado',
       description: 'Um quadro valioso desaparece durante uma exposição.',
       image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
     },
@@ -38,7 +43,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'conspiracy',
       name: 'O Segredo do Cofre',
-      title: '🔴 O Segredo do Cofre',
+      title: 'O Segredo do Cofre',
       description: 'Um cofre misterioso guarda segredos que podem mudar o destino da cidade.',
       image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=300&h=200&fit=crop'
     },
@@ -50,7 +55,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'danger',
       name: 'A Noite do Incêndio',
-      title: '🟡 A Noite do Incêndio',
+      title: 'A Noite do Incêndio',
       description: 'Um incêndio destrói uma fábrica. Foi acidente ou sabotagem?',
       image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
     },
@@ -62,7 +67,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'easy',
       theme: 'investigation',
       name: 'O Desaparecimento na Floresta',
-      title: '🟢 O Desaparecimento na Floresta',
+      title: 'O Desaparecimento na Floresta',
       description: 'Uma pessoa desaparece misteriosamente em uma floresta densa.',
       image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=200&fit=crop'
     },
@@ -74,7 +79,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'mystery',
       name: 'O Enigma do Relógio',
-      title: '🔴 O Enigma do Relógio',
+      title: 'O Enigma do Relógio',
       description: 'Um relógio antigo guarda um segredo que pode resolver um crime antigo.',
       image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=200&fit=crop'
     },
@@ -86,7 +91,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'crime',
       name: 'A Carta Anônima',
-      title: '🟡 A Carta Anônima',
+      title: 'A Carta Anônima',
       description: 'Uma carta anônima revela pistas sobre um crime não resolvido.',
       image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
     },
@@ -98,7 +103,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'thriller',
       name: 'O Mistério do Farol',
-      title: '🟡 O Mistério do Farol',
+      title: 'O Mistério do Farol',
       description: 'Luzes estranhas no farol assustam os moradores da costa.',
       image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=300&h=200&fit=crop'
     },
@@ -110,7 +115,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'easy',
       theme: 'conspiracy',
       name: 'O Segredo do Jardim',
-      title: '🟢 O Segredo do Jardim',
+      title: 'O Segredo do Jardim',
       description: 'Um jardim aparentemente comum guarda um segredo sombrio.',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&h=200&fit=crop'
     },
@@ -122,7 +127,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'thriller',
       name: 'A Vingança do Fantasma',
-      title: '🔴 A Vingança do Fantasma',
+      title: 'A Vingança do Fantasma',
       description: 'Lendas de um fantasma assombram uma antiga mansão.',
       image: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=300&h=200&fit=crop'
     },
@@ -134,7 +139,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'theft',
       name: 'O Caso do Diamante Roubado',
-      title: '🟡 O Caso do Diamante Roubado',
+      title: 'O Caso do Diamante Roubado',
       description: 'Um diamante valioso desaparece durante uma exposição.',
       image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&h=200&fit=crop'
     },
@@ -146,7 +151,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'mystery',
       name: 'O Mistério da Biblioteca',
-      title: '🟡 O Mistério da Biblioteca',
+      title: 'O Mistério da Biblioteca',
       description: 'Eventos estranhos acontecem em uma biblioteca antiga.',
       image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
     },
@@ -158,7 +163,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'danger',
       name: 'O Segredo do Navio Fantasma',
-      title: '🔴 O Segredo do Navio Fantasma',
+      title: 'O Segredo do Navio Fantasma',
       description: 'Histórias de um navio fantasma circulam entre os pescadores.',
       image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=300&h=200&fit=crop'
     },
@@ -170,7 +175,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'conspiracy',
       name: 'A Conspiração do Conselho',
-      title: '🔴 A Conspiração do Conselho',
+      title: 'A Conspiração do Conselho',
       description: 'Um conselho municipal esconde segredos obscuros.',
       image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
     },
@@ -182,7 +187,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'crime',
       name: 'O Mistério do Relógio de Ouro',
-      title: '🟡 O Mistério do Relógio de Ouro',
+      title: 'O Mistério do Relógio de Ouro',
       description: 'Um relógio de ouro desaparece durante um baile de gala.',
       image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=200&fit=crop'
     },
@@ -194,7 +199,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'theft',
       name: 'O Caso da Estátua Desaparecida',
-      title: '🟡 O Caso da Estátua Desaparecida',
+      title: 'O Caso da Estátua Desaparecida',
       description: 'Uma estátua valiosa desaparece misteriosamente.',
       image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=200&fit=crop'
     },
@@ -206,7 +211,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'murder',
       name: 'O Enigma da Sala Trancada',
-      title: '🔴 O Enigma da Sala Trancada',
+      title: 'O Enigma da Sala Trancada',
       description: 'Um assassinato em uma sala trancada intriga os detetives.',
       image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
     },
@@ -218,7 +223,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'thriller',
       name: 'O Mistério do Cemitério',
-      title: '🟡 O Mistério do Cemitério',
+      title: 'O Mistério do Cemitério',
       description: 'Eventos estranhos acontecem em um cemitério antigo.',
       image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=300&h=200&fit=crop'
     },
@@ -230,7 +235,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'theft',
       name: 'A Noite do Roubo na Joalheria',
-      title: '🟡 A Noite do Roubo na Joalheria',
+      title: 'A Noite do Roubo na Joalheria',
       description: 'Uma joalheria é roubada durante a noite.',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&h=200&fit=crop'
     },
@@ -242,7 +247,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'conspiracy',
       name: 'O Segredo do Manuscrito',
-      title: '🔴 O Segredo do Manuscrito',
+      title: 'O Segredo do Manuscrito',
       description: 'Um manuscrito antigo é a chave para um grande segredo.',
       image: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=300&h=200&fit=crop'
     }
@@ -256,7 +261,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'investigation',
       name: 'O Desaparecimento do Professor',
-      title: '🟡 O Desaparecimento do Professor',
+      title: 'O Desaparecimento do Professor',
       description: 'Uma descoberta que vale mais que a vida.',
       image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&h=200&fit=crop',
       isFree: true
@@ -269,7 +274,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'thriller',
       name: 'O Mistério do Trem Fantasma',
-      title: '🔴 O Mistério do Trem Fantasma',
+      title: 'O Mistério do Trem Fantasma',
       description: 'Um trem fantasma aparece em trilhos abandonados.',
       image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
     },
@@ -281,7 +286,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'conspiracy',
       name: 'A Conspiração na Prefeitura',
-      title: '🔴 A Conspiração na Prefeitura',
+      title: 'A Conspiração na Prefeitura',
       description: 'Corrupção e segredos na prefeitura da cidade.',
       image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=300&h=200&fit=crop'
     },
@@ -293,7 +298,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'crime',
       name: 'O Caso do Pintor Desaparecido',
-      title: '🟡 O Caso do Pintor Desaparecido',
+      title: 'O Caso do Pintor Desaparecido',
       description: 'Um pintor desaparece sem deixar rastros.',
       image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
     },
@@ -305,7 +310,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'mystery',
       name: 'O Enigma da Chave Perdida',
-      title: '🟡 O Enigma da Chave Perdida',
+      title: 'O Enigma da Chave Perdida',
       description: 'Uma chave perdida leva a um segredo antigo.',
       image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=200&fit=crop'
     },
@@ -317,7 +322,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'danger',
       name: 'O Mistério do Farol Apagado',
-      title: '🔴 O Mistério do Farol Apagado',
+      title: 'O Mistério do Farol Apagado',
       description: 'Um farol apaga misteriosamente durante uma tempestade.',
       image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=200&fit=crop'
     },
@@ -329,7 +334,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'theft',
       name: 'A Noite do Roubo na Mansão',
-      title: '🟡 A Noite do Roubo na Mansão',
+      title: 'A Noite do Roubo na Mansão',
       description: 'Uma mansão é roubada durante uma festa luxuosa.',
       image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
     },
@@ -341,7 +346,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'conspiracy',
       name: 'O Segredo do Cofre Escondido',
-      title: '🔴 O Segredo do Cofre Escondido',
+      title: 'O Segredo do Cofre Escondido',
       description: 'Um cofre escondido guarda segredos perigosos.',
       image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
     },
@@ -353,7 +358,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'murder',
       name: 'O Caso do Assassino Invisível',
-      title: '🔴 O Caso do Assassino Invisível',
+      title: 'O Caso do Assassino Invisível',
       description: 'Um assassino deixa poucas pistas para trás.',
       image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=300&h=200&fit=crop'
     },
@@ -365,7 +370,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'crime',
       name: 'O Mistério da Carta Queimada',
-      title: '🟡 O Mistério da Carta Queimada',
+      title: 'O Mistério da Carta Queimada',
       description: 'Uma carta queimada pode ser a chave para um crime.',
       image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
     },
@@ -377,7 +382,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'mystery',
       name: 'O Enigma do Relógio Parado',
-      title: '🟡 O Enigma do Relógio Parado',
+      title: 'O Enigma do Relógio Parado',
       description: 'Um relógio parado intriga os investigadores.',
       image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
     },
@@ -389,7 +394,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'thriller',
       name: 'O Caso do Tesouro Escondido',
-      title: '🔴 O Caso do Tesouro Escondido',
+      title: 'O Caso do Tesouro Escondido',
       description: 'Um tesouro perdido intriga caçadores de aventuras.',
       image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&h=200&fit=crop'
     },
@@ -401,7 +406,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'danger',
       name: 'A Noite do Incêndio Misterioso',
-      title: '🟡 A Noite do Incêndio Misterioso',
+      title: 'A Noite do Incêndio Misterioso',
       description: 'Um incêndio destrói evidências importantes.',
       image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=200&fit=crop'
     },
@@ -413,7 +418,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'conspiracy',
       name: 'O Mistério do Quadro Escondido',
-      title: '🔴 O Mistério do Quadro Escondido',
+      title: 'O Mistério do Quadro Escondido',
       description: 'Um quadro antigo guarda um segredo valioso.',
       image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
     },
@@ -425,7 +430,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'crime',
       name: 'O Caso do Médico Corrupto',
-      title: '🟡 O Caso do Médico Corrupto',
+      title: 'O Caso do Médico Corrupto',
       description: 'Um médico é suspeito de corrupção e fraude.',
       image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
     },
@@ -437,7 +442,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'thriller',
       name: 'O Enigma da Sala Secreta',
-      title: '🔴 O Enigma da Sala Secreta',
+      title: 'O Enigma da Sala Secreta',
       description: 'Uma sala secreta intriga os investigadores.',
       image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
     },
@@ -449,7 +454,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'danger',
       name: 'O Mistério do Farol Abandonado',
-      title: '🟡 O Mistério do Farol Abandonado',
+      title: 'O Mistério do Farol Abandonado',
       description: 'Um farol abandonado guarda segredos obscuros.',
       image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
     },
@@ -461,7 +466,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'crime',
       name: 'A Noite do Sequestro Misterioso',
-      title: '🟡 A Noite do Sequestro Misterioso',
+      title: 'A Noite do Sequestro Misterioso',
       description: 'Um sequestro misterioso intriga a polícia.',
       image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
     },
@@ -473,7 +478,7 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'hard',
       theme: 'conspiracy',
       name: 'O Segredo do Manuscrito Antigo',
-      title: '🔴 O Segredo do Manuscrito Antigo',
+      title: 'O Segredo do Manuscrito Antigo',
       description: 'Um manuscrito antigo guarda segredos perigosos.',
       image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
     },
@@ -485,352 +490,18 @@ export const packCasesMap: Record<string, Case[]> = {
       difficulty: 'medium',
       theme: 'thriller',
       name: 'O Mistério do Teatro Assombrado',
-      title: '🟡 O Mistério do Teatro Assombrado',
+      title: 'O Mistério do Teatro Assombrado',
       description: 'Um teatro antigo é palco de eventos estranhos.',
       image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
     }
   ],
-  'pack-03': [
-    {
-      id: 'case-061',
-      order: 61,
-      mystery: 'Um subterrâneo misterioso é descoberto sob a cidade, escondendo segredos perigosos.',
-      solution: 'O subterrâneo escondia um laboratório secreto onde experimentos ilegais eram realizados.',
-      difficulty: 'hard',
-      theme: 'conspiracy',
-      name: 'O Segredo do Subterrâneo',
-      title: '🔴 O Segredo do Subterrâneo',
-      description: 'Experimentos proibidos nas profundezas.',
-      image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&h=200&fit=crop',
-      isFree: true
-    },
-    {
-      id: 'case-062',
-      order: 62,
-      mystery: 'Um ex-policial busca justiça com métodos próprios.',
-      solution: 'O ex-policial armou um plano para se vingar dos que o traíram.',
-      difficulty: 'hard',
-      theme: 'thriller',
-      name: 'A Vingança do Ex-Policial',
-      title: '🔴 A Vingança do Ex-Policial',
-      description: 'Justiça fora da lei.',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-063',
-      order: 63,
-      mystery: 'Um navio afundado guarda segredos perigosos.',
-      solution: 'O navio afundado escondia uma carga ilegal.',
-      difficulty: 'hard',
-      theme: 'danger',
-      name: 'O Mistério do Navio Afundado',
-      title: '🔴 O Mistério do Navio Afundado',
-      description: 'Segredos submersos.',
-      image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-064',
-      order: 64,
-      mystery: 'Um cientista desaparece misteriosamente.',
-      solution: 'O cientista fugiu após descobrir uma conspiração governamental.',
-      difficulty: 'hard',
-      theme: 'conspiracy',
-      name: 'O Caso do Cientista Desaparecido',
-      title: '🔴 O Caso do Cientista Desaparecido',
-      description: 'Segredos científicos perigosos.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-065',
-      order: 65,
-      mystery: 'Um assassinato em uma sala trancada intriga os detetives.',
-      solution: 'A vítima foi assassinada antes de trancar a sala por dentro.',
-      difficulty: 'hard',
-      theme: 'murder',
-      name: 'O Enigma da Sala Trancada',
-      title: '🔴 O Enigma da Sala Trancada',
-      description: 'Mistério em ambiente fechado.',
-      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-066',
-      order: 66,
-      mystery: 'Um código secreto intriga investigadores.',
-      solution: 'O código era uma mensagem cifrada que levava a um tesouro escondido.',
-      difficulty: 'hard',
-      theme: 'mystery',
-      name: 'O Mistério do Código Secreto',
-      title: '🔴 O Mistério do Código Secreto',
-      description: 'Códigos e segredos.',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-067',
-      order: 67,
-      mystery: 'Um assassino deixa poucas pistas para trás.',
-      solution: 'O assassino usava disfarces para não ser reconhecido.',
-      difficulty: 'hard',
-      theme: 'murder',
-      name: 'O Caso do Assassino Invisível',
-      title: '🔴 O Caso do Assassino Invisível',
-      description: 'Mistério e disfarces.',
-      image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-068',
-      order: 68,
-      mystery: 'Um manuscrito antigo guarda segredos perigosos.',
-      solution: 'O manuscrito continha segredos que poderiam derrubar uma família poderosa.',
-      difficulty: 'hard',
-      theme: 'conspiracy',
-      name: 'O Segredo do Manuscrito Antigo',
-      title: '🔴 O Segredo do Manuscrito Antigo',
-      description: 'Segredos antigos e poderosos.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-069',
-      order: 69,
-      mystery: 'Um teatro antigo é palco de eventos estranhos.',
-      solution: 'O teatro era palco de um esquema de chantagem.',
-      difficulty: 'hard',
-      theme: 'thriller',
-      name: 'O Mistério do Teatro Assombrado',
-      title: '🔴 O Mistério do Teatro Assombrado',
-      description: 'Mistérios nos bastidores.',
-      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-070',
-      order: 70,
-      mystery: 'Um médico é suspeito de corrupção e fraude.',
-      solution: 'O médico usava sua posição para cometer fraudes.',
-      difficulty: 'hard',
-      theme: 'crime',
-      name: 'O Caso do Médico Corrupto',
-      title: '🔴 O Caso do Médico Corrupto',
-      description: 'Corrupção na medicina.',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-071',
-      order: 71,
-      mystery: 'Uma sala secreta intriga os investigadores.',
-      solution: 'A sala secreta era usada para reuniões clandestinas.',
-      difficulty: 'hard',
-      theme: 'thriller',
-      name: 'O Enigma da Sala Secreta',
-      title: '🔴 O Enigma da Sala Secreta',
-      description: 'Segredos escondidos.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-072',
-      order: 72,
-      mystery: 'Um farol abandonado guarda segredos obscuros.',
-      solution: 'O farol era usado para sinalizar navios contrabandistas.',
-      difficulty: 'hard',
-      theme: 'danger',
-      name: 'O Mistério do Farol Abandonado',
-      title: '🔴 O Mistério do Farol Abandonado',
-      description: 'Segredos no farol.',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-073',
-      order: 73,
-      mystery: 'Um sequestro misterioso intriga a polícia.',
-      solution: 'O sequestro foi encenado para encobrir um roubo.',
-      difficulty: 'hard',
-      theme: 'crime',
-      name: 'A Noite do Sequestro Misterioso',
-      title: '🔴 A Noite do Sequestro Misterioso',
-      description: 'Mistério e engano.',
-      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-074',
-      order: 74,
-      mystery: 'Um manuscrito antigo guarda segredos perigosos.',
-      solution: 'O manuscrito continha segredos que poderiam derrubar uma família poderosa.',
-      difficulty: 'hard',
-      theme: 'conspiracy',
-      name: 'O Segredo do Manuscrito Antigo',
-      title: '🔴 O Segredo do Manuscrito Antigo',
-      description: 'Segredos antigos e poderosos.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-075',
-      order: 75,
-      mystery: 'Um teatro antigo é palco de eventos estranhos.',
-      solution: 'O teatro era palco de um esquema de chantagem.',
-      difficulty: 'hard',
-      theme: 'thriller',
-      name: 'O Mistério do Teatro Assombrado',
-      title: '🔴 O Mistério do Teatro Assombrado',
-      description: 'Mistérios nos bastidores.',
-      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-076',
-      order: 76,
-      mystery: 'Um médico é suspeito de corrupção e fraude.',
-      solution: 'O médico usava sua posição para cometer fraudes.',
-      difficulty: 'hard',
-      theme: 'crime',
-      name: 'O Caso do Médico Corrupto',
-      title: '🔴 O Caso do Médico Corrupto',
-      description: 'Corrupção na medicina.',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-077',
-      order: 77,
-      mystery: 'Uma sala secreta intriga os investigadores.',
-      solution: 'A sala secreta era usada para reuniões clandestinas.',
-      difficulty: 'hard',
-      theme: 'thriller',
-      name: 'O Enigma da Sala Secreta',
-      title: '🔴 O Enigma da Sala Secreta',
-      description: 'Segredos escondidos.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-078',
-      order: 78,
-      mystery: 'Um farol abandonado guarda segredos obscuros.',
-      solution: 'O farol era usado para sinalizar navios contrabandistas.',
-      difficulty: 'hard',
-      theme: 'danger',
-      name: 'O Mistério do Farol Abandonado',
-      title: '🔴 O Mistério do Farol Abandonado',
-      description: 'Segredos no farol.',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-079',
-      order: 79,
-      mystery: 'Um sequestro misterioso intriga a polícia.',
-      solution: 'O sequestro foi encenado para encobrir um roubo.',
-      difficulty: 'hard',
-      theme: 'crime',
-      name: 'A Noite do Sequestro Misterioso',
-      title: '🔴 A Noite do Sequestro Misterioso',
-      description: 'Mistério e engano.',
-      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
-    },
-    {
-      id: 'case-080',
-      order: 80,
-      mystery: 'Um manuscrito antigo guarda segredos perigosos.',
-      solution: 'O manuscrito continha segredos que poderiam derrubar uma família poderosa.',
-      difficulty: 'hard',
-      theme: 'conspiracy',
-      name: 'O Segredo do Manuscrito Antigo',
-      title: '🔴 O Segredo do Manuscrito Antigo',
-      description: 'Segredos antigos e poderosos.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
-    }
-  ],
+  'pack-03': sussurrosAlemCases,
+  'pack-04': sombrasNoiteCases,
+  'pack-05': crimesImperfeitosCases,
+  'pack-06': lendasUrbanasCases,
+  'pack-07': paradoxosMortaisCases,
   'labirintos-mentais': labirintosMentaisCases,
   'jogos-corporativos': jogosCorporativosCases,
-  'sussurros-do-alem': [
-    {
-      id: 'sussurros-alem-001',
-      order: 1,
-      mystery: 'Uma medium morre durante uma sessão espírita. Não há ferimentos visíveis no corpo.',
-      solution: 'A medium tinha uma condição cardíaca e morreu de susto quando um dos participantes, vestido de fantasma, apareceu inesperadamente para "provar" seus poderes.',
-      difficulty: 'easy',
-      isFree: true,
-      theme: 'thriller',
-      name: 'A Sessão Final',
-      title: '🟢 A Sessão Final',
-      description: 'Quando o sobrenatural encontra a realidade.',
-      image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&h=200&fit=crop'
-    },
-    // Additional 19 cases should be added here similarly
-  ],
-  'sombras-da-noite': [
-    {
-      id: 'sombras-noite-001',
-      order: 1,
-      mystery: 'Um vigilante noturno é encontrado morto em sua ronda. As câmeras de segurança mostram apenas sombras.',
-      solution: 'O assassino conhecia os ângulos mortos das câmeras e usou roupas especiais que absorviam luz infravermelha.',
-      difficulty: 'medium',
-      isFree: true,
-      theme: 'murder',
-      name: 'O Vigilante das Sombras',
-      title: '🟡 O Vigilante das Sombras',
-      description: 'Invisível aos olhos eletrônicos.',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop'
-    },
-    // Additional 19 cases should be added here similarly
-  ],
-  'crimes-imperfeitos': [
-    {
-      id: 'crimes-imperfeitos-001',
-      order: 1,
-      mystery: 'Um ladrão morre preso em um cofre que ele mesmo tentava roubar.',
-      solution: 'O ladrão não sabia que o cofre tinha um sistema de travamento automático que se ativava após 30 segundos. Ele morreu por falta de oxigênio.',
-      difficulty: 'easy',
-      isFree: true,
-      theme: 'theft',
-      name: 'O Cofre Assassino',
-      title: '🟢 O Cofre Assassino',
-      description: 'Quando a ganância se torna armadilha.',
-      image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=300&h=200&fit=crop'
-    },
-    // Additional 19 cases should be added here similarly
-  ],
-  'lendas-urbanas': [
-    {
-      id: 'lendas-urbanas-001',
-      order: 1,
-      mystery: 'Uma jovem desaparece após compartilhar uma lenda urbana nas redes sociais.',
-      solution: 'A lenda era real - um sequestrador usava as redes sociais para identificar vítimas que conheciam sua história.',
-      difficulty: 'hard',
-      isFree: true,
-      theme: 'thriller',
-      name: 'A Lenda Verdadeira',
-      title: '🔴 A Lenda Verdadeira',
-      description: 'Quando o mito vira realidade.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop'
-    },
-    // Additional 19 cases should be added here similarly
-  ],
-  'paradoxos-mortais': [
-    {
-      id: 'paradoxos-mortais-001',
-      order: 1,
-      mystery: 'Um homem morre afogado em uma sala completamente seca.',
-      solution: 'Ele tinha hidrofobia severa e morreu de ataque cardíaco ao ver uma ilusão de ótica que fazia parecer que a sala estava inundada.',
-      difficulty: 'hard',
-      isFree: true,
-      theme: 'mystery',
-      name: 'Afogado em Terra Seca',
-      title: '🔴 Afogado em Terra Seca',
-      description: 'Impossibilidades que se tornam fatais.',
-      image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=200&fit=crop'
-    },
-    // Additional 19 cases should be added here similarly
-  ],
-  'absurdamente-real': [
-    {
-      id: 'absurdamente-real-001',
-      order: 1,
-      mystery: 'Um homem morre eletrocutado por um peixe em um aquário.',
-      solution: 'O aquário tinha um defeito elétrico no sistema de filtragem, e o homem estava com as mãos molhadas ao tentar alimentar o peixe.',
-      difficulty: 'medium',
-      isFree: true,
-      theme: 'danger',
-      name: 'O Peixe Elétrico',
-      title: '🟡 O Peixe Elétrico',
-      description: 'Acidentes absurdos, mas perfeitamente explicáveis.',
-      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=200&fit=crop'
-    },
-    // Additional 19 cases should be added here similarly
-  ],
   'dossie-confidencial': [
     {
       id: 'dossie-confidencial-001',
@@ -841,11 +512,10 @@ export const packCasesMap: Record<string, Case[]> = {
       isFree: true,
       theme: 'conspiracy',
       name: 'A Traição Interna',
-      title: '🔴 A Traição Interna',
+      title: 'A Traição Interna',
       description: 'Quando não se pode confiar em ninguém.',
       image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop'
-    },
-    // Additional 19 cases should be added here similarly
+    }
   ],
   'dose-letal': [
     {
@@ -857,11 +527,10 @@ export const packCasesMap: Record<string, Case[]> = {
       isFree: true,
       theme: 'danger',
       name: 'A Mistura Fatal',
-      title: '🟢 A Mistura Fatal',
+      title: 'A Mistura Fatal',
       description: 'Perigos escondidos no cotidiano.',
       image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=300&h=200&fit=crop'
-    },
-    // Additional 19 cases should be added here similarly
+    }
   ],
   'fim-de-jogo': [
     {
@@ -873,11 +542,25 @@ export const packCasesMap: Record<string, Case[]> = {
       isFree: true,
       theme: 'murder',
       name: 'Xeque-Mate Final',
-      title: '🟡 Xeque-Mate Final',
+      title: 'Xeque-Mate Final',
       description: 'O jogo mais mortal de todos.',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&h=200&fit=crop'
-    },
-    // Additional 19 cases should be added here similarly
+    }
+  ],
+  'absurdamente-real': [
+    {
+      id: 'absurdamente-real-001',
+      order: 1,
+      mystery: 'Um homem morre eletrocutado por um peixe em um aquário.',
+      solution: 'O aquário tinha um defeito elétrico no sistema de filtragem, e o homem estava com as mãos molhadas ao tentar alimentar o peixe.',
+      difficulty: 'medium',
+      isFree: true,
+      theme: 'danger',
+      name: 'O Peixe Elétrico',
+      title: 'O Peixe Elétrico',
+      description: 'Acidentes absurdos, mas perfeitamente explicáveis.',
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=200&fit=crop'
+    }
   ]
 };
 
