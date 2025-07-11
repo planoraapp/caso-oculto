@@ -24,7 +24,7 @@ interface Affiliate {
   profiles?: {
     name: string;
     email: string;
-  };
+  } | null;
 }
 
 const AffiliateManager: React.FC = () => {
@@ -55,8 +55,20 @@ const AffiliateManager: React.FC = () => {
         `)
         .order('criado_em', { ascending: false });
 
-      if (error) throw error;
-      setAffiliates(data || []);
+      if (error) {
+        console.error('Error loading affiliates:', error);
+        throw error;
+      }
+      
+      // Handle the data properly, ensuring profiles is either an object or null
+      const processedData = (data || []).map(affiliate => ({
+        ...affiliate,
+        profiles: affiliate.profiles && typeof affiliate.profiles === 'object' && !Array.isArray(affiliate.profiles) 
+          ? affiliate.profiles 
+          : null
+      }));
+      
+      setAffiliates(processedData);
     } catch (error) {
       console.error('Error loading affiliates:', error);
       toast({
