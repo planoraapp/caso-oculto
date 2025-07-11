@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Progress } from '../components/ui/progress';
 import { t } from '../data/translations';
 import { getPackById } from '../utils/pack/packQueries';
 import { supabase } from '../integrations/supabase/client';
+import { calculatePackProgress, getSolvedCards } from '../utils/progress';
+import LoadingState from '../components/common/LoadingState';
+import EmptyState from '../components/common/EmptyState';
+import ProgressBar from '../components/common/ProgressBar';
 
 interface LibraryProps {
   user: any;
@@ -21,7 +24,6 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
       if (!user?.id) return;
 
       try {
-        // Fetch user pack access from Supabase
         const { data: packAccess, error } = await supabase
           .from('user_pack_access')
           .select('pack_id')
@@ -33,7 +35,6 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
           return;
         }
 
-        // Get the actual pack data for each pack the user has access to
         const userPackData = packAccess
           ?.map(access => getPackById(access.pack_id))
           .filter(Boolean) || [];
@@ -49,41 +50,18 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
     fetchUserPacks();
   }, [user?.id]);
 
-  const calculatePackProgress = (pack: any) => {
-    if (pack.cases.length === 0) return 0;
-    const solved = JSON.parse(localStorage.getItem(`solved_${user.id}_${pack.id}`) || '[]');
-    const solvedCards = pack.cases.filter((card: any) => solved.includes(card.id));
-    return (solvedCards.length / pack.cases.length) * 100;
-  };
-
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-case-red mx-auto mb-4"></div>
-          <p className="text-case-white">Carregando biblioteca...</p>
-        </div>
-      </div>
-    );
+    return <LoadingState message="Carregando biblioteca..." />;
   }
 
   if (userPacks.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="font-anton text-3xl text-case-white mb-4">
-            {t('library.title')}
-          </h1>
-          <p className="text-case-white/80 mb-8 max-w-md">
-            {t('library.empty')}
-          </p>
-          <Link to="/packs">
-            <Button className="bg-case-red hover:bg-red-600 text-white">
-              {t('library.goToShop')}
-            </Button>
-          </Link>
-        </div>
-      </div>
+      <EmptyState
+        title={t('library.title')}
+        description={t('library.empty')}
+        actionText={t('library.goToShop')}
+        actionPath="/packs"
+      />
     );
   }
 
@@ -103,9 +81,8 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
           {userPacks.map((pack) => {
             if (!pack) return null;
             
-            const progress = calculatePackProgress(pack);
-            const solved = JSON.parse(localStorage.getItem(`solved_${user.id}_${pack.id}`) || '[]');
-            const solvedCount = pack.cases.filter((card: any) => solved.includes(card.id)).length;
+            const solved = getSolvedCards(user.id, pack.id);
+            const { progress, solvedCount } = calculatePackProgress(pack.cases, solved);
             
             return (
               <Card
@@ -131,20 +108,11 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
                     {pack.description}
                   </p>
                   
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-case-white font-medium text-sm">
-                        {t('library.progress')}
-                      </span>
-                      <span className="text-case-white text-sm">
-                        {solvedCount}/{pack.cases.length}
-                      </span>
-                    </div>
-                    <Progress value={progress} className="h-2" />
-                    <p className="text-case-white/60 text-xs mt-1">
-                      {Math.round(progress)}% completo
-                    </p>
-                  </div>
+                  <ProgressBar
+                    progress={progress}
+                    solvedCount={solvedCount}
+                    totalCount={pack.cases.length}
+                  />
                   
                   <Link to={`/pack/${pack.id}`}>
                     <Button className="w-full bg-case-red hover:bg-red-600 text-white">
