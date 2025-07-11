@@ -56,6 +56,98 @@ export type Database = {
         }
         Relationships: []
       }
+      afiliados: {
+        Row: {
+          codigo_cupom: string
+          comissao_percentual: number | null
+          compras_confirmadas: number | null
+          criado_em: string | null
+          id: string
+          is_active: boolean | null
+          user_id: string
+          valor_total_gerado: number | null
+          visitas: number | null
+        }
+        Insert: {
+          codigo_cupom: string
+          comissao_percentual?: number | null
+          compras_confirmadas?: number | null
+          criado_em?: string | null
+          id?: string
+          is_active?: boolean | null
+          user_id: string
+          valor_total_gerado?: number | null
+          visitas?: number | null
+        }
+        Update: {
+          codigo_cupom?: string
+          comissao_percentual?: number | null
+          compras_confirmadas?: number | null
+          criado_em?: string | null
+          id?: string
+          is_active?: boolean | null
+          user_id?: string
+          valor_total_gerado?: number | null
+          visitas?: number | null
+        }
+        Relationships: []
+      }
+      compras: {
+        Row: {
+          afiliado_id: string | null
+          created_at: string | null
+          cupom_codigo: string | null
+          id: string
+          pack_id: string | null
+          payment_type: string
+          selected_pack_ids: string[] | null
+          status: string | null
+          stripe_session_id: string
+          updated_at: string | null
+          user_id: string
+          valor_original: number
+          valor_pago: number
+        }
+        Insert: {
+          afiliado_id?: string | null
+          created_at?: string | null
+          cupom_codigo?: string | null
+          id?: string
+          pack_id?: string | null
+          payment_type: string
+          selected_pack_ids?: string[] | null
+          status?: string | null
+          stripe_session_id: string
+          updated_at?: string | null
+          user_id: string
+          valor_original: number
+          valor_pago: number
+        }
+        Update: {
+          afiliado_id?: string | null
+          created_at?: string | null
+          cupom_codigo?: string | null
+          id?: string
+          pack_id?: string | null
+          payment_type?: string
+          selected_pack_ids?: string[] | null
+          status?: string | null
+          stripe_session_id?: string
+          updated_at?: string | null
+          user_id?: string
+          valor_original?: number
+          valor_pago?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compras_afiliado_id_fkey"
+            columns: ["afiliado_id"]
+            isOneToOne: false
+            referencedRelation: "afiliados"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       coupon_usage: {
         Row: {
           coupon_id: string | null
@@ -96,6 +188,7 @@ export type Database = {
           code: string
           created_at: string
           created_by: string | null
+          criado_por: string | null
           current_uses: number | null
           description: string | null
           discount_type: string
@@ -112,6 +205,7 @@ export type Database = {
           code: string
           created_at?: string
           created_by?: string | null
+          criado_por?: string | null
           current_uses?: number | null
           description?: string | null
           discount_type: string
@@ -128,6 +222,7 @@ export type Database = {
           code?: string
           created_at?: string
           created_by?: string | null
+          criado_por?: string | null
           current_uses?: number | null
           description?: string | null
           discount_type?: string
@@ -140,7 +235,15 @@ export type Database = {
           valid_from?: string
           valid_until?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "discount_coupons_criado_por_fkey"
+            columns: ["criado_por"]
+            isOneToOne: false
+            referencedRelation: "afiliados"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       packs: {
         Row: {
@@ -227,6 +330,7 @@ export type Database = {
           email: string
           id: string
           name: string
+          packs_liberados: string[] | null
           tag: string | null
           updated_at: string
         }
@@ -236,6 +340,7 @@ export type Database = {
           email: string
           id: string
           name: string
+          packs_liberados?: string[] | null
           tag?: string | null
           updated_at?: string
         }
@@ -245,6 +350,7 @@ export type Database = {
           email?: string
           id?: string
           name?: string
+          packs_liberados?: string[] | null
           tag?: string | null
           updated_at?: string
         }
@@ -358,6 +464,14 @@ export type Database = {
           _user_id: string
           _role: Database["public"]["Enums"]["app_role"]
         }
+        Returns: boolean
+      }
+      process_affiliate_purchase: {
+        Args: { affiliate_code: string; purchase_amount: number }
+        Returns: string
+      }
+      track_affiliate_visit: {
+        Args: { affiliate_code: string }
         Returns: boolean
       }
       update_payment_session_status: {

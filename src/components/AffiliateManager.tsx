@@ -1,38 +1,42 @@
 
 import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Badge } from './ui/badge';
-import { Plus, Edit, Trash2, DollarSign } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { supabase } from '../integrations/supabase/client';
 import { useToast } from '../hooks/use-toast';
+import { Plus, Users, TrendingUp, DollarSign } from 'lucide-react';
 
 interface Affiliate {
   id: string;
-  code: string;
-  affiliate_name: string;
-  affiliate_email: string;
-  commission_percentage: number;
-  total_sales: number;
-  total_commission: number;
+  user_id: string;
+  codigo_cupom: string;
+  comissao_percentual: number;
+  visitas: number;
+  compras_confirmadas: number;
+  valor_total_gerado: number;
+  criado_em: string;
   is_active: boolean;
+  profiles?: {
+    name: string;
+    email: string;
+  };
 }
 
 const AffiliateManager: React.FC = () => {
   const [affiliates, setAffiliates] = useState<Affiliate[]>([]);
-  const [isCreating, setIsCreating] = useState(false);
-  const [editingAffiliate, setEditingAffiliate] = useState<Affiliate | null>(null);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
-
-  const [formData, setFormData] = useState({
-    code: '',
-    affiliate_name: '',
-    affiliate_email: '',
-    commission_percentage: 10
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [newAffiliate, setNewAffiliate] = useState({
+    email: '',
+    codigo_cupom: '',
+    comissao_percentual: 10
   });
+  const { toast } = useToast();
 
   useEffect(() => {
     loadAffiliates();
@@ -41,9 +45,15 @@ const AffiliateManager: React.FC = () => {
   const loadAffiliates = async () => {
     try {
       const { data, error } = await supabase
-        .from('affiliate_codes')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from('afiliados')
+        .select(`
+          *,
+          profiles:user_id (
+            name,
+            email
+          )
+        `)
+        .order('criado_em', { ascending: false });
 
       if (error) throw error;
       setAffiliates(data || []);
@@ -59,254 +69,269 @@ const AffiliateManager: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      if (editingAffiliate) {
-        const { error } = await supabase
-          .from('affiliate_codes')
-          .update(formData)
-          .eq('id', editingAffiliate.id);
-
-        if (error) throw error;
-        toast({ title: "Sucesso", description: "Afiliado atualizado!" });
-      } else {
-        const { error } = await supabase
-          .from('affiliate_codes')
-          .insert([formData]);
-
-        if (error) throw error;
-        toast({ title: "Sucesso", description: "Afiliado criado!" });
-      }
-
-      resetForm();
-      loadAffiliates();
-    } catch (error) {
-      console.error('Error saving affiliate:', error);
+  const createAffiliate = async () => {
+    if (!newAffiliate.email || !newAffiliate.codigo_cupom) {
       toast({
         title: "Erro",
-        description: "Erro ao salvar afiliado",
+        description: "Preencha todos os campos obrigatórios",
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
+      return;
+    }
+
+    try {
+      // Buscar o usuário pelo email
+      const { data: userData, error: userError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('email', newAffiliate.email)
+        .single();
+
+      if (userError || !userData) {
+        toast({
+          title: "Erro",
+          description: "Usuário não encontrado com este email",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Criar afiliado
+      const { error } = await supabase
+        .from('afiliados')
+        .insert({
+          user_id: userData.id,
+          codigo_cupom: newAffiliate.codigo_cupom.toUpperCase(),
+          comissao_percentual: newAffiliate.comissao_percentual
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Sucesso",
+        description: "Afiliado criado com sucesso!"
+      });
+
+      setIsCreateModalOpen(false);
+      setNewAffiliate({ email: '', codigo_cupom: '', comissao_percentual: 10 });
+      loadAffiliates();
+    } catch (error: any) {
+      console.error('Error creating affiliate:', error);
+      toast({
+        title: "Erro",
+        description: error.message || "Erro ao criar afiliado",
+        variant: "destructive"
+      });
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      code: '',
-      affiliate_name: '',
-      affiliate_email: '',
-      commission_percentage: 10
-    });
-    setIsCreating(false);
-    setEditingAffiliate(null);
-  };
-
-  const handleEdit = (affiliate: Affiliate) => {
-    setFormData({
-      code: affiliate.code,
-      affiliate_name: affiliate.affiliate_name,
-      affiliate_email: affiliate.affiliate_email,
-      commission_percentage: affiliate.commission_percentage
-    });
-    setEditingAffiliate(affiliate);
-    setIsCreating(true);
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm('Tem certeza que deseja excluir este afiliado?')) return;
-
+  const toggleAffiliateStatus = async (id: string, currentStatus: boolean) => {
     try {
       const { error } = await supabase
-        .from('affiliate_codes')
-        .delete()
+        .from('afiliados')
+        .update({ is_active: !currentStatus })
         .eq('id', id);
 
       if (error) throw error;
-      toast({ title: "Sucesso", description: "Afiliado excluído!" });
+
+      toast({
+        title: "Sucesso",
+        description: `Afiliado ${!currentStatus ? 'ativado' : 'desativado'} com sucesso!`
+      });
+
       loadAffiliates();
     } catch (error) {
-      console.error('Error deleting affiliate:', error);
+      console.error('Error updating affiliate status:', error);
       toast({
         title: "Erro",
-        description: "Erro ao excluir afiliado",
+        description: "Erro ao atualizar status do afiliado",
         variant: "destructive"
       });
     }
   };
 
-  const toggleStatus = async (affiliate: Affiliate) => {
-    try {
-      const { error } = await supabase
-        .from('affiliate_codes')
-        .update({ is_active: !affiliate.is_active })
-        .eq('id', affiliate.id);
+  const totalStats = affiliates.reduce((acc, affiliate) => ({
+    totalVisits: acc.totalVisits + affiliate.visitas,
+    totalPurchases: acc.totalPurchases + affiliate.compras_confirmadas,
+    totalRevenue: acc.totalRevenue + affiliate.valor_total_gerado
+  }), { totalVisits: 0, totalPurchases: 0, totalRevenue: 0 });
 
-      if (error) throw error;
-      toast({ 
-        title: "Sucesso", 
-        description: `Afiliado ${!affiliate.is_active ? 'ativado' : 'desativado'}!` 
-      });
-      loadAffiliates();
-    } catch (error) {
-      console.error('Error toggling affiliate status:', error);
-      toast({
-        title: "Erro",
-        description: "Erro ao alterar status do afiliado",
-        variant: "destructive"
-      });
-    }
-  };
+  if (loading) {
+    return <div className="text-center p-8 text-case-white">Carregando afiliados...</div>;
+  }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-case-white">Gerenciar Afiliados</h2>
-        <Button
-          onClick={() => setIsCreating(true)}
-          className="bg-case-red hover:bg-red-600"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Novo Afiliado
-        </Button>
-      </div>
-
-      {isCreating && (
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="bg-noir-dark border-noir-medium">
-          <CardHeader>
-            <CardTitle className="text-case-white">
-              {editingAffiliate ? 'Editar Afiliado' : 'Criar Novo Afiliado'}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="code" className="text-case-white">Código</Label>
-                  <Input
-                    id="code"
-                    value={formData.code}
-                    onChange={(e) => setFormData({...formData, code: e.target.value.toUpperCase()})}
-                    required
-                    className="bg-noir-medium border-noir-light text-case-white"
-                    placeholder="AFILIADO123"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="affiliate_name" className="text-case-white">Nome do Afiliado</Label>
-                  <Input
-                    id="affiliate_name"
-                    value={formData.affiliate_name}
-                    onChange={(e) => setFormData({...formData, affiliate_name: e.target.value})}
-                    required
-                    className="bg-noir-medium border-noir-light text-case-white"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="affiliate_email" className="text-case-white">Email</Label>
-                  <Input
-                    id="affiliate_email"
-                    type="email"
-                    value={formData.affiliate_email}
-                    onChange={(e) => setFormData({...formData, affiliate_email: e.target.value})}
-                    required
-                    className="bg-noir-medium border-noir-light text-case-white"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="commission" className="text-case-white">Comissão (%)</Label>
-                  <Input
-                    id="commission"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    max="100"
-                    value={formData.commission_percentage}
-                    onChange={(e) => setFormData({...formData, commission_percentage: parseFloat(e.target.value)})}
-                    required
-                    className="bg-noir-medium border-noir-light text-case-white"
-                  />
-                </div>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <Users className="h-5 w-5 text-case-red" />
+              <div>
+                <p className="text-sm text-case-white/60">Total de Afiliados</p>
+                <p className="text-xl font-bold text-case-white">{affiliates.length}</p>
               </div>
-
-              <div className="flex gap-2">
-                <Button type="submit" disabled={loading} className="bg-case-red hover:bg-red-600">
-                  {editingAffiliate ? 'Atualizar' : 'Criar'} Afiliado
-                </Button>
-                <Button type="button" variant="outline" onClick={resetForm}>
-                  Cancelar
-                </Button>
-              </div>
-            </form>
+            </div>
           </CardContent>
         </Card>
-      )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {affiliates.map((affiliate) => (
-          <Card key={affiliate.id} className="bg-noir-dark border-noir-medium">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-case-white text-lg">{affiliate.code}</CardTitle>
-                <Badge variant={affiliate.is_active ? "default" : "secondary"}>
-                  {affiliate.is_active ? 'Ativo' : 'Inativo'}
-                </Badge>
+        <Card className="bg-noir-dark border-noir-medium">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-case-red" />
+              <div>
+                <p className="text-sm text-case-white/60">Total de Visitas</p>
+                <p className="text-xl font-bold text-case-white">{totalStats.totalVisits}</p>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <p className="text-case-white font-semibold">{affiliate.affiliate_name}</p>
-              <p className="text-case-white/60 text-sm">{affiliate.affiliate_email}</p>
-              
-              <div className="flex items-center gap-2 text-case-white">
-                <DollarSign className="h-4 w-4" />
-                <span className="font-semibold">{affiliate.commission_percentage}% comissão</span>
-              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-              <div className="text-case-white/60 text-xs space-y-1">
-                <p>Vendas: {affiliate.total_sales}</p>
-                <p>Comissão: R$ {affiliate.total_commission.toFixed(2)}</p>
+        <Card className="bg-noir-dark border-noir-medium">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5 text-case-red" />
+              <div>
+                <p className="text-sm text-case-white/60">Receita Total</p>
+                <p className="text-xl font-bold text-case-white">R$ {totalStats.totalRevenue.toFixed(2)}</p>
               </div>
-
-              <div className="flex gap-2 pt-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleEdit(affiliate)}
-                  className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
-                >
-                  <Edit className="h-3 w-3" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => toggleStatus(affiliate)}
-                  className={affiliate.is_active 
-                    ? "border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white"
-                    : "border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
-                  }
-                >
-                  {affiliate.is_active ? 'Desativar' : 'Ativar'}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleDelete(affiliate.id)}
-                  className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
-                >
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
+
+      {/* Affiliate Management */}
+      <Card className="bg-noir-dark border-noir-medium">
+        <CardHeader>
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle className="text-case-white">Gerenciar Afiliados</CardTitle>
+              <CardDescription className="text-case-white/80">
+                Gerencie afiliados e seus códigos de cupom
+              </CardDescription>
+            </div>
+            <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-case-red hover:bg-red-600 text-white">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Criar Afiliado
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-noir-dark border-noir-medium">
+                <DialogHeader>
+                  <DialogTitle className="text-case-white">Criar Novo Afiliado</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="email" className="text-case-white">Email do Usuário</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={newAffiliate.email}
+                      onChange={(e) => setNewAffiliate({ ...newAffiliate, email: e.target.value })}
+                      className="bg-noir-medium border-noir-light text-case-white"
+                      placeholder="usuario@email.com"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="codigo" className="text-case-white">Código do Cupom</Label>
+                    <Input
+                      id="codigo"
+                      value={newAffiliate.codigo_cupom}
+                      onChange={(e) => setNewAffiliate({ ...newAffiliate, codigo_cupom: e.target.value.toUpperCase() })}
+                      className="bg-noir-medium border-noir-light text-case-white"
+                      placeholder="CODIGO10"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="comissao" className="text-case-white">Comissão (%)</Label>
+                    <Input
+                      id="comissao"
+                      type="number"
+                      value={newAffiliate.comissao_percentual}
+                      onChange={(e) => setNewAffiliate({ ...newAffiliate, comissao_percentual: Number(e.target.value) })}
+                      className="bg-noir-medium border-noir-light text-case-white"
+                      min="0"
+                      max="100"
+                    />
+                  </div>
+                  <Button onClick={createAffiliate} className="w-full bg-case-red hover:bg-red-600 text-white">
+                    Criar Afiliado
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {affiliates.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-case-white/60">Nenhum afiliado encontrado</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-noir-medium">
+                    <TableHead className="text-case-white">Nome</TableHead>
+                    <TableHead className="text-case-white">Email</TableHead>
+                    <TableHead className="text-case-white">Código</TableHead>
+                    <TableHead className="text-case-white">Comissão</TableHead>
+                    <TableHead className="text-case-white">Visitas</TableHead>
+                    <TableHead className="text-case-white">Compras</TableHead>
+                    <TableHead className="text-case-white">Receita</TableHead>
+                    <TableHead className="text-case-white">Status</TableHead>
+                    <TableHead className="text-case-white">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {affiliates.map((affiliate) => (
+                    <TableRow key={affiliate.id} className="border-noir-medium">
+                      <TableCell className="text-case-white">
+                        {affiliate.profiles?.name || 'N/A'}
+                      </TableCell>
+                      <TableCell className="text-case-white">
+                        {affiliate.profiles?.email || 'N/A'}
+                      </TableCell>
+                      <TableCell className="text-case-white font-mono">
+                        {affiliate.codigo_cupom}
+                      </TableCell>
+                      <TableCell className="text-case-white">
+                        {affiliate.comissao_percentual}%
+                      </TableCell>
+                      <TableCell className="text-case-white">
+                        {affiliate.visitas}
+                      </TableCell>
+                      <TableCell className="text-case-white">
+                        {affiliate.compras_confirmadas}
+                      </TableCell>
+                      <TableCell className="text-case-white">
+                        R$ {affiliate.valor_total_gerado.toFixed(2)}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={affiliate.is_active ? "default" : "secondary"}>
+                          {affiliate.is_active ? 'Ativo' : 'Inativo'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => toggleAffiliateStatus(affiliate.id, affiliate.is_active)}
+                          className="border-case-red text-case-red hover:bg-case-red hover:text-white"
+                        >
+                          {affiliate.is_active ? 'Desativar' : 'Ativar'}
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };

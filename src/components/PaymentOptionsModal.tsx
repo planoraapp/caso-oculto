@@ -20,6 +20,7 @@ import QuickSignUp from './checkout/QuickSignUp';
 import CouponSection from './checkout/CouponSection';
 import { useToast } from '../hooks/use-toast';
 import { useAuth } from '../hooks/useAuth';
+import { useAffiliate } from '../hooks/useAffiliate';
 
 // Chave pública live da Stripe
 const stripePromise = loadStripe('pk_live_51RhgpgLtmJkjKIDB5HIRkSFixyXL4Nsv884yLSWfiy02vbsYYuXw7eX29gkQnWISxycMvrNdObsLLVUERDyUptyH00xXh7fdHL');
@@ -55,11 +56,19 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   const [needsSignUp, setNeedsSignUp] = useState(false);
   const { toast } = useToast();
   const { user: authUser } = useAuth();
+  const { affiliateCode } = useAffiliate();
 
   // Verificar se usuário precisa se cadastrar
   useEffect(() => {
     setNeedsSignUp(!authUser);
   }, [authUser]);
+
+  // Auto-aplicar cupom de afiliado se disponível
+  useEffect(() => {
+    if (affiliateCode && !couponCode) {
+      setCouponCode(affiliateCode);
+    }
+  }, [affiliateCode, couponCode]);
 
   const getPaymentInfo = () => {
     switch (type) {
@@ -260,7 +269,7 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 h-auto disabled:opacity-50"
                 >
                   <CreditCard className="h-5 w-5 mr-2" />
-                  {needsSignUp ? 'Complete o cadastro para continuar' : 'Pagar com Cartão'}
+                  {needsSignUp ? 'Complete o cadastro para continuar' : `Pagar R$ ${finalPrice.toFixed(2)}`}
                 </Button>
 
                 <div className="text-center">

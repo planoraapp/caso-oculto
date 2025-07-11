@@ -8,6 +8,7 @@ import { Card } from '../components/ui/card';
 import { toast } from '../hooks/use-toast';
 import { Lock, Mail, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import ForgotPasswordModal from '../components/ForgotPasswordModal';
 
 const Login: React.FC = () => {
   const { signIn, signUp, user, loading } = useAuth();
@@ -17,6 +18,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
 
   // Redirect authenticated users
   useEffect(() => {
@@ -204,7 +206,18 @@ const Login: React.FC = () => {
           </Button>
         </form>
 
-        <div className="mt-6 text-center">
+        <div className="mt-6 space-y-4 text-center">
+          {isLogin && (
+            <Button
+              variant="link"
+              onClick={() => setIsForgotPasswordOpen(true)}
+              className="text-case-white/60 hover:text-case-white text-sm"
+              disabled={isSubmitting}
+            >
+              Esqueceu sua senha?
+            </Button>
+          )}
+          
           <Button
             variant="link"
             onClick={() => setIsLogin(!isLogin)}
@@ -215,6 +228,11 @@ const Login: React.FC = () => {
           </Button>
         </div>
       </Card>
+
+      <ForgotPasswordModal
+        isOpen={isForgotPasswordOpen}
+        onClose={() => setIsForgotPasswordOpen(false)}
+      />
     </div>
   );
 };

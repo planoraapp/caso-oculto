@@ -24,22 +24,52 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
       if (!user?.id) return;
 
       try {
-        const { data: packAccess, error } = await supabase
-          .from('user_pack_access')
-          .select('pack_id')
-          .eq('user_id', user.id)
-          .eq('is_active', true);
+        // Primeiro verificar se tem acesso total
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('acesso_total, packs_liberados')
+          .eq('id', user.id)
+          .single();
 
-        if (error) {
-          console.error('Error fetching user packs:', error);
-          return;
+        if (profile?.acesso_total) {
+          // Se tem acesso total, buscar todos os packs
+          const { data: allPacks } = await supabase
+            .from('packs')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          const userPackData = (allPacks || [])
+            .map(pack => ({ ...pack, owned: true }))
+            .filter(Boolean);
+
+          setUserPacks(userPackData);
+        } else {
+          // Buscar packs específicos do usuário
+          const { data: packAccess, error } = await supabase
+            .from('user_pack_access')
+            .select('pack_id')
+            .eq('user_id', user.id)
+            .eq('is_active', true);
+
+          if (error) {
+            console.error('Error fetching user packs:', error);
+            return;
+          }
+
+          // Buscar dados dos packs via Supabase
+          const packIds = packAccess?.map(access => access.pack_id) || [];
+          
+          if (packIds.length > 0) {
+            const { data: packsData } = await supabase
+              .from('packs')
+              .select('*')
+              .in('id', packIds);
+
+            setUserPacks((packsData || []).map(pack => ({ ...pack, owned: true })));
+          } else {
+            setUserPacks([]);
+          }
         }
-
-        const userPackData = packAccess
-          ?.map(access => getPackById(access.pack_id))
-          .filter(Boolean) || [];
-
-        setUserPacks(userPackData);
       } catch (error) {
         console.error('Error fetching user packs:', error);
       } finally {
@@ -82,7 +112,8 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
             if (!pack) return null;
             
             const solved = getSolvedCards(user.id, pack.id);
-            const { progress, solvedCount } = calculatePackProgress(pack.cases, solved);
+            const cases = pack.cases || [];
+            const { progress, solvedCount } = calculatePackProgress(cases, solved);
             
             return (
               <Card
@@ -111,7 +142,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
                   <ProgressBar
                     progress={progress}
                     solvedCount={solvedCount}
-                    totalCount={pack.cases.length}
+                    totalCount={cases.length}
                   />
                   
                   <Link to={`/pack/${pack.id}`}>

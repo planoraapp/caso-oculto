@@ -55,7 +55,7 @@ serve(async (req) => {
 
       const supabase = createClient(supabaseUrl, supabaseKey)
 
-      // Find payment session by stripe_session_id
+      // Buscar sessão de pagamento
       const { data: paymentSession, error: sessionError } = await supabase
         .from('payment_sessions')
         .select('*')
@@ -69,7 +69,7 @@ serve(async (req) => {
 
       console.log('Found payment session:', paymentSession.id)
 
-      // Update payment session status
+      // Atualizar status da sessão
       const { error: updateError } = await supabase
         .from('payment_sessions')
         .update({ status: 'approved' })
@@ -77,11 +77,41 @@ serve(async (req) => {
 
       if (updateError) {
         console.error('Error updating payment session:', updateError)
-      } else {
-        console.log('Payment session updated to approved')
       }
 
-      // Grant access to packs
+      // Atualizar status na tabela compras
+      const { error: comprasUpdateError } = await supabase
+        .from('compras')
+        .update({ 
+          status: 'approved',
+          updated_at: new Date().toISOString()
+        })
+        .eq('stripe_session_id', session.id)
+
+      if (comprasUpdateError) {
+        console.error('Error updating compras:', comprasUpdateError)
+      }
+
+      // Processar afiliado se aplicável
+      const couponCode = session.metadata?.coupon_code
+      const affiliateId = session.metadata?.affiliate_id
+      
+      if (affiliateId && couponCode) {
+        console.log('Processing affiliate purchase:', affiliateId, couponCode)
+        
+        try {
+          await supabase.rpc('process_affiliate_purchase', {
+            affiliate_code: couponCode,
+            purchase_amount: (session.amount_total || 0) / 100
+          })
+          
+          console.log('Affiliate purchase processed successfully')
+        } catch (error) {
+          console.error('Error processing affiliate purchase:', error)
+        }
+      }
+
+      // Liberar acesso aos packs
       let packIds = []
       if (paymentSession.payment_type === 'individual') {
         packIds = [paymentSession.pack_id]
@@ -128,12 +158,34 @@ serve(async (req) => {
         }
       }
 
+      // Atualizar campo packs_liberados no perfil (para compatibilidade)
+      if (packIds.length > 0) {
+        const { data: currentProfile } = await supabase
+          .from('profiles')
+          .select('packs_liberados')
+          .eq('id', paymentSession.user_id)
+          .single()
+
+        const currentPacks = currentProfile?.packs_liberados || []
+        const newPacks = [...new Set([...currentPacks, ...packIds])]
+
+        await supabase
+          .from('profiles')
+          .update({ 
+            packs_liberados: newPacks,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', paymentSession.user_id)
+
+        console.log('Updated packs_liberados for user:', paymentSession.user_id)
+      }
+
       // Record coupon usage if applicable
-      const couponCode = session.metadata?.coupon_code
-      if (couponCode) {
+      if (couponCode && !affiliateId) {
+        // Only record usage for non-affiliate coupons
         const discountAmount = parseFloat(session.metadata?.discount_amount || '0')
         
-        // Increment coupon usage
+        // Increment coupon usage for database coupons
         const { error: couponUpdateError } = await supabase
           .from('discount_coupons')
           .update({ 
@@ -166,7 +218,7 @@ serve(async (req) => {
         }
       }
 
-      console.log('Access granted successfully for user:', paymentSession.user_id)
+      console.log('Payment processing completed successfully for user:', paymentSession.user_id)
     }
 
     return new Response('OK', { 
