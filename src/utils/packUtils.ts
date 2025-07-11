@@ -12,6 +12,16 @@ const getDifficultyFromEmoji = (emoji: string): 'easy' | 'medium' | 'hard' => {
   }
 };
 
+// Helper function to convert database difficulty to proper type
+const normalizeDifficulty = (difficulty: string): 'easy' | 'medium' | 'hard' => {
+  switch (difficulty.toLowerCase()) {
+    case 'easy': return 'easy';
+    case 'hard': return 'hard';
+    case 'medium':
+    default: return 'medium';
+  }
+};
+
 // Missing case arrays - these need to be defined but since they're not in the current spec, 
 // I'll create empty arrays as placeholders
 const sussurrosDoAlemCases: Case[] = [];
@@ -1152,7 +1162,19 @@ export const getAllPacks = async (): Promise<Pack[]> => {
       throw error;
     }
 
-    return data || [];
+    // Transform database packs to include cases and normalize difficulty
+    const packs: Pack[] = (data || []).map(pack => ({
+      id: pack.id,
+      name: pack.name,
+      description: pack.description,
+      price: pack.price,
+      difficulty: normalizeDifficulty(pack.difficulty),
+      image: pack.image || '',
+      category: pack.category,
+      cases: getPackCases(pack.id)
+    }));
+
+    return packs;
   } catch (error) {
     console.error('Error in getAllPacks:', error);
     throw error;
@@ -1172,9 +1194,19 @@ export const getPackById = async (packId: string): Promise<Pack | null> => {
       return null;
     }
 
-    // Add cases to the pack
-    const cases = getPackCases(packId);
-    return { ...data, cases };
+    // Transform database pack to include cases and normalize difficulty
+    const pack: Pack = {
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      difficulty: normalizeDifficulty(data.difficulty),
+      image: data.image || '',
+      category: data.category,
+      cases: getPackCases(data.id)
+    };
+
+    return pack;
   } catch (error) {
     console.error('Error in getPackById:', error);
     return null;
