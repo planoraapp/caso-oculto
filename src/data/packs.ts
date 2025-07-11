@@ -1,3 +1,4 @@
+
 import { Pack } from './types';
 import case01Image from '@/public/packs/case-01.webp';
 import case02Image from '@/public/packs/case-02.webp';
@@ -12,6 +13,7 @@ import dossieConfidencialImage from '@/public/packs/dossie-confidencial.webp';
 import doseLetalImage from '@/public/packs/dose-letal.webp';
 import fimDeJogoImage from '@/public/packs/fim-de-jogo.webp';
 import absurdamenteRealImage from '@/public/packs/absurdamente-real.webp';
+import { getPackCases } from './cases';
 
 export const packs: Pack[] = [
   {
@@ -132,3 +134,14 @@ export const packs: Pack[] = [
     category: 'danger'
   }
 ];
+
+// Function to get a pack by ID with cases included
+export const getPackById = (packId: string): Pack | null => {
+  const pack = packs.find(p => p.id === packId);
+  if (!pack) return null;
+  
+  return {
+    ...pack,
+    cases: getPackCases(packId) || []
+  };
+};

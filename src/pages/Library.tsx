@@ -5,7 +5,7 @@ import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
 import { t } from '../data/translations';
-import { getPackById, packs } from '../data/packs';
+import { getPackById } from '../utils/pack/packQueries';
 import { supabase } from '../integrations/supabase/client';
 
 interface LibraryProps {

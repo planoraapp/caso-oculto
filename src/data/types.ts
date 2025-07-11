@@ -1,4 +1,3 @@
-
 export interface Case {
   id: string;
   order: number;
@@ -22,7 +21,7 @@ export interface Pack {
   difficulty: 'easy' | 'medium' | 'hard';
   image: string;
   category: string;
-  cases: Case[];
+  cases?: Case[];
 }
 
 export interface Purchase {

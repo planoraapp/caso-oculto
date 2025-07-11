@@ -37,7 +37,7 @@ export const getPackById = async (packId: string): Promise<Pack | null> => {
       .from('packs')
       .select('*')
       .eq('id', packId)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error('Error fetching pack:', error);
