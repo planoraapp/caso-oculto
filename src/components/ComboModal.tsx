@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, ShoppingCart } from 'lucide-react';
+import { X, Check, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -23,6 +23,7 @@ const ComboModal: React.FC<ComboModalProps> = ({
 }) => {
   const [selectedPacks, setSelectedPacks] = useState<string[]>([]);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isSelectionCollapsed, setIsSelectionCollapsed] = useState(false);
 
   const availablePacks = packs.filter(pack => 
     !['combo', 'complete'].includes(pack.category) && 
@@ -30,13 +31,20 @@ const ComboModal: React.FC<ComboModalProps> = ({
   );
 
   const togglePack = (packId: string) => {
-    setSelectedPacks(prev => 
-      prev.includes(packId) 
+    setSelectedPacks(prev => {
+      const newSelection = prev.includes(packId) 
         ? prev.filter(id => id !== packId)
         : prev.length < 5 
           ? [...prev, packId]
-          : prev
-    );
+          : prev;
+      
+      // Recolher automaticamente quando 5 packs forem selecionados
+      if (newSelection.length === 5 && !prev.includes(packId)) {
+        setIsSelectionCollapsed(true);
+      }
+      
+      return newSelection;
+    });
   };
 
   const handlePurchase = () => {
@@ -53,8 +61,9 @@ const ComboModal: React.FC<ComboModalProps> = ({
     }, 2000);
   };
 
-  const originalPrice = 5 * 14.80;
-  const discountedPrice = originalPrice * 0.8;
+  // Valor correto: R$ 61,40 (5 packs × R$ 14,80 = R$ 74,00 com 20% de desconto)
+  const originalPrice = 5 * 14.80; // R$ 74,00
+  const discountedPrice = 61.40; // Valor fixo correto
   const savings = originalPrice - discountedPrice;
 
   return (
@@ -82,6 +91,7 @@ const ComboModal: React.FC<ComboModalProps> = ({
               </Button>
             </div>
 
+            {/* Resumo do Combo */}
             <div className="mb-6">
               <div className="flex items-center gap-4 p-4 bg-noir-medium rounded-lg">
                 <div className="text-case-white">
@@ -93,51 +103,107 @@ const ComboModal: React.FC<ComboModalProps> = ({
                   <span className="text-xl font-bold text-case-red ml-2">R$ {discountedPrice.toFixed(2)}</span>
                   <span className="text-sm text-green-400 ml-2">Economize R$ {savings.toFixed(2)}</span>
                 </div>
+                {selectedPacks.length === 5 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsSelectionCollapsed(!isSelectionCollapsed)}
+                    className="text-case-white hover:bg-noir-light ml-auto"
+                  >
+                    {isSelectionCollapsed ? (
+                      <>
+                        <ChevronDown className="h-4 w-4 mr-1" />
+                        Mostrar Seleção
+                      </>
+                    ) : (
+                      <>
+                        <ChevronUp className="h-4 w-4 mr-1" />
+                        Ocultar Seleção
+                      </>
+                    )}
+                  </Button>
+                )}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-              {availablePacks.map((pack) => {
-                const isSelected = selectedPacks.includes(pack.id);
-                const canSelect = selectedPacks.length < 5 || isSelected;
+            {/* Grid de Packs - Recolhível */}
+            <AnimatePresence>
+              {!isSelectionCollapsed && (
+                <motion.div
+                  initial={{ opacity: 1, height: 'auto' }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mb-6"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {availablePacks.map((pack) => {
+                      const isSelected = selectedPacks.includes(pack.id);
+                      const canSelect = selectedPacks.length < 5 || isSelected;
 
-                return (
-                  <Card
-                    key={pack.id}
-                    className={`cursor-pointer transition-all duration-200 ${
-                      isSelected
-                        ? 'border-case-red bg-case-red/10'
-                        : canSelect
-                        ? 'border-noir-medium hover:border-noir-light bg-noir-medium'
-                        : 'border-noir-medium bg-noir-medium opacity-50 cursor-not-allowed'
-                    }`}
-                    onClick={() => canSelect && togglePack(pack.id)}
-                  >
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center justify-between">
-                        <Badge variant={pack.difficulty === 'easy' ? 'secondary' : pack.difficulty === 'medium' ? 'default' : 'destructive'}>
-                          {pack.difficulty}
-                        </Badge>
-                        {isSelected && (
-                          <div className="w-6 h-6 bg-case-red rounded-full flex items-center justify-center">
-                            <Check className="h-4 w-4 text-white" />
-                          </div>
-                        )}
-                      </div>
-                      <CardTitle className="text-case-white text-lg">{pack.name}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-case-white/80 text-sm">
-                        {pack.description}
-                      </CardDescription>
-                      <div className="mt-2">
-                        <span className="text-case-white font-semibold">R$ {pack.price.toFixed(2)}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
+                      return (
+                        <Card
+                          key={pack.id}
+                          className={`cursor-pointer transition-all duration-200 ${
+                            isSelected
+                              ? 'border-case-red bg-case-red/10'
+                              : canSelect
+                              ? 'border-noir-medium hover:border-noir-light bg-noir-medium'
+                              : 'border-noir-medium bg-noir-medium opacity-50 cursor-not-allowed'
+                          }`}
+                          onClick={() => canSelect && togglePack(pack.id)}
+                        >
+                          <CardHeader className="pb-2">
+                            <div className="flex items-center justify-between">
+                              <Badge variant={pack.difficulty === 'easy' ? 'secondary' : pack.difficulty === 'medium' ? 'default' : 'destructive'}>
+                                {pack.difficulty}
+                              </Badge>
+                              {isSelected && (
+                                <div className="w-6 h-6 bg-case-red rounded-full flex items-center justify-center">
+                                  <Check className="h-4 w-4 text-white" />
+                                </div>
+                              )}
+                            </div>
+                            <CardTitle className="text-case-white text-lg">{pack.name}</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <CardDescription className="text-case-white/80 text-sm">
+                              {pack.description}
+                            </CardDescription>
+                            <div className="mt-2">
+                              <span className="text-case-white font-semibold">R$ {pack.price.toFixed(2)}</span>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Packs Selecionados - Sempre visível quando há seleção */}
+            {selectedPacks.length > 0 && isSelectionCollapsed && (
+              <div className="mb-6">
+                <h3 className="text-case-white font-medium mb-3">Packs Selecionados:</h3>
+                <div className="flex flex-wrap gap-2">
+                  {selectedPacks.map(packId => {
+                    const pack = availablePacks.find(p => p.id === packId);
+                    return pack ? (
+                      <Badge key={packId} variant="outline" className="text-case-white border-case-red">
+                        {pack.name}
+                        <button
+                          onClick={() => togglePack(packId)}
+                          className="ml-2 hover:text-case-red"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    ) : null;
+                  })}
+                </div>
+              </div>
+            )}
 
             <div className="flex gap-4 justify-end">
               <Button
@@ -167,6 +233,7 @@ const ComboModal: React.FC<ComboModalProps> = ({
           selectedPackIds={selectedPacks}
           user={{ id: 'user' }} // This will be passed from parent
           packName="Combo 5 Packs"
+          totalPrice={discountedPrice}
           onPaymentCreated={handlePaymentSuccess}
         />
       </div>

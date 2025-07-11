@@ -26,17 +26,21 @@ export const useComboManager = (packs: Pack[], ownedPackIds: string[]) => {
     
     const totalPrice = selectedPacks.reduce((sum, pack) => sum + pack.price, 0);
     
-    // Calcular desconto baseado na quantidade
+    // Calcular desconto baseado na quantidade - Valores corretos
     let discount = 0;
+    let finalPrice = totalPrice;
+    
     if (selectedPacks.length >= 5) {
-      discount = totalPrice * 0.2; // 20% de desconto para 5+ packs
+      // Para combo de 5 packs: preço fixo de R$ 61,40
+      finalPrice = 61.40;
+      discount = totalPrice - finalPrice;
     } else if (selectedPacks.length >= 3) {
       discount = totalPrice * 0.15; // 15% de desconto para 3+ packs
+      finalPrice = totalPrice - discount;
     } else if (selectedPacks.length >= 2) {
       discount = totalPrice * 0.1; // 10% de desconto para 2+ packs
+      finalPrice = totalPrice - discount;
     }
-    
-    const finalPrice = totalPrice - discount;
     
     return {
       selectedPackIds,

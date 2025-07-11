@@ -79,7 +79,7 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
           description: 'Economia especial para múltiplos packs',
           icon: Star,
           features: ['5 packs de sua escolha', 'Desconto especial', 'Todos os recursos', 'Acesso vitalício'],
-          price: 6140 // R$ 61,40 em centavos
+          price: 6140 // R$ 61,40 em centavos - VALOR CORRETO
         };
       case 'complete':
         return {
