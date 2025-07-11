@@ -1,4 +1,3 @@
-
 import { supabase } from '../integrations/supabase/client';
 import { Pack, Case } from '../data/types';
 
@@ -176,6 +175,211 @@ const generateLendasUrbanasCases = (packId: string): Case[] => {
   }));
 };
 
+// Specific cases for "Paradoxos Mortais" pack
+const generateParadoxosMortaisCases = (packId: string): Case[] => {
+  const cases = [
+    { title: 'A Sala Vazia', emoji: '🟡', mystery: 'Um técnico em manutenções está morto numa sala vazia e trancada por dentro. A causa da morte foi Asfixia', solution: 'A sala era uma câmara de vácuo para testes industriais. Ninguém avisou o setor de controle sobre a manutenção. Alguém a ativou remotamente, removendo todo o ar e asfixiando o técnico.' },
+    { title: 'A Sede em Casa', emoji: '🟡', mystery: 'Um homem morre de sede na sua própria casa, que tem água corrente.', solution: 'Ele era um halterofilista. Ficou preso debaixo de um peso que não conseguia levantar, longe de qualquer torneira.' },
+    { title: 'O Mergulhador no Céu', emoji: '🔴', mystery: 'Um homem está morto no fundo do oceano, usando roupa de mergulho, mas não se afogou.', solution: 'Ele era um astronauta a treinar numa piscina de simulação de gravidade zero. Uma despressurização súbita na instalação o matou.' },
+    { title: 'O Homem Congelado', emoji: '🔴', mystery: 'Um homem é encontrado congelado dentro de um bloco de gelo maciço, no meio da sua sala de estar aquecida.', solution: 'Ele era um escultor de gelo. Para uma peça ambiciosa, ele criou um molde gigante à sua volta. O sistema de refrigeração avariou, congelando a água muito mais rápido do que o previsto e prendendo-o lá dentro. O seu assistente, sem saber, moveu a "escultura" para a sala de exposições.' },
+    { title: 'O Oásis Fatal', emoji: '🔴', mystery: 'Um homem é encontrado afogado no meio do deserto do Saara.', solution: 'Ele era o piloto de um avião que se despencou. Ele aterrissou de cabeça para baixo num pequeno oásis no deserto, afogando-se.' },
+    { title: 'O Banquete Inacessível', emoji: '🟡', mystery: 'Uma mulher morre de fome dentro de um supermercado cheio de comida.', solution: 'Ela ficou presa acidentalmente dentro do cofre do supermercado durante o fim de semana.' },
+    { title: 'A Queda Plana', emoji: '🟡', mystery: 'Um homem é encontrado morto por uma queda dentro de um prédio de um só andar.', solution: 'Ele saltou de um avião e o paraquedas falhou, aterrando no telhado do prédio.' },
+    { title: 'A Chamada Interrompida', emoji: '🔴', mystery: 'Um homem está morto numa cabine telefónica. Os vidros estão partidos para dentro e há água por todo o lado.', solution: 'Ele era um pescador e gabava-se do seu peixe-espada gigante. O peixe debateu-se e perfurou-o durante uma ligação.' },
+    { title: 'Ilhado e com Sede', emoji: '🟡', mystery: 'Um homem é encontrado morto por desidratação, após se perder em uma expedição.', solution: 'Ele adormeceu ao ar livre durante o verão do Alasca, onde o sol não se põe durante meses.' },
+    { title: 'O Crime Descapotável', emoji: '🟡', mystery: 'Um carro está estacionado numa garagem. O condutor está morto com um tiro, mas não há buracos de bala no carro.', solution: 'O carro era um conversível. O atirador disparou no condutor por cima, quando ele entrava na garagem com a capota aberta.' },
+    { title: 'A Herança em fúnebre', emoji: '🟡', mystery: 'Um homem recebe uma carta, lê o conteúdo, e morre de ataque cardíaco.', solution: 'A carta continha as cinzas do seu maior inimigo, com uma nota. O choque foi demasiado para o seu coração fraco.' },
+    { title: 'O Volume Pesado', emoji: '🔴', mystery: 'Uma mulher é encontrada morta numa biblioteca, esmagada por um único arquivo.', solution: 'O arquivo era um servidor de computador antigo e pesado, que caiu de uma prateleira alta.' },
+    { title: 'O Salto da Pista', emoji: '🟢', mystery: 'Um homem salta de um avião sem paraquedas e sobrevive.', solution: 'O avião estava parado na pista do aeroporto.' },
+    { title: 'O Atirador de Facas', emoji: '🔴', mystery: 'Um homem está morto numa sala coberta de espelhos, com um ferimento fatal.', solution: 'Ele era um atirador de facas. Tentou um novo truque com os olhos vendados; as facas ricochetearam e atingiram-no.' },
+    { title: 'O Brinde da Sorte', emoji: '🔴', mystery: 'Um homem morre ao beber champanhe para celebrar ter ganho a lotaria.', solution: 'Ele era alérgico a cortiça. Um pequeno fragmento da rolha caiu na sua taça, causando um choque anafilático.' },
+    { title: 'A Piada Final', emoji: '🟡', mystery: 'Um palhaço morre no palco, e a plateia continua a rir.', solution: 'A sua atuação consistia em fingir um ataque cardíaco. Desta vez, foi real, mas a plateia pensou que fazia parte do espetáculo.' },
+    { title: 'Mata-Mata', emoji: '🟡', mystery: 'Um homem está morto num campo de futebol, com uma bola ao lado.', solution: 'A "bola" era uma bola de granizo gigante e redonda que o atingiu na cabeça e ainda estava derretendo.' },
+    { title: 'O Último Gole', emoji: '🟡', mystery: 'Um homem é encontrado morto, numa adega de vinhos.', solution: 'Ele era um ladrão que tentou roubar uma garrafa rara do teto. Ficou preso de ponta-cabeça e não conseguiu soltar-se.' },
+    { title: 'Jogos Perigosos', emoji: '🔴', mystery: 'Um homem está morto em frente à tela do computador que mostra apenas o número 5.', solution: 'Ele era um jogador profissional a tentar bater um recorde num jogo de ritmo que exigia pressionar a tecla "5" milhares de vezes. Morreu de exaustão.' },
+    { title: 'A Viagem Vertical', emoji: '🔴', mystery: 'Uma mulher entra num elevador. Quando as portas se abrem no andar seguinte, ela está morta.', solution: 'O elevador era um protótipo experimental que subiu tão rápido que a aceleração extrema causou uma condição médica fatal.' }
+  ];
+
+  return cases.map((caseData, index) => ({
+    id: `${packId}-case-${index + 1}`,
+    order: index + 1,
+    mystery: caseData.mystery,
+    solution: caseData.solution,
+    difficulty: mapEmojiToDifficulty(caseData.emoji),
+    theme: 'mystery' as any,
+    name: caseData.title,
+    icon: 'puzzle',
+    title: caseData.title,
+    description: `Um paradoxo mortal para ser desvendado`,
+    image: `/lovable-uploads/pack${(index % 5) + 1}/case${index + 1}.png`,
+    isFree: index === 0
+  }));
+};
+
+// Specific cases for "Absurdamente Real" pack
+const generateAbsurdamenteRealCases = (packId: string): Case[] => {
+  const cases = [
+    { title: 'A Máquina de Vendas', emoji: '🟢', mystery: 'Um homem é encontrado morto, na beira da calçada.', solution: 'Ele estava balançando uma máquina para tentar tirar um refrigerante de graça. A máquina, pesando 400kg, tombou sobre ele.' },
+    { title: 'A Janela Inquebrável', emoji: '🟡', mystery: 'Um advogado morre ao cair do 24º andar do seu escritório para provar que a janela era inquebrável.', solution: 'O vidro não partiu, mas se desprendeu da moldura.' },
+    { title: 'O Cacto Mortal', emoji: '🟢', mystery: 'Um homem é encontrado morto no deserto, empalado por um cacto gigante.', solution: 'Ele estava disparando contra cactos por diversão. Um braço de um cacto gigante que ele alvejou partiu-se e caiu em cima dele.' },
+    { title: 'A Casa em Chamas', emoji: '🟡', mystery: 'Um homem morre num incêndio em sua casa.', solution: 'Ele adormeceu com um cachimbo aceso. As brasas caíram na sua barba longa, que pegou fogo e incendiou a cama.' },
+    { title: 'Esforço Contagiante', emoji: '🔴', mystery: 'Numa cidade medieval, centenas de pessoas morrem por exaustão.', solution: 'Este evento histórico, a "Peste da Dança de 1518", é um caso de histeria em massa. As pessoas, sob stress extremo, começaram a dançar compulsivamente e não conseguiram parar, levando a ataques cardíacos e exaustão.' },
+    { title: 'Picada Letal', emoji: '🔴', mystery: 'Um dissidente búlgaro morre em Londres após sentir uma picada na perna.', solution: 'Ele foi assassinado por um agente secreto, que usou um guarda-chuva modificado para disparar uma cápsula de veneno na sua perna.' },
+    { title: 'A Morte Televisiva', emoji: '🟡', mystery: 'Um homem morre de ataque cardíaco enquanto assiste a televisão.', solution: 'Ele riu ininterruptamente durante 25 minutos. O esforço físico extremo causou uma paragem cardíaca.' },
+    { title: 'A Casa do Lixo', emoji: '🔴', mystery: 'Dois irmãos idosos são encontrados mortos em sua casa, debaixo de toneladas de lixo.', solution: 'Eram acumuladores compulsivos. Um foi vítima de uma armadilha que desabou. O outro, cego, morreu de fome.' },
+    { title: 'A Galinha Assassina', emoji: '🟡', mystery: 'Um homem morre após ser repetidamente esfaqueado... por uma galinha.', solution: 'Durante uma rinha de galos ilegal, a sua própria galinha, com uma lâmina amarrada à pata, virou-se contra ele.' },
+    { title: 'O Enterro Errado', emoji: '🟡', mystery: 'Um homem acorda dentro de um caixão durante o seu próprio funeral.', solution: 'Ele sofria de catalepsia, um estado que imita a morte. O susto de acordar enterrado vivo causou-lhe um ataque cardíaco real.' },
+    { title: 'A Dieta', emoji: '🟡', mystery: 'Um homem morre de forma saudável. A autópsia revela uma overdose de vitamina A.', solution: 'Obcecado por saúde, ele bebia cerca de 4 litros de sumo de cenoura por dia, o que danificou o seu fígado.' },
+    { title: 'A Viagem', emoji: '🟡', mystery: 'Um homem é encontrado morto, despedaçado. Ao seu lado, estão os restos de um barril de madeira.', solution: 'Ele foi a primeira pessoa a tentar descer as cataratas dentro de um barril. O barril desintegrou-se com a força da água, e ele não sobreviveu ao impacto.' },
+    { title: 'O Invento Resistente', emoji: '🟡', mystery: 'Um inventor morre durante uma demonstração pública.', solution: 'Ele criou um capacete ultra resistente. Para provar a resistência, ele pediu a um assistente para o atingir na cabeça com um martelo. O impacto causou uma hemorragia cerebral fatal.' },
+    { title: 'A Vaca no Telhado', emoji: '🟢', mystery: 'Um homem dormindo na sua cama, é morto por uma vaca.', solution: 'Uma vaca escapou, subiu a um telhado frágil encostado a uma colina, e caiu através dele, aterrando em cima do homem.' },
+    { title: 'A Vingança da Tartaruga', emoji: '🟡', mystery: 'Um dramaturgo da Grécia Antiga morre quando uma tartaruga cai sobre a sua cabeça.', solution: 'Uma águia, que costumava largar tartarugas em rochas, confundiu a cabeça careca do poeta com uma pedra.' },
+    { title: 'O Banquete Real', emoji: '🟢', mystery: 'Um rei sueco morre após um banquete.', solution: 'O Rei Adolfo Frederico morreu de problemas digestivos após comer uma refeição enorme, incluindo 14 porções da sua sobremesa favorita.' },
+    { title: 'Em Tribunal', emoji: '🔴', mystery: 'Um político morre em tribunal enquanto se defende de uma acusação de homicídio.', solution: 'Para demonstrar como a vítima se poderia ter baleado acidentalmente, ele pegou numa pistola que pensava estar descarregada e disparou contra si mesmo.' },
+    { title: 'O Discurso', emoji: '🟢', mystery: 'Um presidente americano morre dias após o seu discurso de tomada de posse.', solution: 'William Henry Harrison fez o discurso mais longo da história num dia extremamente frio e chuvoso, sem casaco, matando-o de pneumonia.' },
+    { title: 'A morte da Dançarina', emoji: '🟡', mystery: 'Uma dançarina famosa morre estrangulada enquanto passeia num carro.', solution: 'O seu longo cachecol de seda prendeu-se na roda traseira do carro conversível, enforcando seu pescoço.' },
+    { title: 'A Doce Defesa', emoji: '🟡', mystery: 'Um advogado que defendia uma empresa de açúcar morre de diabetes.', solution: 'Durante o julgamento, para provar que o açúcar não era prejudicial, ele comeu vários cubos de açúcar por dia, o que acelerou a sua condição não diagnosticada.' }
+  ];
+
+  return cases.map((caseData, index) => ({
+    id: `${packId}-case-${index + 1}`,
+    order: index + 1,
+    mystery: caseData.mystery,
+    solution: caseData.solution,
+    difficulty: mapEmojiToDifficulty(caseData.emoji),
+    theme: 'thriller' as any,
+    name: caseData.title,
+    icon: 'alert-triangle',
+    title: caseData.title,
+    description: `Um caso absurdamente real para ser desvendado`,
+    image: `/lovable-uploads/pack${(index % 5) + 1}/case${index + 1}.png`,
+    isFree: index === 0
+  }));
+};
+
+// Specific cases for "Dossiê Confidencial" pack
+const generateDossieConfidencialCases = (packId: string): Case[] => {
+  const cases = [
+    { title: 'Segredo bem Guardado', emoji: '🔴', mystery: 'Um diplomata é encontrado morto. A autópsia não revela nada, mas os seus segredos de estado desapareceram.', solution: 'Os segredos estavam num microfilme escondido dentro de um dente falso. O seu dentista era um agente inimigo que extraiu o dente.' },
+    { title: 'Última Mensagem', emoji: '🟡', mystery: 'Uma mensagem chega ao seu destino, mas o seu remetente já está morto.', solution: 'O remetente era um espião encurralado. Ele enviou um pombo com as informações e depois suicidou-se para não ser capturado.' },
+    { title: 'O Livro na Estante', emoji: '🟡', mystery: 'Um agente secreto morre ao ler um livro específico numa biblioteca pública.', solution: 'O livro era o seu fim da linha. Uma mensagem envenenada com uma toxina de contato foi deixada numa página pelo seu inimigo.' },
+    { title: 'A Moeda Trocada', emoji: '🟢', mystery: 'Um espião é apanhado na fronteira. A única coisa suspeita que ele transportava era uma moeda comum.', solution: 'A moeda era oca e continha um micro-ponto com dados secretos.' },
+    { title: 'A Morte no Parque', emoji: '🟡', mystery: 'Dois homens sentam-se em bancos de parque opostos e lêem o jornal. Um deles cai morto.', solution: 'Eles eram espiões a trocar informações. Um deles era um agente duplo e envenenou o outro com um dardo minúsculo disparado de uma caneta.' },
+    { title: 'O Sinal de Fumo', emoji: '🔴', mystery: 'Um analista da CIA é encontrado morto no seu escritório. A única pista é um cinzeiro cheio de cigarros de uma marca que ele não fumava.', solution: 'O número e a posição dos cigarros no cinzeiro formavam um código que revelava um espião na agência. O espião matou-o para o silenciar.' },
+    { title: 'A Embaixada Silenciosa', emoji: '🔴', mystery: 'Todo o pessoal de uma embaixada morre silenciosamente durante a noite.', solution: 'Agentes inimigos libertaram um gás incolor e inodoro através do sistema de ventilação, que era mais pesado que o ar e se acumulou, asfixiando todos.' },
+    { title: 'O Acorde de Piano', emoji: '🟡', mystery: 'Um pianista tocando para um embaixador estrangeiro toca um acorde errado e morre de ataque cardíaco.', solution: 'O acorde errado era um sinal codificado para o seu contacto na audiência. O contacto respondeu com um sinal de que a missão tinha sido comprometida. O pianista, sabendo que seria capturado, tomou uma cápsula de cianeto.' },
+    { title: 'O Homem que Não Existia', emoji: '🔴', mystery: 'Um homem é encontrado morto. As suas impressões digitais, DNA e rosto não correspondem a nenhum registo no mundo.', solution: 'Ele era um agente de uma operação cuja identidade tinha sido completamente apagada de todos os sistemas para garantir o anonimato total. Foi morto pelos seus próprios empregadores.' },
+    { title: 'A Mala Diplomática', emoji: '🟡', mystery: 'Uma mala diplomática, que não pode ser inspecionada, chega ao seu destino muito mais pesada do que deveria.', solution: 'A mala não continha documentos, mas sim o corpo de um agente inimigo que tinha sido eliminado.' },
+    { title: 'O Jogo de Xadrez', emoji: '🟡', mystery: 'Dois grandes mestres de xadrez, um russo e um americano, jogam uma partida por correspondência durante a Guerra Fria. Um deles morre.', solution: 'Os movimentos do xadrez eram um código para transmitir segredos. Um dos jogadores fez um movimento não planeado, sinalizando que estava sob coação. A sua agência "limpou-o" para evitar uma fuga de informação.' },
+    { title: 'A Frequência de Rádio', emoji: '🟢', mystery: 'Uma estação de rádio de números transmite uma série de números aleatórios, seguida de uma melodia infantil. Um agente a ouvir morre.', solution: 'A melodia infantil era o sinal de terminação. Significava que a sua rede tinha sido comprometida e que ele devia tomar a sua pílula de suicídio.' },
+    { title: 'O Segredo do Chef', emoji: '🔴', mystery: 'O chef pessoal de um ditador morre. O ditador adoece, mas sobrevive.', solution: 'O chef estava envenenando lentamente o ditador. Uma agência rival, querendo o ditador vivo para os seus próprios fins, matou o chef e deu ao ditador um antídoto.' },
+    { title: 'A Carta Marcada', emoji: '🟢', mystery: 'Um prisioneiro de guerra envia cartas para casa que passam pela censura. As cartas contêm segredos militares.', solution: 'Ele escreveu entre as linhas com tinta invisível (sumo de limão), que só se revelava quando aquecida.' },
+    { title: 'O Relojoeiro Cego', emoji: '🟡', mystery: 'Um relojoeiro cego é contratado por uma agência secreta.', solution: 'O seu tato apurado permitia-lhe montar micro-dispositivos de escuta em relógios, que eram depois oferecidos como presentes a alvos estrangeiros.' },
+    { title: 'O Lixo', emoji: '🟢', mystery: 'Uma equipa de limpeza recebe a uma fortuna para recolher o lixo de um prédio.', solution: 'Eles não estavam ali para limpar. Estavam recolhendo documentos destruídos para que uma equipa de analistas os pudesse pacientemente reconstruir documentos de uma embaixada.' },
+    { title: 'O Assassinato na Janela', emoji: '🟡', mystery: 'Um líder mundial sobrevive a uma tentativa de assassinato por um atirador.', solution: 'A pessoa que apareceu na janela não era o líder, mas sim um sósia contratado para esse fim. O verdadeiro líder estava num local seguro.' },
+    { title: 'A Ponte', emoji: '🟢', mystery: 'Dois homens encontram-se no meio de uma ponte à noite. Eles se esbarram, e trocam guarda-chuvas, seguindo caminhos opostos.', solution: 'Era uma troca de espiões. Os guarda-chuvas continham as novas identidades e documentos para cada um.' },
+    { title: 'O Voo Cancelado', emoji: '🟡', mystery: 'Um cientista nuclear perde o seu voo. O avião explode no ar.', solution: 'Não foi sorte. A sua própria agência sabotou o seu transporte para o aeroporto para o fazer perder o voo, pois sabiam que havia uma bomba a bordo, mas não podiam revelá-lo sem comprometer a sua fonte.' },
+    { title: 'O Segredo do Alfaiate', emoji: '🔴', mystery: 'Um alfaiate que faz ternos para diplomatas de alto nível morre num "acidente" de viação.', solution: 'Ele era um agente que costurava microfones nas lapelas dos ternos. Uma agência rival descobriu e silenciou-o.' }
+  ];
+
+  return cases.map((caseData, index) => ({
+    id: `${packId}-case-${index + 1}`,
+    order: index + 1,
+    mystery: caseData.mystery,
+    solution: caseData.solution,
+    difficulty: mapEmojiToDifficulty(caseData.emoji),
+    theme: 'conspiracy' as any,
+    name: caseData.title,
+    icon: 'eye-off',
+    title: caseData.title,
+    description: `Um dossiê confidencial para ser desvendado`,
+    image: `/lovable-uploads/pack${(index % 5) + 1}/case${index + 1}.png`,
+    isFree: index === 0
+  }));
+};
+
+// Specific cases for "Dose Letal" pack
+const generateDoseLetalCases = (packId: string): Case[] => {
+  const cases = [
+    { title: 'O Crime Pesado', emoji: '🔴', mystery: 'Um cientista morre de envenenamento por radiação, mas nenhum material radioativo é encontrado no seu laboratório.', solution: 'Um rival trocou a sua água potável por água pesada (Óxido de Deutério). Ao longo de semanas, a ingestão contínua tornou-se letal.' },
+    { title: 'O Antídoto Trocado', emoji: '🟡', mystery: 'Um especialista em serpentes é picado por uma víbora e morre, apesar de ter administrado o soro antiofídico imediatamente.', solution: 'Um colega invejoso havia trocado o conteúdo do frasco de soro por uma simples solução salina.' },
+    { title: 'A Morte no Escritório', emoji: '🟡', mystery: 'Um CEO adoece lentamente e morre. O seu escritório e a sua comida estavam impecavelmente limpos.', solution: 'A planta ornamental no seu escritório era uma "Comigo-ninguém-pode". Um rival espremia uma gota do sumo venenoso da folha no seu bebedouro todos os dias.' },
+    { title: 'O Vinho Raro', emoji: '🔴', mystery: 'Um sommelier morre após provar um vinho de uma garrafa rara e perfeitamente selada.', solution: 'O assassino usou uma seringa fina e longa para injetar um veneno sem sabor através da rolha, sem a remover, não deixando vestígios visíveis.' },
+    { title: 'A Tatuagem Fatal', emoji: '🟡', mystery: 'Um homem faz uma nova tatuagem e morre dias depois, sem causa aparente.', solution: 'A tinta da tatuagem foi misturada com uma toxina de absorção lenta que, uma vez na corrente sanguínea, provocou a paragem cardíaca.' },
+    { title: 'A Carta', emoji: '🟢', mystery: 'Um homem morre dias após enviar uma carta.', solution: 'A sua esposa descobriu um caso extraconjugal e aplicou um veneno de contato concentrado na cola do selo da carta que ele tinha preparado para a amante.' },
+    { title: 'Premeditado', emoji: '🟡', mystery: 'Uma mulher rica morre no seu quarto. Nenhum vestígio de crime foi encontrado.', solution: 'Uma promotora de perfumes numa loja de luxo foi paga para borrifar a vítima com um "perfume de amostra", que na verdade continha um gás nervoso de absorção rápida.' },
+    { title: 'O Drink', emoji: '🔴', mystery: 'Numa festa, um homem morre sufocado após beber um drink. Não foram encontrados sinais de envenenamento.', solution: 'O seu drink "exótico" foi feito com gelo seco. Ele bebeu muito rápido e engoliu um pequeno pedaço. O gelo sublimou no seu estômago, libertando dióxido de carbono que o asfixiou.' },
+    { title: 'O Analgésico', emoji: '🟡', mystery: 'Um homem com enxaqueca toma um analgésico e morre. A caixa era sua e estava lacrada.', solution: 'Um colega de trabalho trocou os comprimidos da cartela por cápsulas idênticas contendo cianeto, e depois voltou a selar a caixa de forma profissional.' },
+    { title: 'A Dieta da Morte', emoji: '🟢', mystery: 'Uma mulher a fazer uma dieta rigorosa morre de desnutrição, apesar de estar a comer normalmente.', solution: 'O "chá emagrecedor" que ela comprou online continha um parasita (como uma ténia) que consumia todos os nutrientes que ela ingeria.' },
+    { title: 'O Cigarro Eletrónico', emoji: '🟡', mystery: 'Um homem morre subitamente enquanto usa o seu cigarro eletrónico. O aparelho não explodiu.', solution: 'O líquido do seu vape foi trocado por um que continha nicotina pura e concentrada, uma substância extremamente tóxica em doses elevadas, que foi absorvida instantaneamente pelos pulmões.' },
+    { title: 'A Biblioteca', emoji: '🔴', mystery: 'Um bibliotecário morre após organizar uma seção de livros.', solution: 'Um dos livros continha esporos de antraz, colocados lá por um espião décadas antes. Ao manusear o livro, o bibliotecário inalou os esporos.' },
+    { title: 'O Peixe', emoji: '🟡', mystery: 'Num jantar, apenas uma pessoa morre após comer sushi. Todos comeram do mesmo prato.', solution: 'A vítima foi a única que comeu uma peça de Fugu (peixe-balão), que foi preparada incorretamente por um chef que queria matar o seu chefe, mas enganou-se no prato.' },
+    { title: 'O Acidente de Laboratório', emoji: '🟢', mystery: 'Um químico morre numa pequena explosão no seu laboratório.', solution: 'Ele misturou duas substâncias. Um assistente tinha, por engano, trocado os rótulos de dois frascos com líquidos incolores, um inofensivo e outro altamente volátil.' },
+    { title: 'A Luva do Jardineiro', emoji: '🟡', mystery: 'Um jardineiro morre de uma infecção generalizada após se picar num espinho de rosa.', solution: 'O seu vizinho, com quem tinha uma disputa, tinha pulverizado as rosas com uma bactéria rara, sabendo que o jardineiro raramente usava luvas.' },
+    { title: 'O Mel Silvestre', emoji: '🔴', mystery: 'Um apicultor morre após comer o mel das suas próprias colmeias.', solution: 'As suas abelhas tinham recolhido néctar de rododendros, uma flor cujo néctar contém uma neurotoxina. O mel resultante, conhecido como "mel louco", era venenoso.' },
+    { title: 'O Transplante Fatal', emoji: '🔴', mystery: 'Um paciente morre após um transplante de órgão bem-sucedido. O órgão não foi rejeitado.', solution: 'O órgão doado veio de uma vítima de homicídio que tinha sido envenenada com uma substância de ação lenta. O veneno continuou ativo no órgão transplantado e matou o receptor.' },
+    { title: 'A Vitamina Injetável', emoji: '🟡', mystery: 'Uma atleta morre após receber uma injeção de vitaminas de rotina do seu treinador.', solution: 'O treinador, sem formação médica, administrou a injeção de forma incorreta, injetando uma grande bolha de ar na sua corrente sanguínea, o que causou uma embolia fatal.' },
+    { title: 'O Hábito mortal', emoji: '🔴', mystery: 'Um executivo morre envenenado na sua secretária. Ninguém tocou na sua comida ou bebida.', solution: 'Ele tinha o hábito de tirar os óculos e morder a haste. Um rival aplicou um veneno de contacto incolor e sem sabor na haste dos óculos.' },
+    { title: 'O Ar Condicionado', emoji: '🟡', mystery: 'Um homem é encontrado morto, congelado, no seu quarto de hotel em pleno verão. O ar condicionado está no máximo.', solution: 'O sistema de ar condicionado foi sabotado para vazar gás refrigerante (freon) para o quarto. O gás ocupou o lugar do oxigénio e causou a morte por asfixia e congelamento.' }
+  ];
+
+  return cases.map((caseData, index) => ({
+    id: `${packId}-case-${index + 1}`,
+    order: index + 1,
+    mystery: caseData.mystery,
+    solution: caseData.solution,
+    difficulty: mapEmojiToDifficulty(caseData.emoji),
+    theme: 'danger' as any,
+    name: caseData.title,
+    icon: 'flask',
+    title: caseData.title,
+    description: `Uma dose letal para ser desvendada`,
+    image: `/lovable-uploads/pack${(index % 5) + 1}/case${index + 1}.png`,
+    isFree: index === 0
+  }));
+};
+
+// Specific cases for "Fim de Jogo" pack
+const generateFimDeJogoCases = (packId: string): Case[] => {
+  const cases = [
+    { title: 'A Bola de Ouro', emoji: '🔴', mystery: 'Um jogador de futebol famoso desmaia e morre após beijar o seu troféu de "Melhor do Mundo" no palco.', solution: 'Um rival tinha revestido o troféu com um veneno potente e de absorção rápida, sabendo do hábito do jogador de beijar os seus prémios.' },
+    { title: 'O Arremesso Final', emoji: '🟡', mystery: 'Um lançador de basebol faz o jogo perfeito da sua vida e morre de ataque cardíaco.', solution: 'Ele usava um novo estimulante experimental indetectável. O esforço extremo do jogo, combinado com a droga, levou o seu coração ao limite.' },
+    { title: 'Ciclismo Leve', emoji: '🔴', mystery: 'Um ciclista ganha uma etapa de montanha, mas morre numa queda na reta final plana.', solution: 'Um mecânico rival sabotou a sua roda de fibra de carbono, criando uma microfissura programada para falhar apenas sob a vibração e o stress da velocidade máxima no sprint final.' },
+    { title: 'A Maratona', emoji: '🟡', mystery: 'Um maratonista desmaia e morre perto da meta. A autópsia revela que ele estava perfeitamente hidratado.', solution: 'Ele morreu de hiponatremia (intoxicação por água). Um rival, disfarçado de voluntário, deu-lhe garrafas extra de água durante a corrida, incentivando-o a beber em excesso.' },
+    { title: 'O Salto Ornamental', emoji: '🟢', mystery: 'Um saltador olímpico morre ao bater com a cabeça na prancha durante um salto.', solution: 'A investigação revelou que a prancha de saltos tinha sido deliberadamente rachada na parte inferior por um concorrente, fazendo com que perdesse a impulsão no momento crítico.' },
+    { title: 'O Soco Fantasma', emoji: '🟡', mystery: 'Um pugilista morre no ringue sem ter sido atingido pelo seu oponente.', solution: 'O seu treinador aplicou uma substância nos seus lábios que reagia com o suor, criando uma toxina que o paralisou.' },
+    { title: 'A Piscina Vazia', emoji: '🟢', mystery: 'Um nadador é encontrado morto no fundo de uma piscina olímpica vazia.', solution: 'Ele estava a treinar à noite. Um funcionário, sem o ver, iniciou o processo de esvaziamento da piscina para manutenção. Ele bateu com a cabeça na parte que pensou estar mais funda.' },
+    { title: 'O Taco de Golfe', emoji: '🟡', mystery: 'Um jogador de golfe morre ao pegar seu taco, num dia ensolarado.', solution: 'Durante uma tempestade no dia anterior, um raio atingiu o seu taco de golfe de carbono, que ele deixou no campo. O taco ficou magnetizado e com uma carga residual. Ao pegar nele, sofreu uma descarga fatal.' },
+    { title: 'O Gelo Fino', emoji: '🔴', mystery: 'Um jogador de hóquei no gelo morre afogado durante um treino.', solution: 'Um rival usou um aquecedor subaquático para derreter uma pequena secção do gelo no seu percurso habitual, criando uma armadilha invisível.' },
+    { title: 'O Arco', emoji: '🟢', mystery: 'Um arqueiro morre com uma flecha no peito. A flecha é sua.', solution: 'A corda do seu arco tinha um defeito de fábrica. Ao ser esticada ao máximo, partiu-se, fazendo com que a flecha disparasse para trás.' },
+    { title: 'O Carro de Corrida', emoji: '🟡', mystery: 'Um piloto de corridas morre no seu carro após uma corrida.', solution: 'Um mecânico rival sabotou o sistema de ventilação do capacete, ligando-o ao escape do carro.' },
+    { title: 'O Cavalo', emoji: '🟡', mystery: 'Um jóquei experiente cai do seu cavalo e morre. O cavalo não tinha ferimentos.', solution: 'Um concorrente usou um apito de alta frequência, inaudível para humanos, que assustou o cavalo e o fez empinar.' },
+    { title: 'A Raquete de Ténis', emoji: '🟢', mystery: 'Um jogador de ténis morre de ataque cardíaco após ganhar um ponto.', solution: 'A sua raquete tinha sido adulterada com um dispositivo que dava um pequeno choque elétrico. A emoção do ponto, combinada com o choque, causou uma dessincronização de seus batimentos e o matou.' },
+    { title: 'O Dardo', emoji: '🟡', mystery: 'Um jogador de dardos morre após seu treino diário.', solution: 'A sua ex-namorada, sabendo do seu hábito de lamber a ponta do dardo para "ter sorte", tinha aplicado veneno na ponta.' },
+    { title: 'A Bola de Boliche', emoji: '🟢', mystery: 'Um jogador de boliche morre esmagado pela sua própria bola.', solution: 'Ele ficou com o dedo preso nos buracos da bola. Estava arrumando os pinos, tentou lançá-la, e foi puxado para dentro da máquina de retorno de bolas.' },
+    { title: 'O Paraquedista', emoji: '🟡', mystery: 'Um paraquedista morre porque o seu paraquedas não abriu. A investigação mostra que o paraquedas estava perfeito.', solution: 'Ele sofria de sonambulismo. Levantou-se a meio da noite, vestiu o equipamento e saltou... do telhado da sua casa de três andares.' },
+    { title: 'O Esquiador Solitário', emoji: '🟡', mystery: 'Um esquiador é encontrado morto numa avalanche. Ele estava esquiando sozinho.', solution: 'Ele não foi vítima da avalanche. Ele causou-a. Ele era um geólogo a estudar a neve e usou um pequeno explosivo para testar a estabilidade da encosta.' },
+    { title: 'O Jogador de Póquer', emoji: '🔴', mystery: 'Um jogador de póquer profissional morre à mesa de jogo. Ele tinha a mão vencedora.', solution: 'Ele era conhecido por ter um "tique" que revelava quando tinha uma boa mão. Um adversário, que lhe devia muito dinheiro, colocou um veneno na sua ficha favorita, que ele tocava sempre que estava ganhando.' },
+    { title: 'O Surfista e a Onda', emoji: '🟡', mystery: 'Um surfista famoso morre afogado numa onda pequena.', solution: 'Ele usava tampões de ouvido para evitar a "orelha de surfista". Um deles ficou preso no seu canal auditivo, causando uma vertigem tão intensa que ele não conseguiu distinguir a superfície da água.' },
+    { title: 'A Escalada Final', emoji: '🔴', mystery: 'Uma alpinista morre de hipotermia a poucos metros do cume.', solution: 'O seu parceiro, que queria a glória só para si, deu-lhe um termo com café descafeinado em vez de cafeinado. A falta do estimulante fez com que ela não tivesse energia para o sprint final, e fosse abandonada por seu parceiro.' }
+  ];
+
+  return cases.map((caseData, index) => ({
+    id: `${packId}-case-${index + 1}`,
+    order: index + 1,
+    mystery: caseData.mystery,
+    solution: caseData.solution,
+    difficulty: mapEmojiToDifficulty(caseData.emoji),
+    theme: 'power' as any,
+    name: caseData.title,
+    icon: 'trophy',
+    title: caseData.title,
+    description: `Um fim de jogo para ser desvendado`,
+    image: `/lovable-uploads/pack${(index % 5) + 1}/case${index + 1}.png`,
+    isFree: index === 0
+  }));
+};
+
 // Generate cases for each pack dynamically (for non-specific packs)
 export const generateCasesForPack = (packId: string, packName: string): Case[] => {
   // Check if this is one of our specific packs
@@ -188,6 +392,16 @@ export const generateCasesForPack = (packId: string, packName: string): Case[] =
       return generateCrimesImperfeitosCases(packId);
     case 'lendas-urbanas':
       return generateLendasUrbanasCases(packId);
+    case 'paradoxos-mortais':
+      return generateParadoxosMortaisCases(packId);
+    case 'absurdamente-real':
+      return generateAbsurdamenteRealCases(packId);
+    case 'dossie-confidencial':
+      return generateDossieConfidencialCases(packId);
+    case 'dose-letal':
+      return generateDoseLetalCases(packId);
+    case 'fim-de-jogo':
+      return generateFimDeJogoCases(packId);
     default:
       // Fall back to generic case generation for other packs
       const themes = ['mystery', 'murder', 'theft', 'investigation', 'thriller', 'crime', 'conspiracy', 'danger', 'power'];
