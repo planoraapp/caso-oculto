@@ -1,18 +1,6 @@
 
+
 import { Pack } from './types';
-import case01Image from '@/public/packs/case-01.webp';
-import case02Image from '@/public/packs/case-02.webp';
-import case03Image from '@/public/packs/case-03.webp';
-import case04Image from '@/public/packs/case-04.webp';
-import case05Image from '@/public/packs/case-05.webp';
-import case06Image from '@/public/packs/case-06.webp';
-import case07Image from '@/public/packs/case-07.webp';
-import labirintosMentaisImage from '@/public/packs/labirintos-mentais.webp';
-import jogosCorporativosImage from '@/public/packs/jogos-corporativos.webp';
-import dossieConfidencialImage from '@/public/packs/dossie-confidencial.webp';
-import doseLetalImage from '@/public/packs/dose-letal.webp';
-import fimDeJogoImage from '@/public/packs/fim-de-jogo.webp';
-import absurdamenteRealImage from '@/public/packs/absurdamente-real.webp';
 import { getPackCases } from './cases';
 
 export const packs: Pack[] = [
@@ -22,7 +10,7 @@ export const packs: Pack[] = [
     description: 'Casos clássicos de detetive com reviravoltas inesperadas',
     price: 14.80,
     difficulty: 'medium',
-    image: case01Image,
+    image: '/packs/case-01.webp',
     category: 'mystery'
   },
   {
@@ -31,7 +19,7 @@ export const packs: Pack[] = [
     description: 'Mistérios contemporâneos que desafiam a lógica',
     price: 14.80,
     difficulty: 'medium',
-    image: case02Image,
+    image: '/packs/case-02.webp',
     category: 'mystery'
   },
   {
@@ -40,7 +28,7 @@ export const packs: Pack[] = [
     description: 'Mistérios com um toque sobrenatural, onde a solução pode ser um fenómeno paranormal ou uma explicação racional que imita o inexplicável.',
     price: 14.80,
     difficulty: 'hard',
-    image: case03Image,
+    image: '/packs/case-03.webp',
     category: 'thriller'
   },
   {
@@ -49,7 +37,7 @@ export const packs: Pack[] = [
     description: 'Mistérios que se desenrolam sob o manto da escuridão, onde cada sombra esconde um segredo.',
     price: 14.80,
     difficulty: 'medium',
-    image: case04Image,
+    image: '/packs/case-04.webp',
     category: 'thriller'
   },
   {
@@ -58,7 +46,7 @@ export const packs: Pack[] = [
     description: 'Planos que deram terrivelmente errado. Encontre o detalhe que desmascarou o culpado.',
     price: 14.80,
     difficulty: 'medium',
-    image: case05Image,
+    image: '/packs/case-05.webp',
     category: 'crime'
   },
   {
@@ -67,7 +55,7 @@ export const packs: Pack[] = [
     description: 'Mistérios baseados em mitos e histórias urbanas famosas.',
     price: 14.80,
     difficulty: 'hard',
-    image: case06Image,
+    image: '/packs/case-06.webp',
     category: 'thriller'
   },
   {
@@ -76,7 +64,7 @@ export const packs: Pack[] = [
     description: 'Mistérios que desafiam a lógica e parecem impossíveis.',
     price: 14.80,
     difficulty: 'hard',
-    image: case07Image,
+    image: '/packs/case-07.webp',
     category: 'mystery'
   },
   {
@@ -85,7 +73,7 @@ export const packs: Pack[] = [
     description: 'Enigmas psicológicos complexos que testam sua capacidade de raciocínio',
     price: 14.80,
     difficulty: 'hard',
-    image: labirintosMentaisImage,
+    image: '/packs/labirintos-mentais.webp',
     category: 'mystery'
   },
   {
@@ -94,7 +82,7 @@ export const packs: Pack[] = [
     description: 'Mistérios e conspirações no mundo dos negócios',
     price: 14.80,
     difficulty: 'medium',
-    image: jogosCorporativosImage,
+    image: '/packs/jogos-corporativos.webp',
     category: 'conspiracy'
   },
   {
@@ -103,7 +91,7 @@ export const packs: Pack[] = [
     description: 'Segredos de estado e espionagem internacional',
     price: 14.80,
     difficulty: 'hard',
-    image: dossieConfidencialImage,
+    image: '/packs/dossie-confidencial.webp',
     category: 'conspiracy'
   },
   {
@@ -112,7 +100,7 @@ export const packs: Pack[] = [
     description: 'Envenenamentos e substâncias mortais',
     price: 14.80,
     difficulty: 'medium',
-    image: doseLetalImage,
+    image: '/packs/dose-letal.webp',
     category: 'danger'
   },
   {
@@ -121,7 +109,7 @@ export const packs: Pack[] = [
     description: 'Partidas fatais e jogos mortais',
     price: 14.80,
     difficulty: 'hard',
-    image: fimDeJogoImage,
+    image: '/packs/fim-de-jogo.webp',
     category: 'murder'
   },
   {
@@ -130,7 +118,7 @@ export const packs: Pack[] = [
     description: 'Situações bizarras que realmente aconteceram',
     price: 14.80,
     difficulty: 'medium',
-    image: absurdamenteRealImage,
+    image: '/packs/absurdamente-real.webp',
     category: 'danger'
   }
 ];
@@ -145,3 +133,4 @@ export const getPackById = (packId: string): Pack | null => {
     cases: getPackCases(packId) || []
   };
 };
+
