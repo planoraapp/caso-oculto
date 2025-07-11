@@ -1,4 +1,3 @@
-
 import { Case, Pack } from './types';
 
 const casesPack1: Case[] = [
@@ -13,7 +12,8 @@ const casesPack1: Case[] = [
     icon: 'door-closed',
     title: 'O Mordomo Culpado',
     description: 'Um assassinato em um quarto trancado intriga a polícia.',
-    image: '/lovable-uploads/pack1/case1.png'
+    image: '/lovable-uploads/pack1/case1.png',
+    isFree: true
   },
   {
     id: '2',
@@ -146,7 +146,8 @@ const casesPack2: Case[] = [
     icon: 'building',
     title: 'A Farsa do Curador',
     description: 'Um museu abandonado é palco de um roubo misterioso.',
-    image: '/lovable-uploads/pack2/case1.png'
+    image: '/lovable-uploads/pack2/case1.png',
+    isFree: true
   },
   {
     id: '12',
@@ -279,7 +280,8 @@ const casesPack3: Case[] = [
     icon: 'lab',
     title: 'Os Experimentos Proibidos',
     description: 'Um laboratório secreto esconde segredos perigosos.',
-    image: '/lovable-uploads/pack3/case1.png'
+    image: '/lovable-uploads/pack3/case1.png',
+    isFree: true
   },
   {
     id: '22',
@@ -412,7 +414,8 @@ const casesPack4: Case[] = [
     icon: 'hospital',
     title: 'Os Horrores do Asilo',
     description: 'Um asilo abandonado esconde segredos sombrios.',
-    image: '/lovable-uploads/pack4/case1.png'
+    image: '/lovable-uploads/pack4/case1.png',
+    isFree: true
   },
   {
     id: '32',
@@ -545,7 +548,8 @@ const casesPack5: Case[] = [
     icon: 'briefcase',
     title: 'A Corrupção do Advogado',
     description: 'Um escritório de advocacia esconde segredos sombrios.',
-    image: '/lovable-uploads/pack5/case1.png'
+    image: '/lovable-uploads/pack5/case1.png',
+    isFree: true
   },
   {
     id: '42',
@@ -666,6 +670,811 @@ const casesPack5: Case[] = [
   }
 ];
 
+// Labirintos Mentais Cases
+const casesLabirintosMentais: Case[] = [
+  {
+    id: '51',
+    order: 1,
+    mystery: 'Um homem entra numa sala totalmente sem som para um teste. Ele sai em poucos minutos, em pânico, e morre de um aneurisma cerebral.',
+    solution: 'A privação sensorial total na câmara anecoica fez com que o seu cérebro amplificasse os sons internos do seu corpo (sangue a correr, ossos a ranger). A experiência foi tão avassaladora que o pico de stress causou a ruptura de um aneurisma pré-existente.',
+    difficulty: 'hard',
+    theme: 'thriller',
+    name: 'A Sala Silenciosa',
+    icon: 'volume-x',
+    title: 'O Silêncio Mortal',
+    description: 'Um teste de privação sensorial torna-se fatal.',
+    image: '/lovable-uploads/labirintos-mentais/case1.png',
+    isFree: true
+  },
+  {
+    id: '52',
+    order: 2,
+    mystery: 'Um homem olha-se ao espelho e não se reconhece. Convencido de que um estranho o persegue, ele tem um colapso fatal.',
+    solution: 'Ele sofreu um AVC que lhe causou prosopagnosia, a incapacidade de reconhecer rostos, incluindo o seu próprio. Ele via um "impostor" no espelho a imitá-lo e entrou em delírio.',
+    difficulty: 'hard',
+    theme: 'thriller',
+    name: 'O Rosto no Espelho',
+    icon: 'mirror',
+    title: 'O Estranho no Espelho',
+    description: 'Um homem não reconhece o próprio rosto.',
+    image: '/lovable-uploads/labirintos-mentais/case2.png'
+  },
+  {
+    id: '53',
+    order: 3,
+    mystery: 'Uma mulher idosa que vive em silêncio absoluto chama a polícia várias vezes a queixar-se de música alta vinda do apartamento vazio ao lado. Ela é encontrada morta, de exaustão.',
+    solution: 'Ela sofria da Síndrome do Ouvido Musical, uma condição em que a perda de audição faz o cérebro "criar" alucinações auditivas. Ela não dormia há dias por causa do "barulho".',
+    difficulty: 'medium',
+    theme: 'mystery',
+    name: 'A Melodia Fantasma',
+    icon: 'music',
+    title: 'A Música Inexistente',
+    description: 'Sons que apenas ela conseguia ouvir.',
+    image: '/lovable-uploads/labirintos-mentais/case3.png'
+  },
+  {
+    id: '54',
+    order: 4,
+    mystery: 'Um participante de uma experiência científica é encontrado morto num quarto espaçoso. A causa da morte foi esmagamento, mas as paredes estão intactas.',
+    solution: 'As paredes eram telas que projetavam uma imagem que se aproximava lentamente, enquanto o teto descia milimetricamente. A ilusão visual e a pressão real, combinadas, induziram um ataque de pânico fatal.',
+    difficulty: 'hard',
+    theme: 'thriller',
+    name: 'A Sala que Respira',
+    icon: 'square',
+    title: 'A Ilusão Mortal',
+    description: 'Uma sala que parecia se fechar sobre a vítima.',
+    image: '/lovable-uploads/labirintos-mentais/case4.png'
+  },
+  {
+    id: '55',
+    order: 5,
+    mystery: 'Um homem morre de desidratação ao lado de uma piscina cheia de água potável.',
+    solution: 'Ele sofria de misofobia (medo de germes) e viu uma folha cair na piscina. Para ele, a água estava "contaminada" e recusou-se a bebê-la.',
+    difficulty: 'easy',
+    theme: 'mystery',
+    name: 'A Água Intocável',
+    icon: 'droplet',
+    title: 'O Medo da Contaminação',
+    description: 'Água limpa que se tornou intocável.',
+    image: '/lovable-uploads/labirintos-mentais/case5.png'
+  },
+  {
+    id: '56',
+    order: 6,
+    mystery: 'Um homem morre envenenado por beber de uma garrafa com um aviso de veneno bem visível.',
+    solution: 'Ele sofria de amnésia anterógrada. Não conseguia formar novas memórias. Ele lia o aviso, esquecia-se segundos depois, sentia sede e bebia da garrafa, repetindo o ciclo até ser fatal.',
+    difficulty: 'hard',
+    theme: 'thriller',
+    name: 'O Ciclo da Garrafa',
+    icon: 'bottle',
+    title: 'A Memória Perdida',
+    description: 'Um ciclo mortal de esquecimento.',
+    image: '/lovable-uploads/labirintos-mentais/case6.png'
+  },
+  {
+    id: '57',
+    order: 7,
+    mystery: 'Após a morte do marido, uma viúva insiste que o retrato dele na parede muda de expressão, de triste para zangado. Ela é encontrada morta.',
+    solution: 'O pintor usou uma tinta especial que reagia lentamente à umidade do ar. O quarto estava fechado a alguns dias, o que aumentou a umidade e acelerou a mudança na expressão do quadro, levando-a a um estado de pânico que agravou uma condição cardíaca.',
+    difficulty: 'medium',
+    theme: 'mystery',
+    name: 'O Retrato do Luto',
+    icon: 'image',
+    title: 'A Tinta que Muda',
+    description: 'Um retrato que mudava de expressão.',
+    image: '/lovable-uploads/labirintos-mentais/case7.png'
+  },
+  {
+    id: '58',
+    order: 8,
+    mystery: 'Duas irmãs gémeas saltam de uma ponte de mãos dadas. Uma sobrevive e diz que estavam a fugir de "homens-sombra". Não havia mais ninguém na ponte.',
+    solution: 'As irmãs sofriam de um transtorno psicótico partilhado (na medicina, chama-se Folie à Deux) e partilhavam a mesma alucinação de que estavam sendo perseguidas.',
+    difficulty: 'medium',
+    theme: 'thriller',
+    name: 'A Fuga das Sombras',
+    icon: 'users',
+    title: 'A Loucura Compartilhada',
+    description: 'Duas mentes, uma alucinação.',
+    image: '/lovable-uploads/labirintos-mentais/case8.png'
+  },
+  {
+    id: '59',
+    order: 9,
+    mystery: 'Um homem morre numa fuga de gás em sua casa. Ele recusou-se a sair, dizendo que "não cheirava a nada".',
+    solution: 'Ele sofria de fantosmia, uma alucinação olfativa que lhe causava um cheiro constante a flores. Este cheiro "fantasma" mascarou completamente o cheiro do gás.',
+    difficulty: 'hard',
+    theme: 'thriller',
+    name: 'O Perfume Constante',
+    icon: 'flower',
+    title: 'O Cheiro Fantasma',
+    description: 'Um aroma que mascarou o perigo.',
+    image: '/lovable-uploads/labirintos-mentais/case9.png'
+  },
+  {
+    id: '60',
+    order: 10,
+    mystery: 'Um homem é encontrado estrangulado na sua cama. Não há impressões digitais estranhas na casa.',
+    solution: 'Ele sofria da Síndrome da Mão Alheia, uma condição neurológica onde uma das mãos age de forma autónoma. A sua própria mão estrangulou-o durante o sono.',
+    difficulty: 'medium',
+    theme: 'thriller',
+    name: 'A Mão Inimiga',
+    icon: 'hand',
+    title: 'A Mão Rebelde',
+    description: 'Quando o próprio corpo se torna inimigo.',
+    image: '/lovable-uploads/labirintos-mentais/case10.png'
+  },
+  {
+    id: '61',
+    order: 11,
+    mystery: 'Um homem vê o seu reflexo no espelho piscar um olho para ele. Ele quebra o espelho e morre.',
+    solution: 'Não era um espelho, mas sim uma janela de vidro unidirecional. Do outro lado, o seu irmão gémeo idêntico estava imitando-o. O susto fez com que ele tropeçasse e caísse sobre os estilhaços.',
+    difficulty: 'medium',
+    theme: 'mystery',
+    name: 'O Gémeo no Espelho',
+    icon: 'eye',
+    title: 'O Reflexo Vivo',
+    description: 'Um espelho que não era espelho.',
+    image: '/lovable-uploads/labirintos-mentais/case11.png'
+  },
+  {
+    id: '62',
+    order: 12,
+    mystery: 'Um ladrão invade uma sala de segurança para roubar um famoso diamante vermelho. Ele olha para o diamante por um minuto, mas sai sem ele, de mãos a abanar.',
+    solution: 'O diamante estava rodeado por luzes LED que piscavam numa frequência específica, criando um efeito de "saturação neural". Ao desviar o olhar, ele via uma "imagem fantasma" verde (a cor oposta) em todo o lado, fazendo-o pensar que o alarme tinha sido acionado.',
+    difficulty: 'hard',
+    theme: 'theft',
+    name: 'O Diamante Vermelho',
+    icon: 'gem',
+    title: 'A Ilusão Ótica',
+    description: 'Um diamante que se protegia sozinho.',
+    image: '/lovable-uploads/labirintos-mentais/case12.png'
+  },
+  {
+    id: '63',
+    order: 13,
+    mystery: 'Um homem recusa-se a comer, e morre de inanição.',
+    solution: 'Ele sofria da Síndrome de Cotard, um delírio raro em que a pessoa acredita que já morreu ou que não existe. A sua convicção era tão forte que ele se recusou a comer até morrer.',
+    difficulty: 'hard',
+    theme: 'thriller',
+    name: 'O Homem Vazio',
+    icon: 'skull',
+    title: 'O Morto-Vivo',
+    description: 'Um homem convencido de que não existia.',
+    image: '/lovable-uploads/labirintos-mentais/case13.png'
+  },
+  {
+    id: '64',
+    order: 14,
+    mystery: 'Numa experiência, um homem insiste que uma linha curta é mais comprida que uma longa. Todos os outros na sala concordam com ele. Um observador, confuso, tem um colapso.',
+    solution: 'Era uma recriação do "Experimento de Conformidade de Asch". Todos, exceto o observador, eram atores. O observador sofreu um surto psicótico agudo devido à dissonância cognitiva extrema.',
+    difficulty: 'hard',
+    theme: 'investigation',
+    name: 'O Jogo da Conformidade',
+    icon: 'users',
+    title: 'A Pressão Social',
+    description: 'Quando a realidade é questionada por todos.',
+    image: '/lovable-uploads/labirintos-mentais/case14.png'
+  },
+  {
+    id: '65',
+    order: 15,
+    mystery: 'Um homem comete um crime e não se lembra de nada. A polícia encontra um bilhete no seu bolso com uma única palavra.',
+    solution: 'Ele foi hipnotizado para cometer o crime. A palavra no bilhete era o gatilho para a amnésia pós-hipnótica.',
+    difficulty: 'hard',
+    theme: 'crime',
+    name: 'A Mente Apagada',
+    icon: 'brain',
+    title: 'O Controle Mental',
+    description: 'Uma mente programada para esquecer.',
+    image: '/lovable-uploads/labirintos-mentais/case15.png'
+  },
+  {
+    id: '66',
+    order: 16,
+    mystery: 'Um homem morre dentro de um labirinto de espelhos.',
+    solution: 'Os múltiplos reflexos e a desorientação causaram-lhe um ataque severo de vertigem. Ele desmaiou e bateu com a cabeça.',
+    difficulty: 'easy',
+    theme: 'mystery',
+    name: 'A Queda no Labirinto',
+    icon: 'maze',
+    title: 'O Labirinto Mortal',
+    description: 'Perdido entre reflexos infinitos.',
+    image: '/lovable-uploads/labirintos-mentais/case16.png'
+  },
+  {
+    id: '67',
+    order: 17,
+    mystery: 'Num ensaio clínico, um homem morre após tomar uma pílula de açúcar.',
+    solution: 'Ele sofreu um "Efeito Nocebo" (o contrário do placebo): a sua crença nos possíveis efeitos secundários graves foi tão forte que o seu corpo reagiu, causando um ataque psicossomático fatal.',
+    difficulty: 'medium',
+    theme: 'investigation',
+    name: 'A Pílula da Morte',
+    icon: 'pill',
+    title: 'O Efeito Nocebo',
+    description: 'A mente mata o corpo.',
+    image: '/lovable-uploads/labirintos-mentais/case17.png'
+  },
+  {
+    id: '68',
+    order: 18,
+    mystery: 'Um suspeito de um crime recusa-se a falar. No entanto, a polícia descobre todos os detalhes do crime.',
+    solution: 'O suspeito comunicava com o seu advogado através de linguagem gestual. A detetive principal era fluente em linguagem gestual porque os seus pais eram surdos.',
+    difficulty: 'medium',
+    theme: 'investigation',
+    name: 'A Confissão',
+    icon: 'hand',
+    title: 'A Linguagem Silenciosa',
+    description: 'Palavras ditas sem som.',
+    image: '/lovable-uploads/labirintos-mentais/case18.png'
+  },
+  {
+    id: '69',
+    order: 19,
+    mystery: 'Um homem confessa um crime em detalhe, mas as provas mostram que é impossível ele tê-lo cometido.',
+    solution: 'Um terapeuta, usando técnicas sugestivas, implantou acidentalmente uma memória falsa na sua mente.',
+    difficulty: 'medium',
+    theme: 'investigation',
+    name: 'A Testemunha Implantada',
+    icon: 'brain',
+    title: 'A Memória Falsa',
+    description: 'Quando lembranças são criadas.',
+    image: '/lovable-uploads/labirintos-mentais/case19.png'
+  },
+  {
+    id: '70',
+    order: 20,
+    mystery: 'Um homem cego de nascença morre literalmente de medo, gritando sobre "mãos frias" tocando no seu rosto. Ninguém mais estava no quarto.',
+    solution: 'Ele nasceu sem os braços, mas desenvolveu a "Síndrome do Membro Fantasma". Naquela noite, a sensação dos seus "braços fantasmas" frios a tocar no seu próprio rosto, algo que ele nunca tinha sentido, foi tão real e aterrorizante que lhe causou um ataque cardíaco.',
+    difficulty: 'hard',
+    theme: 'thriller',
+    name: 'O Toque',
+    icon: 'hand',
+    title: 'O Membro Fantasma',
+    description: 'Sentir o que nunca existiu.',
+    image: '/lovable-uploads/labirintos-mentais/case20.png'
+  }
+];
+
+// Jogos Corporativos Cases
+const casesJogosCorporativos: Case[] = [
+  {
+    id: '71',
+    order: 1,
+    mystery: 'Um bibliotecário é encontrado morto, esmagado entre duas estantes de arquivo móveis. O sistema elétrico estava desligado.',
+    solution: 'Um colega desativou o sistema de segurança das estantes e libertou o mecanismo de travagem manual. A sala tinha um piso ligeiramente inclinado, e as estantes, pesando toneladas, deslizaram lentamente até esmagar a vítima que estava no corredor.',
+    difficulty: 'hard',
+    theme: 'murder',
+    name: 'Prensado entre as Páginas',
+    icon: 'book',
+    title: 'A Armadilha das Estantes',
+    description: 'Morte entre arquivos corporativos.',
+    image: '/lovable-uploads/jogos-corporativos/case1.png',
+    isFree: true
+  },
+  {
+    id: '72',
+    order: 2,
+    mystery: 'Um executivo morre após beber o seu café matinal. A sua secretária, que preparou o café, é a principal suspeita.',
+    solution: 'A secretária é inocente. O veneno estava na caneca pessoal do executivo. Um colega invejoso aplicou o veneno na caneca na noite anterior, sabendo que só ele a usaria.',
+    difficulty: 'easy',
+    theme: 'murder',
+    name: 'O Café da Segunda-Feira',
+    icon: 'coffee',
+    title: 'A Caneca Envenenada',
+    description: 'Morte matinal no escritório.',
+    image: '/lovable-uploads/jogos-corporativos/case2.png'
+  },
+  {
+    id: '73',
+    order: 3,
+    mystery: 'Um diretor de uma empresa farmacêutica suicida-se. No seu bolso, a polícia encontra apenas uma caneta e um bilhete.',
+    solution: 'A caneta era um dispositivo de escuta. Ele foi gravado a admitir fraude e estava a ser chantageado. No bilhete não havia nada.',
+    difficulty: 'medium',
+    theme: 'conspiracy',
+    name: 'A Caneta do Diretor',
+    icon: 'pen',
+    title: 'O Dispositivo Secreto',
+    description: 'Espionagem farmacêutica mortal.',
+    image: '/lovable-uploads/jogos-corporativos/case3.png'
+  },
+  {
+    id: '74',
+    order: 4,
+    mystery: 'Um velho relojoeiro morre na sua oficina sentado na sua cadeira.',
+    solution: 'Ele deixou cair uma das suas ferramentas mais finas e pontiagudas na sua cadeira. Sem perceber, sentou-se sobre ela. O instrumento perfurou um ponto vital, causando uma hemorragia interna fatal.',
+    difficulty: 'medium',
+    theme: 'mystery',
+    name: 'A Cadeira do Artesão',
+    icon: 'clock',
+    title: 'A Ferramenta Fatal',
+    description: 'Acidente mortal na oficina.',
+    image: '/lovable-uploads/jogos-corporativos/case4.png'
+  },
+  {
+    id: '75',
+    order: 5,
+    mystery: 'Um coveiro é encontrado morto no fundo de uma cova recém-cavada.',
+    solution: 'Choveu muito durante a noite. As paredes da cova, saturadas de água, desmoronaram enquanto ele trabalhava na cova, enterrando-o vivo.',
+    difficulty: 'easy',
+    theme: 'mystery',
+    name: 'Terra sobre Terra',
+    icon: 'shovel',
+    title: 'O Desmoronamento',
+    description: 'Sepultado pela própria profissão.',
+    image: '/lovable-uploads/jogos-corporativos/case5.png'
+  },
+  {
+    id: '76',
+    order: 6,
+    mystery: 'Um arquiteto ganha uma competição importante. O seu principal rival é encontrado morto na maquete do projeto vencedor.',
+    solution: 'O rival descobriu que o arquiteto vencedor roubou o seu design. Durante a discussão, o arquiteto empurrou-o, e ele caiu sobre a maquete, sendo perfurado por uma das miniaturas.',
+    difficulty: 'medium',
+    theme: 'murder',
+    name: 'O Arquiteto Desonesto',
+    icon: 'building',
+    title: 'A Maquete Mortal',
+    description: 'Competição arquitetônica fatal.',
+    image: '/lovable-uploads/jogos-corporativos/case6.png'
+  },
+  {
+    id: '77',
+    order: 7,
+    mystery: 'Um chef de cozinha morre numa explosão na sua cozinha. A polícia suspeita de uma bomba, mas não encontrou os explosivos.',
+    solution: 'Um rival sabotou a válvula de segurança de uma enorme panela de pressão industrial. A pressão acumulou-se até a panela explodir com a força de uma granada.',
+    difficulty: 'medium',
+    theme: 'murder',
+    name: 'A Cozinha Explosiva',
+    icon: 'utensils',
+    title: 'A Panela-Bomba',
+    description: 'Sabotagem culinária mortal.',
+    image: '/lovable-uploads/jogos-corporativos/case7.png'
+  },
+  {
+    id: '78',
+    order: 8,
+    mystery: 'Uma startup perde uma ideia milionária para um concorrente. Inconformados, procuraram mas não encontraram sinais de espionagem.',
+    solution: 'O CEO publicou uma foto da equipa a celebrar em frente a um quadro branco onde todo o plano de negócios estava desenhado.',
+    difficulty: 'easy',
+    theme: 'theft',
+    name: 'A Conquista',
+    icon: 'lightbulb',
+    title: 'A Foto Reveladora',
+    description: 'Roubo de ideias por descuido.',
+    image: '/lovable-uploads/jogos-corporativos/case8.png'
+  },
+  {
+    id: '79',
+    order: 9,
+    mystery: 'Um candidato a uma vaga de CEO é rejeitado após uma entrevista brilhante. O candidato que ficou em segundo lugar é contratado.',
+    solution: 'O segundo candidato contratou um ator para se passar por um "caça-talentos" e fazer uma entrevista falsa com o candidato principal um dia antes, roubando todas as suas melhores ideias.',
+    difficulty: 'medium',
+    theme: 'theft',
+    name: 'A Entrevista',
+    icon: 'briefcase',
+    title: 'O Caça-Talentos Falso',
+    description: 'Roubo de ideias em entrevista.',
+    image: '/lovable-uploads/jogos-corporativos/case9.png'
+  },
+  {
+    id: '80',
+    order: 10,
+    mystery: 'Um funcionário é despedido por destruir documentos importantes. Ele jura que os colocou no cofre.',
+    solution: 'Um rival deu a ele uma caneta especial. A tinta parecia normal, mas desaparecia completamente após 24 horas.',
+    difficulty: 'easy',
+    theme: 'conspiracy',
+    name: 'Os Documentos Sumiram',
+    icon: 'file-text',
+    title: 'A Tinta Invisível',
+    description: 'Sabotagem com tinta que desaparece.',
+    image: '/lovable-uploads/jogos-corporativos/case10.png'
+  },
+  {
+    id: '81',
+    order: 11,
+    mystery: 'Um eletricista experiente morre eletrocutado ao usar as suas próprias ferramentas, que supostamente eram isoladas.',
+    solution: 'Um colega, querendo a sua vaga, usou uma lixa fina para desgastar uma pequena parte do isolamento de borracha do seu alicate, num local quase imperceptível.',
+    difficulty: 'medium',
+    theme: 'murder',
+    name: 'O Choque Inesperado',
+    icon: 'zap',
+    title: 'O Isolamento Sabotado',
+    description: 'Sabotagem elétrica mortal.',
+    image: '/lovable-uploads/jogos-corporativos/case11.png'
+  },
+  {
+    id: '82',
+    order: 12,
+    mystery: 'Uma patente secreta é roubada de um cofre. A única chave estava com o CEO.',
+    solution: 'Um espião tirou uma fotografia de alta resolução da chave e imprimiu uma cópia perfeita em 3D.',
+    difficulty: 'medium',
+    theme: 'theft',
+    name: 'A Chave Mestre',
+    icon: 'key',
+    title: 'A Impressão 3D',
+    description: 'Clonagem de chave high-tech.',
+    image: '/lovable-uploads/jogos-corporativos/case12.png'
+  },
+  {
+    id: '83',
+    order: 13,
+    mystery: 'Um contabilista desvia milhões de uma empresa durante anos sem que ninguém se aperceba.',
+    solution: 'Ele programou o sistema para desviar as frações de cêntimos de milhares de transações diárias para uma conta sua.',
+    difficulty: 'medium',
+    theme: 'theft',
+    name: 'O Desvio',
+    icon: 'calculator',
+    title: 'Os Centavos Perdidos',
+    description: 'Roubo microscópico milionário.',
+    image: '/lovable-uploads/jogos-corporativos/case13.png'
+  },
+  {
+    id: '84',
+    order: 14,
+    mystery: 'Um jardineiro desaparece enquanto trabalhava nos terrenos de uma antiga mansão.',
+    solution: 'Ele estava a limpar uma área coberta por vegetação densa e não viu um poço antigo e destapado, caindo para a morte.',
+    difficulty: 'easy',
+    theme: 'mystery',
+    name: 'O Sumiço do Jardineiro',
+    icon: 'tree',
+    title: 'O Poço Oculto',
+    description: 'Queda fatal no jardim.',
+    image: '/lovable-uploads/jogos-corporativos/case14.png'
+  },
+  {
+    id: '85',
+    order: 15,
+    mystery: 'Um operador de guindaste morre quando a sua máquina tomba. A perícia não encontra falhas mecânicas.',
+    solution: 'Um empreiteiro rival, durante a noite, encharcou o solo sob uma das sapatas de apoio do guindaste, tornando-o instável. O peso da primeira carga foi suficiente para fazer o guindaste tombar.',
+    difficulty: 'medium',
+    theme: 'murder',
+    name: 'A Carga Pesada',
+    icon: 'crane',
+    title: 'O Solo Sabotado',
+    description: 'Sabotagem do terreno de apoio.',
+    image: '/lovable-uploads/jogos-corporativos/case15.png'
+  },
+  {
+    id: '86',
+    order: 16,
+    mystery: 'Um executivo com fobia de abelhas morre de pânico na sua sala. Não há abelhas no escritório.',
+    solution: 'Um concorrente escondeu um pequeno dispositivo de som na sua sala que emitia um zumbido de abelha de baixa frequência, desencadeando um ataque de pânico fatal.',
+    difficulty: 'medium',
+    theme: 'murder',
+    name: 'O Zumbido na Sala',
+    icon: 'volume-2',
+    title: 'O Som da Morte',
+    description: 'Fobia explorada como arma.',
+    image: '/lovable-uploads/jogos-corporativos/case16.png'
+  },
+  {
+    id: '87',
+    order: 17,
+    mystery: 'Uma ameaça de bomba força a evacuação de um prédio. Nada explode, mas um protótipo valioso desaparece.',
+    solution: 'O ladrão fez a ameaça. Durante a evacuação, ele entrou no prédio vestido como um membro da brigada anti-bombas e roubou o protótipo.',
+    difficulty: 'medium',
+    theme: 'theft',
+    name: 'A Evacuação',
+    icon: 'bomb',
+    title: 'O Falso Alarme',
+    description: 'Roubo durante evacuação falsa.',
+    image: '/lovable-uploads/jogos-corporativos/case17.png'
+  },
+  {
+    id: '88',
+    order: 18,
+    mystery: 'Um tradutor a trabalhar numa conferência internacional é encontrado morto na sua cabine à prova de som.',
+    solution: 'Um agente secreto bloqueou a entrada de ar da ventilação da cabine. Sem que ninguém percebesse, o oxigénio foi-se esgotando lentamente.',
+    difficulty: 'medium',
+    theme: 'murder',
+    name: 'O Tradutor sem palavras',
+    icon: 'mic',
+    title: 'A Cabine Mortal',
+    description: 'Assassinato por asfixia silenciosa.',
+    image: '/lovable-uploads/jogos-corporativos/case18.png'
+  },
+  {
+    id: '89',
+    order: 19,
+    mystery: 'Um investidor arruinado suicida-se. Ele tinha acabado de vender todas as suas ações com prejuízo. No dia seguinte, as ações disparam.',
+    solution: 'Um grupo de manipuladores de mercado espalhou uma notícia falsa para causar pânico e comprar as ações a baixo preço.',
+    difficulty: 'hard',
+    theme: 'conspiracy',
+    name: 'A Notícia Falsa',
+    icon: 'trending-up',
+    title: 'A Manipulação do Mercado',
+    description: 'Suicídio por manipulação financeira.',
+    image: '/lovable-uploads/jogos-corporativos/case19.png'
+  },
+  {
+    id: '90',
+    order: 20,
+    mystery: 'Um homem é encontrado morto no elevador do seu escritório. As câmeras mostram que ele entrou sozinho.',
+    solution: 'Um colega programou o elevador para parar entre andares e depois ativou um gás venenoso através do sistema de ventilação do elevador.',
+    difficulty: 'hard',
+    theme: 'murder',
+    name: 'O Elevador da Morte',
+    icon: 'square',
+    title: 'A Armadilha Vertical',
+    description: 'Morte programada no elevador.',
+    image: '/lovable-uploads/jogos-corporativos/case20.png'
+  }
+];
+
+// Crimes Imperfeitos Cases
+const casesCrimesImperfeitos: Case[] = [
+  {
+    id: '91',
+    order: 1,
+    mystery: 'Um ladrão planeia roubar um banco mas morre eletrocutado antes mesmo de entrar.',
+    solution: 'Ele tentou cortar os fios do alarme no poste da rua, mas cortou os fios de alta tensão por engano.',
+    difficulty: 'easy',
+    theme: 'crime',
+    name: 'O Poste Fatal',
+    icon: 'zap',
+    title: 'O Erro Elétrico',
+    description: 'Um roubo que terminou antes de começar.',
+    image: '/lovable-uploads/crimes-imperfeitos/case1.png',
+    isFree: true
+  },
+  {
+    id: '92',
+    order: 2,
+    mystery: 'Um assassino contratado morre ao tentar envenenar a vítima.',
+    solution: 'Ele confundiu os frascos e bebeu o veneno que preparou para a vítima.',
+    difficulty: 'easy',
+    theme: 'murder',
+    name: 'A Troca Fatal',
+    icon: 'skull',
+    title: 'O Veneno Trocado',
+    description: 'O assassino que se tornou vítima.',
+    image: '/lovable-uploads/crimes-imperfeitos/case2.png'
+  },
+  {
+    id: '93',
+    order: 3,
+    mystery: 'Um sequestrador morre no próprio cativeiro que preparou.',
+    solution: 'Ele testou as algemas na própria mão e perdeu a chave. Ficou preso e morreu de desidratação.',
+    difficulty: 'medium',
+    theme: 'crime',
+    name: 'O Cativeiro Reverso',
+    icon: 'lock',
+    title: 'As Algemas do Algoz',
+    description: 'O sequestrador que se aprisionou.',
+    image: '/lovable-uploads/crimes-imperfeitos/case3.png'
+  },
+  {
+    id: '94',
+    order: 4,
+    mystery: 'Um incendiário morre queimado no fogo que ele próprio ateou.',
+    solution: 'Ele usou gasolina demais e as chamas se espalharam mais rápido do que esperava, bloqueando sua única saída.',
+    difficulty: 'medium',
+    theme: 'crime',
+    name: 'O Fogo Descontrolado',
+    icon: 'flame',
+    title: 'As Chamas da Vingança',
+    description: 'Queimado pelo próprio fogo.',
+    image: '/lovable-uploads/crimes-imperfeitos/case4.png'
+  },
+  {
+    id: '95',
+    order: 5,
+    mystery: 'Um falsificador morre intoxicado em sua oficina.',
+    solution: 'Ele inalou vapores tóxicos dos produtos químicos que usava para envelhecer documentos falsos.',
+    difficulty: 'easy',
+    theme: 'crime',
+    name: 'A Tinta Mortal',
+    icon: 'pen',
+    title: 'Os Vapores Letais',
+    description: 'Morto pela própria falsificação.',
+    image: '/lovable-uploads/crimes-imperfeitos/case5.png'
+  },
+  {
+    id: '96',
+    order: 6,
+    mystery: 'Um chantagista morre antes de receber o dinheiro do chantageado.',
+    solution: 'Ele escolheu um local abandonado para o encontro, mas caiu em um buraco coberto por vegetação.',
+    difficulty: 'medium',
+    theme: 'crime',
+    name: 'A Queda do Chantagista',
+    icon: 'envelope',
+    title: 'O Local Perigoso',
+    description: 'Chantagem que virou tragédia.',
+    image: '/lovable-uploads/crimes-imperfeitos/case6.png'
+  },
+  {
+    id: '97',
+    order: 7,
+    mystery: 'Um contrabandista morre esmagado pela própria carga.',
+    solution: 'Ele sobrecarregou seu caminhão e não amarrou a carga adequadamente. Em uma curva, tudo desabou sobre ele.',
+    difficulty: 'medium',
+    theme: 'crime',
+    name: 'A Carga Pesada',
+    icon: 'truck',
+    title: 'O Peso da Ganância',
+    description: 'Esmagado pela própria ambição.',
+    image: '/lovable-uploads/crimes-imperfeitos/case7.png'
+  },
+  {
+    id: '98',
+    order: 8,
+    mystery: 'Um ladrão de carros morre em um acidente com o carro que acabou de roubar.',
+    solution: 'Ele não sabia que o carro tinha freios defeituosos, exatamente o motivo pelo qual o dono queria se livrar dele.',
+    difficulty: 'easy',
+    theme: 'theft',
+    name: 'Os Freios Traiçoeiros',
+    icon: 'car',
+    title: 'O Carro Armadilha',
+    description: 'Roubo de um carro com defeito mortal.',
+    image: '/lovable-uploads/crimes-imperfeitos/case8.png'
+  },
+  {
+    id: '99',
+    order: 9,
+    mystery: 'Um estelionatário morre de ataque cardíaco durante o próprio golpe.',
+    solution: 'Ele sofria de ansiedade extrema e a tensão de executar o golpe desencadeou um ataque cardíaco fatal.',
+    difficulty: 'medium',
+    theme: 'crime',
+    name: 'O Coração do Golpista',
+    icon: 'heart',
+    title: 'A Tensão Fatal',
+    description: 'Morto pela própria ansiedade.',
+    image: '/lovable-uploads/crimes-imperfeitos/case9.png'
+  },
+  {
+    id: '100',
+    order: 10,
+    mystery: 'Um sabotador morre explodido pela bomba que plantou.',
+    solution: 'Ele errou o cálculo do temporizador e programou 10 segundos em vez de 10 minutos.',
+    difficulty: 'hard',
+    theme: 'crime',
+    name: 'O Tempo Perdido',
+    icon: 'bomb',
+    title: 'O Erro de Cálculo',
+    description: 'Explodido pela própria bomba.',
+    image: '/lovable-uploads/crimes-imperfeitos/case10.png'
+  },
+  {
+    id: '101',
+    order: 11,
+    mystery: 'Um vigarista morre afogado tentando escapar da polícia.',
+    solution: 'Ele pulou em um rio pensando que sabia nadar, mas nunca havia aprendido realmente.',
+    difficulty: 'easy',
+    theme: 'crime',
+    name: 'O Mergulho Fatal',
+    icon: 'waves',
+    title: 'A Fuga Aquática',
+    description: 'Afogado na própria mentira.',
+    image: '/lovable-uploads/crimes-imperfeitos/case11.png'
+  },
+  {
+    id: '102',
+    order: 12,
+    mystery: 'Um assaltante morre preso no cofre que tentava roubar.',
+    solution: 'Ele entrou no cofre mas não sabia que só abria por dentro com uma chave especial que estava do lado externo.',
+    difficulty: 'medium',
+    theme: 'theft',
+    name: 'O Cofre-Prisão',
+    icon: 'safe',
+    title: 'A Armadilha Dourada',
+    description: 'Preso no próprio objetivo.',
+    image: '/lovable-uploads/crimes-imperfeitos/case12.png'
+  },
+  {
+    id: '103',
+    order: 13,
+    mystery: 'Um traficante morre envenenado pelas próprias drogas.',
+    solution: 'Ele misturou produtos químicos tóxicos para "cortar" a droga e aumentar o lucro, mas inalou os vapores.',
+    difficulty: 'medium',
+    theme: 'crime',
+    name: 'A Mistura Letal',
+    icon: 'flask',
+    title: 'O Corte Mortal',
+    description: 'Intoxicado pela própria ganância.',
+    image: '/lovable-uploads/crimes-imperfeitos/case13.png'
+  },
+  {
+    id: '104',
+    order: 14,
+    mystery: 'Um golpista de seguros morre no "acidente" que forjou.',
+    solution: 'Ele planejou um acidente falso, mas subestimou a força do impacto e morreu de verdade.',
+    difficulty: 'hard',
+    theme: 'crime',
+    name: 'O Acidente Real',
+    icon: 'car-crash',
+    title: 'A Encenação Fatal',
+    description: 'Morto no próprio teatro.',
+    image: '/lovable-uploads/crimes-imperfeitos/case14.png'
+  },
+  {
+    id: '105',
+    order: 15,
+    mystery: 'Um hacker morre eletrocutado pelo próprio computador.',
+    solution: 'Ele modificou ilegalmente a fonte de energia do computador para mais potência, criando uma instalação perigosa.',
+    difficulty: 'medium',
+    theme: 'crime',
+    name: 'O Código Mortal',
+    icon: 'computer',
+    title: 'A Fonte Explosiva',
+    description: 'Hackeado pela própria máquina.',
+    image: '/lovable-uploads/crimes-imperfeitos/case15.png'
+  },
+  {
+    id: '106',
+    order: 16,
+    mystery: 'Um assassino de aluguel morre com a arma que preparou.',
+    solution: 'Ele montou uma armadilha com uma arma de fogo, mas testou o mecanismo apontando para si mesmo.',
+    difficulty: 'medium',
+    theme: 'murder',
+    name: 'O Teste Fatal',
+    icon: 'target',
+    title: 'A Armadilha Reversa',
+    description: 'Testou a morte em si mesmo.',
+    image: '/lovable-uploads/crimes-imperfeitos/case16.png'
+  },
+  {
+    id: '107',
+    order: 17,
+    mystery: 'Um pirata de software morre em casa durante uma tempestade.',
+    solution: 'Ele estava baixando software pirata durante uma tempestade e foi atingido por um raio que entrou pela conexão de internet.',
+    difficulty: 'hard',
+    theme: 'crime',
+    name: 'O Raio Digital',
+    icon: 'cloud-lightning',
+    title: 'A Pirataria Elétrica',
+    description: 'Fulminado pela própria pirataria.',
+    image: '/lovable-uploads/crimes-imperfeitos/case17.png'
+  },
+  {
+    id: '108',
+    order: 18,
+    mystery: 'Um ladrão de arte morre esmagado pela obra que roubou.',
+    solution: 'Ele tentou roubar uma escultura de mármore massiva sozinho e ela caiu sobre ele.',
+    difficulty: 'easy',
+    theme: 'theft',
+    name: 'A Arte Pesada',
+    icon: 'palette',
+    title: 'A Escultura Vingativa',
+    description: 'Esmagado pela própria ambição artística.',
+    image: '/lovable-uploads/crimes-imperfeitos/case18.png'
+  },
+  {
+    id: '109',
+    order: 19,
+    mystery: 'Um espião morre envenenado pela própria caneta-veneno.',
+    solution: 'Ele mordiscou nervosamente a caneta durante uma missão e ativou acidentalmente o mecanismo de veneno.',
+    difficulty: 'medium',
+    theme: 'murder',
+    name: 'A Caneta Traiçoeira',
+    icon: 'pen',
+    title: 'O Hábito Mortal',
+    description: 'Morto pelo próprio nervosismo.',
+    image: '/lovable-uploads/crimes-imperfeitos/case19.png'
+  },
+  {
+    id: '110',
+    order: 20,
+    mystery: 'Um criminoso morre tentando destruir evidências.',
+    solution: 'Ele tentou queimar documentos no próprio apartamento, mas o fogo se espalhou e ele morreu na fumaça.',
+    difficulty: 'medium',
+    theme: 'crime',
+    name: 'As Cinzas da Culpa',
+    icon: 'fire',
+    title: 'A Destruição Destrutiva',
+    description: 'Queimado pelas próprias evidências.',
+    image: '/lovable-uploads/crimes-imperfeitos/case20.png'
+  }
+];
+
+// Empty arrays for remaining packs that need implementation
+const casesAbsurdamenteReal: Case[] = [];
+const casesSussurrosDoAlem: Case[] = [];
+const casesSombrasDaNoite: Case[] = [];
+const casesLendasUrbanas: Case[] = [];
+const casesParadoxosMortais: Case[] = [];
+const casesDossieConfidencial: Case[] = [];
+const casesDoseLetal: Case[] = [];
+const casesFimDeJogo: Case[] = [];
+
 export const packs: Pack[] = [
   {
     id: 'pack1',
@@ -716,6 +1525,116 @@ export const packs: Pack[] = [
     image: '/lovable-uploads/pack5.png',
     category: 'regular',
     cases: casesPack5
+  },
+  {
+    id: 'labirintos-mentais',
+    name: 'Labirintos Mentais',
+    description: 'Casos focados em psicologia, ilusões, fobias e o estado mental das vítimas.',
+    price: 14.80,
+    difficulty: 'hard',
+    image: '/lovable-uploads/labirintos-mentais.png',
+    category: 'regular',
+    cases: casesLabirintosMentais
+  },
+  {
+    id: 'jogos-corporativos',
+    name: 'Jogos Corporativos',
+    description: 'Mistérios no mundo empresarial: espionagem, fraudes e traições em arranha-céus e escritórios.',
+    price: 14.80,
+    difficulty: 'medium',
+    image: '/lovable-uploads/jogos-corporativos.png',
+    category: 'regular',
+    cases: casesJogosCorporativos
+  },
+  {
+    id: 'crimes-imperfeitos',
+    name: 'Crimes Imperfeitos',
+    description: 'Planos criminosos que saíram pela culatra.',
+    price: 14.80,
+    difficulty: 'medium',
+    image: '/lovable-uploads/crimes-imperfeitos.png',
+    category: 'regular',
+    cases: casesCrimesImperfeitos
+  },
+  {
+    id: 'absurdamente-real',
+    name: 'Absurdamente Real',
+    description: 'Casos surreais baseados em fatos reais.',
+    price: 14.80,
+    difficulty: 'hard',
+    image: '/lovable-uploads/absurdamente-real.png',
+    category: 'regular',
+    cases: casesAbsurdamenteReal
+  },
+  {
+    id: 'sussurros-do-alem',
+    name: 'Sussurros do Além',
+    description: 'Casos sobrenaturais com explicações racionais.',
+    price: 14.80,
+    difficulty: 'medium',
+    image: '/lovable-uploads/sussurros-do-alem.png',
+    category: 'regular',
+    cases: casesSussurrosDoAlem
+  },
+  {
+    id: 'sombras-da-noite',
+    name: 'Sombras da Noite',
+    description: 'Casos noturnos cheios de mistério.',
+    price: 14.80,
+    difficulty: 'medium',
+    image: '/lovable-uploads/sombras-da-noite.png',
+    category: 'regular',
+    cases: casesSombrasDaNoite
+  },
+  {
+    id: 'lendas-urbanas',
+    name: 'Lendas Urbanas',
+    description: 'Casos baseados em mitos urbanos.',
+    price: 14.80,
+    difficulty: 'easy',
+    image: '/lovable-uploads/lendas-urbanas.png',
+    category: 'regular',
+    cases: casesLendasUrbanas
+  },
+  {
+    id: 'paradoxos-mortais',
+    name: 'Paradoxos Mortais',
+    description: 'Casos que desafiam a lógica.',
+    price: 14.80,
+    difficulty: 'hard',
+    image: '/lovable-uploads/paradoxos-mortais.png',
+    category: 'regular',
+    cases: casesParadoxosMortais
+  },
+  {
+    id: 'dossie-confidencial',
+    name: 'Dossiê Confidencial',
+    description: 'Casos de espionagem e segredos de estado.',
+    price: 14.80,
+    difficulty: 'hard',
+    image: '/lovable-uploads/dossie-confidencial.png',
+    category: 'regular',
+    cases: casesDossieConfidencial
+  },
+  {
+    id: 'dose-letal',
+    name: 'Dose Letal',
+    description: 'Casos envolvendo substâncias tóxicas.',
+    price: 14.80,
+    difficulty: 'medium',
+    image: '/lovable-uploads/dose-letal.png',
+    category: 'regular',
+    cases: casesDoseLetal
+  },
+  {
+    id: 'fim-de-jogo',
+    name: 'Fim de Jogo',
+    description: 'Casos estratégicos como uma partida de xadrez.',
+    price: 14.80,
+    difficulty: 'hard',
+    image: '/lovable-uploads/fim-de-jogo.png',
+    category: 'regular',
+    cases: casesFimDeJogo
   },
   {
     id: 'combo',
