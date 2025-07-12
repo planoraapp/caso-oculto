@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from '../components/ui/card';
@@ -45,8 +44,20 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
 
           const userPackData = (allPacks || [])
             .map(pack => {
-              if (pack) {
-                return { ...pack, owned: true };
+              if (pack && typeof pack === 'object') {
+                return {
+                  id: pack.id,
+                  name: pack.name,
+                  description: pack.description,
+                  image: pack.image,
+                  price: pack.price,
+                  difficulty: pack.difficulty,
+                  category: pack.category,
+                  created_at: pack.created_at,
+                  updated_at: pack.updated_at,
+                  cases: pack.cases,
+                  owned: true
+                };
               }
               return null;
             })
@@ -77,17 +88,18 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
           const userPackData = (packAccess || [])
             .map(access => {
               if (access.packs && typeof access.packs === 'object') {
+                const pack = access.packs;
                 return { 
-                  id: access.packs.id,
-                  name: access.packs.name,
-                  description: access.packs.description,
-                  image: access.packs.image,
-                  price: access.packs.price,
-                  difficulty: access.packs.difficulty,
-                  category: access.packs.category,
-                  created_at: access.packs.created_at,
-                  updated_at: access.packs.updated_at,
-                  cases: access.packs.cases,
+                  id: pack.id,
+                  name: pack.name,
+                  description: pack.description,
+                  image: pack.image,
+                  price: pack.price,
+                  difficulty: pack.difficulty,
+                  category: pack.category,
+                  created_at: pack.created_at,
+                  updated_at: pack.updated_at,
+                  cases: pack.cases,
                   owned: true 
                 };
               }
