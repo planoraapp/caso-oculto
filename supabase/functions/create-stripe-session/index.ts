@@ -137,7 +137,7 @@ serve(async (req) => {
         if (couponCode && DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS]) {
           const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
           if (coupon.discount_type === 'percentage') {
-            unitAmount = Math.max(1, Math.round(unitAmount * (100 - coupon.discount_value) / 100));
+            unitAmount = Math.max(50, Math.round(unitAmount * (100 - coupon.discount_value) / 100));
           }
           sessionMetadata.coupon_code = couponCode.toUpperCase();
           logStep("Applied default coupon", { coupon: couponCode, newAmount: unitAmount });
@@ -177,7 +177,7 @@ serve(async (req) => {
         if (couponCode && DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS]) {
           const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
           if (coupon.discount_type === 'percentage') {
-            totalComboAmount = Math.max(1, Math.round(totalComboAmount * (100 - coupon.discount_value) / 100));
+            totalComboAmount = Math.max(50, Math.round(totalComboAmount * (100 - coupon.discount_value) / 100));
           }
           sessionMetadata.coupon_code = couponCode.toUpperCase();
           logStep("Applied default coupon to combo", { coupon: couponCode, newAmount: totalComboAmount });
@@ -205,7 +205,7 @@ serve(async (req) => {
         if (couponCode && DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS]) {
           const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
           if (coupon.discount_type === 'percentage') {
-            completeAmount = Math.max(1, Math.round(completeAmount * (100 - coupon.discount_value) / 100));
+            completeAmount = Math.max(50, Math.round(completeAmount * (100 - coupon.discount_value) / 100));
           }
           sessionMetadata.coupon_code = couponCode.toUpperCase();
           logStep("Applied default coupon to complete", { coupon: couponCode, newAmount: completeAmount });
