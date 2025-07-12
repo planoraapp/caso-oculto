@@ -8,7 +8,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-// Enhanced logging function
+// Enhanced logging function with more detail
 const logStep = (step: string, details?: any) => {
   const timestamp = new Date().toISOString();
   const detailsStr = details ? ` - ${JSON.stringify(details, null, 2)}` : '';
@@ -64,7 +64,8 @@ serve(async (req) => {
         sessionId: session.id,
         paymentStatus: session.payment_status,
         customerEmail: session.customer_email,
-        amountTotal: session.amount_total
+        amountTotal: session.amount_total,
+        metadata: session.metadata
       });
 
       const supabaseUrl = Deno.env.get('SUPABASE_URL')
@@ -85,8 +86,77 @@ serve(async (req) => {
         .single()
 
       if (sessionError || !paymentSession) {
-        logStep('Payment session not found', { sessionId: session.id, error: sessionError });
-        return new Response('Session not found', { status: 404 })
+        logStep('Payment session not found in database', { 
+          sessionId: session.id, 
+          error: sessionError,
+          searchAttempted: true 
+        });
+        
+        // Tentar encontrar por email se não encontrou por session_id
+        if (session.customer_email) {
+          logStep('Attempting to find user by email', { email: session.customer_email });
+          
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('id, email')
+            .eq('email', session.customer_email)
+            .single()
+            
+          if (profile) {
+            logStep('Found user profile, creating missing payment session', { 
+              userId: profile.id, 
+              email: profile.email 
+            });
+            
+            // Determinar tipo de pagamento baseado no valor
+            let paymentType = 'individual';
+            let packIds: string[] = [];
+            
+            const amount = session.amount_total || 0;
+            if (amount <= 100) { // R$ 1.00 ou menos = combo
+              paymentType = 'combo';
+              packIds = ['pack-01', 'pack-04', 'pack-05', 'pack-06', 'pack-07'];
+            } else if (amount >= 7400) { // R$ 74.00 = complete
+              paymentType = 'complete';
+              const { data: allPacks } = await supabase
+                .from('packs')
+                .select('id')
+                .neq('id', 'pack-03');
+              packIds = allPacks?.map(p => p.id) || [];
+            } else {
+              paymentType = 'individual';
+              packIds = ['pack-01']; // Default para pack individual
+            }
+            
+            // Criar sessão de pagamento retroativa
+            const { data: newSession, error: createError } = await supabase
+              .from('payment_sessions')
+              .insert({
+                user_id: profile.id,
+                stripe_session_id: session.id,
+                payment_type: paymentType,
+                selected_pack_ids: paymentType === 'combo' ? packIds : null,
+                pack_id: paymentType === 'individual' ? packIds[0] : null,
+                status: 'approved',
+                mercadopago_preference_id: `stripe_${session.id}`,
+                created_at: new Date().toISOString()
+              })
+              .select()
+              .single();
+              
+            if (createError) {
+              logStep('Error creating retroactive payment session', { error: createError });
+            } else {
+              logStep('Created retroactive payment session', { newSession });
+              // Continuar o processamento com a nova sessão
+              paymentSession = newSession;
+            }
+          }
+        }
+        
+        if (!paymentSession) {
+          return new Response('Session not found and could not be created', { status: 404 })
+        }
       }
 
       logStep('Found payment session', { 
@@ -98,8 +168,28 @@ serve(async (req) => {
 
       // Verificar se já foi processado (idempotência)
       if (paymentSession.status === 'approved') {
-        logStep('Session already processed - skipping', { sessionId: session.id });
-        return new Response('Already processed', { status: 200 })
+        logStep('Session already processed - but verifying pack access', { sessionId: session.id });
+        
+        // Verificar se o usuário já tem acesso aos packs
+        const { data: existingAccess } = await supabase
+          .from('user_pack_access')
+          .select('pack_id')
+          .eq('user_id', paymentSession.user_id)
+          .eq('is_active', true);
+          
+        const hasAccess = existingAccess && existingAccess.length > 0;
+        logStep('Existing pack access check', { 
+          hasAccess, 
+          accessCount: existingAccess?.length || 0,
+          packIds: existingAccess?.map(a => a.pack_id) || []
+        });
+        
+        if (!hasAccess) {
+          logStep('No pack access found, reprocessing grants');
+          // Continuar para reprocessar os grants
+        } else {
+          return new Response('Already processed with pack access verified', { status: 200 })
+        }
       }
 
       // Atualizar status da sessão de pagamento
@@ -129,14 +219,15 @@ serve(async (req) => {
         logStep('Compras table updated successfully');
       }
 
-      // Determinar quais packs liberar
+      // Determinar quais packs liberar baseado no tipo de pagamento
       let packIds = []
       if (paymentSession.payment_type === 'individual') {
         packIds = [paymentSession.pack_id]
         logStep('Individual purchase - releasing single pack', { packId: paymentSession.pack_id });
       } else if (paymentSession.payment_type === 'combo') {
-        packIds = paymentSession.selected_pack_ids || []
-        logStep('Combo purchase - releasing multiple packs', { packIds });
+        // Para combo, sempre liberar os 5 packs específicos
+        packIds = ['pack-01', 'pack-04', 'pack-05', 'pack-06', 'pack-07']
+        logStep('Combo purchase - releasing 5 specific packs', { packIds });
       } else if (paymentSession.payment_type === 'complete') {
         // Get all pack IDs except pack-03
         const { data: allPacks } = await supabase
@@ -218,7 +309,8 @@ serve(async (req) => {
       logStep('Payment processing completed successfully', { 
         userId: paymentSession.user_id,
         sessionId: session.id,
-        packsGranted: packIds.length
+        packsGranted: packIds.length,
+        finalPackIds: packIds
       });
     }
 

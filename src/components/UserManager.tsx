@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { supabase } from '../integrations/supabase/client';
 import { useToast } from '../hooks/use-toast';
 import UserCard from './user-manager/UserCard';
 import { User as SupabaseUser } from '@supabase/supabase-js';
-import { RefreshCw, Zap } from 'lucide-react';
+import { RefreshCw, Zap, Wrench } from 'lucide-react';
 
 interface UserPackAccess {
   id: string;
@@ -32,6 +31,7 @@ const UserManager: React.FC = () => {
   const [paymentSessions, setPaymentSessions] = useState<PaymentSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
+  const [fixing, setFixing] = useState(false);
   const [editingUser, setEditingUser] = useState<string | null>(null);
   const [newPackId, setNewPackId] = useState('');
   const { toast } = useToast();
@@ -129,6 +129,34 @@ const UserManager: React.FC = () => {
       });
     } finally {
       setSyncing(false);
+    }
+  };
+
+  const fixUserPacks = async (userEmail: string) => {
+    try {
+      setFixing(true);
+      const { data, error } = await supabase.functions.invoke('fix-user-packs', {
+        body: { userEmail }
+      });
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Packs Corrigidos",
+        description: `Packs corrigidos para ${userEmail}: ${data.packsGranted?.length || 0} packs liberados`,
+      });
+      
+      // Recarregar dados
+      await loadAllData();
+    } catch (error) {
+      console.error('Error fixing user packs:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao corrigir packs do usuário",
+        variant: "destructive"
+      });
+    } finally {
+      setFixing(false);
     }
   };
 
@@ -234,6 +262,18 @@ const UserManager: React.FC = () => {
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-case-white">Gerenciar Usuários</h2>
         <div className="flex gap-2">
+          <Button 
+            onClick={() => fixUserPacks('roquematheus@live.com')} 
+            disabled={fixing}
+            className="bg-orange-600 hover:bg-orange-700"
+          >
+            {fixing ? (
+              <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Wrench className="h-4 w-4 mr-2" />
+            )}
+            Corrigir Packs Roque
+          </Button>
           <Button 
             onClick={syncStripePayments} 
             disabled={syncing}

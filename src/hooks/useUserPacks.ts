@@ -139,19 +139,19 @@ export const useUserPacks = (user: any): UseUserPacksReturn => {
             return;
           }
 
-          // Fetch pack details
+          // Fetch pack details - Excluir packs descontinuados da biblioteca
           const { data: packs, error: packsError } = await supabase
             .from('packs')
             .select('*')
             .in('id', Array.from(packIds))
-            .neq('id', 'pack-03');
+            .not('id', 'in', '("pack-02","pack-03")'); // Excluir packs descontinuados
 
           if (packsError) {
             console.error('Error fetching pack details:', packsError);
             throw packsError;
           }
 
-          console.log('Pack details fetched:', packs?.length || 0);
+          console.log('Pack details fetched (excluding discontinued):', packs?.length || 0);
 
           const userPackData = (packs || [])
             .map(pack => {
@@ -173,7 +173,13 @@ export const useUserPacks = (user: any): UseUserPacksReturn => {
               };
             });
 
-          console.log('Final user packs loaded:', userPackData.length);
+          // Se o usuário tem acesso aos packs descontinuados, mostrar aviso
+          const hasDiscontinuedPacks = Array.from(packIds).some(id => id === 'pack-02' || id === 'pack-03');
+          if (hasDiscontinuedPacks) {
+            console.log('User has access to discontinued packs (pack-02, pack-03) - these are hidden from library');
+          }
+
+          console.log('Final user packs loaded (active only):', userPackData.length);
           setUserPacks(userPackData);
         }
       } catch (error) {
