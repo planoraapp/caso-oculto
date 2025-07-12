@@ -47,7 +47,7 @@ export const useUserPacks = (user: any): UseUserPacksReturn => {
                   description: pack.description,
                   image: pack.image,
                   price: pack.price,
-                  difficulty: pack.difficulty,
+                  difficulty: pack.difficulty as 'easy' | 'medium' | 'hard',
                   category: pack.category,
                   created_at: pack.created_at,
                   updated_at: pack.updated_at,
@@ -69,7 +69,17 @@ export const useUserPacks = (user: any): UseUserPacksReturn => {
             .from('user_pack_access')
             .select(`
               pack_id,
-              packs!inner(*)
+              packs (
+                id,
+                name,
+                description,
+                image,
+                price,
+                difficulty,
+                category,
+                created_at,
+                updated_at
+              )
             `)
             .eq('user_id', user.id)
             .eq('is_active', true);
@@ -83,24 +93,23 @@ export const useUserPacks = (user: any): UseUserPacksReturn => {
 
           const userPackData = (packAccess || [])
             .map(access => {
-              if (access.packs && typeof access.packs === 'object') {
-                const pack = access.packs;
-                if (pack) {
-                  const cases = getPackCases(pack.id) || [];
-                  return { 
-                    id: pack.id,
-                    name: pack.name,
-                    description: pack.description,
-                    image: pack.image,
-                    price: pack.price,
-                    difficulty: pack.difficulty,
-                    category: pack.category,
-                    created_at: pack.created_at,
-                    updated_at: pack.updated_at,
-                    cases: cases,
-                    owned: true 
-                  };
-                }
+              // Type assertion to help TypeScript understand the structure
+              const pack = access.packs as any;
+              if (pack && typeof pack === 'object') {
+                const cases = getPackCases(pack.id) || [];
+                return { 
+                  id: pack.id,
+                  name: pack.name,
+                  description: pack.description,
+                  image: pack.image,
+                  price: pack.price,
+                  difficulty: pack.difficulty as 'easy' | 'medium' | 'hard',
+                  category: pack.category,
+                  created_at: pack.created_at,
+                  updated_at: pack.updated_at,
+                  cases: cases,
+                  owned: true 
+                };
               }
               return null;
             })
