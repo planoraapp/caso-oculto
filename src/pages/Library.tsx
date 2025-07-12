@@ -9,6 +9,7 @@ import LoadingState from '../components/common/LoadingState';
 import EmptyState from '../components/common/EmptyState';
 import ProgressBar from '../components/common/ProgressBar';
 import SiteFooter from '../components/SiteFooter';
+import { getPackCases } from '../data/cases';
 
 interface LibraryProps {
   user: any;
@@ -45,6 +46,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
           const userPackData = (allPacks || [])
             .map(pack => {
               if (pack && typeof pack === 'object') {
+                const cases = getPackCases(pack.id) || [];
                 return {
                   id: pack.id,
                   name: pack.name,
@@ -55,7 +57,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
                   category: pack.category,
                   created_at: pack.created_at,
                   updated_at: pack.updated_at,
-                  cases: pack.cases,
+                  cases: cases,
                   owned: true
                 };
               }
@@ -89,6 +91,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
             .map(access => {
               if (access.packs && typeof access.packs === 'object') {
                 const pack = access.packs;
+                const cases = getPackCases(pack.id) || [];
                 return { 
                   id: pack.id,
                   name: pack.name,
@@ -99,7 +102,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
                   category: pack.category,
                   created_at: pack.created_at,
                   updated_at: pack.updated_at,
-                  cases: pack.cases,
+                  cases: cases,
                   owned: true 
                 };
               }
