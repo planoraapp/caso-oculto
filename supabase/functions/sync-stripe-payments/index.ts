@@ -108,8 +108,7 @@ serve(async (req) => {
           } else if (session.payment_type === 'complete') {
             const { data: allPacks } = await supabase
               .from('packs')
-              .select('id')
-              .neq('id', 'pack-03');
+              .select('id');
             packIds = allPacks?.map(p => p.id) || [];
 
             // Set complete access

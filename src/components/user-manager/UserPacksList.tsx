@@ -18,23 +18,21 @@ interface UserPacksListProps {
 
 // Mapeamento correto dos pack IDs para nomes
 const packNames: { [key: string]: string } = {
-  'pack-01': 'Mistérios Clássicos',
-  'pack-02': 'Enigmas Modernos', // Pack descontinuado
-  'pack-03': 'Sussurros do Além', // Pack descontinuado  
-  'pack-04': 'Sombras da Noite',
-  'pack-05': 'Crimes Imperfeitos',
-  'pack-06': 'Lendas Urbanas',
-  'pack-07': 'Paradoxos Mortais',
-  'pack-08': 'Labirintos Mentais',
-  'pack-09': 'Ironias do Destino',
-  'pack-10': 'Viagem sem Volta',
-  'pack-11': 'Fim de Jogo',
-  'pack-12': 'Jogos Corporativos',
-  'pack-13': 'Beco sem Saída',
-  'pack-14': 'Crimes de Época',
-  'pack-15': 'Dose Letal',
-  'pack-16': 'Absurdamente Real',
-  'pack-17': 'Dossiê Confidencial'
+  'sussurros-do-alem': 'Sussurros do Além',
+  'sombras-da-noite': 'Sombras da Noite',
+  'crimes-imperfeitos': 'Crimes Imperfeitos',
+  'lendas-urbanas': 'Lendas Urbanas',
+  'paradoxos-mortais': 'Paradoxos Mortais',
+  'labirintos-mentais': 'Labirintos Mentais',
+  'jogos-corporativos': 'Jogos Corporativos',
+  'ironias-do-destino': 'Ironias do Destino',
+  'beco-sem-saida': 'Beco sem Saída',
+  'crimes-de-epoca': 'Crimes de Época',
+  'viagem-sem-volta': 'Viagem sem Volta',
+  'dossie-confidencial': 'Dossiê Confidencial',
+  'dose-letal': 'Dose Letal',
+  'fim-de-jogo': 'Fim de Jogo',
+  'absurdamente-real': 'Absurdamente Real'
 };
 
 const UserPacksList: React.FC<UserPacksListProps> = ({ userPacks, onRemovePack }) => {
@@ -45,20 +43,15 @@ const UserPacksList: React.FC<UserPacksListProps> = ({ userPacks, onRemovePack }
         {userPacks.length > 0 ? (
           userPacks.map((access) => {
             const packName = packNames[access.pack_id] || access.pack_id;
-            const isDiscontinued = access.pack_id === 'pack-02' || access.pack_id === 'pack-03';
+            const isDiscontinued = false; // Não há mais packs descontinuados com os novos IDs
             
             return (
               <Badge 
                 key={access.id} 
                 variant="secondary" 
-                className={`flex items-center gap-1 ${
-                  isDiscontinued 
-                    ? 'bg-orange-600 text-white' 
-                    : 'bg-green-600 text-white'
-                }`}
+                className="flex items-center gap-1 bg-green-600 text-white"
               >
                 {packName}
-                {isDiscontinued && ' (Descontinuado)'}
                 <button
                   onClick={() => onRemovePack(access.id)}
                   className="ml-1 hover:text-red-300"

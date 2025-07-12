@@ -115,17 +115,16 @@ serve(async (req) => {
             const amount = session.amount_total || 0;
             if (amount <= 100) { // R$ 1.00 ou menos = combo
               paymentType = 'combo';
-              packIds = ['pack-01', 'pack-04', 'pack-05', 'pack-06', 'pack-07'];
+              packIds = ['labirintos-mentais', 'crimes-imperfeitos', 'lendas-urbanas', 'paradoxos-mortais', 'sombras-da-noite'];
             } else if (amount >= 7400) { // R$ 74.00 = complete
               paymentType = 'complete';
               const { data: allPacks } = await supabase
                 .from('packs')
-                .select('id')
-                .neq('id', 'pack-03');
+                .select('id');
               packIds = allPacks?.map(p => p.id) || [];
             } else {
               paymentType = 'individual';
-              packIds = ['pack-01']; // Default para pack individual
+              packIds = ['labirintos-mentais']; // Default para pack individual
             }
             
             // Criar sessão de pagamento retroativa
@@ -226,14 +225,13 @@ serve(async (req) => {
         logStep('Individual purchase - releasing single pack', { packId: paymentSession.pack_id });
       } else if (paymentSession.payment_type === 'combo') {
         // Para combo, sempre liberar os 5 packs específicos
-        packIds = ['pack-01', 'pack-04', 'pack-05', 'pack-06', 'pack-07']
+        packIds = ['labirintos-mentais', 'crimes-imperfeitos', 'lendas-urbanas', 'paradoxos-mortais', 'sombras-da-noite']
         logStep('Combo purchase - releasing 5 specific packs', { packIds });
       } else if (paymentSession.payment_type === 'complete') {
-        // Get all pack IDs except pack-03
+        // Get all pack IDs
         const { data: allPacks } = await supabase
           .from('packs')
           .select('id')
-          .neq('id', 'pack-03')
         packIds = allPacks?.map(p => p.id) || []
         
         // Set acesso_total flag for complete access

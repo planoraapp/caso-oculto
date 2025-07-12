@@ -77,21 +77,22 @@ serve(async (req) => {
 
     logStep('Found user profile', { userId: profile.id, email: profile.email });
 
-    // Remover acessos antigos aos packs pack-02 e pack-03
+    // Remover acessos antigos - função não é mais necessária pois os pack IDs antigos foram limpos
+    // mas mantemos para compatibilidade
     const { error: removeError } = await supabase
       .from('user_pack_access')
       .update({ is_active: false, revoked_at: new Date().toISOString() })
       .eq('user_id', profile.id)
-      .in('pack_id', ['pack-02', 'pack-03']);
+      .in('pack_id', ['pack-01', 'pack-02', 'pack-03', 'pack-04', 'pack-05', 'pack-06', 'pack-07']);
 
     if (removeError) {
       logStep('Error removing old pack access', { error: removeError });
     } else {
-      logStep('Removed access to old packs pack-02 and pack-03');
+      logStep('Removed access to old pack IDs');
     }
 
-    // Liberar os packs corretos do combo (5 packs)
-    const comboPacks = ['pack-01', 'pack-04', 'pack-05', 'pack-06', 'pack-07'];
+    // Liberar os packs corretos do combo (5 packs com novos IDs)
+    const comboPacks = ['labirintos-mentais', 'crimes-imperfeitos', 'lendas-urbanas', 'paradoxos-mortais', 'sombras-da-noite'];
     
     for (const packId of comboPacks) {
       const { error: accessError } = await supabase
