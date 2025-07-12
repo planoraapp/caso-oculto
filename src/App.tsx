@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import Terms from './pages/Terms';
 import AdminPanel from './pages/AdminPanel';
 import Account from './pages/Account';
+import EmailConfirmed from './pages/EmailConfirmed';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { useAffiliate } from './hooks/useAffiliate';
 import './App.css';
@@ -43,6 +44,7 @@ const AppContent: React.FC = () => {
           <Route path="/terms" element={<Terms />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<AdminPanel user={user} />} />
+          <Route path="/email-confirmed" element={<EmailConfirmed />} />
         </Routes>
       </Router>
       <Toaster />
