@@ -6,6 +6,7 @@ import EmptyState from '../components/common/EmptyState';
 import SiteFooter from '../components/SiteFooter';
 import LibraryHeader from '../components/library/LibraryHeader';
 import UserPacksGrid from '../components/library/UserPacksGrid';
+import LibraryDebugPanel from '../components/debug/LibraryDebugPanel';
 import { useUserPacks } from '../hooks/useUserPacks';
 
 interface LibraryProps {
@@ -13,10 +14,31 @@ interface LibraryProps {
 }
 
 const Library: React.FC<LibraryProps> = ({ user }) => {
-  const { userPacks, loading } = useUserPacks(user);
+  const { userPacks, loading, error } = useUserPacks(user);
 
   if (loading) {
     return <LoadingState message="Carregando biblioteca..." />;
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex flex-col">
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-xl font-bold text-case-white mb-4">Erro ao carregar biblioteca</h2>
+            <p className="text-case-white/80 mb-6">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="bg-case-red hover:bg-red-600 text-white px-6 py-2 rounded"
+            >
+              Tentar Novamente
+            </button>
+          </div>
+        </div>
+        <SiteFooter />
+        <LibraryDebugPanel user={user} />
+      </div>
+    );
   }
 
   if (userPacks.length === 0) {
@@ -31,6 +53,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
           />
         </div>
         <SiteFooter />
+        <LibraryDebugPanel user={user} />
       </div>
     );
   }
@@ -44,6 +67,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
         </div>
       </div>
       <SiteFooter />
+      <LibraryDebugPanel user={user} />
     </div>
   );
 };

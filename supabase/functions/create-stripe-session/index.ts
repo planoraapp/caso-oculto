@@ -1,223 +1,265 @@
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import Stripe from 'https://esm.sh/stripe@14.21.0'
+import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import Stripe from "https://esm.sh/stripe@14.21.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
 
-interface CreateSessionRequest {
-  type: 'individual' | 'combo' | 'complete'
-  packId?: string
-  selectedPackIds?: string[]
-  userId: string
-  couponCode?: string
-}
-
-// Mapeamento de tipos para Product IDs específicos do Stripe
-const STRIPE_PRODUCTS = {
-  individual: 'prod_SeldT3rlYho8CM',   // Pack avulso
-  combo: 'prod_SelesxylB4MY0d',        // Combo de 5 Packs - R$ 61,40
-  complete: 'prod_Selfa5NcnENffo'      // Acesso Total
-}
-
-// Preços corretos em centavos
-const PRICES = {
-  individual: 1480,  // R$ 14,80
-  combo: 6140,       // R$ 61,40
-  complete: 11090    // R$ 110,90
-}
-
-// Cupons pré-configurados no Stripe (apenas estes serão aceitos)
-const VALID_STRIPE_COUPONS = [
-  'caso10',    // 10% de desconto
-  'valeu',     // 99% de desconto
-  'lovable'    // 100% de desconto
-];
+// Helper logging function
+const logStep = (step: string, details?: any) => {
+  const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
+  console.log(`[CREATE-STRIPE-SESSION] ${step}${detailsStr}`);
+};
 
 serve(async (req) => {
-  console.log('create-stripe-session called:', req.method)
-  
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { type, packId, selectedPackIds, userId, couponCode }: CreateSessionRequest = await req.json()
-    console.log('Request data:', { type, packId, selectedPackIds, userId, couponCode })
+    logStep("Function started");
 
-    if (!userId) {
-      throw new Error('User ID is required')
+    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+    if (!stripeKey) {
+      logStep("ERROR: STRIPE_SECRET_KEY not configured");
+      throw new Error("Stripe não configurado corretamente");
     }
+    logStep("Stripe key found");
 
-    if (!['individual', 'combo', 'complete'].includes(type)) {
-      throw new Error('Invalid payment type')
-    }
-
-    const stripeSecretKey = Deno.env.get('STRIPE_SECRET_KEY')
-    if (!stripeSecretKey) {
-      throw new Error('Stripe secret key not configured')
-    }
-
-    const stripe = new Stripe(stripeSecretKey, { apiVersion: '2023-10-16' })
-
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     
-    if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Supabase configuration missing')
+    if (!supabaseUrl || !supabaseServiceKey) {
+      logStep("ERROR: Supabase configuration missing");
+      throw new Error("Configuração do Supabase faltando");
     }
 
-    const supabase = createClient(supabaseUrl, supabaseKey)
+    // Create Supabase client
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    logStep("Supabase client created");
 
-    // Validar cupom apenas se fornecido e está na lista pré-aprovada
-    let discounts = undefined
-    if (couponCode) {
-      const normalizedCoupon = couponCode.toLowerCase().trim()
-      console.log('Validating coupon:', normalizedCoupon)
+    // Get user from request
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      logStep("ERROR: No authorization header");
+      throw new Error("Token de autorização necessário");
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+    const { data: userData, error: userError } = await supabase.auth.getUser(token);
+    
+    if (userError || !userData.user) {
+      logStep("ERROR: User authentication failed", { error: userError });
+      throw new Error("Usuário não autenticado");
+    }
+
+    const user = userData.user;
+    logStep("User authenticated", { userId: user.id, email: user.email });
+
+    // Parse request body
+    const body = await req.json();
+    logStep("Request body parsed", body);
+
+    const { 
+      paymentType, 
+      packId, 
+      selectedPackIds, 
+      couponCode,
+      totalAmount 
+    } = body;
+
+    if (!paymentType) {
+      logStep("ERROR: Missing payment type");
+      throw new Error("Tipo de pagamento necessário");
+    }
+
+    // Initialize Stripe
+    const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
+    logStep("Stripe initialized");
+
+    // Check if customer exists
+    let customerId: string | undefined;
+    try {
+      const customers = await stripe.customers.list({ 
+        email: user.email!,
+        limit: 1 
+      });
       
-      if (VALID_STRIPE_COUPONS.includes(normalizedCoupon)) {
-        try {
-          // Verificar se o cupom existe no Stripe
-          await stripe.coupons.retrieve(normalizedCoupon)
-          discounts = [{ coupon: normalizedCoupon }]
-          console.log('Valid Stripe coupon applied:', normalizedCoupon)
-        } catch (error) {
-          console.error('Coupon not found in Stripe:', normalizedCoupon, error)
-          throw new Error(`Cupom "${couponCode}" não está configurado no sistema`)
-        }
+      if (customers.data.length > 0) {
+        customerId = customers.data[0].id;
+        logStep("Existing customer found", { customerId });
       } else {
-        throw new Error(`Cupom "${couponCode}" não é válido`)
+        logStep("No existing customer found, will create new one");
       }
+    } catch (error) {
+      logStep("ERROR: Failed to check existing customers", { error: error.message });
+      // Continue without existing customer
     }
 
-    // Buscar o produto e seu preço no Stripe
-    const productId = STRIPE_PRODUCTS[type]
-    console.log('Using Stripe product ID:', productId)
+    // Prepare line items based on payment type
+    let lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+    let sessionMetadata: Record<string, string> = {
+      user_id: user.id,
+      payment_type: paymentType,
+      user_email: user.email!,
+    };
 
-    const product = await stripe.products.retrieve(productId)
-    const prices = await stripe.prices.list({ product: productId, active: true, limit: 1 })
-    
-    if (prices.data.length === 0) {
-      throw new Error(`No active price found for product ${productId}`)
-    }
+    try {
+      if (paymentType === 'individual' && packId) {
+        logStep("Creating individual pack session", { packId });
+        sessionMetadata.pack_id = packId;
+        
+        // Get pack details from database
+        const { data: pack, error: packError } = await supabase
+          .from('packs')
+          .select('*')
+          .eq('id', packId)
+          .single();
 
-    const price = prices.data[0]
-    console.log('Found price:', price.id, 'Amount:', price.unit_amount)
-
-    // Preparar metadata para tracking
-    const metadata: Record<string, string> = {
-      user_id: userId,
-      payment_type: type,
-      product_id: productId
-    }
-
-    if (type === 'individual' && packId) {
-      metadata.pack_id = packId
-    } else if (type === 'combo' && selectedPackIds) {
-      metadata.selected_pack_ids = JSON.stringify(selectedPackIds)
-    }
-
-    if (couponCode) {
-      metadata.coupon_code = couponCode.toLowerCase().trim()
-    }
-
-    // Preparar line items
-    const lineItems = [
-      {
-        price: price.id,
-        quantity: 1,
-      }
-    ]
-
-    // Criar sessão de checkout do Stripe
-    const session = await stripe.checkout.sessions.create({
-      line_items: lineItems,
-      mode: 'payment',
-      success_url: `${req.headers.get('origin')}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.get('origin')}/packs`,
-      metadata,
-      client_reference_id: userId,
-      discounts
-    })
-
-    console.log('Stripe session created:', session.id)
-
-    // Salvar sessão de pagamento no banco
-    const { error: insertError } = await supabase
-      .from('payment_sessions')
-      .insert({
-        user_id: userId,
-        pack_id: type === 'individual' ? packId : null,
-        selected_pack_ids: type === 'combo' ? selectedPackIds : null,
-        payment_type: type,
-        stripe_session_id: session.id,
-        external_reference: session.id,
-        mercadopago_preference_id: '', // Manter compatibilidade
-        status: 'pending'
-      })
-
-    if (insertError) {
-      console.error('Error saving payment session:', insertError)
-    }
-
-    // Calcular valores para a tabela compras
-    const originalAmount = (price.unit_amount || PRICES[type]) / 100
-    let finalAmount = originalAmount
-    
-    if (discounts && discounts.length > 0) {
-      try {
-        const coupon = await stripe.coupons.retrieve(discounts[0].coupon)
-        if (coupon.percent_off) {
-          finalAmount = originalAmount * (1 - coupon.percent_off / 100)
-        } else if (coupon.amount_off) {
-          finalAmount = Math.max(0, originalAmount - (coupon.amount_off / 100))
+        if (packError || !pack) {
+          logStep("ERROR: Pack not found", { packId, error: packError });
+          throw new Error(`Pack não encontrado: ${packId}`);
         }
-      } catch (error) {
-        console.error('Error calculating discount:', error)
+
+        lineItems = [{
+          price_data: {
+            currency: 'brl',
+            product_data: {
+              name: pack.name,
+              description: pack.description,
+            },
+            unit_amount: Math.round(pack.price * 100), // Convert to cents
+          },
+          quantity: 1,
+        }];
+
+      } else if (paymentType === 'combo' && selectedPackIds?.length > 0) {
+        logStep("Creating combo packs session", { selectedPackIds });
+        sessionMetadata.selected_pack_ids = JSON.stringify(selectedPackIds);
+        
+        // Get selected packs details
+        const { data: packs, error: packsError } = await supabase
+          .from('packs')
+          .select('*')
+          .in('id', selectedPackIds);
+
+        if (packsError || !packs || packs.length === 0) {
+          logStep("ERROR: Selected packs not found", { selectedPackIds, error: packsError });
+          throw new Error("Packs selecionados não encontrados");
+        }
+
+        lineItems = packs.map(pack => ({
+          price_data: {
+            currency: 'brl',
+            product_data: {
+              name: pack.name,
+              description: pack.description,
+            },
+            unit_amount: Math.round(pack.price * 100),
+          },
+          quantity: 1,
+        }));
+
+      } else if (paymentType === 'complete') {
+        logStep("Creating complete access session");
+        
+        lineItems = [{
+          price_data: {
+            currency: 'brl',
+            product_data: {
+              name: 'Acesso Completo - Todos os Packs',
+              description: 'Acesso vitalício a todos os packs disponíveis e futuros',
+            },
+            unit_amount: totalAmount ? Math.round(totalAmount * 100) : 9999, // Default fallback
+          },
+          quantity: 1,
+        }];
+
+      } else {
+        logStep("ERROR: Invalid payment configuration", { paymentType, packId, selectedPackIds });
+        throw new Error("Configuração de pagamento inválida");
+      }
+
+      logStep("Line items prepared", { count: lineItems.length });
+
+    } catch (error) {
+      logStep("ERROR: Failed to prepare line items", { error: error.message });
+      throw error;
+    }
+
+    // Handle coupon if provided (simplified logic)
+    let discounts: Stripe.Checkout.SessionCreateParams.Discount[] | undefined;
+    if (couponCode) {
+      logStep("Coupon provided", { couponCode });
+      try {
+        // Simple coupon validation - you might want to enhance this
+        const coupons = await stripe.coupons.list({ limit: 100 });
+        const validCoupon = coupons.data.find(c => c.id === couponCode);
+        
+        if (validCoupon) {
+          discounts = [{ coupon: couponCode }];
+          sessionMetadata.coupon_code = couponCode;
+          logStep("Valid coupon applied", { couponCode });
+        } else {
+          logStep("WARNING: Invalid coupon provided", { couponCode });
+          // Don't throw error, just continue without coupon
+        }
+      } catch (couponError) {
+        logStep("WARNING: Coupon validation failed", { error: couponError.message });
+        // Continue without coupon
       }
     }
 
-    // Salvar na tabela compras
-    const { error: comprasError } = await supabase
-      .from('compras')
-      .insert({
-        user_id: userId,
-        stripe_session_id: session.id,
-        pack_id: type === 'individual' ? packId : null,
-        selected_pack_ids: type === 'combo' ? selectedPackIds : null,
-        payment_type: type,
-        valor_original: originalAmount,
-        valor_pago: finalAmount,
-        cupom_codigo: couponCode?.toLowerCase().trim() || null,
-        status: 'pending'
-      })
+    // Create Stripe session
+    const origin = req.headers.get("origin") || "https://casooculto.com.br";
+    
+    const sessionCreateParams: Stripe.Checkout.SessionCreateParams = {
+      customer: customerId,
+      customer_email: customerId ? undefined : user.email!,
+      line_items: lineItems,
+      mode: "payment",
+      success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/packs`,
+      metadata: sessionMetadata,
+      allow_promotion_codes: true,
+      billing_address_collection: 'required',
+      expires_at: Math.floor(Date.now() / 1000) + (30 * 60), // 30 minutes
+    };
 
-    if (comprasError) {
-      console.error('Error saving compra:', comprasError)
+    if (discounts) {
+      sessionCreateParams.discounts = discounts;
     }
 
-    return new Response(JSON.stringify({
-      session_id: session.id,
-      url: session.url,
-      product_name: product.name,
-      amount: price.unit_amount,
-      currency: price.currency
+    logStep("Creating Stripe session", { 
+      customerId, 
+      lineItemsCount: lineItems.length,
+      hasDiscounts: !!discounts 
+    });
+
+    const session = await stripe.checkout.sessions.create(sessionCreateParams);
+    logStep("Stripe session created successfully", { sessionId: session.id });
+
+    return new Response(JSON.stringify({ 
+      sessionId: session.id,
+      url: session.url 
     }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 200
-    })
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 200,
+    });
 
   } catch (error) {
-    console.error('create-stripe-session error:', error)
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500
-      }
-    )
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logStep("ERROR: Function failed", { message: errorMessage, stack: error instanceof Error ? error.stack : undefined });
+    
+    return new Response(JSON.stringify({ 
+      error: errorMessage,
+      details: "Verifique os logs para mais detalhes"
+    }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500,
+    });
   }
-})
+});
