@@ -43,15 +43,25 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ stats, loading }) => {
     try {
       setLoadingActivity(true);
       
-      // Get recent payment sessions
-      const { data: payments } = await supabase
+      // Get recent payment sessions with user profiles
+      const { data: payments, error } = await supabase
         .from('payment_sessions')
         .select(`
-          *,
-          profiles!payment_sessions_user_id_fkey(email)
+          id,
+          user_id,
+          payment_type,
+          status,
+          created_at,
+          profiles!inner(email)
         `)
         .order('created_at', { ascending: false })
         .limit(10);
+
+      if (error) {
+        console.error('Error fetching payments:', error);
+        setRecentActivity([]);
+        return;
+      }
 
       const activities: RecentActivity[] = [];
 
@@ -85,6 +95,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ stats, loading }) => {
       setRecentActivity(activities);
     } catch (error) {
       console.error('Error loading recent activity:', error);
+      setRecentActivity([]);
     } finally {
       setLoadingActivity(false);
     }
@@ -108,7 +119,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ stats, loading }) => {
           packStats[session.pack_id].count += 1;
           packStats[session.pack_id].revenue += 14.80; // Default pack price
         } else if (session.payment_type === 'combo' && session.selected_pack_ids) {
-          session.selected_pack_ids.forEach(packId => {
+          session.selected_pack_ids.forEach((packId: string) => {
             if (!packStats[packId]) {
               packStats[packId] = { name: packId, count: 0, revenue: 0 };
             }
@@ -234,26 +245,32 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ stats, loading }) => {
               </div>
             ) : (
               <div className="space-y-3 max-h-80 overflow-y-auto">
-                {recentActivity.map((activity) => (
-                  <div key={activity.id} className="flex items-start gap-3 p-3 bg-noir-medium rounded-lg">
-                    {getActivityIcon(activity.type, activity.status)}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-case-white text-sm">{activity.description}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <p className="text-case-white/60 text-xs">
-                          {new Date(activity.timestamp).toLocaleString('pt-BR')}
-                        </p>
-                        {activity.status && (
-                          <span className={`text-xs font-medium ${getStatusColor(activity.status)}`}>
-                            {activity.status === 'approved' ? 'Aprovado' : 
-                             activity.status === 'pending' ? 'Pendente' : 
-                             activity.status}
-                          </span>
-                        )}
+                {recentActivity.length > 0 ? (
+                  recentActivity.map((activity) => (
+                    <div key={activity.id} className="flex items-start gap-3 p-3 bg-noir-medium rounded-lg">
+                      {getActivityIcon(activity.type, activity.status)}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-case-white text-sm">{activity.description}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-case-white/60 text-xs">
+                            {new Date(activity.timestamp).toLocaleString('pt-BR')}
+                          </p>
+                          {activity.status && (
+                            <span className={`text-xs font-medium ${getStatusColor(activity.status)}`}>
+                              {activity.status === 'approved' ? 'Aprovado' : 
+                               activity.status === 'pending' ? 'Pendente' : 
+                               activity.status}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="text-center text-case-white/60 py-4">
+                    Nenhuma atividade recente
                   </div>
-                ))}
+                )}
               </div>
             )}
           </CardContent>
@@ -272,23 +289,29 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ stats, loading }) => {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {topPacks.map((pack, index) => (
-                <div key={pack.name} className="flex items-center justify-between p-3 bg-noir-medium rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-case-red rounded-full flex items-center justify-center text-white font-bold text-sm">
-                      {index + 1}
+              {topPacks.length > 0 ? (
+                topPacks.map((pack, index) => (
+                  <div key={pack.name} className="flex items-center justify-between p-3 bg-noir-medium rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-case-red rounded-full flex items-center justify-center text-white font-bold text-sm">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <p className="text-case-white font-medium">{pack.name}</p>
+                        <p className="text-case-white/60 text-sm">{pack.count} vendas</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-case-white font-medium">{pack.name}</p>
-                      <p className="text-case-white/60 text-sm">{pack.count} vendas</p>
+                    <div className="text-right">
+                      <p className="text-green-500 font-medium">R$ {pack.revenue.toFixed(2)}</p>
+                      <p className="text-case-white/60 text-xs">receita</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-green-500 font-medium">R$ {pack.revenue.toFixed(2)}</p>
-                    <p className="text-case-white/60 text-xs">receita</p>
-                  </div>
+                ))
+              ) : (
+                <div className="text-center text-case-white/60 py-4">
+                  Nenhuma venda registrada
                 </div>
-              ))}
+              )}
             </div>
           </CardContent>
         </Card>
