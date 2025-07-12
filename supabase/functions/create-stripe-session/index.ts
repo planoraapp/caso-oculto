@@ -23,12 +23,19 @@ const STRIPE_PRODUCTS = {
   complete: 'prod_Selfa5NcnENffo'      // Acesso Total
 }
 
-// Cupons padrão do sistema
-const DEFAULT_COUPONS = {
-  'CASO10': { discount_value: 10, discount_type: 'percentage' },
-  'VALEU': { discount_value: 99, discount_type: 'percentage' },
-  'LOVABLE': { discount_value: 100, discount_type: 'percentage' }
-};
+// Preços corretos em centavos
+const PRICES = {
+  individual: 1480,  // R$ 14,80
+  combo: 6140,       // R$ 61,40
+  complete: 11090    // R$ 110,90
+}
+
+// Cupons pré-configurados no Stripe (apenas estes serão aceitos)
+const VALID_STRIPE_COUPONS = [
+  'caso10',    // 10% de desconto
+  'valeu',     // 99% de desconto
+  'lovable'    // 100% de desconto
+];
 
 serve(async (req) => {
   console.log('create-stripe-session called:', req.method)
@@ -65,45 +72,24 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    // Validar cupom se fornecido
-    let validCoupon = null
-    let affiliateId = null
-    
+    // Validar cupom apenas se fornecido e está na lista pré-aprovada
+    let discounts = undefined
     if (couponCode) {
-      console.log('Validating coupon:', couponCode)
-      const upperCode = couponCode.toUpperCase()
+      const normalizedCoupon = couponCode.toLowerCase().trim()
+      console.log('Validating coupon:', normalizedCoupon)
       
-      // Verificar cupons padrão primeiro
-      if (DEFAULT_COUPONS[upperCode as keyof typeof DEFAULT_COUPONS]) {
-        validCoupon = {
-          code: upperCode,
-          discount_value: DEFAULT_COUPONS[upperCode as keyof typeof DEFAULT_COUPONS].discount_value,
-          discount_type: DEFAULT_COUPONS[upperCode as keyof typeof DEFAULT_COUPONS].discount_type,
-          is_valid: true
+      if (VALID_STRIPE_COUPONS.includes(normalizedCoupon)) {
+        try {
+          // Verificar se o cupom existe no Stripe
+          await stripe.coupons.retrieve(normalizedCoupon)
+          discounts = [{ coupon: normalizedCoupon }]
+          console.log('Valid Stripe coupon applied:', normalizedCoupon)
+        } catch (error) {
+          console.error('Coupon not found in Stripe:', normalizedCoupon, error)
+          throw new Error(`Cupom "${couponCode}" não está configurado no sistema`)
         }
-        console.log('Valid default coupon found:', validCoupon)
       } else {
-        // Verificar cupons do banco de dados (afiliados)
-        const { data: couponData, error: couponError } = await supabase.rpc('validate_coupon', {
-          coupon_code: upperCode
-        })
-
-        if (!couponError && couponData && couponData[0]?.is_valid) {
-          validCoupon = couponData[0]
-          
-          // Buscar afiliado se for cupom de afiliado
-          const { data: affiliateData } = await supabase
-            .from('afiliados')
-            .select('id')
-            .eq('codigo_cupom', upperCode)
-            .single()
-          
-          if (affiliateData) {
-            affiliateId = affiliateData.id
-          }
-          
-          console.log('Valid database coupon found:', validCoupon)
-        }
+        throw new Error(`Cupom "${couponCode}" não é válido`)
       }
     }
 
@@ -134,13 +120,8 @@ serve(async (req) => {
       metadata.selected_pack_ids = JSON.stringify(selectedPackIds)
     }
 
-    if (validCoupon) {
-      metadata.coupon_code = validCoupon.code
-      metadata.discount_amount = validCoupon.discount_value.toString()
-    }
-    
-    if (affiliateId) {
-      metadata.affiliate_id = affiliateId
+    if (couponCode) {
+      metadata.coupon_code = couponCode.toLowerCase().trim()
     }
 
     // Preparar line items
@@ -150,34 +131,6 @@ serve(async (req) => {
         quantity: 1,
       }
     ]
-
-    // Aplicar desconto se cupom válido
-    let discounts = undefined
-    if (validCoupon) {
-      // Criar cupom no Stripe se não existir
-      let stripeCouponId = validCoupon.code.toLowerCase()
-      try {
-        await stripe.coupons.retrieve(stripeCouponId)
-      } catch (error) {
-        // Cupom não existe, criar no Stripe
-        const couponData: any = {
-          id: stripeCouponId,
-          duration: 'once'
-        }
-        
-        if (validCoupon.discount_type === 'percentage') {
-          couponData.percent_off = validCoupon.discount_value
-        } else {
-          couponData.amount_off = Math.round(validCoupon.discount_value * 100) // converter para centavos
-          couponData.currency = 'brl'
-        }
-        
-        await stripe.coupons.create(couponData)
-        console.log('Created Stripe coupon:', stripeCouponId)
-      }
-      
-      discounts = [{ coupon: stripeCouponId }]
-    }
 
     // Criar sessão de checkout do Stripe
     const session = await stripe.checkout.sessions.create({
@@ -191,18 +144,6 @@ serve(async (req) => {
     })
 
     console.log('Stripe session created:', session.id)
-
-    // Calcular valores para salvar no banco
-    const originalAmount = price.unit_amount! / 100
-    let finalAmount = originalAmount
-    
-    if (validCoupon) {
-      if (validCoupon.discount_type === 'percentage') {
-        finalAmount = originalAmount * (1 - validCoupon.discount_value / 100)
-      } else {
-        finalAmount = Math.max(0, originalAmount - validCoupon.discount_value)
-      }
-    }
 
     // Salvar sessão de pagamento no banco
     const { error: insertError } = await supabase
@@ -222,7 +163,24 @@ serve(async (req) => {
       console.error('Error saving payment session:', insertError)
     }
 
-    // Salvar na tabela compras também
+    // Calcular valores para a tabela compras
+    const originalAmount = (price.unit_amount || PRICES[type]) / 100
+    let finalAmount = originalAmount
+    
+    if (discounts && discounts.length > 0) {
+      try {
+        const coupon = await stripe.coupons.retrieve(discounts[0].coupon)
+        if (coupon.percent_off) {
+          finalAmount = originalAmount * (1 - coupon.percent_off / 100)
+        } else if (coupon.amount_off) {
+          finalAmount = Math.max(0, originalAmount - (coupon.amount_off / 100))
+        }
+      } catch (error) {
+        console.error('Error calculating discount:', error)
+      }
+    }
+
+    // Salvar na tabela compras
     const { error: comprasError } = await supabase
       .from('compras')
       .insert({
@@ -233,8 +191,7 @@ serve(async (req) => {
         payment_type: type,
         valor_original: originalAmount,
         valor_pago: finalAmount,
-        cupom_codigo: validCoupon?.code || null,
-        afiliado_id: affiliateId,
+        cupom_codigo: couponCode?.toLowerCase().trim() || null,
         status: 'pending'
       })
 

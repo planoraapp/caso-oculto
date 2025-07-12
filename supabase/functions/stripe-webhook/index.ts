@@ -55,7 +55,7 @@ serve(async (req) => {
 
       const supabase = createClient(supabaseUrl, supabaseKey)
 
-      // Buscar sessão de pagamento
+      // Buscar sessão de pagamento (com idempotência)
       const { data: paymentSession, error: sessionError } = await supabase
         .from('payment_sessions')
         .select('*')
@@ -65,6 +65,12 @@ serve(async (req) => {
       if (sessionError || !paymentSession) {
         console.error('Payment session not found:', session.id)
         return new Response('Session not found', { status: 404 })
+      }
+
+      // Verificar se já foi processado (idempotência)
+      if (paymentSession.status === 'approved') {
+        console.log('Session already processed:', session.id)
+        return new Response('Already processed', { status: 200 })
       }
 
       console.log('Found payment session:', paymentSession.id)
@@ -92,26 +98,7 @@ serve(async (req) => {
         console.error('Error updating compras:', comprasUpdateError)
       }
 
-      // Processar afiliado se aplicável
-      const couponCode = session.metadata?.coupon_code
-      const affiliateId = session.metadata?.affiliate_id
-      
-      if (affiliateId && couponCode) {
-        console.log('Processing affiliate purchase:', affiliateId, couponCode)
-        
-        try {
-          await supabase.rpc('process_affiliate_purchase', {
-            affiliate_code: couponCode,
-            purchase_amount: (session.amount_total || 0) / 100
-          })
-          
-          console.log('Affiliate purchase processed successfully')
-        } catch (error) {
-          console.error('Error processing affiliate purchase:', error)
-        }
-      }
-
-      // Liberar acesso aos packs
+      // Liberar acesso aos packs usando APENAS user_pack_access
       let packIds = []
       if (paymentSession.payment_type === 'individual') {
         packIds = [paymentSession.pack_id]
@@ -124,7 +111,7 @@ serve(async (req) => {
           .select('id')
         packIds = allPacks?.map(p => p.id) || []
         
-        // Set acesso_total flag and tag for complete access
+        // Set acesso_total flag for complete access
         await supabase
           .from('profiles')
           .update({ 
@@ -139,7 +126,7 @@ serve(async (req) => {
 
       console.log('Granting access to packs:', packIds)
 
-      // Grant access to packs
+      // Grant access to packs (com verificação de duplicata)
       for (const packId of packIds) {
         if (packId) {
           const { error: accessError } = await supabase
@@ -148,6 +135,8 @@ serve(async (req) => {
               user_id: paymentSession.user_id,
               pack_id: packId,
               is_active: true
+            }, {
+              onConflict: 'user_id,pack_id'
             })
 
           if (accessError) {
@@ -178,44 +167,6 @@ serve(async (req) => {
           .eq('id', paymentSession.user_id)
 
         console.log('Updated packs_liberados for user:', paymentSession.user_id)
-      }
-
-      // Record coupon usage if applicable
-      if (couponCode && !affiliateId) {
-        // Only record usage for non-affiliate coupons
-        const discountAmount = parseFloat(session.metadata?.discount_amount || '0')
-        
-        // Increment coupon usage for database coupons
-        const { error: couponUpdateError } = await supabase
-          .from('discount_coupons')
-          .update({ 
-            current_uses: supabase.raw('current_uses + 1'),
-            updated_at: new Date().toISOString()
-          })
-          .eq('code', couponCode)
-
-        if (couponUpdateError) {
-          console.error('Error updating coupon usage:', couponUpdateError)
-        } else {
-          console.log('Updated coupon usage for:', couponCode)
-        }
-
-        // Record coupon usage
-        const { error: usageError } = await supabase
-          .from('coupon_usage')
-          .insert({
-            user_id: paymentSession.user_id,
-            coupon_id: null, // We could look this up if needed
-            discount_applied: discountAmount,
-            purchase_id: session.id,
-            used_at: new Date().toISOString()
-          })
-
-        if (usageError) {
-          console.error('Error recording coupon usage:', usageError)
-        } else {
-          console.log('Recorded coupon usage for user:', paymentSession.user_id)
-        }
       }
 
       console.log('Payment processing completed successfully for user:', paymentSession.user_id)

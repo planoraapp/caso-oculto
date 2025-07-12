@@ -1,17 +1,23 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { Label } from '../ui/label';
+import { Badge } from '../ui/badge';
 import { Card, CardContent } from '../ui/card';
-import { Loader2, Tag, CheckCircle, XCircle } from 'lucide-react';
-import { useCoupon } from '../../hooks/useCoupon';
+import { Check, X, Tag, Loader2 } from 'lucide-react';
 
 interface CouponSectionProps {
   originalPrice: number;
-  onCouponApplied: (discount: number, couponCode: string) => void;
+  onCouponApplied: (discount: number, code: string) => void;
   onCouponRemoved: () => void;
 }
+
+// Cupons válidos pré-configurados
+const VALID_COUPONS = {
+  'CASO10': { discount: 10, type: 'percentage', description: '10% de desconto' },
+  'VALEU': { discount: 99, type: 'percentage', description: '99% de desconto' },
+  'LOVABLE': { discount: 100, type: 'percentage', description: '100% de desconto' }
+};
 
 const CouponSection: React.FC<CouponSectionProps> = ({
   originalPrice,
@@ -19,129 +25,130 @@ const CouponSection: React.FC<CouponSectionProps> = ({
   onCouponRemoved
 }) => {
   const [couponCode, setCouponCode] = useState('');
-  const [showCouponField, setShowCouponField] = useState(false);
-  const { coupon, isValidating, validateCoupon, clearCoupon, calculateDiscount } = useCoupon();
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+  const [isValidating, setIsValidating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (coupon?.is_valid) {
-      const discount = calculateDiscount(originalPrice);
-      onCouponApplied(discount, coupon.code);
-    } else if (coupon && !coupon.is_valid) {
-      onCouponRemoved();
+  const calculateDiscount = (coupon: any, price: number) => {
+    if (coupon.type === 'percentage') {
+      return (price * coupon.discount) / 100;
     }
-  }, [coupon, originalPrice, calculateDiscount, onCouponApplied, onCouponRemoved]);
-
-  const handleApplyCoupon = async () => {
-    if (!couponCode.trim()) return;
-    await validateCoupon(couponCode);
+    return coupon.discount;
   };
 
-  const handleRemoveCoupon = () => {
+  const validateAndApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+
+    setIsValidating(true);
+    setError(null);
+
+    try {
+      const upperCode = couponCode.trim().toUpperCase();
+      
+      // Verificar se o cupom está na lista de válidos
+      const couponData = VALID_COUPONS[upperCode as keyof typeof VALID_COUPONS];
+      
+      if (!couponData) {
+        setError('Cupom não encontrado ou inválido');
+        return;
+      }
+
+      // Calcular desconto
+      const discountAmount = calculateDiscount(couponData, originalPrice);
+      
+      // Aplicar cupom
+      setAppliedCoupon(upperCode);
+      onCouponApplied(discountAmount, upperCode);
+      
+      console.log('Coupon applied:', upperCode, 'Discount:', discountAmount);
+      
+    } catch (error) {
+      console.error('Error validating coupon:', error);
+      setError('Erro ao validar cupom. Tente novamente.');
+    } finally {
+      setIsValidating(false);
+    }
+  };
+
+  const removeCoupon = () => {
     setCouponCode('');
-    clearCoupon();
+    setAppliedCoupon(null);
+    setError(null);
     onCouponRemoved();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      e.preventDefault();
-      handleApplyCoupon();
+      validateAndApplyCoupon();
     }
   };
 
   return (
     <Card className="bg-noir-medium border-noir-light">
       <CardContent className="pt-6">
-        {!showCouponField ? (
-          <Button
-            variant="ghost"
-            onClick={() => setShowCouponField(true)}
-            className="w-full text-case-white hover:bg-noir-light border border-dashed border-case-white/30"
-          >
-            <Tag className="h-4 w-4 mr-2" />
-            Tem um cupom de desconto?
-          </Button>
-        ) : (
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="coupon-code" className="text-case-white">
-                Código do Cupom
-              </Label>
-              <div className="flex gap-2">
-                <div className="relative flex-1">
-                  <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-case-white/60" />
-                  <Input
-                    id="coupon-code"
-                    type="text"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                    onKeyPress={handleKeyPress}
-                    className="pl-10 bg-noir-dark border-noir-light text-case-white uppercase"
-                    placeholder="Ex: CASO10"
-                    maxLength={20}
-                  />
-                </div>
-                <Button
-                  onClick={handleApplyCoupon}
-                  disabled={isValidating || !couponCode.trim()}
-                  className="bg-case-red hover:bg-red-600 text-white px-6"
-                >
-                  {isValidating ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    'Aplicar'
-                  )}
-                </Button>
-              </div>
-            </div>
+        <div className="flex items-center gap-2 mb-4">
+          <Tag className="h-4 w-4 text-case-red" />
+          <h3 className="text-case-white font-medium">Cupom de Desconto</h3>
+        </div>
 
-            {/* Status do cupom */}
-            {coupon && (
-              <div className={`flex items-center gap-2 p-3 rounded-lg ${
-                coupon.is_valid 
-                  ? 'bg-green-600/20 border border-green-500/30' 
-                  : 'bg-red-600/20 border border-red-500/30'
-              }`}>
-                {coupon.is_valid ? (
-                  <CheckCircle className="h-4 w-4 text-green-400" />
+        {!appliedCoupon ? (
+          <div className="space-y-3">
+            <div className="flex gap-2">
+              <Input
+                type="text"
+                placeholder="Digite seu cupom"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                onKeyPress={handleKeyPress}
+                className="bg-noir-dark border-noir-light text-case-white"
+                disabled={isValidating}
+              />
+              <Button
+                onClick={validateAndApplyCoupon}
+                disabled={!couponCode.trim() || isValidating}
+                className="bg-case-red hover:bg-red-600 text-white"
+              >
+                {isValidating ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  <XCircle className="h-4 w-4 text-red-400" />
+                  'Aplicar'
                 )}
-                <span className={`text-sm ${
-                  coupon.is_valid ? 'text-green-400' : 'text-red-400'
-                }`}>
-                  {coupon.message}
-                </span>
-                {coupon.is_valid && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleRemoveCoupon}
-                    className="ml-auto text-case-white/60 hover:text-case-white p-1"
-                  >
-                    Remover
-                  </Button>
-                )}
+              </Button>
+            </div>
+            
+            {error && (
+              <div className="flex items-center gap-2 text-red-400 text-sm">
+                <X className="h-4 w-4" />
+                <span>{error}</span>
               </div>
             )}
 
-            {/* Mostrar desconto aplicado */}
-            {coupon?.is_valid && (
-              <div className="bg-green-600/10 border border-green-500/20 rounded-lg p-3">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-case-white/80">Desconto aplicado:</span>
-                  <span className="text-green-400 font-semibold">
-                    -{coupon.discount_type === 'percentage' ? `${coupon.discount_value}%` : `R$ ${coupon.discount_value.toFixed(2)}`}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-sm mt-1">
-                  <span className="text-case-white/80">Economia:</span>
-                  <span className="text-green-400 font-semibold">
-                    R$ {calculateDiscount(originalPrice).toFixed(2)}
-                  </span>
-                </div>
+            {/* Dicas de cupons válidos */}
+            <div className="text-case-white/60 text-xs">
+              <p>Cupons disponíveis: CASO10, VALEU, LOVABLE</p>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-green-500" />
+                <Badge variant="secondary" className="bg-green-600 text-white">
+                  {appliedCoupon}
+                </Badge>
+                <span className="text-case-white/80 text-sm">
+                  {VALID_COUPONS[appliedCoupon as keyof typeof VALID_COUPONS]?.description}
+                </span>
               </div>
-            )}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={removeCoupon}
+                className="text-case-white/60 hover:text-case-red"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         )}
       </CardContent>

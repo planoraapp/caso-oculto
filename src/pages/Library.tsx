@@ -1,9 +1,9 @@
+
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { t } from '../data/translations';
-import { getPackById } from '../utils/pack/packQueries';
 import { supabase } from '../integrations/supabase/client';
 import { calculatePackProgress, getSolvedCards } from '../utils/progress';
 import LoadingState from '../components/common/LoadingState';
@@ -24,13 +24,20 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
       if (!user?.id) return;
 
       try {
+        console.log('Fetching user packs for user:', user.id);
+
+        // Primeiro verificar se o usuário tem acesso total
         const { data: profile } = await supabase
           .from('profiles')
-          .select('acesso_total, packs_liberados')
+          .select('acesso_total')
           .eq('id', user.id)
           .single();
 
+        console.log('User profile:', profile);
+
         if (profile?.acesso_total) {
+          // Usuário tem acesso total - buscar todos os packs
+          console.log('User has complete access - fetching all packs');
           const { data: allPacks } = await supabase
             .from('packs')
             .select('*')
@@ -40,31 +47,34 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
             .map(pack => ({ ...pack, owned: true }))
             .filter(Boolean);
 
+          console.log('All packs for complete access user:', userPackData);
           setUserPacks(userPackData);
         } else {
+          // Buscar packs específicos usando user_pack_access como fonte principal
+          console.log('Fetching specific packs from user_pack_access');
+          
           const { data: packAccess, error } = await supabase
             .from('user_pack_access')
-            .select('pack_id')
+            .select(`
+              pack_id,
+              packs!inner(*)
+            `)
             .eq('user_id', user.id)
             .eq('is_active', true);
+
+          console.log('Pack access data:', packAccess, 'Error:', error);
 
           if (error) {
             console.error('Error fetching user packs:', error);
             return;
           }
 
-          const packIds = packAccess?.map(access => access.pack_id) || [];
-          
-          if (packIds.length > 0) {
-            const { data: packsData } = await supabase
-              .from('packs')
-              .select('*')
-              .in('id', packIds);
+          const userPackData = (packAccess || [])
+            .map(access => ({ ...access.packs, owned: true }))
+            .filter(Boolean);
 
-            setUserPacks((packsData || []).map(pack => ({ ...pack, owned: true })));
-          } else {
-            setUserPacks([]);
-          }
+          console.log('User specific packs:', userPackData);
+          setUserPacks(userPackData);
         }
       } catch (error) {
         console.error('Error fetching user packs:', error);

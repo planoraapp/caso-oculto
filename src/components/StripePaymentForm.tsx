@@ -8,6 +8,7 @@ import {
 import { Button } from './ui/button';
 import { Loader2, CreditCard, Lock } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
+import { supabase } from '../integrations/supabase/client';
 
 interface StripePaymentFormProps {
   amount: number;
@@ -64,42 +65,51 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
     setIsProcessing(true);
 
     try {
-      // Criar Payment Intent via nossa edge function
-      const response = await fetch(`https://oxeccsmxqymvxycnaszo.supabase.co/functions/v1/create-stripe-session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('supabase.auth.token')}`,
-        },
-        body: JSON.stringify({
+      console.log('Creating Stripe session via Supabase Edge Function:', {
+        type,
+        packId,
+        selectedPackIds,
+        userId,
+        couponCode
+      });
+
+      // Usar a edge function do Supabase corretamente
+      const { data, error } = await supabase.functions.invoke('create-stripe-session', {
+        body: {
           type,
           packId,
           selectedPackIds,
           userId,
           couponCode: couponCode || null
-        }),
+        }
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Erro ao criar sessão de pagamento');
+      if (error) {
+        console.error('Error from edge function:', error);
+        throw new Error(error.message || 'Erro ao criar sessão de pagamento');
       }
 
-      const { url } = await response.json();
-      
+      console.log('Session created successfully:', data);
+
+      if (!data?.url) {
+        throw new Error('URL de checkout não foi retornada');
+      }
+
       // Redirecionar para o Stripe Checkout
-      window.location.href = url;
+      window.location.href = data.url;
       
       onSuccess();
 
     } catch (error) {
       console.error('Erro no pagamento:', error);
       const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido no pagamento';
+      
       toast({
         title: "Erro no Pagamento",
         description: errorMessage,
         variant: "destructive"
       });
+      
       onError(errorMessage);
     } finally {
       setIsProcessing(false);
