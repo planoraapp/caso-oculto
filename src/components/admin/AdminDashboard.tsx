@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -43,30 +42,47 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ stats, loading }) => {
     try {
       setLoadingActivity(true);
       
-      // Get recent payment sessions with user profiles
-      const { data: payments, error } = await supabase
+      // Get recent payment sessions and profiles separately, then join in code
+      const { data: payments, error: paymentsError } = await supabase
         .from('payment_sessions')
-        .select(`
-          id,
-          user_id,
-          payment_type,
-          status,
-          created_at,
-          profiles!inner(email)
-        `)
+        .select('id, user_id, payment_type, status, created_at')
         .order('created_at', { ascending: false })
         .limit(10);
 
-      if (error) {
-        console.error('Error fetching payments:', error);
+      if (paymentsError) {
+        console.error('Error fetching payments:', paymentsError);
         setRecentActivity([]);
         return;
       }
 
+      if (!payments || payments.length === 0) {
+        setRecentActivity([]);
+        return;
+      }
+
+      // Get user profiles for the payment user_ids
+      const userIds = payments.map(p => p.user_id);
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, email')
+        .in('id', userIds);
+
+      if (profilesError) {
+        console.error('Error fetching profiles:', profilesError);
+        setRecentActivity([]);
+        return;
+      }
+
+      // Create a map of user_id to email for quick lookup
+      const userEmailMap = new Map();
+      profiles?.forEach(profile => {
+        userEmailMap.set(profile.id, profile.email);
+      });
+
       const activities: RecentActivity[] = [];
 
-      payments?.forEach(payment => {
-        const email = payment.profiles?.email || 'Usuário desconhecido';
+      payments.forEach(payment => {
+        const email = userEmailMap.get(payment.user_id) || 'Usuário desconhecido';
         let description = '';
         
         switch (payment.payment_type) {
