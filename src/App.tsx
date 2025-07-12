@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from './components/ui/toaster';
 import Navigation from './components/Navigation';
@@ -37,7 +37,7 @@ const AppContent: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/packs" element={<Packs user={user} />} />
           <Route path="/pack/:id" element={<PackView user={user} />} />
-          <Route path="/biblioteca" element={<Library user={user} />} />
+          <Route path="/biblioteca" element={<Navigate to="/library" replace />} />
           <Route path="/library" element={<Library user={user} />} />
           <Route path="/account" element={<Account user={user} onLogout={signOut} />} />
           <Route path="/terms" element={<Terms />} />

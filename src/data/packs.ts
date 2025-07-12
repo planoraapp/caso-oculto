@@ -5,66 +5,48 @@ import { getPackCases } from './cases';
 
 export const packs: Pack[] = [
   {
-    id: 'pack-01',
-    name: 'Mistérios Clássicos',
-    description: 'Casos clássicos de detetive com reviravoltas inesperadas',
-    price: 14.80,
-    difficulty: 'medium',
-    image: '/packs/case-01.webp',
-    category: 'mystery'
-  },
-  {
-    id: 'pack-02',
-    name: 'Enigmas Modernos',
-    description: 'Mistérios contemporâneos que desafiam a lógica',
-    price: 14.80,
-    difficulty: 'medium',
-    image: '/packs/case-02.webp',
-    category: 'mystery'
-  },
-  {
-    id: 'pack-03',
+    id: 'sussurros-do-alem',
     name: 'Sussurros do Além',
     description: 'Mistérios com um toque sobrenatural, onde a solução pode ser um fenómeno paranormal ou uma explicação racional que imita o inexplicável.',
     price: 14.80,
     difficulty: 'hard',
-    image: '/packs/case-03.webp',
+    image: '/packs/sussurros-do-alem.webp',
     category: 'thriller'
   },
   {
-    id: 'pack-04',
+    id: 'sombras-da-noite',
     name: 'Sombras da Noite',
     description: 'Mistérios que se desenrolam sob o manto da escuridão, onde cada sombra esconde um segredo.',
     price: 14.80,
     difficulty: 'medium',
-    image: '/packs/case-04.webp',
+    image: '/packs/sombras-da-noite.webp',
     category: 'thriller'
   },
   {
-    id: 'pack-05',
+    id: 'crimes-imperfeitos',
     name: 'Crimes Imperfeitos',
     description: 'Planos que deram terrivelmente errado. Encontre o detalhe que desmascarou o culpado.',
     price: 14.80,
     difficulty: 'medium',
-    image: '/packs/case-05.webp',
+    image: '/packs/crimes-imperfeitos.webp',
     category: 'crime'
   },
   {
-    id: 'pack-06',
+    id: 'lendas-urbanas',
     name: 'Lendas Urbanas',
     description: 'Mistérios baseados em mitos e histórias urbanas famosas.',
     price: 14.80,
     difficulty: 'hard',
-    image: '/packs/case-06.webp',
+    image: '/packs/lendas-urbanas.webp',
     category: 'thriller'
   },
   {
-    id: 'pack-07',
+    id: 'paradoxos-mortais',
     name: 'Paradoxos Mortais',
     description: 'Mistérios que desafiam a lógica e parecem impossíveis.',
     price: 14.80,
     difficulty: 'hard',
-    image: '/packs/case-07.webp',
+    image: '/packs/paradoxos-mortais.webp',
     category: 'mystery'
   },
   {
@@ -84,6 +66,42 @@ export const packs: Pack[] = [
     difficulty: 'medium',
     image: '/packs/jogos-corporativos.webp',
     category: 'conspiracy'
+  },
+  {
+    id: 'ironias-do-destino',
+    name: 'Ironias do Destino',
+    description: 'Reviravoltas irônicas que mudam completamente o rumo dos casos',
+    price: 14.80,
+    difficulty: 'medium',
+    image: '/packs/ironias-do-destino.webp',
+    category: 'mystery'
+  },
+  {
+    id: 'beco-sem-saida',
+    name: 'Beco sem Saída',
+    description: 'Casos aparentemente impossíveis de resolver, mas sempre há uma saída',
+    price: 14.80,
+    difficulty: 'hard',
+    image: '/packs/beco-sem-saida.webp',
+    category: 'mystery'
+  },
+  {
+    id: 'crimes-de-epoca',
+    name: 'Crimes de Época',
+    description: 'Mistérios ambientados em diferentes períodos históricos',
+    price: 14.80,
+    difficulty: 'medium',
+    image: '/packs/crimes-de-epoca.webp',
+    category: 'historical'
+  },
+  {
+    id: 'viagem-sem-volta',
+    name: 'Viagem sem Volta',
+    description: 'Mistérios que envolvem desaparecimentos e jornadas fatais',
+    price: 14.80,
+    difficulty: 'hard',
+    image: '/packs/viagem-sem-volta.webp',
+    category: 'mystery'
   },
   {
     id: 'dossie-confidencial',
