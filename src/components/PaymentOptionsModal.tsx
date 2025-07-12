@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
@@ -23,6 +24,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useAffiliate } from '../hooks/useAffiliate';
 import { useCoupon } from '../hooks/useCoupon';
 import { usePackDuplicateCheck } from '../hooks/usePackDuplicateCheck';
+import { useCompleteAccessCheck } from '../hooks/useCompleteAccessCheck';
 
 // Chave pública live da Stripe
 const stripePromise = loadStripe('pk_live_51RhgpgLtmJkjKIDB5HIRkSFixyXL4Nsv884yLSWfiy02vbsYYuXw7eX29gkQnWISxycMvrNdObsLLVUERDyUptyH00xXh7fdHL');
@@ -67,6 +69,7 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   const { affiliateCode } = useAffiliate();
   const { coupon, calculateDiscount } = useCoupon();
   const { checkForDuplicates, isChecking } = usePackDuplicateCheck();
+  const { hasCompleteAccess, isLoading: checkingCompleteAccess } = useCompleteAccessCheck(authUser?.id);
 
   // Verificar se usuário precisa se cadastrar
   useEffect(() => {
@@ -80,9 +83,20 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
     }
   }, [affiliateCode, couponCode]);
 
+  // Bloquear modal se usuário já tem acesso total
+  useEffect(() => {
+    if (type === 'complete' && hasCompleteAccess && !checkingCompleteAccess) {
+      toast({
+        title: "Acesso já ativo",
+        description: "Você já possui Acesso Total a todos os packs.",
+      });
+      onClose();
+    }
+  }, [type, hasCompleteAccess, checkingCompleteAccess, onClose, toast]);
+
   // Verificar duplicatas quando usuário estiver logado e modal abrir
   useEffect(() => {
-    if (isOpen && authUser && !needsSignUp) {
+    if (isOpen && authUser && !needsSignUp && type !== 'complete') {
       const checkDuplicates = async () => {
         let packsToCheck: string[] = [];
         
@@ -90,15 +104,6 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
           packsToCheck = [packId];
         } else if (type === 'combo' && selectedPackIds) {
           packsToCheck = selectedPackIds;
-        } else if (type === 'complete') {
-          // Todos os packs disponíveis
-          packsToCheck = [
-            'labirintos-mentais', 'crimes-imperfeitos', 'lendas-urbanas', 
-            'paradoxos-mortais', 'sombras-da-noite', 'sussurros-alem',
-            'viagem-sem-volta', 'ironias-destino', 'jogos-corporativos',
-            'beco-sem-saida', 'crimes-epoca', 'fim-de-jogo',
-            'dossie-confidencial', 'dose-letal', 'absurdamente-real'
-          ];
         }
 
         if (packsToCheck.length > 0) {
@@ -196,13 +201,18 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
     // Manter o modal aberto para permitir nova tentativa
   };
 
+  // Se está verificando acesso total, não mostrar o modal ainda
+  if (type === 'complete' && checkingCompleteAccess) {
+    return null;
+  }
+
   const paymentInfo = getPaymentInfo();
   const IconComponent = paymentInfo.icon;
   const originalPrice = totalPrice > 0 ? totalPrice : paymentInfo.price / 100;
   
   // Calcular desconto com base no cupom aplicado
   const calculatedDiscount = coupon?.is_valid ? calculateDiscount(originalPrice) : appliedDiscount;
-  const finalPrice = Math.max(0.01, originalPrice - calculatedDiscount); // Mínimo R$ 0,01
+  const finalPrice = Math.max(1.11, originalPrice - calculatedDiscount); // Mínimo R$ 1,11
   const amountInCents = Math.round(finalPrice * 100);
 
   return (

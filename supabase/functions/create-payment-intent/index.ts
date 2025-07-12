@@ -1,4 +1,5 @@
 
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import Stripe from 'https://esm.sh/stripe@14.21.0'
@@ -58,6 +59,25 @@ serve(async (req) => {
       throw new Error("Tipo de pagamento inválido");
     }
 
+    // Verificar se usuário já possui acesso total para compras de "complete"
+    if (paymentType === 'complete') {
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('acesso_total')
+        .eq('id', userId)
+        .single();
+
+      if (profileError) {
+        logStep("ERROR: Failed to check user profile", { profileError });
+        throw new Error("Erro ao verificar perfil do usuário");
+      }
+
+      if (profile?.acesso_total) {
+        logStep("ERROR: User already has complete access", { userId });
+        throw new Error("Usuário já possui Acesso Total. Não é possível comprar novamente.");
+      }
+    }
+
     // Verify payment intent with Stripe
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
     if (!stripeKey) {
@@ -107,8 +127,9 @@ serve(async (req) => {
 
       const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
       if (coupon && coupon.discount_type === 'percentage') {
-        amount = Math.max(50, Math.round(amount * (100 - coupon.discount_value) / 100));
-        logStep("Coupon applied", { couponCode, newAmount: amount });
+        const discountAmount = Math.round(amount * coupon.discount_value / 100);
+        amount = Math.max(111, amount - discountAmount); // Valor mínimo R$ 1,11
+        logStep("Coupon applied", { couponCode, discountAmount, newAmount: amount });
       }
     }
 
@@ -184,3 +205,4 @@ serve(async (req) => {
     });
   }
 });
+
