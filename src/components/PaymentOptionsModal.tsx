@@ -14,13 +14,15 @@ import {
 } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-import StripePaymentForm from './StripePaymentForm';
+import StripeInternalCheckout from './StripeInternalCheckout';
 import QuickSignUp from './checkout/QuickSignUp';
 import CouponSection from './checkout/CouponSection';
+import PaymentDuplicateWarning from './PaymentDuplicateWarning';
 import { useToast } from '../hooks/use-toast';
 import { useAuth } from '../hooks/useAuth';
 import { useAffiliate } from '../hooks/useAffiliate';
 import { useCoupon } from '../hooks/useCoupon';
+import { usePackDuplicateCheck } from '../hooks/usePackDuplicateCheck';
 
 // Chave pública live da Stripe
 const stripePromise = loadStripe('pk_live_51RhgpgLtmJkjKIDB5HIRkSFixyXL4Nsv884yLSWfiy02vbsYYuXw7eX29gkQnWISxycMvrNdObsLLVUERDyUptyH00xXh7fdHL');
@@ -54,10 +56,17 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [couponCode, setCouponCode] = useState('');
   const [needsSignUp, setNeedsSignUp] = useState(false);
+  const [duplicateInfo, setDuplicateInfo] = useState<{
+    hasDuplicates: boolean;
+    duplicates: string[];
+    newPacks: string[];
+    message: string;
+  } | null>(null);
   const { toast } = useToast();
   const { user: authUser } = useAuth();
   const { affiliateCode } = useAffiliate();
   const { coupon, calculateDiscount } = useCoupon();
+  const { checkForDuplicates, isChecking } = usePackDuplicateCheck();
 
   // Verificar se usuário precisa se cadastrar
   useEffect(() => {
@@ -70,6 +79,37 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
       setCouponCode(affiliateCode);
     }
   }, [affiliateCode, couponCode]);
+
+  // Verificar duplicatas quando usuário estiver logado e modal abrir
+  useEffect(() => {
+    if (isOpen && authUser && !needsSignUp) {
+      const checkDuplicates = async () => {
+        let packsToCheck: string[] = [];
+        
+        if (type === 'individual' && packId) {
+          packsToCheck = [packId];
+        } else if (type === 'combo' && selectedPackIds) {
+          packsToCheck = selectedPackIds;
+        } else if (type === 'complete') {
+          // Todos os packs disponíveis
+          packsToCheck = [
+            'labirintos-mentais', 'crimes-imperfeitos', 'lendas-urbanas', 
+            'paradoxos-mortais', 'sombras-da-noite', 'sussurros-alem',
+            'viagem-sem-volta', 'ironias-destino', 'jogos-corporativos',
+            'beco-sem-saida', 'crimes-epoca', 'fim-de-jogo',
+            'dossie-confidencial', 'dose-letal', 'absurdamente-real'
+          ];
+        }
+
+        if (packsToCheck.length > 0) {
+          const result = await checkForDuplicates(authUser.id, packsToCheck, type);
+          setDuplicateInfo(result);
+        }
+      };
+
+      checkDuplicates();
+    }
+  }, [isOpen, authUser, needsSignUp, type, packId, selectedPackIds, checkForDuplicates]);
 
   const getPaymentInfo = () => {
     switch (type) {
@@ -228,6 +268,17 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
                 </CardContent>
               </Card>
 
+              {/* Verificação de Duplicatas */}
+              {!needsSignUp && duplicateInfo && (
+                <PaymentDuplicateWarning
+                  duplicates={duplicateInfo.duplicates}
+                  newPacks={duplicateInfo.newPacks}
+                  message={duplicateInfo.message}
+                  paymentType={type}
+                  show={duplicateInfo.hasDuplicates || type === 'complete'}
+                />
+              )}
+
               {/* Seção de Cupom */}
               {!needsSignUp && (
                 <CouponSection
@@ -308,7 +359,7 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
                 </div>
 
                 {/* Formulário de Pagamento */}
-                <StripePaymentForm
+                <StripeInternalCheckout
                   amount={amountInCents}
                   currency="brl"
                   onSuccess={handlePaymentSuccess}
