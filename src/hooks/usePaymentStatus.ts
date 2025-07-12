@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { usePaymentValidation } from './usePaymentValidation';
@@ -21,9 +20,11 @@ export const usePaymentStatus = (userId: string) => {
   const createPaymentSession = useCallback(async (
     packId: string | null, 
     paymentType: 'individual' | 'combo' | 'complete',
-    selectedPackIds?: string[]
+    selectedPackIds?: string[],
+    couponCode?: string,
+    totalAmount?: number
   ) => {
-    console.log('Creating payment session:', { packId, paymentType, selectedPackIds, userId });
+    console.log('Creating payment session:', { packId, paymentType, selectedPackIds, userId, couponCode, totalAmount });
     
     // Validar entrada antes de processar
     if (!validatePaymentType(paymentType, packId, selectedPackIds)) {
@@ -31,13 +32,19 @@ export const usePaymentStatus = (userId: string) => {
     }
 
     try {
+      const requestBody = {
+        paymentType, // Padronizado para paymentType
+        packId,
+        selectedPackIds,
+        userId,
+        couponCode: couponCode || null,
+        totalAmount: totalAmount || null
+      };
+
+      console.log('Sending request body to edge function:', requestBody);
+
       const { data, error } = await supabase.functions.invoke('create-stripe-session', {
-        body: {
-          type: paymentType,
-          packId,
-          selectedPackIds,
-          userId
-        }
+        body: requestBody
       });
 
       if (error) {
@@ -45,17 +52,17 @@ export const usePaymentStatus = (userId: string) => {
         throw new Error(error.message || 'Erro ao criar pagamento');
       }
 
-      if (!data || !data.session_id) {
+      if (!data || (!data.sessionId && !data.url)) {
         console.error('Invalid response from create-stripe-session:', data);
         throw new Error('Resposta inválida do servidor');
       }
 
       console.log('Stripe session created:', data);
       return {
-        id: `session_${Date.now()}`,
-        stripe_session_id: data.session_id,
+        id: data.sessionId || `session_${Date.now()}`,
+        stripe_session_id: data.sessionId,
         status: 'pending' as const,
-        init_point: data.init_point
+        init_point: data.url
       };
     } catch (error) {
       console.error('Error in createPaymentSession:', error);

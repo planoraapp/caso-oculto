@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from 'react';
 import { usePaymentStatus } from './usePaymentStatus';
 import { usePaymentValidation } from './usePaymentValidation';
@@ -68,7 +67,7 @@ export const usePaymentManager = (userId: string) => {
     closePaymentModal();
   }, []);
 
-  const handlePurchaseCombo = useCallback(async (selectedPackIds: string[]) => {
+  const handlePurchaseCombo = useCallback(async (selectedPackIds: string[], couponCode?: string, totalAmount?: number) => {
     if (state.isLoading || !userId) return;
     
     if (selectedPackIds.length < 2) {
@@ -79,8 +78,8 @@ export const usePaymentManager = (userId: string) => {
     setLoading(true);
     
     try {
-      console.log('Starting combo purchase for packs:', selectedPackIds);
-      const session = await createPaymentSession(null, 'combo', selectedPackIds);
+      console.log('Starting combo purchase for packs:', selectedPackIds, 'with coupon:', couponCode);
+      const session = await createPaymentSession(null, 'combo', selectedPackIds, couponCode, totalAmount);
       setStripeSessionId(session.stripe_session_id);
       closeComboModal();
     } catch (error) {
@@ -91,13 +90,13 @@ export const usePaymentManager = (userId: string) => {
     }
   }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, closeComboModal, setStripeSessionId]);
 
-  const handleCompletePurchase = useCallback(async () => {
+  const handleCompletePurchase = useCallback(async (couponCode?: string, totalAmount?: number) => {
     if (state.isLoading || !userId) return;
     setLoading(true);
     
     try {
-      console.log('Starting complete access purchase');
-      const session = await createPaymentSession(null, 'complete');
+      console.log('Starting complete access purchase with coupon:', couponCode);
+      const session = await createPaymentSession(null, 'complete', undefined, couponCode, totalAmount);
       setStripeSessionId(session.stripe_session_id);
     } catch (error) {
       console.error('Erro ao processar pagamento completo:', error);
@@ -107,13 +106,13 @@ export const usePaymentManager = (userId: string) => {
     }
   }, [state.isLoading, userId, createPaymentSession, showPaymentStatus, setLoading, setStripeSessionId]);
 
-  const handleIndividualPurchase = useCallback(async (packId: string, packName: string) => {
+  const handleIndividualPurchase = useCallback(async (packId: string, packName: string, couponCode?: string, totalAmount?: number) => {
     if (state.isLoading || !userId) return;
     setLoading(true);
     
     try {
-      console.log('Starting individual purchase for pack:', packId);
-      const session = await createPaymentSession(packId, 'individual');
+      console.log('Starting individual purchase for pack:', packId, 'with coupon:', couponCode);
+      const session = await createPaymentSession(packId, 'individual', undefined, couponCode, totalAmount);
       setStripeSessionId(session.stripe_session_id);
     } catch (error) {
       console.error('Erro ao processar pagamento individual:', error);

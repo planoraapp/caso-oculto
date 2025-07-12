@@ -21,6 +21,7 @@ import CouponSection from './checkout/CouponSection';
 import { useToast } from '../hooks/use-toast';
 import { useAuth } from '../hooks/useAuth';
 import { useAffiliate } from '../hooks/useAffiliate';
+import { useCoupon } from '../hooks/useCoupon';
 
 // Chave pública live da Stripe
 const stripePromise = loadStripe('pk_live_51RhgpgLtmJkjKIDB5HIRkSFixyXL4Nsv884yLSWfiy02vbsYYuXw7eX29gkQnWISxycMvrNdObsLLVUERDyUptyH00xXh7fdHL');
@@ -57,6 +58,7 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   const { toast } = useToast();
   const { user: authUser } = useAuth();
   const { affiliateCode } = useAffiliate();
+  const { coupon, calculateDiscount } = useCoupon();
 
   // Verificar se usuário precisa se cadastrar
   useEffect(() => {
@@ -158,7 +160,10 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
   const paymentInfo = getPaymentInfo();
   const IconComponent = paymentInfo.icon;
   const originalPrice = totalPrice > 0 ? totalPrice : paymentInfo.price / 100;
-  const finalPrice = originalPrice - appliedDiscount;
+  
+  // Calcular desconto com base no cupom aplicado
+  const calculatedDiscount = coupon?.is_valid ? calculateDiscount(originalPrice) : appliedDiscount;
+  const finalPrice = Math.max(0.01, originalPrice - calculatedDiscount); // Mínimo R$ 0,01
   const amountInCents = Math.round(finalPrice * 100);
 
   return (
@@ -242,10 +247,10 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
                       <span className="text-case-white">R$ {originalPrice.toFixed(2)}</span>
                     </div>
                     
-                    {appliedDiscount > 0 && (
+                    {calculatedDiscount > 0 && (
                       <div className="flex justify-between items-center">
                         <span className="text-green-500">Desconto ({couponCode}):</span>
-                        <span className="text-green-500">-R$ {appliedDiscount.toFixed(2)}</span>
+                        <span className="text-green-500">-R$ {calculatedDiscount.toFixed(2)}</span>
                       </div>
                     )}
                     
@@ -289,12 +294,12 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
                     <div>
                       <p className="text-case-white font-medium">{paymentInfo.title}</p>
                       <p className="text-case-white/60 text-sm">{paymentInfo.subtitle}</p>
-                      {appliedDiscount > 0 && (
+                      {calculatedDiscount > 0 && (
                         <p className="text-green-400 text-sm">Cupom {couponCode} aplicado</p>
                       )}
                     </div>
                     <div className="text-right">
-                      {appliedDiscount > 0 && (
+                      {calculatedDiscount > 0 && (
                         <p className="text-case-white/60 line-through text-sm">R$ {originalPrice.toFixed(2)}</p>
                       )}
                       <p className="text-case-white font-semibold">R$ {finalPrice.toFixed(2)}</p>

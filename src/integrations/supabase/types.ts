@@ -467,7 +467,9 @@ export type Database = {
         Returns: boolean
       }
       process_affiliate_purchase: {
-        Args: { affiliate_code: string; purchase_amount: number }
+        Args:
+          | Record<PropertyKey, never>
+          | { affiliate_code: string; purchase_amount: number }
         Returns: string
       }
       track_affiliate_visit: {
@@ -479,7 +481,7 @@ export type Database = {
         Returns: boolean
       }
       validate_coupon: {
-        Args: { coupon_code: string }
+        Args: Record<PropertyKey, never> | { coupon_code: string }
         Returns: {
           id: string
           code: string

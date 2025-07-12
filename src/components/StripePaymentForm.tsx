@@ -65,23 +65,20 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
     setIsProcessing(true);
 
     try {
-      console.log('Creating Stripe session via Supabase Edge Function:', {
-        type,
+      const requestBody = {
+        paymentType: type, // Padronizado para paymentType
         packId,
         selectedPackIds,
         userId,
-        couponCode
-      });
+        couponCode: couponCode || null,
+        totalAmount: amount / 100 // Converter de centavos para reais
+      };
+
+      console.log('Creating Stripe session via Supabase Edge Function:', requestBody);
 
       // Usar a edge function do Supabase corretamente
       const { data, error } = await supabase.functions.invoke('create-stripe-session', {
-        body: {
-          type,
-          packId,
-          selectedPackIds,
-          userId,
-          couponCode: couponCode || null
-        }
+        body: requestBody
       });
 
       if (error) {

@@ -14,6 +14,13 @@ const logStep = (step: string, details?: any) => {
   console.log(`[CREATE-STRIPE-SESSION] ${step}${detailsStr}`);
 };
 
+// Cupons padrão do sistema
+const DEFAULT_COUPONS = {
+  'CASO10': { discount_value: 10, discount_type: 'percentage' },
+  'VALEU': { discount_value: 99, discount_type: 'percentage' },
+  'LOVABLE': { discount_value: 100, discount_type: 'percentage' }
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -25,7 +32,7 @@ serve(async (req) => {
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
     if (!stripeKey) {
       logStep("ERROR: STRIPE_SECRET_KEY not configured");
-      throw new Error("Stripe não configurado corretamente");
+      throw new Error("Chave do Stripe não configurada no servidor");
     }
     logStep("Stripe key found");
 
@@ -45,7 +52,7 @@ serve(async (req) => {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
       logStep("ERROR: No authorization header");
-      throw new Error("Token de autorização necessário");
+      throw new Error("Usuário não autenticado - faça login novamente");
     }
 
     const token = authHeader.replace("Bearer ", "");
@@ -53,7 +60,7 @@ serve(async (req) => {
     
     if (userError || !userData.user) {
       logStep("ERROR: User authentication failed", { error: userError });
-      throw new Error("Usuário não autenticado");
+      throw new Error("Sessão expirada - faça login novamente");
     }
 
     const user = userData.user;
@@ -73,7 +80,7 @@ serve(async (req) => {
 
     if (!paymentType) {
       logStep("ERROR: Missing payment type");
-      throw new Error("Tipo de pagamento necessário");
+      throw new Error("Tipo de pagamento não especificado");
     }
 
     // Initialize Stripe
@@ -124,6 +131,18 @@ serve(async (req) => {
           throw new Error(`Pack não encontrado: ${packId}`);
         }
 
+        let unitAmount = Math.round(pack.price * 100); // Convert to cents
+        
+        // Apply coupon discount if provided
+        if (couponCode && DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS]) {
+          const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
+          if (coupon.discount_type === 'percentage') {
+            unitAmount = Math.max(1, Math.round(unitAmount * (100 - coupon.discount_value) / 100));
+          }
+          sessionMetadata.coupon_code = couponCode.toUpperCase();
+          logStep("Applied default coupon", { coupon: couponCode, newAmount: unitAmount });
+        }
+
         lineItems = [{
           price_data: {
             currency: 'brl',
@@ -131,7 +150,7 @@ serve(async (req) => {
               name: pack.name,
               description: pack.description,
             },
-            unit_amount: Math.round(pack.price * 100), // Convert to cents
+            unit_amount: unitAmount,
           },
           quantity: 1,
         }];
@@ -151,20 +170,46 @@ serve(async (req) => {
           throw new Error("Packs selecionados não encontrados");
         }
 
-        lineItems = packs.map(pack => ({
+        // Base combo price is R$ 61.40
+        let totalComboAmount = 6140; // R$ 61.40 in cents
+        
+        // Apply coupon discount if provided
+        if (couponCode && DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS]) {
+          const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
+          if (coupon.discount_type === 'percentage') {
+            totalComboAmount = Math.max(1, Math.round(totalComboAmount * (100 - coupon.discount_value) / 100));
+          }
+          sessionMetadata.coupon_code = couponCode.toUpperCase();
+          logStep("Applied default coupon to combo", { coupon: couponCode, newAmount: totalComboAmount });
+        }
+
+        lineItems = [{
           price_data: {
             currency: 'brl',
             product_data: {
-              name: pack.name,
-              description: pack.description,
+              name: `Combo 5 Packs - ${packs.map(p => p.name).join(', ')}`,
+              description: 'Combo especial com 5 packs selecionados',
             },
-            unit_amount: Math.round(pack.price * 100),
+            unit_amount: totalComboAmount,
           },
           quantity: 1,
-        }));
+        }];
 
       } else if (paymentType === 'complete') {
         logStep("Creating complete access session");
+        
+        // Base complete price is R$ 110.90
+        let completeAmount = 11090; // R$ 110.90 in cents
+        
+        // Apply coupon discount if provided
+        if (couponCode && DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS]) {
+          const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
+          if (coupon.discount_type === 'percentage') {
+            completeAmount = Math.max(1, Math.round(completeAmount * (100 - coupon.discount_value) / 100));
+          }
+          sessionMetadata.coupon_code = couponCode.toUpperCase();
+          logStep("Applied default coupon to complete", { coupon: couponCode, newAmount: completeAmount });
+        }
         
         lineItems = [{
           price_data: {
@@ -173,7 +218,7 @@ serve(async (req) => {
               name: 'Acesso Completo - Todos os Packs',
               description: 'Acesso vitalício a todos os packs disponíveis e futuros',
             },
-            unit_amount: totalAmount ? Math.round(totalAmount * 100) : 9999, // Default fallback
+            unit_amount: completeAmount,
           },
           quantity: 1,
         }];
@@ -183,34 +228,11 @@ serve(async (req) => {
         throw new Error("Configuração de pagamento inválida");
       }
 
-      logStep("Line items prepared", { count: lineItems.length });
+      logStep("Line items prepared", { count: lineItems.length, totalAmount: lineItems[0]?.price_data?.unit_amount });
 
     } catch (error) {
       logStep("ERROR: Failed to prepare line items", { error: error.message });
       throw error;
-    }
-
-    // Handle coupon if provided (simplified logic)
-    let discounts: Stripe.Checkout.SessionCreateParams.Discount[] | undefined;
-    if (couponCode) {
-      logStep("Coupon provided", { couponCode });
-      try {
-        // Simple coupon validation - you might want to enhance this
-        const coupons = await stripe.coupons.list({ limit: 100 });
-        const validCoupon = coupons.data.find(c => c.id === couponCode);
-        
-        if (validCoupon) {
-          discounts = [{ coupon: couponCode }];
-          sessionMetadata.coupon_code = couponCode;
-          logStep("Valid coupon applied", { couponCode });
-        } else {
-          logStep("WARNING: Invalid coupon provided", { couponCode });
-          // Don't throw error, just continue without coupon
-        }
-      } catch (couponError) {
-        logStep("WARNING: Coupon validation failed", { error: couponError.message });
-        // Continue without coupon
-      }
     }
 
     // Create Stripe session
@@ -224,23 +246,19 @@ serve(async (req) => {
       success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/packs`,
       metadata: sessionMetadata,
-      allow_promotion_codes: true,
+      allow_promotion_codes: false, // Disable since we handle coupons manually
       billing_address_collection: 'required',
       expires_at: Math.floor(Date.now() / 1000) + (30 * 60), // 30 minutes
     };
 
-    if (discounts) {
-      sessionCreateParams.discounts = discounts;
-    }
-
     logStep("Creating Stripe session", { 
       customerId, 
       lineItemsCount: lineItems.length,
-      hasDiscounts: !!discounts 
+      unitAmount: lineItems[0]?.price_data?.unit_amount
     });
 
     const session = await stripe.checkout.sessions.create(sessionCreateParams);
-    logStep("Stripe session created successfully", { sessionId: session.id });
+    logStep("Stripe session created successfully", { sessionId: session.id, url: session.url });
 
     return new Response(JSON.stringify({ 
       sessionId: session.id,
