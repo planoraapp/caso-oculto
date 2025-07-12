@@ -329,7 +329,7 @@ const Account: React.FC<AccountProps> = ({
                   Minha Biblioteca
                 </Button>
                 
-                <Button onClick={() => window.location.href = '/packs'} variant="outline" className="w-full border-case-white/20 text-case-white hover:bg-case-white/10 text-indigo-50 bg-slate-950 hover:bg-slate-800">
+                <Button onClick={() => window.location.href = '/packs'} variant="outline" className="w-full border-case-white/20 text-case-white hover:bg-case-white/10 text-gray-900 bg-slate-50">
                   <ShoppingBag className="h-4 w-4 mr-2" />
                   Ver Todos os Packs
                 </Button>
