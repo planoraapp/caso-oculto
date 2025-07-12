@@ -76,8 +76,20 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
 
           const userPackData = (packAccess || [])
             .map(access => {
-              if (access.packs) {
-                return { ...access.packs, owned: true };
+              if (access.packs && typeof access.packs === 'object') {
+                return { 
+                  id: access.packs.id,
+                  name: access.packs.name,
+                  description: access.packs.description,
+                  image: access.packs.image,
+                  price: access.packs.price,
+                  difficulty: access.packs.difficulty,
+                  category: access.packs.category,
+                  created_at: access.packs.created_at,
+                  updated_at: access.packs.updated_at,
+                  cases: access.packs.cases,
+                  owned: true 
+                };
               }
               return null;
             })
