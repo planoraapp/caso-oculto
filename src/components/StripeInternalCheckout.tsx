@@ -59,6 +59,7 @@ const StripeInternalCheckout: React.FC<StripeInternalCheckoutProps> = ({
     event.preventDefault();
 
     if (!stripe || !elements || !userId) {
+      console.error('Stripe não inicializado ou usuário não encontrado');
       return;
     }
 
@@ -82,17 +83,22 @@ const StripeInternalCheckout: React.FC<StripeInternalCheckoutProps> = ({
         body: requestBody
       });
 
+      console.log('=== RESPOSTA DA EDGE FUNCTION ===');
+      console.log('Data:', data);
+      console.log('Error:', error);
+
       if (error) {
         console.error('Erro ao criar payment intent:', error);
         throw new Error(error.message || 'Erro ao processar pagamento');
       }
 
-      const { client_secret } = data;
-      console.log('Payment intent criado:', client_secret);
-
-      if (!client_secret) {
-        throw new Error('Client secret não retornado');
+      if (!data || !data.client_secret) {
+        console.error('Client secret não retornado:', data);
+        throw new Error('Falha na comunicação com o servidor de pagamento');
       }
+
+      const { client_secret } = data;
+      console.log('Payment intent criado com sucesso, client_secret:', client_secret);
 
       // Confirmar pagamento com Stripe
       const cardElement = elements.getElement(CardElement);
@@ -127,16 +133,20 @@ const StripeInternalCheckout: React.FC<StripeInternalCheckoutProps> = ({
         });
 
         // Processar no backend
-        await supabase.functions.invoke('process-payment-success', {
-          body: {
-            paymentIntentId: paymentIntent.id,
-            userId,
-            paymentType: type,
-            packId,
-            selectedPackIds,
-            couponCode
-          }
-        });
+        try {
+          await supabase.functions.invoke('process-payment-success', {
+            body: {
+              paymentIntentId: paymentIntent.id,
+              userId,
+              paymentType: type,
+              packId,
+              selectedPackIds,
+              couponCode
+            }
+          });
+        } catch (processError) {
+          console.warn('Erro ao processar sucesso do pagamento, mas pagamento foi aprovado:', processError);
+        }
 
         setTimeout(() => {
           onSuccess();

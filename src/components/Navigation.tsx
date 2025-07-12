@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { LogIn, LogOut, User, Library, Package, Settings, Menu, X, Shield } from 'lucide-react';
 import NeonLogo from './NeonLogo';
@@ -13,6 +13,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ user, onLogout, isAdmin }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
@@ -23,6 +24,20 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout, isAdmin }) => {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      console.log('Iniciando logout...');
+      closeMobileMenu();
+      await onLogout();
+      console.log('Logout concluído, redirecionando...');
+      navigate('/', { replace: true });
+    } catch (error) {
+      console.error('Erro no logout:', error);
+      // Mesmo com erro, tenta redirecionar
+      navigate('/', { replace: true });
+    }
   };
 
   // Verificar se o usuário é especificamente o admin conectawebapps@outlook.com
@@ -109,7 +124,7 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout, isAdmin }) => {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    onClick={onLogout}
+                    onClick={handleLogout}
                     className="text-case-white hover:text-case-red hover:bg-noir-medium"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
@@ -226,7 +241,7 @@ const Navigation: React.FC<NavigationProps> = ({ user, onLogout, isAdmin }) => {
                   )}
                   
                   <button 
-                    onClick={() => { onLogout(); closeMobileMenu(); }}
+                    onClick={handleLogout}
                     className="flex items-center gap-3 p-3 rounded-lg transition-colors text-case-white hover:bg-noir-medium w-full text-left"
                   >
                     <LogOut className="h-5 w-5" />
