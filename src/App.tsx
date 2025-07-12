@@ -11,6 +11,7 @@ import Library from './pages/Library';
 import Login from './pages/Login';
 import Terms from './pages/Terms';
 import AdminPanel from './pages/AdminPanel';
+import Account from './pages/Account';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { useAffiliate } from './hooks/useAffiliate';
 import './App.css';
@@ -37,6 +38,8 @@ const AppContent: React.FC = () => {
           <Route path="/packs" element={<Packs user={user} />} />
           <Route path="/pack/:id" element={<PackView user={user} />} />
           <Route path="/biblioteca" element={<Library user={user} />} />
+          <Route path="/library" element={<Library user={user} />} />
+          <Route path="/account" element={<Account user={user} onLogout={signOut} />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<AdminPanel user={user} />} />

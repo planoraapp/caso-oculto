@@ -83,24 +83,39 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
         let totalSpent = 0;
         let packCount = 0;
         
-        // Calculate total spent and pack count
-        if (purchaseData) {
+        // Buscar dados reais da tabela compras para calcular valores
+        if (purchaseData && purchaseData.length > 0) {
+          const sessionIds = purchaseData.map(p => p.stripe_session_id || p.mercadopago_preference_id).filter(Boolean);
+          
+          if (sessionIds.length > 0) {
+            const { data: comprasData } = await supabase
+              .from('compras')
+              .select('valor_pago, pack_id, selected_pack_ids')
+              .in('stripe_session_id', sessionIds);
+
+            if (comprasData) {
+              totalSpent = comprasData.reduce((sum, compra) => sum + (compra.valor_pago || 0), 0);
+            }
+          }
+
+          // Contar packs únicos baseado em payment_sessions
+          const uniquePackIds = new Set<string>();
           purchaseData.forEach(purchase => {
-            switch (purchase.payment_type) {
-              case 'individual':
-                totalSpent += 14.80; // Individual pack price
-                packCount += 1;
-                break;
-              case 'combo':
-                totalSpent += 61.40; // Combo price
-                packCount += 5;
-                break;
-              case 'complete':
-                totalSpent += 110.90; // Complete access price
-                packCount = 999; // Represents all packs
-                break;
+            if (purchase.pack_id) uniquePackIds.add(purchase.pack_id);
+            if (purchase.selected_pack_ids && Array.isArray(purchase.selected_pack_ids)) {
+              purchase.selected_pack_ids.forEach(id => uniquePackIds.add(id));
+            }
+            
+            // Se for complete access, definir pack count como todos
+            if (purchase.payment_type === 'complete') {
+              packCount = 999;
             }
           });
+          
+          // Se não for complete access, usar contagem real
+          if (packCount !== 999) {
+            packCount = uniquePackIds.size;
+          }
         }
 
         // If user has complete access, they have all packs

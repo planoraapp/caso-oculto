@@ -18,13 +18,14 @@ export const useUserPacks = (user: any): UseUserPacksReturn => {
   useEffect(() => {
     const fetchUserPacks = async () => {
       if (!user?.id) {
-        console.log('useUserPacks: No user ID provided');
+        console.log('useUserPacks: No user ID provided', { user });
         setLoading(false);
         return;
       }
 
       try {
         console.log('useUserPacks: Fetching user packs for user:', user.id);
+        console.log('useUserPacks: User object:', user);
         setError(null);
 
         // First check if user has complete access
