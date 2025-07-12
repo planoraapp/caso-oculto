@@ -26,7 +26,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
       try {
         console.log('Fetching user packs for user:', user.id);
 
-        // Primeiro verificar se o usuário tem acesso total
+        // First check if user has complete access
         const { data: profile } = await supabase
           .from('profiles')
           .select('acesso_total')
@@ -36,7 +36,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
         console.log('User profile:', profile);
 
         if (profile?.acesso_total) {
-          // Usuário tem acesso total - buscar todos os packs
+          // User has complete access - fetch all packs
           console.log('User has complete access - fetching all packs');
           const { data: allPacks } = await supabase
             .from('packs')
@@ -44,13 +44,18 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
             .order('created_at', { ascending: false });
 
           const userPackData = (allPacks || [])
-            .map(pack => ({ ...pack, owned: true }))
+            .map(pack => {
+              if (pack) {
+                return { ...pack, owned: true };
+              }
+              return null;
+            })
             .filter(Boolean);
 
           console.log('All packs for complete access user:', userPackData);
           setUserPacks(userPackData);
         } else {
-          // Buscar packs específicos usando user_pack_access como fonte principal
+          // Fetch specific packs using user_pack_access as primary source
           console.log('Fetching specific packs from user_pack_access');
           
           const { data: packAccess, error } = await supabase
@@ -70,7 +75,12 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
           }
 
           const userPackData = (packAccess || [])
-            .map(access => ({ ...access.packs, owned: true }))
+            .map(access => {
+              if (access.packs) {
+                return { ...access.packs, owned: true };
+              }
+              return null;
+            })
             .filter(Boolean);
 
           console.log('User specific packs:', userPackData);
