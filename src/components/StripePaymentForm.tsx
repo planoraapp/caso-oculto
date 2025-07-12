@@ -74,15 +74,25 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
         totalAmount: amount / 100 // Converter de centavos para reais
       };
 
-      console.log('Creating Stripe session via Supabase Edge Function:', requestBody);
+      console.log('=== STRIPE PAYMENT DEBUG ===');
+      console.log('Request body being sent:', JSON.stringify(requestBody, null, 2));
+      console.log('Amount in cents:', amount);
+      console.log('Amount converted to reais:', amount / 100);
+      console.log('User ID:', userId);
+      console.log('Coupon Code:', couponCode);
 
       // Usar a edge function do Supabase corretamente
       const { data, error } = await supabase.functions.invoke('create-stripe-session', {
         body: requestBody
       });
 
+      console.log('=== EDGE FUNCTION RESPONSE ===');
+      console.log('Data:', data);
+      console.log('Error:', error);
+
       if (error) {
         console.error('Error from edge function:', error);
+        console.error('Error details:', JSON.stringify(error, null, 2));
         throw new Error(error.message || 'Erro ao criar sessão de pagamento');
       }
 
