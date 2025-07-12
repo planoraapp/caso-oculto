@@ -1,9 +1,8 @@
 
 import React from 'react';
 import { Badge } from '../ui/badge';
-import { CreditCard, Calendar, Package } from 'lucide-react';
 
-interface PaymentSession {
+interface UserCompra {
   id: string;
   user_id: string;
   pack_id: string | null;
@@ -11,106 +10,79 @@ interface PaymentSession {
   payment_type: string;
   status: string;
   created_at: string;
-  stripe_session_id: string | null;
+  valor_pago: number;
 }
 
 interface UserPaymentsListProps {
-  userPayments: PaymentSession[];
+  userPayments: UserCompra[];
 }
 
 const UserPaymentsList: React.FC<UserPaymentsListProps> = ({ userPayments }) => {
+  const getStatusBadge = (status: string) => {
+    const statusConfig = {
+      'approved': { label: 'Aprovado', variant: 'default' as const },
+      'pending': { label: 'Pendente', variant: 'secondary' as const },
+      'rejected': { label: 'Rejeitado', variant: 'destructive' as const }
+    };
+    
+    const config = statusConfig[status as keyof typeof statusConfig] || 
+                  { label: status, variant: 'secondary' as const };
+    
+    return <Badge variant={config.variant}>{config.label}</Badge>;
+  };
+
   const getPaymentTypeLabel = (type: string) => {
-    switch (type) {
-      case 'individual': return 'Pack Individual';
-      case 'combo': return 'Combo 5 Packs';
-      case 'complete': return 'Acesso Total';
-      default: return type;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'approved': return 'bg-green-600';
-      case 'pending': return 'bg-yellow-600';
-      case 'rejected': return 'bg-red-600';
-      default: return 'bg-gray-600';
-    }
-  };
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'approved': return 'Aprovado';
-      case 'pending': return 'Pendente';
-      case 'rejected': return 'Rejeitado';
-      default: return status;
-    }
+    const types = {
+      'individual': 'Pack Individual',
+      'combo': 'Combo 5 Packs',
+      'complete': 'Acesso Total'
+    };
+    return types[type as keyof typeof types] || type;
   };
 
   if (userPayments.length === 0) {
     return (
-      <div>
-        <h4 className="text-case-white font-semibold mb-2 flex items-center gap-2">
-          <CreditCard className="h-4 w-4" />
-          Histórico de Pagamentos:
-        </h4>
-        <span className="text-case-white/60">Nenhum pagamento registrado</span>
+      <div className="text-center text-case-white/60 py-4 bg-noir-medium rounded-lg">
+        Nenhuma compra registrada
       </div>
     );
   }
 
   return (
-    <div>
-      <h4 className="text-case-white font-semibold mb-3 flex items-center gap-2">
-        <CreditCard className="h-4 w-4" />
-        Histórico de Pagamentos ({userPayments.length}):
-      </h4>
-      <div className="space-y-2 max-h-40 overflow-y-auto">
-        {userPayments.map((payment) => (
-          <div 
-            key={payment.id} 
-            className="bg-noir-medium p-3 rounded-lg border border-noir-light"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <Package className="h-3 w-3 text-case-white/60" />
-                <span className="text-case-white text-sm font-medium">
-                  {getPaymentTypeLabel(payment.payment_type)}
-                </span>
-              </div>
-              <Badge 
-                variant="secondary" 
-                className={`${getStatusColor(payment.status)} text-white text-xs`}
-              >
-                {getStatusLabel(payment.status)}
-              </Badge>
+    <div className="space-y-2">
+      {userPayments.slice(0, 5).map((payment) => (
+        <div key={payment.id} className="bg-noir-medium p-3 rounded-lg">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-case-white font-medium">
+                {getPaymentTypeLabel(payment.payment_type)}
+              </span>
+              {getStatusBadge(payment.status)}
             </div>
-            
-            <div className="flex items-center gap-4 text-xs text-case-white/60">
-              <div className="flex items-center gap-1">
-                <Calendar className="h-3 w-3" />
-                {new Date(payment.created_at).toLocaleDateString('pt-BR')}
-              </div>
-              {payment.stripe_session_id && (
-                <div className="text-xs font-mono">
-                  Stripe: {payment.stripe_session_id.substring(0, 20)}...
-                </div>
-              )}
-            </div>
-
-            {payment.payment_type === 'combo' && payment.selected_pack_ids && (
-              <div className="mt-2 text-xs text-case-white/60">
-                Packs: {payment.selected_pack_ids.join(', ')}
-              </div>
-            )}
-            
-            {payment.payment_type === 'individual' && payment.pack_id && (
-              <div className="mt-2 text-xs text-case-white/60">
-                Pack: {payment.pack_id}
-              </div>
-            )}
+            <span className="text-case-white font-semibold">
+              R$ {payment.valor_pago?.toFixed(2) || '0.00'}
+            </span>
           </div>
-        ))}
-      </div>
+          <div className="text-case-white/60 text-sm">
+            {new Date(payment.created_at).toLocaleString('pt-BR')}
+          </div>
+          {payment.pack_id && (
+            <div className="text-case-white/60 text-xs mt-1">
+              Pack: {payment.pack_id}
+            </div>
+          )}
+          {payment.selected_pack_ids && payment.selected_pack_ids.length > 0 && (
+            <div className="text-case-white/60 text-xs mt-1">
+              Packs: {payment.selected_pack_ids.join(', ')}
+            </div>
+          )}
+        </div>
+      ))}
+      {userPayments.length > 5 && (
+        <div className="text-center text-case-white/60 text-sm">
+          ... e mais {userPayments.length - 5} compras
+        </div>
+      )}
     </div>
   );
 };

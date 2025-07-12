@@ -90,7 +90,15 @@ export type Database = {
           valor_total_gerado?: number | null
           visitas?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "afiliados_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       compras: {
         Row: {

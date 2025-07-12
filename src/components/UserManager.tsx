@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { supabase } from '../integrations/supabase/client';
@@ -14,7 +15,7 @@ interface UserPackAccess {
   granted_at: string;
 }
 
-interface PaymentSession {
+interface UserCompra {
   id: string;
   user_id: string;
   pack_id: string | null;
@@ -22,13 +23,13 @@ interface PaymentSession {
   payment_type: string;
   status: string;
   created_at: string;
-  stripe_session_id: string | null;
+  valor_pago: number;
 }
 
 const UserManager: React.FC = () => {
   const [users, setUsers] = useState<SupabaseUser[]>([]);
   const [packAccesses, setPackAccesses] = useState<UserPackAccess[]>([]);
-  const [paymentSessions, setPaymentSessions] = useState<PaymentSession[]>([]);
+  const [userCompras, setUserCompras] = useState<UserCompra[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [fixing, setFixing] = useState(false);
@@ -43,7 +44,7 @@ const UserManager: React.FC = () => {
   const loadAllData = async () => {
     try {
       setLoading(true);
-      await Promise.all([loadUsers(), loadPackAccesses(), loadPaymentSessions()]);
+      await Promise.all([loadUsers(), loadPackAccesses(), loadUserCompras()]);
     } finally {
       setLoading(false);
     }
@@ -87,20 +88,20 @@ const UserManager: React.FC = () => {
     }
   };
 
-  const loadPaymentSessions = async () => {
+  const loadUserCompras = async () => {
     try {
       const { data, error } = await supabase
-        .from('payment_sessions')
+        .from('compras')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPaymentSessions(data || []);
+      setUserCompras(data || []);
     } catch (error) {
-      console.error('Error loading payment sessions:', error);
+      console.error('Error loading user compras:', error);
       toast({
         title: "Erro",
-        description: "Erro ao carregar sessões de pagamento",
+        description: "Erro ao carregar compras dos usuários",
         variant: "destructive"
       });
     }
@@ -164,8 +165,8 @@ const UserManager: React.FC = () => {
     return packAccesses.filter(access => access.user_id === userId);
   };
 
-  const getUserPayments = (userId: string) => {
-    return paymentSessions.filter(session => session.user_id === userId);
+  const getUserCompras = (userId: string) => {
+    return userCompras.filter(compra => compra.user_id === userId);
   };
 
   const addPackToUser = async (userId: string, packId: string) => {
@@ -296,7 +297,7 @@ const UserManager: React.FC = () => {
       <div className="grid grid-cols-1 gap-6">
         {users.map((user) => {
           const userPacks = getUserPacks(user.id);
-          const userPayments = getUserPayments(user.id);
+          const userComprasData = getUserCompras(user.id);
           const isEditing = editingUser === user.id;
 
           return (
@@ -304,7 +305,7 @@ const UserManager: React.FC = () => {
               key={user.id}
               user={user}
               userPacks={userPacks}
-              userPayments={userPayments}
+              userPayments={userComprasData}
               isEditing={isEditing}
               newPackId={newPackId}
               onToggleEdit={() => setEditingUser(isEditing ? null : user.id)}

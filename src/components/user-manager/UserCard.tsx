@@ -1,14 +1,14 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader } from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
-import { Trash2, Edit, X, CreditCard, Package } from 'lucide-react';
 import { Badge } from '../ui/badge';
-import UserStatsCard from './UserStatsCard';
+import { User as SupabaseUser } from '@supabase/supabase-js';
+import { Edit, Trash2, Users, Package, DollarSign } from 'lucide-react';
 import UserPacksList from './UserPacksList';
 import UserPaymentsList from './UserPaymentsList';
 import AddPackForm from './AddPackForm';
-import { User as SupabaseUser } from '@supabase/supabase-js';
+import UserStatsCard from './UserStatsCard';
 
 interface UserPackAccess {
   id: string;
@@ -18,7 +18,7 @@ interface UserPackAccess {
   granted_at: string;
 }
 
-interface PaymentSession {
+interface UserCompra {
   id: string;
   user_id: string;
   pack_id: string | null;
@@ -26,13 +26,13 @@ interface PaymentSession {
   payment_type: string;
   status: string;
   created_at: string;
-  stripe_session_id: string | null;
+  valor_pago: number;
 }
 
 interface UserCardProps {
   user: SupabaseUser;
   userPacks: UserPackAccess[];
-  userPayments: PaymentSession[];
+  userPayments: UserCompra[];
   isEditing: boolean;
   newPackId: string;
   onToggleEdit: () => void;
@@ -54,26 +54,34 @@ const UserCard: React.FC<UserCardProps> = ({
   onNewPackIdChange,
   onAddPackToUser
 }) => {
+  // Calculate user statistics
   const approvedPayments = userPayments.filter(p => p.status === 'approved');
   const pendingPayments = userPayments.filter(p => p.status === 'pending');
+  const totalSpent = approvedPayments.reduce((sum, payment) => sum + (payment.valor_pago || 0), 0);
 
   return (
     <Card className="bg-noir-dark border-noir-medium">
-      <CardHeader>
+      <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <UserStatsCard
-            email={user.email || 'Email não disponível'}
-            createdAt={user.created_at}
-            lastSignInAt={user.last_sign_in_at}
-          />
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-case-red rounded-full flex items-center justify-center">
+              <Users className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-case-white text-lg">{user.email}</CardTitle>
+              <p className="text-case-white/60 text-sm">
+                Cadastrado em: {new Date(user.created_at).toLocaleDateString('pt-BR')}
+              </p>
+            </div>
+          </div>
           <div className="flex gap-2">
             <Button
               size="sm"
               variant="outline"
               onClick={onToggleEdit}
-              className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
+              className="border-case-red text-case-red hover:bg-case-red hover:text-white"
             >
-              {isEditing ? <X className="h-4 w-4" /> : <Edit className="h-4 w-4" />}
+              <Edit className="h-4 w-4" />
             </Button>
             <Button
               size="sm"
@@ -86,51 +94,58 @@ const UserCard: React.FC<UserCardProps> = ({
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          {/* Estatísticas Rápidas */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-noir-medium p-3 rounded-lg">
-              <div className="flex items-center gap-2">
-                <Package className="h-4 w-4 text-case-red" />
-                <span className="text-case-white text-sm">Packs Ativos</span>
-              </div>
-              <div className="text-2xl font-bold text-case-white">{userPacks.length}</div>
-            </div>
-            <div className="bg-noir-medium p-3 rounded-lg">
-              <div className="flex items-center gap-2">
-                <CreditCard className="h-4 w-4 text-green-500" />
-                <span className="text-case-white text-sm">Compras Aprovadas</span>
-              </div>
-              <div className="text-2xl font-bold text-case-white">{approvedPayments.length}</div>
-            </div>
-            <div className="bg-noir-medium p-3 rounded-lg">
-              <div className="flex items-center gap-2">
-                <CreditCard className="h-4 w-4 text-yellow-500" />
-                <span className="text-case-white text-sm">Compras Pendentes</span>
-              </div>
-              <div className="text-2xl font-bold text-case-white">{pendingPayments.length}</div>
-            </div>
-          </div>
 
-          {/* Packs do Usuário */}
-          <UserPacksList
-            userPacks={userPacks}
-            onRemovePack={onRemovePackFromUser}
+      <CardContent className="space-y-4">
+        {/* User Statistics */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <UserStatsCard
+            icon={<Package className="h-4 w-4" />}
+            title="Packs Ativos"
+            value={userPacks.length}
+            color="text-blue-500"
           />
+          <UserStatsCard
+            icon={<DollarSign className="h-4 w-4" />}
+            title="Compras Aprovadas"
+            value={approvedPayments.length}
+            subtitle={`${pendingPayments.length} pendentes`}
+            color="text-green-500"
+          />
+          <UserStatsCard
+            title="Total Gasto"
+            value={`R$ ${totalSpent.toFixed(2)}`}
+            color="text-purple-500"
+          />
+        </div>
 
-          {/* Histórico de Pagamentos */}
+        {/* User Packs */}
+        <div>
+          <h4 className="text-case-white font-semibold mb-2 flex items-center gap-2">
+            <Package className="h-4 w-4" />
+            Packs Liberados ({userPacks.length})
+          </h4>
+          <UserPacksList 
+            userPacks={userPacks} 
+            onRemovePack={onRemovePackFromUser} 
+          />
+        </div>
+
+        {/* Add Pack Form */}
+        {isEditing && (
+          <AddPackForm
+            newPackId={newPackId}
+            onPackIdChange={onNewPackIdChange}
+            onAddPack={onAddPackToUser}
+          />
+        )}
+
+        {/* User Payments */}
+        <div>
+          <h4 className="text-case-white font-semibold mb-2 flex items-center gap-2">
+            <DollarSign className="h-4 w-4" />
+            Histórico de Compras ({userPayments.length})
+          </h4>
           <UserPaymentsList userPayments={userPayments} />
-
-          {/* Formulário para Adicionar Pack */}
-          {isEditing && (
-            <AddPackForm
-              userPacks={userPacks}
-              newPackId={newPackId}
-              onNewPackIdChange={onNewPackIdChange}
-              onAddPack={onAddPackToUser}
-            />
-          )}
         </div>
       </CardContent>
     </Card>

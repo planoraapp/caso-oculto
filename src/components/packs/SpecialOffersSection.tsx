@@ -40,7 +40,7 @@ const SpecialOffersSection: React.FC<SpecialOffersSectionProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
         {/* Combo 5 Packs */}
         <ComboPackCard 
-          onPurchase={onComboClick} 
+          onClick={onComboClick} 
           isLoading={isLoading} 
         />
 
@@ -55,7 +55,7 @@ const SpecialOffersSection: React.FC<SpecialOffersSectionProps> = ({
           <CompleteAccessBlock />
         ) : (
           <CompletePackCard 
-            onPurchase={onCompletePurchase} 
+            onClick={onCompletePurchase} 
             isLoading={isLoading} 
           />
         )}

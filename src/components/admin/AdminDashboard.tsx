@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -42,26 +43,26 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ stats, loading }) => {
     try {
       setLoadingActivity(true);
       
-      // Get recent payment sessions and profiles separately, then join in code
-      const { data: payments, error: paymentsError } = await supabase
-        .from('payment_sessions')
-        .select('id, user_id, payment_type, status, created_at')
+      // Get recent compras and profiles
+      const { data: compras, error: comprasError } = await supabase
+        .from('compras')
+        .select('id, user_id, payment_type, status, created_at, valor_pago')
         .order('created_at', { ascending: false })
         .limit(10);
 
-      if (paymentsError) {
-        console.error('Error fetching payments:', paymentsError);
+      if (comprasError) {
+        console.error('Error fetching compras:', comprasError);
         setRecentActivity([]);
         return;
       }
 
-      if (!payments || payments.length === 0) {
+      if (!compras || compras.length === 0) {
         setRecentActivity([]);
         return;
       }
 
-      // Get user profiles for the payment user_ids
-      const userIds = payments.map(p => p.user_id);
+      // Get user profiles for the compras user_ids
+      const userIds = compras.map(c => c.user_id);
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('id, email')
@@ -81,30 +82,30 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ stats, loading }) => {
 
       const activities: RecentActivity[] = [];
 
-      payments.forEach(payment => {
-        const email = userEmailMap.get(payment.user_id) || 'Usuário desconhecido';
+      compras.forEach(compra => {
+        const email = userEmailMap.get(compra.user_id) || 'Usuário desconhecido';
         let description = '';
         
-        switch (payment.payment_type) {
+        switch (compra.payment_type) {
           case 'individual':
-            description = `${email} comprou Pack Individual`;
+            description = `${email} comprou Pack Individual (R$ ${compra.valor_pago?.toFixed(2) || '0.00'})`;
             break;
           case 'combo':
-            description = `${email} comprou Combo 5 Packs`;
+            description = `${email} comprou Combo 5 Packs (R$ ${compra.valor_pago?.toFixed(2) || '0.00'})`;
             break;
           case 'complete':
-            description = `${email} comprou Acesso Total`;
+            description = `${email} comprou Acesso Total (R$ ${compra.valor_pago?.toFixed(2) || '0.00'})`;
             break;
           default:
-            description = `${email} fez uma compra`;
+            description = `${email} fez uma compra (R$ ${compra.valor_pago?.toFixed(2) || '0.00'})`;
         }
 
         activities.push({
-          id: payment.id,
+          id: compra.id,
           type: 'payment',
           description,
-          timestamp: payment.created_at,
-          status: payment.status
+          timestamp: compra.created_at,
+          status: compra.status
         });
       });
 
@@ -119,28 +120,29 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ stats, loading }) => {
 
   const loadTopPacks = async () => {
     try {
-      // Get pack purchase statistics
-      const { data: sessions } = await supabase
-        .from('payment_sessions')
-        .select('pack_id, selected_pack_ids, payment_type, status')
+      // Get pack purchase statistics from compras table
+      const { data: compras } = await supabase
+        .from('compras')
+        .select('pack_id, selected_pack_ids, payment_type, status, valor_pago')
         .eq('status', 'approved');
 
       const packStats: { [key: string]: { name: string; count: number; revenue: number } } = {};
 
-      sessions?.forEach(session => {
-        if (session.payment_type === 'individual' && session.pack_id) {
-          if (!packStats[session.pack_id]) {
-            packStats[session.pack_id] = { name: session.pack_id, count: 0, revenue: 0 };
+      compras?.forEach(compra => {
+        if (compra.payment_type === 'individual' && compra.pack_id) {
+          if (!packStats[compra.pack_id]) {
+            packStats[compra.pack_id] = { name: compra.pack_id, count: 0, revenue: 0 };
           }
-          packStats[session.pack_id].count += 1;
-          packStats[session.pack_id].revenue += 14.80; // Default pack price
-        } else if (session.payment_type === 'combo' && session.selected_pack_ids) {
-          session.selected_pack_ids.forEach((packId: string) => {
+          packStats[compra.pack_id].count += 1;
+          packStats[compra.pack_id].revenue += compra.valor_pago || 0;
+        } else if (compra.payment_type === 'combo' && compra.selected_pack_ids) {
+          const packValue = (compra.valor_pago || 0) / compra.selected_pack_ids.length;
+          compra.selected_pack_ids.forEach((packId: string) => {
             if (!packStats[packId]) {
               packStats[packId] = { name: packId, count: 0, revenue: 0 };
             }
             packStats[packId].count += 1;
-            packStats[packId].revenue += 2.96; // Combo price per pack (14.80/5)
+            packStats[packId].revenue += packValue;
           });
         }
       });
@@ -191,7 +193,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ stats, loading }) => {
           <CardHeader>
             <CardTitle className="text-case-white flex items-center gap-2">
               <DollarSign className="h-5 w-5 text-green-500" />
-              Receita do Mês
+              Receita Total
             </CardTitle>
           </CardHeader>
           <CardContent>

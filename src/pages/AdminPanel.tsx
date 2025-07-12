@@ -47,9 +47,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ user }) => {
       // Set up real-time subscription
       const channel = supabase
         .channel('admin-dashboard')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'payment_sessions' }, () => {
-          loadStats();
-        })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'compras' }, () => {
           loadStats();
         })
@@ -73,21 +70,18 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ user }) => {
         { count: usersCount },
         { count: packsCount },
         { count: couponsCount },
-        { count: paymentsCount },
-        { data: paymentSessions },
         { data: compras }
       ] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('packs').select('*', { count: 'exact', head: true }),
         supabase.from('discount_coupons').select('*', { count: 'exact', head: true }),
-        supabase.from('payment_sessions').select('*', { count: 'exact', head: true }),
-        supabase.from('payment_sessions').select('*'),
         supabase.from('compras').select('*')
       ]);
 
-      // Calculate advanced stats
-      const approvedPayments = paymentSessions?.filter(p => p.status === 'approved').length || 0;
-      const pendingPayments = paymentSessions?.filter(p => p.status === 'pending').length || 0;
+      // Calculate advanced stats from compras table
+      const approvedPayments = compras?.filter(p => p.status === 'approved').length || 0;
+      const pendingPayments = compras?.filter(p => p.status === 'pending').length || 0;
+      const totalPayments = compras?.length || 0;
       
       // Calculate revenue from compras table
       const totalRevenue = compras?.reduce((sum, compra) => {
@@ -107,7 +101,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ user }) => {
         totalUsers: usersCount || 0,
         totalPacks: packsCount || 0,
         totalCoupons: couponsCount || 0,
-        totalPayments: paymentsCount || 0,
+        totalPayments,
         approvedPayments,
         pendingPayments,
         totalRevenue,
@@ -201,7 +195,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ user }) => {
 
         {/* Management Tabs */}
         <Tabs defaultValue="dashboard" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-6 bg-noir-dark">
+          <TabsList className="grid w-full grid-cols-5 bg-noir-dark">
             <TabsTrigger value="dashboard" className="text-case-white">
               <TrendingUp className="h-4 w-4 mr-2" />
               Dashboard
