@@ -5,6 +5,7 @@ import { supabase } from '../integrations/supabase/client';
 import { useToast } from '../hooks/use-toast';
 import UserCard from './user-manager/UserCard';
 import { User as SupabaseUser } from '@supabase/supabase-js';
+import { RefreshCw, Zap } from 'lucide-react';
 
 interface UserPackAccess {
   id: string;
@@ -14,22 +15,42 @@ interface UserPackAccess {
   granted_at: string;
 }
 
+interface PaymentSession {
+  id: string;
+  user_id: string;
+  pack_id: string | null;
+  selected_pack_ids: string[] | null;
+  payment_type: string;
+  status: string;
+  created_at: string;
+  stripe_session_id: string | null;
+}
+
 const UserManager: React.FC = () => {
   const [users, setUsers] = useState<SupabaseUser[]>([]);
   const [packAccesses, setPackAccesses] = useState<UserPackAccess[]>([]);
+  const [paymentSessions, setPaymentSessions] = useState<PaymentSession[]>([]);
   const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
   const [editingUser, setEditingUser] = useState<string | null>(null);
   const [newPackId, setNewPackId] = useState('');
   const { toast } = useToast();
 
   useEffect(() => {
-    loadUsers();
-    loadPackAccesses();
+    loadAllData();
   }, []);
+
+  const loadAllData = async () => {
+    try {
+      setLoading(true);
+      await Promise.all([loadUsers(), loadPackAccesses(), loadPaymentSessions()]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const loadUsers = async () => {
     try {
-      setLoading(true);
       const { data, error } = await supabase.functions.invoke('admin-list-users');
       
       if (error) throw error;
@@ -44,8 +65,6 @@ const UserManager: React.FC = () => {
         description: "Erro ao carregar usuários",
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -68,8 +87,57 @@ const UserManager: React.FC = () => {
     }
   };
 
+  const loadPaymentSessions = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('payment_sessions')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setPaymentSessions(data || []);
+    } catch (error) {
+      console.error('Error loading payment sessions:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao carregar sessões de pagamento",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const syncStripePayments = async () => {
+    try {
+      setSyncing(true);
+      const { data, error } = await supabase.functions.invoke('sync-stripe-payments');
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Sincronização Concluída",
+        description: `${data.results?.filter((r: any) => r.status === 'synced').length || 0} pagamentos sincronizados`,
+      });
+      
+      // Recarregar dados após sincronização
+      await loadAllData();
+    } catch (error) {
+      console.error('Error syncing payments:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao sincronizar pagamentos",
+        variant: "destructive"
+      });
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   const getUserPacks = (userId: string) => {
     return packAccesses.filter(access => access.user_id === userId);
+  };
+
+  const getUserPayments = (userId: string) => {
+    return paymentSessions.filter(session => session.user_id === userId);
   };
 
   const addPackToUser = async (userId: string, packId: string) => {
@@ -165,14 +233,30 @@ const UserManager: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-case-white">Gerenciar Usuários</h2>
-        <Button onClick={loadUsers} className="bg-case-red hover:bg-red-600">
-          Atualizar Lista
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={syncStripePayments} 
+            disabled={syncing}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            {syncing ? (
+              <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Zap className="h-4 w-4 mr-2" />
+            )}
+            Sincronizar Stripe
+          </Button>
+          <Button onClick={loadAllData} className="bg-case-red hover:bg-red-600">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Atualizar Lista
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6">
         {users.map((user) => {
           const userPacks = getUserPacks(user.id);
+          const userPayments = getUserPayments(user.id);
           const isEditing = editingUser === user.id;
 
           return (
@@ -180,6 +264,7 @@ const UserManager: React.FC = () => {
               key={user.id}
               user={user}
               userPacks={userPacks}
+              userPayments={userPayments}
               isEditing={isEditing}
               newPackId={newPackId}
               onToggleEdit={() => setEditingUser(isEditing ? null : user.id)}
