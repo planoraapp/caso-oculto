@@ -11,18 +11,18 @@ interface CouponValidation {
   message: string;
 }
 
-// Cupons padrão do sistema
+// Cupons padrão do sistema com restrições
 const DEFAULT_COUPONS = {
-  'CASO10': { discount_value: 10, discount_type: 'percentage' },
-  'VALEU': { discount_value: 99, discount_type: 'percentage' },
-  'LOVABLE': { discount_value: 100, discount_type: 'percentage' }
+  'CASO10': { discount_value: 10, discount_type: 'percentage', allowed_types: ['individual', 'combo', 'complete'] },
+  'VALEU': { discount_value: 99, discount_type: 'percentage', allowed_types: ['complete'] },
+  'LOVABLE': { discount_value: 100, discount_type: 'percentage', allowed_types: ['complete'] }
 };
 
 export const useCoupon = () => {
   const [coupon, setCoupon] = useState<CouponValidation | null>(null);
   const [isValidating, setIsValidating] = useState(false);
 
-  const validateCoupon = useCallback(async (couponCode: string) => {
+  const validateCoupon = useCallback(async (couponCode: string, paymentType?: string) => {
     if (!couponCode.trim()) {
       setCoupon(null);
       return null;
@@ -35,16 +35,30 @@ export const useCoupon = () => {
       // Primeiro, verificar cupons padrão
       if (DEFAULT_COUPONS[upperCode as keyof typeof DEFAULT_COUPONS]) {
         const defaultCoupon = DEFAULT_COUPONS[upperCode as keyof typeof DEFAULT_COUPONS];
+        
+        // Verificar se o cupom é válido para o tipo de pagamento
+        let isValidForPaymentType = true;
+        let message = 'Cupom válido!';
+        
+        if (paymentType && !defaultCoupon.allowed_types.includes(paymentType)) {
+          isValidForPaymentType = false;
+          if (upperCode === 'VALEU' || upperCode === 'LOVABLE') {
+            message = 'Este cupom é válido apenas para Acesso Total.';
+          } else {
+            message = 'Cupom não válido para este tipo de compra.';
+          }
+        }
+        
         const validation = {
           id: null,
           code: upperCode,
           discount_value: defaultCoupon.discount_value,
           discount_type: defaultCoupon.discount_type,
-          is_valid: true,
-          message: 'Cupom válido!'
+          is_valid: isValidForPaymentType,
+          message: message
         };
         setCoupon(validation);
-        return validation;
+        return isValidForPaymentType ? validation : null;
       }
 
       // Verificar cupons no banco de dados

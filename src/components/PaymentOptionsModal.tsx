@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
@@ -233,6 +232,7 @@ const PaymentOptionsModal: React.FC<PaymentOptionsModalProps> = ({
               {!needsSignUp && (
                 <CouponSection
                   originalPrice={originalPrice}
+                  paymentType={type}
                   onCouponApplied={handleCouponApplied}
                   onCouponRemoved={handleCouponRemoved}
                 />

@@ -45,7 +45,9 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
     const fetchPacks = async () => {
       try {
         const packsData = await getAllPacks();
-        setPacks(packsData);
+        // Filtrar o Pack Misterioso 03
+        const filteredPacks = packsData.filter(pack => pack.id !== 'pack-03');
+        setPacks(filteredPacks);
       } catch (error) {
         console.error('Error fetching packs:', error);
       } finally {

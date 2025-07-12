@@ -14,11 +14,11 @@ const logStep = (step: string, details?: any) => {
   console.log(`[CREATE-STRIPE-SESSION] ${step}${detailsStr}`);
 };
 
-// Cupons padrão do sistema
+// Cupons padrão do sistema com restrições
 const DEFAULT_COUPONS = {
-  'CASO10': { discount_value: 10, discount_type: 'percentage' },
-  'VALEU': { discount_value: 99, discount_type: 'percentage' },
-  'LOVABLE': { discount_value: 100, discount_type: 'percentage' }
+  'CASO10': { discount_value: 10, discount_type: 'percentage', allowed_types: ['individual', 'combo', 'complete'] },
+  'VALEU': { discount_value: 99, discount_type: 'percentage', allowed_types: ['complete'] },
+  'LOVABLE': { discount_value: 100, discount_type: 'percentage', allowed_types: ['complete'] }
 };
 
 serve(async (req) => {
@@ -103,8 +103,14 @@ serve(async (req) => {
       }
     } catch (error) {
       logStep("ERROR: Failed to check existing customers", { error: error.message });
-      // Continue without existing customer
     }
+
+    // Função para verificar se o cupom é válido para o tipo de pagamento
+    const isCouponValidForPaymentType = (couponCode: string, paymentType: string) => {
+      const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
+      if (!coupon) return false;
+      return coupon.allowed_types.includes(paymentType);
+    };
 
     // Prepare line items based on payment type
     let lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
@@ -133,14 +139,16 @@ serve(async (req) => {
 
         let unitAmount = Math.round(pack.price * 100); // Convert to cents
         
-        // Apply coupon discount if provided
-        if (couponCode && DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS]) {
+        // Apply coupon discount if provided and valid for individual packs
+        if (couponCode && isCouponValidForPaymentType(couponCode, 'individual')) {
           const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
           if (coupon.discount_type === 'percentage') {
             unitAmount = Math.max(50, Math.round(unitAmount * (100 - coupon.discount_value) / 100));
           }
           sessionMetadata.coupon_code = couponCode.toUpperCase();
-          logStep("Applied default coupon", { coupon: couponCode, newAmount: unitAmount });
+          logStep("Applied valid coupon for individual pack", { coupon: couponCode, newAmount: unitAmount });
+        } else if (couponCode) {
+          logStep("Coupon not valid for individual packs", { coupon: couponCode });
         }
 
         lineItems = [{
@@ -173,14 +181,16 @@ serve(async (req) => {
         // Base combo price is R$ 61.40
         let totalComboAmount = 6140; // R$ 61.40 in cents
         
-        // Apply coupon discount if provided
-        if (couponCode && DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS]) {
+        // Apply coupon discount if provided and valid for combo
+        if (couponCode && isCouponValidForPaymentType(couponCode, 'combo')) {
           const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
           if (coupon.discount_type === 'percentage') {
             totalComboAmount = Math.max(50, Math.round(totalComboAmount * (100 - coupon.discount_value) / 100));
           }
           sessionMetadata.coupon_code = couponCode.toUpperCase();
-          logStep("Applied default coupon to combo", { coupon: couponCode, newAmount: totalComboAmount });
+          logStep("Applied valid coupon for combo", { coupon: couponCode, newAmount: totalComboAmount });
+        } else if (couponCode) {
+          logStep("Coupon not valid for combo packs", { coupon: couponCode });
         }
 
         lineItems = [{
@@ -201,14 +211,14 @@ serve(async (req) => {
         // Base complete price is R$ 110.90
         let completeAmount = 11090; // R$ 110.90 in cents
         
-        // Apply coupon discount if provided
+        // Apply coupon discount if provided (all coupons are valid for complete access)
         if (couponCode && DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS]) {
           const coupon = DEFAULT_COUPONS[couponCode.toUpperCase() as keyof typeof DEFAULT_COUPONS];
           if (coupon.discount_type === 'percentage') {
             completeAmount = Math.max(50, Math.round(completeAmount * (100 - coupon.discount_value) / 100));
           }
           sessionMetadata.coupon_code = couponCode.toUpperCase();
-          logStep("Applied default coupon to complete", { coupon: couponCode, newAmount: completeAmount });
+          logStep("Applied coupon to complete access", { coupon: couponCode, newAmount: completeAmount });
         }
         
         lineItems = [{
@@ -246,7 +256,7 @@ serve(async (req) => {
       success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/packs`,
       metadata: sessionMetadata,
-      allow_promotion_codes: false, // Disable since we handle coupons manually
+      allow_promotion_codes: false,
       billing_address_collection: 'required',
       expires_at: Math.floor(Date.now() / 1000) + (30 * 60), // 30 minutes
     };

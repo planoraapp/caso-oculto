@@ -36,7 +36,6 @@ export const useUserPacks = (user: any): UseUserPacksReturn => {
 
         if (profileError) {
           console.error('useUserPacks: Error fetching profile:', profileError);
-          // Continue without throwing error - user might not have profile yet
         }
 
         console.log('useUserPacks: User profile:', profile);
@@ -47,6 +46,7 @@ export const useUserPacks = (user: any): UseUserPacksReturn => {
           const { data: allPacks, error: packsError } = await supabase
             .from('packs')
             .select('*')
+            .neq('id', 'pack-03') // Excluir Pack Misterioso 03
             .order('created_at', { ascending: false });
 
           if (packsError) {
@@ -80,52 +80,74 @@ export const useUserPacks = (user: any): UseUserPacksReturn => {
           console.log('useUserPacks: All packs for complete access user:', userPackData.length);
           setUserPacks(userPackData);
         } else {
-          // Fetch specific packs using user_pack_access as primary source
-          console.log('useUserPacks: Fetching specific packs from user_pack_access');
+          // Fetch user's purchased packs from payment_sessions
+          console.log('useUserPacks: Fetching user specific packs from payment_sessions');
           
+          const { data: paymentSessions, error: paymentsError } = await supabase
+            .from('payment_sessions')
+            .select('pack_id, selected_pack_ids')
+            .eq('user_id', user.id)
+            .eq('status', 'approved');
+
+          if (paymentsError) {
+            console.error('useUserPacks: Error fetching payment sessions:', paymentsError);
+            throw paymentsError;
+          }
+
+          console.log('useUserPacks: Payment sessions found:', paymentSessions?.length || 0);
+
+          // Collect all pack IDs from purchases
+          const packIds = new Set<string>();
+          
+          if (paymentSessions) {
+            paymentSessions.forEach(session => {
+              if (session.pack_id) {
+                packIds.add(session.pack_id);
+              }
+              if (session.selected_pack_ids && Array.isArray(session.selected_pack_ids)) {
+                session.selected_pack_ids.forEach(id => packIds.add(id));
+              }
+            });
+          }
+
+          // Also check user_pack_access table as fallback
           const { data: packAccess, error: accessError } = await supabase
             .from('user_pack_access')
-            .select(`
-              pack_id,
-              packs (
-                id,
-                name,
-                description,
-                image,
-                price,
-                difficulty,
-                category,
-                created_at,
-                updated_at
-              )
-            `)
+            .select('pack_id')
             .eq('user_id', user.id)
             .eq('is_active', true);
 
-          console.log('useUserPacks: Pack access query result:', { 
-            data: packAccess, 
-            error: accessError,
-            count: packAccess?.length || 0 
-          });
-
           if (accessError) {
-            console.error('useUserPacks: Error fetching user pack access:', accessError);
-            throw accessError;
+            console.log('useUserPacks: Could not fetch user_pack_access (expected if no direct access)');
+          } else if (packAccess) {
+            packAccess.forEach(access => {
+              if (access.pack_id) packIds.add(access.pack_id);
+            });
           }
 
-          if (!packAccess || packAccess.length === 0) {
-            console.log('useUserPacks: No pack access found for user');
+          console.log('useUserPacks: Collected pack IDs:', Array.from(packIds));
+
+          if (packIds.size === 0) {
+            console.log('useUserPacks: No packs found for user');
             setUserPacks([]);
             return;
           }
 
-          const userPackData = (packAccess || [])
-            .map((access, index) => {
-              console.log(`useUserPacks: Processing access record ${index}:`, access);
-              
-              // Type assertion to help TypeScript understand the structure
-              const pack = access.packs as any;
-              if (pack && typeof pack === 'object' && pack.id) {
+          // Fetch pack details
+          const { data: packs, error: packsError } = await supabase
+            .from('packs')
+            .select('*')
+            .in('id', Array.from(packIds))
+            .neq('id', 'pack-03'); // Excluir Pack Misterioso 03
+
+          if (packsError) {
+            console.error('useUserPacks: Error fetching packs:', packsError);
+            throw packsError;
+          }
+
+          const userPackData = (packs || [])
+            .map(pack => {
+              if (pack && typeof pack === 'object') {
                 const cases = getPackCases(pack.id) || [];
                 console.log(`useUserPacks: Pack ${pack.id} (${pack.name}) has ${cases.length} cases`);
                 
@@ -143,7 +165,7 @@ export const useUserPacks = (user: any): UseUserPacksReturn => {
                   owned: true 
                 };
               } else {
-                console.warn('useUserPacks: Invalid pack data for access record:', access);
+                console.warn('useUserPacks: Invalid pack data:', pack);
                 return null;
               }
             })

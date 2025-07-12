@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { User, Mail, Calendar, ShoppingBag, LogOut } from 'lucide-react';
+import { User, Mail, Calendar, ShoppingBag, LogOut, Crown, Package, CreditCard, TrendingUp } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
@@ -20,11 +20,25 @@ interface Purchase {
   status: string;
   created_at: string;
   selected_pack_ids?: string[];
+  stripe_session_id?: string;
+}
+
+interface UserStats {
+  totalPurchases: number;
+  totalSpent: number;
+  packCount: number;
+  memberSince: string;
 }
 
 const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [profile, setProfile] = useState<any>(null);
+  const [userStats, setUserStats] = useState<UserStats>({
+    totalPurchases: 0,
+    totalSpent: 0,
+    packCount: 0,
+    memberSince: ''
+  });
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -51,7 +65,7 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
         setProfile(profileData);
       }
 
-      // Load purchase history
+      // Load purchase history from payment_sessions
       const { data: purchaseData, error: purchaseError } = await supabase
         .from('payment_sessions')
         .select('*')
@@ -63,6 +77,43 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
         console.error('Error loading purchases:', purchaseError);
       } else {
         setPurchases(purchaseData || []);
+        
+        // Calculate user stats
+        const totalPurchases = purchaseData?.length || 0;
+        let totalSpent = 0;
+        let packCount = 0;
+        
+        // Calculate total spent and pack count
+        if (purchaseData) {
+          purchaseData.forEach(purchase => {
+            switch (purchase.payment_type) {
+              case 'individual':
+                totalSpent += 14.80; // Individual pack price
+                packCount += 1;
+                break;
+              case 'combo':
+                totalSpent += 61.40; // Combo price
+                packCount += 5;
+                break;
+              case 'complete':
+                totalSpent += 110.90; // Complete access price
+                packCount = 999; // Represents all packs
+                break;
+            }
+          });
+        }
+
+        // If user has complete access, they have all packs
+        if (profileData?.acesso_total) {
+          packCount = 999;
+        }
+
+        setUserStats({
+          totalPurchases,
+          totalSpent,
+          packCount,
+          memberSince: formatDate(user.created_at || profileData?.created_at || '')
+        });
       }
 
     } catch (error) {
@@ -78,6 +129,7 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
   };
 
   const formatDate = (dateString: string) => {
+    if (!dateString) return 'Não informado';
     return new Date(dateString).toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
@@ -98,6 +150,19 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
     }
   };
 
+  const getPaymentValue = (type: string) => {
+    switch (type) {
+      case 'individual':
+        return 'R$ 14,80';
+      case 'combo':
+        return 'R$ 61,40';
+      case 'complete':
+        return 'R$ 110,90';
+      default:
+        return 'N/A';
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 pt-20">
@@ -112,10 +177,63 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
 
   return (
     <div className="min-h-screen bg-gray-900 pt-20">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-case-white mb-2">Minha Conta</h1>
           <p className="text-case-white/80">Gerencie suas informações e histórico de compras</p>
+        </div>
+
+        {/* User Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Card className="bg-noir-dark border-noir-medium">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-case-white">
+                Total de Compras
+              </CardTitle>
+              <ShoppingBag className="h-4 w-4 text-case-red" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-case-white">{userStats.totalPurchases}</div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-noir-dark border-noir-medium">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-case-white">
+                Total Gasto
+              </CardTitle>
+              <CreditCard className="h-4 w-4 text-case-red" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-case-white">R$ {userStats.totalSpent.toFixed(2)}</div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-noir-dark border-noir-medium">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-case-white">
+                Packs Possuídos
+              </CardTitle>
+              <Package className="h-4 w-4 text-case-red" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-case-white">
+                {userStats.packCount === 999 ? 'Todos' : userStats.packCount}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-noir-dark border-noir-medium">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-case-white">
+                Membro Desde
+              </CardTitle>
+              <Calendar className="h-4 w-4 text-case-red" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-sm font-bold text-case-white">{userStats.memberSince}</div>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -126,6 +244,12 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                 <CardTitle className="text-case-white flex items-center gap-2">
                   <User className="h-5 w-5" />
                   Informações Pessoais
+                  {profile?.acesso_total && (
+                    <Badge className="bg-case-red text-white ml-2">
+                      <Crown className="h-3 w-3 mr-1" />
+                      Acesso Total
+                    </Badge>
+                  )}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -144,11 +268,11 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Calendar className="h-4 w-4 text-case-white/60" />
+                  <TrendingUp className="h-4 w-4 text-case-white/60" />
                   <div>
-                    <p className="text-sm text-case-white/60">Membro desde</p>
+                    <p className="text-sm text-case-white/60">Status da Conta</p>
                     <p className="text-case-white">
-                      {user?.created_at ? formatDate(user.created_at) : 'Não informado'}
+                      {profile?.acesso_total ? 'Acesso Total Ativo' : 'Usuário Regular'}
                     </p>
                   </div>
                 </div>
@@ -163,7 +287,7 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                   Histórico de Compras
                 </CardTitle>
                 <CardDescription className="text-case-white/60">
-                  Suas compras realizadas
+                  Suas compras realizadas e aprovadas
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -175,17 +299,29 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                   <div className="space-y-4">
                     {purchases.map((purchase) => (
                       <div key={purchase.id} className="flex items-center justify-between p-4 bg-noir-medium rounded-lg">
-                        <div>
-                          <p className="text-case-white font-medium">
-                            {getPaymentTypeLabel(purchase.payment_type)}
-                          </p>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="text-case-white font-medium">
+                              {getPaymentTypeLabel(purchase.payment_type)}
+                            </p>
+                            <Badge variant="secondary" className="bg-green-600 text-white text-xs">
+                              Aprovado
+                            </Badge>
+                          </div>
                           <p className="text-case-white/60 text-sm">
                             {formatDate(purchase.created_at)}
                           </p>
+                          {purchase.stripe_session_id && (
+                            <p className="text-case-white/40 text-xs mt-1">
+                              ID: {purchase.stripe_session_id.substring(0, 20)}...
+                            </p>
+                          )}
                         </div>
-                        <Badge variant="secondary" className="bg-green-600 text-white">
-                          Aprovado
-                        </Badge>
+                        <div className="text-right">
+                          <p className="text-case-white font-semibold">
+                            {getPaymentValue(purchase.payment_type)}
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -198,10 +334,28 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
           <div>
             <Card className="bg-noir-dark border-noir-medium">
               <CardHeader>
-                <CardTitle className="text-case-white">Ações</CardTitle>
+                <CardTitle className="text-case-white">Ações da Conta</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                <Button 
+                  onClick={() => window.location.href = '/library'}
+                  className="w-full bg-case-red hover:bg-red-600 text-white"
+                >
+                  <Package className="h-4 w-4 mr-2" />
+                  Minha Biblioteca
+                </Button>
+                
+                <Button 
+                  onClick={() => window.location.href = '/packs'}
+                  variant="outline"
+                  className="w-full border-case-white/20 text-case-white hover:bg-case-white/10"
+                >
+                  <ShoppingBag className="h-4 w-4 mr-2" />
+                  Ver Todos os Packs
+                </Button>
+                
                 <Separator className="bg-noir-medium" />
+                
                 <Button
                   onClick={onLogout}
                   variant="destructive"
@@ -212,6 +366,22 @@ const Account: React.FC<AccountProps> = ({ user, onLogout }) => {
                 </Button>
               </CardContent>
             </Card>
+
+            {profile?.acesso_total && (
+              <Card className="bg-gradient-to-br from-case-red/20 to-case-red/5 border-case-red/30 mt-4">
+                <CardHeader>
+                  <CardTitle className="text-case-white flex items-center gap-2">
+                    <Crown className="h-5 w-5 text-case-red" />
+                    Acesso Total
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-case-white/80 text-sm">
+                    Você tem acesso vitalício a todos os packs disponíveis e futuros lançamentos!
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </div>
