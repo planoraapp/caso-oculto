@@ -133,8 +133,9 @@ const UserCard: React.FC<UserCardProps> = ({
         {/* Add Pack Form */}
         {isEditing && (
           <AddPackForm
+            userPacks={userPacks}
             newPackId={newPackId}
-            onPackIdChange={onNewPackIdChange}
+            onNewPackIdChange={onNewPackIdChange}
             onAddPack={onAddPackToUser}
           />
         )}
