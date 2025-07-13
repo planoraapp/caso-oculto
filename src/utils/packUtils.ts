@@ -1,6 +1,9 @@
 
+
+import { PackService } from '../services/packService';
+
 // Re-export all pack utilities from the new service layer
-export { PackService } from '../services/packService';
+export { PackService };
 
 // Mantém compatibilidade com o código existente
 export const getAllPacks = () => PackService.getAllPacks();
@@ -19,3 +22,4 @@ export {
   calculatePackProgress,
   getCategoryColor
 } from './pack/packHelpers';
+
