@@ -1,5 +1,4 @@
 
-
 import { Pack } from './types';
 import { getPackCases } from './cases';
 
@@ -37,7 +36,7 @@ export const packs: Pack[] = [
     description: 'Mistérios baseados em mitos e histórias urbanas famosas.',
     price: 14.80,
     difficulty: 'hard',
-    image: '/packs/lendas-urbanas.webp',
+    image: '/lovable-uploads/d58dfb5c-aa43-41a9-9d42-abd01a0f2d35.png',
     category: 'thriller'
   },
   {
@@ -46,7 +45,7 @@ export const packs: Pack[] = [
     description: 'Mistérios que desafiam a lógica e parecem impossíveis.',
     price: 14.80,
     difficulty: 'hard',
-    image: '/packs/paradoxos-mortais.webp',
+    image: '/lovable-uploads/8d2ae3e1-4991-4a01-a86d-e2b029a8803f.png',
     category: 'mystery'
   },
   {
@@ -55,7 +54,7 @@ export const packs: Pack[] = [
     description: 'Enigmas psicológicos complexos que testam sua capacidade de raciocínio',
     price: 14.80,
     difficulty: 'hard',
-    image: '/packs/labirintos-mentais.webp',
+    image: '/lovable-uploads/9a824881-6805-419c-b65b-71525634b6e1.png',
     category: 'mystery'
   },
   {
@@ -82,7 +81,7 @@ export const packs: Pack[] = [
     description: 'Casos aparentemente impossíveis de resolver, mas sempre há uma saída',
     price: 14.80,
     difficulty: 'hard',
-    image: '/packs/beco-sem-saida.webp',
+    image: '/lovable-uploads/1fec1032-2d68-4010-8fb0-59094fdbf316.png',
     category: 'mystery'
   },
   {
@@ -91,7 +90,7 @@ export const packs: Pack[] = [
     description: 'Mistérios ambientados em diferentes períodos históricos',
     price: 14.80,
     difficulty: 'medium',
-    image: '/packs/crimes-de-epoca.webp',
+    image: '/lovable-uploads/65ca7340-3a64-47cf-9839-9a7cc1385eec.png',
     category: 'historical'
   },
   {
@@ -136,7 +135,7 @@ export const packs: Pack[] = [
     description: 'Situações bizarras que realmente aconteceram',
     price: 14.80,
     difficulty: 'medium',
-    image: '/packs/absurdamente-real.webp',
+    image: '/lovable-uploads/678239a2-0af3-42d6-82f8-43c55f115ce6.png',
     category: 'danger'
   }
 ];
@@ -151,4 +150,3 @@ export const getPackById = (packId: string): Pack | null => {
     cases: getPackCases(packId) || []
   };
 };
-

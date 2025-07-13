@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { Crown, CheckCircle } from 'lucide-react';
+import { Crown, CheckCircle, Star } from 'lucide-react';
 
 interface CompleteAccessBlockProps {
   message?: string;
@@ -16,7 +16,13 @@ const CompleteAccessBlock: React.FC<CompleteAccessBlockProps> = ({
       <CardHeader>
         <div className="flex items-center justify-between">
           <Badge className="bg-green-500 text-white w-fit">ATIVO</Badge>
-          <Crown className="h-6 w-6 text-green-500" />
+          <div className="flex items-center gap-2">
+            <div className="flex items-center text-green-400">
+              <Star className="h-4 w-4 mr-1" />
+              <span className="text-sm">Mais Econômico</span>
+            </div>
+            <Crown className="h-6 w-6 text-green-500" />
+          </div>
         </div>
         <CardTitle className="text-case-white flex items-center gap-2">
           <CheckCircle className="h-5 w-5 text-green-500" />

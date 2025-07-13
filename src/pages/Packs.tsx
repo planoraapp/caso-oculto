@@ -1,6 +1,6 @@
+
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { HelpCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
@@ -144,7 +144,11 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
                 variant="outline"
                 className="bg-gray-800/50 border-gray-600 text-case-white hover:bg-gray-700 hover:border-case-red/50"
               >
-                <HelpCircle className="h-4 w-4 mr-2" />
+                <img
+                  src="/lovable-uploads/35fbeca6-6735-43c0-b041-669c4447be72.png"
+                  alt="Como Jogar"
+                  className="h-4 w-4 mr-2"
+                />
                 Como Jogar
               </Button>
             </motion.div>

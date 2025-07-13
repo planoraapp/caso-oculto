@@ -1,45 +1,63 @@
+
 import React from 'react';
-import { X, Brain, Eye, HelpCircle } from 'lucide-react';
+import { X, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
 interface HowToPlayModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
 const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
   isOpen,
   onClose
 }) => {
-  return <AnimatePresence>
-      {isOpen && <>
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
           {/* Backdrop */}
-          <motion.div initial={{
-        opacity: 0
-      }} animate={{
-        opacity: 1
-      }} exit={{
-        opacity: 0
-      }} onClick={onClose} className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          >
             {/* Modal Card */}
-            <motion.div initial={{
-          opacity: 0,
-          scale: 0.9,
-          y: 20
-        }} animate={{
-          opacity: 1,
-          scale: 1,
-          y: 0
-        }} exit={{
-          opacity: 0,
-          scale: 0.9,
-          y: 20
-        }} onClick={e => e.stopPropagation()} className="bg-gray-800 border border-gray-700 rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <motion.div
+              initial={{
+                opacity: 0,
+                scale: 0.9,
+                y: 20
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                y: 0
+              }}
+              exit={{
+                opacity: 0,
+                scale: 0.9,
+                y: 20
+              }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-gray-800 border border-gray-700 rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+            >
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <Brain className="h-6 w-6 text-case-red" />
+                  <img
+                    src="/lovable-uploads/35fbeca6-6735-43c0-b041-669c4447be72.png"
+                    alt="Como Jogar"
+                    className="h-6 w-6"
+                  />
                   <h2 className="text-xl font-bold text-case-white">Como Jogar</h2>
                 </div>
-                <button onClick={onClose} className="text-case-white/60 hover:text-case-white transition-colors">
+                <button
+                  onClick={onClose}
+                  className="text-case-white/60 hover:text-case-white transition-colors"
+                >
                   <X className="h-6 w-6" />
                 </button>
               </div>
@@ -49,13 +67,19 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
                 {/* Introduction */}
                 <div>
                   <h3 className="text-lg font-semibold text-case-white mb-3">O que o que é o CASO OCULTO?</h3>
-                  <p className="text-case-white/80 leading-relaxed">São mistérios macabros ou inusitados onde você recebe apenas uma situação intrigante e deve descobrir o que realmente aconteceu fazendo perguntas que só podem ser respondidas com "sim", "não" ou "irrelevante".</p>
+                  <p className="text-case-white/80 leading-relaxed">
+                    São mistérios macabros ou inusitados onde você recebe apenas uma situação intrigante e deve descobrir o que realmente aconteceu fazendo perguntas que só podem ser respondidas com "sim", "não" ou "irrelevante".
+                  </p>
                 </div>
 
                 {/* How to Play */}
                 <div>
                   <h3 className="text-lg font-semibold text-case-white mb-3 flex items-center gap-2">
-                    <HelpCircle className="h-5 w-5 text-case-red" />
+                    <img
+                      src="/lovable-uploads/35fbeca6-6735-43c0-b041-669c4447be72.png"
+                      alt="Como Jogar"
+                      className="h-5 w-5"
+                    />
                     Como Jogar
                   </h3>
                   <div className="space-y-3">
@@ -119,7 +143,10 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
               </div>
             </motion.div>
           </motion.div>
-        </>}
-    </AnimatePresence>;
+        </>
+      )}
+    </AnimatePresence>
+  );
 };
+
 export default HowToPlayModal;
