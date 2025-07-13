@@ -66,10 +66,11 @@ export class PaymentService {
         throw error;
       }
 
-      // Type cast the payment_type to ensure it matches our interface
+      // Type cast the payment_type and status to ensure they match our interface
       return (data || []).map(purchase => ({
         ...purchase,
-        payment_type: purchase.payment_type as 'individual' | 'combo' | 'complete'
+        payment_type: purchase.payment_type as 'individual' | 'combo' | 'complete',
+        status: purchase.status as 'pending' | 'approved' | 'rejected'
       }));
     } catch (error) {
       console.error('Error in getUserPurchases:', error);
@@ -89,10 +90,11 @@ export class PaymentService {
         throw error;
       }
 
-      // Type cast the payment_type to ensure it matches our interface
+      // Type cast the payment_type and status to ensure they match our interface
       return (data || []).map(purchase => ({
         ...purchase,
-        payment_type: purchase.payment_type as 'individual' | 'combo' | 'complete'
+        payment_type: purchase.payment_type as 'individual' | 'combo' | 'complete',
+        status: purchase.status as 'pending' | 'approved' | 'rejected'
       }));
     } catch (error) {
       console.error('Error in getAllPurchases:', error);
