@@ -65,8 +65,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signUp = async (email: string, password: string, name?: string) => {
-    // Usar a URL atual como base para o redirect
-    const redirectUrl = `${window.location.origin}/email-confirmed`;
+    // Usar o domínio atual para o redirect
+    const currentDomain = window.location.origin;
+    const redirectUrl = `${currentDomain}/email-confirmed`;
     
     console.log('SignUp redirect URL:', redirectUrl);
     

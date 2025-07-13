@@ -47,7 +47,7 @@ const QuickSignUp: React.FC<QuickSignUpProps> = ({ onSuccess }) => {
       const { error } = await signUp(email, password);
       
       if (error) {
-        if (error.message.includes('already registered')) {
+        if (error.message.includes('already registered') || error.message.includes('User already registered')) {
           // Tentar fazer login se o usuário já existe
           const loginResult = await signIn(email, password);
           if (loginResult.error) {
@@ -73,7 +73,7 @@ const QuickSignUp: React.FC<QuickSignUpProps> = ({ onSuccess }) => {
       } else {
         toast({
           title: "Cadastro realizado!",
-          description: "Verifique seu e-mail para confirmar a conta.",
+          description: "Verifique seu e-mail para confirmar a conta. Você pode fechar esta página e clicar no link de confirmação que chegará no seu email.",
         });
         onSuccess();
       }

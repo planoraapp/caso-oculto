@@ -16,29 +16,44 @@ const EmailConfirmed: React.FC = () => {
   useEffect(() => {
     const confirmEmail = async () => {
       try {
+        // Verificar se já temos um usuário logado (caso o token seja válido)
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          console.log('Usuário já está logado:', session.user.email);
+          setIsConfirmed(true);
+          setIsLoading(false);
+          return;
+        }
+
         const token_hash = searchParams.get('token_hash');
         const type = searchParams.get('type');
         
-        if (!token_hash || type !== 'email') {
+        console.log('Verificando confirmação de email:', { token_hash, type });
+        
+        if (!token_hash || (type !== 'email' && type !== 'signup')) {
           setError('Link de confirmação inválido ou expirado.');
           setIsLoading(false);
           return;
         }
 
-        const { error } = await supabase.auth.verifyOtp({
+        const { data, error } = await supabase.auth.verifyOtp({
           token_hash,
-          type: 'email'
+          type: type as 'email' | 'signup'
         });
 
         if (error) {
-          setError('Erro ao confirmar email. Tente novamente.');
-          console.error('Email confirmation error:', error);
-        } else {
+          console.error('Erro na confirmação:', error);
+          setError('Erro ao confirmar email. O link pode ter expirado.');
+        } else if (data?.user) {
+          console.log('Email confirmado com sucesso:', data.user.email);
           setIsConfirmed(true);
+        } else {
+          setError('Erro inesperado na confirmação.');
         }
       } catch (err) {
+        console.error('Erro inesperado:', err);
         setError('Erro inesperado. Tente novamente.');
-        console.error('Unexpected error:', err);
       } finally {
         setIsLoading(false);
       }
@@ -86,7 +101,7 @@ const EmailConfirmed: React.FC = () => {
                     Sua conta foi confirmada com sucesso!
                   </p>
                   <p className="text-case-white/80">
-                    Agora você pode fazer login e acessar todos os recursos da plataforma.
+                    Agora você pode acessar todos os recursos da plataforma.
                   </p>
                 </div>
               </div>
@@ -104,29 +119,30 @@ const EmailConfirmed: React.FC = () => {
                   <p className="text-case-white/80">
                     {error}
                   </p>
+                  <p className="text-case-white/60 text-sm">
+                    Se você já fez login antes, pode tentar acessar diretamente a plataforma.
+                  </p>
                 </div>
               </div>
             )}
 
             {/* Botões de ação */}
             <div className="space-y-3">
-              {isConfirmed ? (
-                <Button
-                  onClick={() => navigate('/login')}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 flex items-center justify-center gap-2 transition-all duration-300"
-                >
-                  Fazer Login
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => navigate('/login')}
-                  variant="outline"
-                  className="w-full border-case-white/20 text-case-white hover:bg-case-white/10 py-3"
-                >
-                  Ir para Login
-                </Button>
-              )}
+              <Button
+                onClick={() => navigate('/packs')}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 flex items-center justify-center gap-2 transition-all duration-300"
+              >
+                {isConfirmed ? 'Acessar Packs' : 'Ir para Packs'}
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+              
+              <Button
+                onClick={() => navigate('/login')}
+                variant="outline"
+                className="w-full border-case-white/20 text-case-white hover:bg-case-white/10 py-3"
+              >
+                Fazer Login
+              </Button>
               
               <Button
                 onClick={() => navigate('/')}
@@ -145,7 +161,7 @@ const EmailConfirmed: React.FC = () => {
                   onClick={() => navigate('/login')}
                   className="text-blue-400 hover:text-blue-300 underline"
                 >
-                  Entre em contato
+                  Tente fazer login
                 </button>
               </p>
             </div>
