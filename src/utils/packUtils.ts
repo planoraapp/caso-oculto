@@ -1,17 +1,18 @@
 
-// Re-export all pack utilities from the new modular structure
+// Re-export all pack utilities from the new service layer
 export {
-  getAllPacks,
-  getPackById,
-  getUserPacks
-} from './pack/packQueries';
+  PackService
+} from '../services/packService';
 
-export {
-  createPack,
-  updatePack,
-  deletePack
-} from './pack/packOperations';
+// Mantém compatibilidade com o código existente
+export const getAllPacks = PackService.getAllPacks;
+export const getPackById = PackService.getPackById;
+export const getUserPacks = PackService.getUserPacks;
+export const createPack = PackService.createPack;
+export const updatePack = PackService.updatePack;
+export const deletePack = PackService.deletePack;
 
+// Mantém as funções de utilitários existentes
 export {
   validatePackData,
   formatPackPrice,

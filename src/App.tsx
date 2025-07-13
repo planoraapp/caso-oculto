@@ -13,6 +13,7 @@ import Terms from './pages/Terms';
 import AdminPanel from './pages/AdminPanel';
 import Account from './pages/Account';
 import EmailConfirmed from './pages/EmailConfirmed';
+import NotFound from './pages/NotFound';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { useAffiliate } from './hooks/useAffiliate';
 import './App.css';
@@ -45,6 +46,8 @@ const AppContent: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<AdminPanel user={user} />} />
           <Route path="/email-confirmed" element={<EmailConfirmed />} />
+          {/* Rota 404 como fallback */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
       <Toaster />
