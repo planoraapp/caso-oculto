@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { X, Eye } from 'lucide-react';
+import { X, Eye, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HowToPlayModalProps {
@@ -47,11 +47,7 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <img
-                    src="/lovable-uploads/35fbeca6-6735-43c0-b041-669c4447be72.png"
-                    alt="Como Jogar"
-                    className="h-6 w-6"
-                  />
+                  <HelpCircle className="h-6 w-6 text-case-red" />
                   <h2 className="text-xl font-bold text-case-white">Como Jogar</h2>
                 </div>
                 <button
@@ -75,11 +71,7 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({
                 {/* How to Play */}
                 <div>
                   <h3 className="text-lg font-semibold text-case-white mb-3 flex items-center gap-2">
-                    <img
-                      src="/lovable-uploads/35fbeca6-6735-43c0-b041-669c4447be72.png"
-                      alt="Como Jogar"
-                      className="h-5 w-5"
-                    />
+                    <HelpCircle className="h-5 w-5 text-case-red" />
                     Como Jogar
                   </h3>
                   <div className="space-y-3">

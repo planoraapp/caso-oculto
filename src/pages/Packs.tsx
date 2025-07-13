@@ -1,7 +1,7 @@
-
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../components/ui/button';
+import { HelpCircle } from 'lucide-react';
 import ComboModal from '../components/ComboModal';
 import PaymentStatusModal from '../components/PaymentStatusModal';
 import PaymentOptionsModal from '../components/PaymentOptionsModal';
@@ -142,13 +142,9 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
               <Button
                 onClick={() => openHowToPlay('howToPlay')}
                 variant="outline"
-                className="bg-gray-800/50 border-gray-600 text-case-white hover:bg-gray-700 hover:border-case-red/50"
+                className="bg-white border border-gray-300 text-gray-900 hover:bg-gray-100 hover:border-gray-400"
               >
-                <img
-                  src="/lovable-uploads/35fbeca6-6735-43c0-b041-669c4447be72.png"
-                  alt="Como Jogar"
-                  className="h-4 w-4 mr-2"
-                />
+                <HelpCircle className="h-4 w-4 mr-2" />
                 Como Jogar
               </Button>
             </motion.div>
