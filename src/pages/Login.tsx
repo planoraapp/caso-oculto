@@ -88,12 +88,13 @@ const Login: React.FC = () => {
         
         toast({
           title: 'Conta criada com sucesso!',
-          description: 'Verifique seu email para confirmar a conta.',
+          description: 'Verifique seu email para confirmar a conta antes de fazer login.',
         });
         
         // Switch to login mode after successful signup
         setIsLogin(true);
         setPassword('');
+        setName('');
       }
     } catch (error: any) {
       console.error('Auth error:', error);
@@ -103,11 +104,13 @@ const Login: React.FC = () => {
       if (error.message?.includes('Invalid login credentials')) {
         errorMessage = 'Email ou senha incorretos.';
       } else if (error.message?.includes('User already registered')) {
-        errorMessage = 'Este email já está registrado. Faça login.';
+        errorMessage = 'Este email já está registrado. Faça login ou confirme seu email.';
       } else if (error.message?.includes('Password should be at least 6 characters')) {
         errorMessage = 'A senha deve ter pelo menos 6 caracteres.';
       } else if (error.message?.includes('Unable to validate email address')) {
         errorMessage = 'Email inválido.';
+      } else if (error.message?.includes('confirme seu email')) {
+        errorMessage = error.message;
       } else if (error.message) {
         errorMessage = error.message;
       }

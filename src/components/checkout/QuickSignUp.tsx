@@ -51,11 +51,19 @@ const QuickSignUp: React.FC<QuickSignUpProps> = ({ onSuccess }) => {
           // Tentar fazer login se o usuário já existe
           const loginResult = await signIn(email, password);
           if (loginResult.error) {
-            toast({
-              title: "Usuário já existe",
-              description: "Este e-mail já está cadastrado. Verifique sua senha ou use a opção 'Esqueci minha senha'.",
-              variant: "destructive"
-            });
+            if (loginResult.error.message.includes('confirme seu email')) {
+              toast({
+                title: "Email não confirmado",
+                description: loginResult.error.message,
+                variant: "destructive"
+              });
+            } else {
+              toast({
+                title: "Usuário já existe",
+                description: "Este e-mail já está cadastrado. Verifique sua senha ou use a opção 'Esqueci minha senha'.",
+                variant: "destructive"
+              });
+            }
           } else {
             toast({
               title: "Login realizado!",

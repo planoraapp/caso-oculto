@@ -31,6 +31,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         // Check admin status when user changes
         if (session?.user) {
+          // Verificar se o usuário está confirmado
+          if (!session.user.email_confirmed_at) {
+            console.log('User email not confirmed, signing out');
+            await supabase.auth.signOut();
+            return;
+          }
+          
           setTimeout(async () => {
             try {
               const { data: roles } = await supabase
@@ -71,7 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     console.log('SignUp redirect URL:', redirectUrl);
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -82,14 +89,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     });
     
+    // Verificar se o usuário já existe
+    if (error && error.message.includes('User already registered')) {
+      return { 
+        error: new Error('Este email já está registrado. Faça login ou confirme seu email se ainda não o fez.')
+      };
+    }
+    
     return { error };
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
     });
+    
+    // Verificar se o usuário confirmou o email
+    if (data.user && !data.user.email_confirmed_at) {
+      await supabase.auth.signOut();
+      return { 
+        error: new Error('Por favor, confirme seu email antes de fazer login. Verifique sua caixa de entrada.')
+      };
+    }
     
     return { error };
   };
