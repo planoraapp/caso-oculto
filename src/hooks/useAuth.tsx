@@ -9,6 +9,7 @@ interface AuthContextType {
   loading: boolean;
   signUp: (email: string, password: string, name?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signInWithGoogle: () => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   isAdmin: boolean;
 }
@@ -31,8 +32,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         // Check admin status when user changes
         if (session?.user) {
-          // Verificar se o usuário está confirmado
-          if (!session.user.email_confirmed_at) {
+          // Verificar se o usuário está confirmado (exceto para login com Google)
+          if (!session.user.email_confirmed_at && !session.user.app_metadata?.provider?.includes('google')) {
             console.log('User email not confirmed, signing out');
             await supabase.auth.signOut();
             return;
@@ -105,13 +106,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       password
     });
     
-    // Verificar se o usuário confirmou o email
-    if (data.user && !data.user.email_confirmed_at) {
+    // Verificar se o usuário confirmou o email (exceto para login com Google)
+    if (data.user && !data.user.email_confirmed_at && !data.user.app_metadata?.provider?.includes('google')) {
       await supabase.auth.signOut();
       return { 
         error: new Error('Por favor, confirme seu email antes de fazer login. Verifique sua caixa de entrada.')
       };
     }
+    
+    return { error };
+  };
+
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/`,
+      }
+    });
     
     return { error };
   };
@@ -126,6 +138,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loading,
     signUp,
     signIn,
+    signInWithGoogle,
     signOut,
     isAdmin
   };
