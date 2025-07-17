@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
@@ -19,6 +20,7 @@ const Login: React.FC = () => {
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   // Redirect authenticated users
   useEffect(() => {
@@ -126,25 +128,49 @@ const Login: React.FC = () => {
   };
 
   const handleGoogleLogin = async () => {
-    setIsSubmitting(true);
+    setIsGoogleLoading(true);
+    
     try {
+      console.log('Iniciando processo de login com Google...');
+      
       const { error } = await signInWithGoogle();
       
       if (error) {
+        console.error('Erro no login com Google:', error);
+        
+        let errorMessage = 'Erro ao fazer login com Google. Tente novamente.';
+        
+        if (error.message?.includes('Provider not found')) {
+          errorMessage = 'Login com Google não está configurado. Contate o suporte.';
+        } else if (error.message?.includes('Invalid login credentials')) {
+          errorMessage = 'Credenciais inválidas. Tente novamente.';
+        } else if (error.message?.includes('Email not confirmed')) {
+          errorMessage = 'Email não confirmado. Verifique sua caixa de entrada.';
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
         toast({
-          title: 'Erro',
-          description: 'Erro ao fazer login com Google. Tente novamente.',
+          title: 'Erro no Login',
+          description: errorMessage,
           variant: 'destructive'
         });
+      } else {
+        console.log('Redirecionando para Google OAuth...');
+        toast({
+          title: 'Redirecionando...',
+          description: 'Você será redirecionado para o Google.',
+        });
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Erro inesperado no login com Google:', error);
       toast({
-        title: 'Erro',
-        description: 'Erro inesperado. Tente novamente.',
+        title: 'Erro Inesperado',
+        description: 'Ocorreu um erro inesperado. Tente novamente.',
         variant: 'destructive'
       });
     } finally {
-      setIsSubmitting(false);
+      setIsGoogleLoading(false);
     }
   };
 
@@ -184,7 +210,7 @@ const Login: React.FC = () => {
                   placeholder="Seu nome"
                   className="bg-noir-medium border-noir-light text-case-white mt-1"
                   required={!isLogin}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isGoogleLoading}
                 />
               </div>
             )}
@@ -202,7 +228,7 @@ const Login: React.FC = () => {
                 placeholder="seu@email.com"
                 className="bg-noir-medium border-noir-light text-case-white mt-1"
                 required
-                disabled={isSubmitting}
+                disabled={isSubmitting || isGoogleLoading}
               />
             </div>
 
@@ -220,13 +246,13 @@ const Login: React.FC = () => {
                 className="bg-noir-medium border-noir-light text-case-white mt-1"
                 required
                 minLength={6}
-                disabled={isSubmitting}
+                disabled={isSubmitting || isGoogleLoading}
               />
             </div>
 
             <Button 
               type="submit" 
-              disabled={isSubmitting}
+              disabled={isSubmitting || isGoogleLoading}
               className="w-full bg-case-red hover:bg-red-600 text-white"
             >
               {isSubmitting ? 'Processando...' : (isLogin ? 'Entrar' : 'Criar Conta')}
@@ -243,7 +269,7 @@ const Login: React.FC = () => {
           {/* Botão Google */}
           <Button
             onClick={handleGoogleLogin}
-            disabled={isSubmitting}
+            disabled={isSubmitting || isGoogleLoading}
             variant="outline"
             className="w-full mt-4 bg-white hover:bg-gray-50 text-gray-900 border-gray-300 hover:border-gray-400"
           >
@@ -253,7 +279,7 @@ const Login: React.FC = () => {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            {isSubmitting ? 'Processando...' : 'Continuar com Google'}
+            {isGoogleLoading ? 'Redirecionando...' : 'Continuar com Google'}
           </Button>
 
           <div className="mt-6 space-y-4 text-center">
@@ -262,7 +288,7 @@ const Login: React.FC = () => {
                 variant="link"
                 onClick={() => setIsForgotPasswordOpen(true)}
                 className="text-case-white/60 hover:text-case-white text-sm"
-                disabled={isSubmitting}
+                disabled={isSubmitting || isGoogleLoading}
               >
                 Esqueceu sua senha?
               </Button>
@@ -272,7 +298,7 @@ const Login: React.FC = () => {
               variant="link"
               onClick={() => setIsLogin(!isLogin)}
               className="text-case-red hover:text-red-400"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isGoogleLoading}
             >
               {isLogin ? 'Não tem uma conta? Registe-se' : 'Já tem uma conta? Entre'}
             </Button>

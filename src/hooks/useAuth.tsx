@@ -27,6 +27,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth state changed:', event, session?.user?.email);
+        console.log('Session details:', {
+          access_token: session?.access_token ? 'present' : 'missing',
+          refresh_token: session?.refresh_token ? 'present' : 'missing',
+          user_id: session?.user?.id,
+          provider: session?.user?.app_metadata?.provider
+        });
+        
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -118,14 +125,62 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/`,
+    try {
+      console.log('Iniciando login com Google...');
+      console.log('URL atual:', window.location.origin);
+      
+      const redirectUrl = `${window.location.origin}/`;
+      console.log('Redirect URL configurado:', redirectUrl);
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: redirectUrl,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
+        }
+      });
+      
+      console.log('Resposta do Supabase OAuth:', { data, error });
+      
+      if (error) {
+        console.error('Erro detalhado do Google OAuth:', error);
+        
+        // Tratar diferentes tipos de erro
+        if (error.message.includes('Invalid login credentials')) {
+          return { 
+            error: new Error('Credenciais inválidas. Tente novamente.')
+          };
+        }
+        
+        if (error.message.includes('Email not confirmed')) {
+          return { 
+            error: new Error('Email não confirmado. Verifique sua caixa de entrada.')
+          };
+        }
+        
+        if (error.message.includes('Provider not found')) {
+          return { 
+            error: new Error('Provedor Google não configurado. Contate o administrador.')
+          };
+        }
+        
+        return { 
+          error: new Error(`Erro no login com Google: ${error.message}`)
+        };
       }
-    });
-    
-    return { error };
+      
+      console.log('Login com Google iniciado com sucesso');
+      return { error: null };
+      
+    } catch (error: any) {
+      console.error('Erro inesperado no login com Google:', error);
+      return { 
+        error: new Error('Erro inesperado durante o login. Tente novamente.')
+      };
+    }
   };
 
   const signOut = async () => {
