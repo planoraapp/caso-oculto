@@ -218,6 +218,7 @@ const Carousel3D: React.FC = () => {
           ownedPackIds={ownedPackIds}
           onClose={closeComboModal}
           onPurchaseCombo={handleComboPurchase}
+          user={null}
         />
       )}
 

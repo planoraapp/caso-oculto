@@ -149,6 +149,7 @@ const PackView: React.FC<PackViewProps> = ({ user }) => {
           ownedPackIds={userPackIds}
           onClose={() => setIsComboModalOpen(false)}
           onPurchaseCombo={handlePurchaseCombo}
+          user={user}
         />
       )}
 

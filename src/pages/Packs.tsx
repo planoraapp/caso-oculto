@@ -87,14 +87,22 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
   }, [user, openPaymentModal]);
 
   const handleComboClick = useCallback(() => {
-    if (!user || isLoading) return;
+    if (!user) {
+      // Se não está logado, abrir modal mesmo assim - o modal gerenciará o login
+      setIsComboModalOpen(true);
+      return;
+    }
     setIsComboModalOpen(true);
-  }, [user, isLoading]);
+  }, [user]);
 
   const handleCompleteClick = useCallback(() => {
-    if (!user || isLoading) return;
+    if (!user) {
+      // Se não está logado, abrir modal mesmo assim - o modal gerenciará o login
+      setIsCompleteModalOpen(true);
+      return;
+    }
     setIsCompleteModalOpen(true);
-  }, [user, isLoading]);
+  }, [user]);
 
   const handlePaymentSuccess = () => {
     setTimeout(() => {
@@ -188,18 +196,21 @@ const Packs: React.FC<PacksProps> = ({ user }) => {
           ownedPackIds={ownedPackIds} 
           onClose={() => setIsComboModalOpen(false)} 
           onPurchaseCombo={handlePurchaseCombo}
+          user={user}
         />
       )}
 
       {/* Modal de pagamento para Acesso Total */}
-      <PaymentOptionsModal
-        isOpen={isCompleteModalOpen}
-        onClose={() => setIsCompleteModalOpen(false)}
-        type="complete"
-        user={user}
-        packName="Acesso Total"
-        onPaymentCreated={handlePaymentSuccess}
-      />
+      {isCompleteModalOpen && (
+        <PaymentOptionsModal
+          isOpen={isCompleteModalOpen}
+          onClose={() => setIsCompleteModalOpen(false)}
+          type="complete"
+          user={user}
+          packName="Acesso Total"
+          onPaymentCreated={handlePaymentSuccess}
+        />
+      )}
 
       {/* Modal de pagamento para Pack Individual */}
       {selectedPack && (
