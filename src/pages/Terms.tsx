@@ -71,9 +71,7 @@ const Terms: React.FC = () => {
                     <li>O valor será estornado em até 5 dias úteis</li>
                     <li>Entre em contato através do nosso suporte para solicitar</li>
                   </ul>
-                  <p>
-                    Após o período de 7 dias, não será possível solicitar reembolso, exceto em casos específicos previstos em lei.
-                  </p>
+                  <p>Após o período de 7 dias, não será possível solicitar reembolso, exceto em casos previstos em lei.</p>
                 </div>
               </div>
             </motion.div>
