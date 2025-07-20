@@ -1,16 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import SiteFooter from '../components/SiteFooter';
-
 const Terms: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
-      <motion.div 
-        className="pt-20 px-4 pb-8 flex-1"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
+  return <div className="min-h-screen bg-gray-900 flex flex-col">
+      <motion.div className="pt-20 px-4 pb-8 flex-1" initial={{
+      opacity: 0,
+      y: 20
+    }} animate={{
+      opacity: 1,
+      y: 0
+    }} transition={{
+      duration: 0.8,
+      ease: "easeOut"
+    }}>
         <div className="container mx-auto max-w-6xl">
           {/* Header */}
           <div className="text-center mb-12">
@@ -25,12 +27,15 @@ const Terms: React.FC = () => {
           {/* Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Termos de Uso */}
-            <motion.div 
-              className="space-y-6"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
+            <motion.div className="space-y-6" initial={{
+            opacity: 0,
+            x: -20
+          }} animate={{
+            opacity: 1,
+            x: 0
+          }} transition={{
+            delay: 0.2
+          }}>
               <div>
                 <h2 className="font-anton text-2xl md:text-3xl text-case-red mb-4">
                   Termos de Uso
@@ -74,12 +79,15 @@ const Terms: React.FC = () => {
             </motion.div>
 
             {/* Política de Privacidade e Código de Conduta */}
-            <motion.div 
-              className="space-y-6"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
+            <motion.div className="space-y-6" initial={{
+            opacity: 0,
+            x: 20
+          }} animate={{
+            opacity: 1,
+            x: 0
+          }} transition={{
+            delay: 0.4
+          }}>
               <div>
                 <h2 className="font-anton text-2xl md:text-3xl text-case-red mb-4">
                   Política de Privacidade
@@ -125,12 +133,15 @@ const Terms: React.FC = () => {
           </div>
 
           {/* Contact Section */}
-          <motion.div 
-            className="mt-12 pt-8 border-t border-gray-700 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
+          <motion.div className="mt-12 pt-8 border-t border-gray-700 text-center" initial={{
+          opacity: 0,
+          y: 20
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          delay: 0.6
+        }}>
             <h2 className="font-anton text-2xl md:text-3xl text-case-white mb-4">
               Precisa de Ajuda?
             </h2>
@@ -146,16 +157,12 @@ const Terms: React.FC = () => {
 
           {/* Last Updated */}
           <div className="mt-8 pt-6 border-t border-gray-800 text-center">
-            <p className="text-case-white/60 text-sm">
-              Última atualização: Janeiro de 2025
-            </p>
+            <p className="text-case-white/60 text-sm">Última atualização: Julho de 2025</p>
           </div>
         </div>
       </motion.div>
 
       <SiteFooter />
-    </div>
-  );
+    </div>;
 };
-
 export default Terms;
